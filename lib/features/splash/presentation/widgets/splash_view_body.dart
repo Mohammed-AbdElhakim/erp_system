@@ -40,7 +40,7 @@ class _SplashViewBodyState extends State<SplashViewBody>
               return SlideTransition(
                 position: sliderAnimation,
                 child: const FlutterLogo(
-                  size: 50,
+                  size: 100,
                 ),
               );
             }),

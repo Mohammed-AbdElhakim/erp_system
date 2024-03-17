@@ -39,6 +39,7 @@ class _ERPSystemState extends State<ERPSystem> {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.cyan),
         useMaterial3: true,
       ),
+      debugShowCheckedModeBanner: false,
       routerConfig: AppRouter.router,
       locale: _locale,
       supportedLocales: S.delegate.supportedLocales,
