@@ -18,21 +18,21 @@ class Pref {
   }
 
 //Read
-  static Future<String> getStringFromPref({required String key}) async {
+  static Future<String?> getStringFromPref({required String key}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String stringValue = prefs.getString(key) ?? "";
+    String? stringValue = prefs.getString(key);
     return stringValue;
   }
 
-  static Future<int> getIntFromPref({required String key}) async {
+  static Future<int?> getIntFromPref({required String key}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    int intValue = prefs.getInt(key) ?? -1;
+    int? intValue = prefs.getInt(key);
     return intValue;
   }
 
-  static Future<bool> getBoolFromPref({required String key}) async {
+  static Future<bool?> getBoolFromPref({required String key}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool boolValue = prefs.getBool(key) ?? false;
+    bool? boolValue = prefs.getBool(key);
     return boolValue;
   }
 }

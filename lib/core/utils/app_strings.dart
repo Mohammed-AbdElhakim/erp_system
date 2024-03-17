@@ -1,3 +1,6 @@
 class AppStrings {
-    // Add resource strings here.
+  static String appTitle = "ERP System";
+  static String enLang = "en";
+  static String arLang = "ar";
+  static String lang = "lang";
 }
