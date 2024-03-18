@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../generated/l10n.dart';
 import '../widgets/host_view_body.dart';
 
 class HostView extends StatelessWidget {
@@ -7,8 +8,11 @@ class HostView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: HostViewBody(),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(S.of(context).host_view),
+      ),
+      body: const HostViewBody(),
     );
   }
 }

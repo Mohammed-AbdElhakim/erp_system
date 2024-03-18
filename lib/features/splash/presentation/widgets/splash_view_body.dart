@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/helper/SharedPreferences/pref.dart';
 import '../../../../core/utils/app_router.dart';
+import '../../../../core/utils/app_strings.dart';
 
 class SplashViewBody extends StatefulWidget {
   const SplashViewBody({super.key});
@@ -19,7 +21,7 @@ class _SplashViewBodyState extends State<SplashViewBody>
   void initState() {
     super.initState();
     initSlidAnimation();
-    navigateToHome();
+    navigateToNewView();
   }
 
   @override
@@ -48,9 +50,14 @@ class _SplashViewBodyState extends State<SplashViewBody>
     );
   }
 
-  void navigateToHome() {
-    Future.delayed(const Duration(seconds: 4), () {
-      GoRouter.of(context).pushReplacement(AppRouter.kLoginView);
+  void navigateToNewView() {
+    Future.delayed(const Duration(seconds: 4), () async {
+      String host = await Pref.getStringFromPref(key: AppStrings.host) ?? "";
+      if (host.isEmpty) {
+        GoRouter.of(context).pushReplacement(AppRouter.kHostView);
+      } else {
+        GoRouter.of(context).pushReplacement(AppRouter.kLoginView);
+      }
     });
   }
 

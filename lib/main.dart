@@ -37,7 +37,7 @@ class _ERPSystemState extends State<ERPSystem> {
       title: AppStrings.appTitle,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.cyan),
-        useMaterial3: true,
+        useMaterial3: false,
       ),
       debugShowCheckedModeBanner: false,
       routerConfig: AppRouter.router,
