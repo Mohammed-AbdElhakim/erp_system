@@ -29,9 +29,11 @@ class CustomTextFormField extends StatelessWidget {
       onSaved: onSaved,
       decoration: InputDecoration(
         label: Text(label),
+        filled: true,
+        fillColor: Colors.white70,
         border: buildBorder(),
-        enabledBorder: buildBorder(),
-        focusedBorder: buildBorder(),
+        enabledBorder: buildBorder(color: Colors.cyan[500]),
+        focusedBorder: buildBorder(color: Colors.cyan[900]),
       ),
     );
   }

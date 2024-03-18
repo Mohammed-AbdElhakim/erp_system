@@ -52,11 +52,16 @@ class _SplashViewBodyState extends State<SplashViewBody>
 
   void navigateToNewView() {
     Future.delayed(const Duration(seconds: 4), () async {
-      String host = await Pref.getStringFromPref(key: AppStrings.host) ?? "";
-      if (host.isEmpty) {
-        GoRouter.of(context).pushReplacement(AppRouter.kHostView);
-      } else {
+      String host = await Pref.getStringFromPref(key: AppStrings.hostKey) ?? "";
+      bool isLogin =
+          await Pref.getBoolFromPref(key: AppStrings.isLoginKey) ?? false;
+      if (isLogin == true && host.isNotEmpty) {
+        GoRouter.of(context).pushReplacement(AppRouter.kHomeView);
+      } else if (isLogin == false && host.isNotEmpty) {
         GoRouter.of(context).pushReplacement(AppRouter.kLoginView);
+      }
+      if (isLogin == false && host.isEmpty) {
+        GoRouter.of(context).pushReplacement(AppRouter.kHostView);
       }
     });
   }

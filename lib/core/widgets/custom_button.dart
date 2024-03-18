@@ -8,10 +8,12 @@ class CustomButton extends StatefulWidget {
     this.onTap,
     this.width,
     this.height,
+    this.textStyle,
   });
   final String text;
   final double? width;
   final double? height;
+  final TextStyle? textStyle;
 
   final void Function()? onTap;
 
@@ -51,11 +53,12 @@ class CustomButtonState extends State<CustomButton> {
           child: Center(
             child: Text(
               widget.text,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-                color: Colors.white,
-              ),
+              style: widget.textStyle ??
+                  const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: Colors.white,
+                  ),
             ),
           ),
         ),

@@ -23,7 +23,7 @@ class _HostViewBodyState extends State<HostViewBody> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: viewPadding,
+      padding: viewPadding1,
       child: Form(
         key: formState,
         autovalidateMode: autoValidateMode,
@@ -45,7 +45,7 @@ class _HostViewBodyState extends State<HostViewBody> {
               onTap: () {
                 if (formState.currentState!.validate()) {
                   formState.currentState!.save();
-                  Pref.saveStringToPref(key: AppStrings.host, value: host);
+                  Pref.saveStringToPref(key: AppStrings.hostKey, value: host);
                   GoRouter.of(context).pushReplacement(AppRouter.kLoginView);
                 } else {
                   autoValidateMode = AutovalidateMode.always;

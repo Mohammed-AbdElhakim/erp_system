@@ -1,4 +1,5 @@
 import 'package:erp_system/features/auth/presentation/views/login_view.dart';
+import 'package:erp_system/features/home/presentation/views/home_view.dart';
 import 'package:erp_system/features/host/presentation/views/host_view.dart';
 import 'package:go_router/go_router.dart';
 
@@ -9,6 +10,7 @@ abstract class AppRouter {
   static const String kSplashView = "/";
   static const String kHostView = "/hostView";
   static const String kLoginView = "/loginView";
+  static const String kHomeView = "/homeView";
   static final router = GoRouter(
     routes: [
       GoRoute(
@@ -22,6 +24,10 @@ abstract class AppRouter {
       GoRoute(
         path: kLoginView,
         builder: (context, state) => const LoginView(),
+      ),
+      GoRoute(
+        path: kHomeView,
+        builder: (context, state) => const HomeView(),
       ),
     ],
   );

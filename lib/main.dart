@@ -23,7 +23,7 @@ class ERPSystem extends StatefulWidget {
 }
 
 class _ERPSystemState extends State<ERPSystem> {
-  Locale _locale = Locale(AppStrings.enLang);
+  Locale _locale = Locale(AppStrings.enLangKey);
 
   @override
   void didChangeDependencies() async {
@@ -37,6 +37,7 @@ class _ERPSystemState extends State<ERPSystem> {
       title: AppStrings.appTitle,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.cyan),
+        scaffoldBackgroundColor: Colors.cyan[50],
         useMaterial3: false,
       ),
       debugShowCheckedModeBanner: false,
@@ -53,8 +54,8 @@ class _ERPSystemState extends State<ERPSystem> {
   }
 
   Future<void> getLocale() async {
-    String language =
-        await Pref.getStringFromPref(key: AppStrings.lang) ?? AppStrings.enLang;
+    String language = await Pref.getStringFromPref(key: AppStrings.langKey) ??
+        AppStrings.enLangKey;
     setState(() {
       _locale = Locale(language);
     });
