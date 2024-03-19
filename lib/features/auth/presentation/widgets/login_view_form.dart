@@ -47,7 +47,9 @@ class _LoginViewFormState extends State<LoginViewForm> {
           Align(
             alignment: AlignmentDirectional.centerEnd,
             child: TextButton(
-              onPressed: () {},
+              onPressed: () {
+                GoRouter.of(context).push(AppRouter.kForgetPasswordView);
+              },
               child: const Text("Forget Password?"),
             ),
           ),
