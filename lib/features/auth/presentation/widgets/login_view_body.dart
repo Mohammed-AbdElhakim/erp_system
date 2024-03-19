@@ -1,10 +1,15 @@
+import 'package:erp_system/core/helper/AlertDialog/alert_dialog.dart';
 import 'package:erp_system/core/utils/app_colors.dart';
-import 'package:erp_system/core/utils/app_router.dart';
 import 'package:erp_system/core/utils/constants.dart';
 import 'package:erp_system/core/widgets/custom_button.dart';
 import 'package:erp_system/features/auth/presentation/widgets/login_view_form.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
+
+import '../../../../core/helper/SharedPreferences/pref.dart';
+import '../../../../core/utils/app_router.dart';
+import '../../../../core/utils/app_strings.dart';
 
 class LoginViewBody extends StatelessWidget {
   const LoginViewBody({super.key});
@@ -22,12 +27,23 @@ class LoginViewBody extends StatelessWidget {
               child: Align(
                 alignment: AlignmentDirectional.centerEnd,
                 child: CustomButton(
-                  text: "Change Hods",
+                  text: "Change Host",
                   width: 100,
                   height: 35,
                   textStyle: const TextStyle(fontSize: 14, color: Colors.white),
                   onTap: () {
-                    GoRouter.of(context).pushReplacement(AppRouter.kHostView);
+                    CustomAlertDialog.alertWithButton(
+                        context: context,
+                        type: AlertType.warning,
+                        title: "Change Host",
+                        desc:
+                            "Once you click OK, the current host will be automatically deleted permanently.",
+                        onPressed: () {
+                          Pref.saveStringToPref(
+                              key: AppStrings.hostKey, value: '');
+                          GoRouter.of(context)
+                              .pushReplacement(AppRouter.kHostView);
+                        });
                   },
                 ),
               ),
