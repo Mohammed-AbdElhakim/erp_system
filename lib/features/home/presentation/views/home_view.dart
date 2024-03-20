@@ -1,18 +1,42 @@
-import 'package:erp_system/core/helper/SharedPreferences/pref.dart';
-import 'package:erp_system/core/utils/app_strings.dart';
 import 'package:flutter/material.dart';
 
+import '../../data/models/fast_screen_model.dart';
 import '../widgets/custom_app_bar.dart';
 import '../widgets/item_grid_view.dart';
 import '../widgets/my_drawer.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
   const HomeView({super.key});
 
   @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  List<FastScreenModel> listScreens = [
+    FastScreenModel(
+        image: "sales_ report",
+        title: " تقريرالمبيعات",
+        colorBackground: 0xFF6FC063),
+    FastScreenModel(
+        image: "smartphone",
+        title: "تقرير المشتريات",
+        colorBackground: 0xFF6FC063),
+    FastScreenModel(
+        image: "store", title: "رصيد الخزنة", colorBackground: 0xFF6FC063),
+    FastScreenModel(
+        image: "stock", title: " تقريرالمبيعات", colorBackground: 0xFF6FC063),
+    FastScreenModel(
+        image: "sales_ report",
+        title: " تقريرالمبيعات",
+        colorBackground: 0xFF6FC063),
+    FastScreenModel(
+        image: "sales_ report",
+        title: " تقريرالمبيعات",
+        colorBackground: 0xFF6FC063),
+  ];
+  @override
   Widget build(BuildContext context) {
-    Pref.saveStringToPref(key: AppStrings.hostKey, value: '');
-    Pref.saveBoolToPref(key: AppStrings.isLoginKey, value: false);
     return Scaffold(
       appBar: const CustomAppBar(
         title: Text("Home"),
