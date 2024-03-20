@@ -12,31 +12,18 @@ class CustomSubListTileInDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
-      color: Theme.of(context).primaryColor.withOpacity(.7),
-      elevation: 5,
-      shadowColor: Theme.of(context).primaryColor.withOpacity(.9),
-      child: ListTile(
-        title: Padding(
-          padding: const EdgeInsets.only(right: 0),
-          child: Text(
-            title,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.white,
-            ),
+    return GestureDetector(
+      onTap: () => onTap(),
+      child: Padding(
+        padding: const EdgeInsetsDirectional.symmetric(vertical: 5),
+        child: Text(
+          title,
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
           ),
         ),
-        // trailing: Icon(
-        //   Icons.arrow_forward_ios,
-        //   size: 20,
-        //   color: Colors.white,
-        // ),
-        onTap: () => onTap(),
       ),
     );
   }
