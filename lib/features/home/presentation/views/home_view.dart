@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../widgets/custom_app_bar.dart';
 import '../widgets/item_grid_view.dart';
+import '../widgets/my_drawer.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -16,7 +17,7 @@ class HomeView extends StatelessWidget {
       appBar: const CustomAppBar(
         title: Text("Home"),
       ),
-      // drawer: MyDrawer(USERDATA: USERDATA, local: local),
+      drawer: const MyDrawer(),
       body: GridView.count(
         shrinkWrap: true,
         physics: const ScrollPhysics(),

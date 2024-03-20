@@ -22,6 +22,71 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
-        "host_view": MessageLookupByLibrary.simpleMessage("Host")
+        "attendAndGo": MessageLookupByLibrary.simpleMessage("الحضور والانصراف"),
+        "bankInsert":
+            MessageLookupByLibrary.simpleMessage("اجمالى ايداع البنك فى فترة"),
+        "bankNowCounter":
+            MessageLookupByLibrary.simpleMessage("حساب البنك الحالى  "),
+        "bankPull":
+            MessageLookupByLibrary.simpleMessage("سحب المبالغ فى البنك"),
+        "bankTransFire": MessageLookupByLibrary.simpleMessage(
+            "اجمالى تحويل الرصيد بين البنوك"),
+        "deserved": MessageLookupByLibrary.simpleMessage("المصروفات"),
+        "employeeBorrowItem":
+            MessageLookupByLibrary.simpleMessage("اجمالى المسحوبات للموظفين"),
+        "employeeBorrowMoney":
+            MessageLookupByLibrary.simpleMessage("اجمالى السلفيات فى فترة"),
+        "employeeIncentives":
+            MessageLookupByLibrary.simpleMessage("العلاوات التشجيعية"),
+        "employeeSalary":
+            MessageLookupByLibrary.simpleMessage("اجمالى صرف المرتبات فى فترة"),
+        "employeeSanctions":
+            MessageLookupByLibrary.simpleMessage("الجزاءات والخصومات"),
+        "eradAndKhosara": MessageLookupByLibrary.simpleMessage(
+            "اجمالى صافى الايرادات والخسارة فى فترة"),
+        "expire": MessageLookupByLibrary.simpleMessage("تقرير انتهاء الصلاحية"),
+        "home": MessageLookupByLibrary.simpleMessage("الرئيسية"),
+        "host_view": MessageLookupByLibrary.simpleMessage("Host"),
+        "item1_1":
+            MessageLookupByLibrary.simpleMessage("تقارير مبيعات العملاء"),
+        "item1_1_1":
+            MessageLookupByLibrary.simpleMessage("تقارير أرباح مبيعات العملاء"),
+        "item1_2":
+            MessageLookupByLibrary.simpleMessage("تقارير مبيعات الكاشير"),
+        "item1_2_2":
+            MessageLookupByLibrary.simpleMessage("تقارير أرباح مبيعات الكاشير"),
+        "item1_3":
+            MessageLookupByLibrary.simpleMessage("تقارير مبيعات المندوبيين"),
+        "item1_3_3": MessageLookupByLibrary.simpleMessage(
+            "تقارير أرباح مبيعات المندوبيين"),
+        "item2":
+            MessageLookupByLibrary.simpleMessage("تقارير المشتريات فى فترة"),
+        "item3": MessageLookupByLibrary.simpleMessage("تقرير كشف حساب للمورد"),
+        "item4": MessageLookupByLibrary.simpleMessage("تقرير كشف حساب للعميل"),
+        "item5":
+            MessageLookupByLibrary.simpleMessage("المبالغ المسددة من مواردين"),
+        "item6":
+            MessageLookupByLibrary.simpleMessage("المبالغ المسددة من العملاء"),
+        "item7":
+            MessageLookupByLibrary.simpleMessage("المبالغ المتبقية للمواردين"),
+        "item8": MessageLookupByLibrary.simpleMessage(
+            "المبالغ المتبقية على العملاء"),
+        "item9": MessageLookupByLibrary.simpleMessage("المنتاجات"),
+        "nowCounter": MessageLookupByLibrary.simpleMessage("الحساب الحالى"),
+        "productsOutStore": MessageLookupByLibrary.simpleMessage(
+            "اجمالى المنتجات المخرجة فى فترة"),
+        "rangeOrder": MessageLookupByLibrary.simpleMessage(
+            "المنتجات التى وصلت الى الحد الادنى"),
+        "returnsDetails": MessageLookupByLibrary.simpleMessage(
+            "تقارير المرتجعات مبيعات - مشتريات"),
+        "runCommand": MessageLookupByLibrary.simpleMessage("أوامرالشغل"),
+        "sarfAndKapd":
+            MessageLookupByLibrary.simpleMessage("اجمالى الصرف والقبض فى فترة"),
+        "stockInsert":
+            MessageLookupByLibrary.simpleMessage("اجمالى ايداع الخزنة فى فترة"),
+        "stockPull": MessageLookupByLibrary.simpleMessage("سحب المبالغ"),
+        "stockTransFire": MessageLookupByLibrary.simpleMessage(
+            "اجمالى تحويل الرصيد بين الخزنات"),
+        "stores": MessageLookupByLibrary.simpleMessage("المخازن")
       };
 }

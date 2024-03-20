@@ -42,18 +42,6 @@ class _LoginViewFormState extends State<LoginViewForm> {
             },
           ),
           const SizedBox(
-            height: 5,
-          ),
-          Align(
-            alignment: AlignmentDirectional.centerEnd,
-            child: TextButton(
-              onPressed: () {
-                GoRouter.of(context).push(AppRouter.kForgetPasswordView);
-              },
-              child: const Text("Forget Password?"),
-            ),
-          ),
-          const SizedBox(
             height: 30,
           ),
           CustomButton(

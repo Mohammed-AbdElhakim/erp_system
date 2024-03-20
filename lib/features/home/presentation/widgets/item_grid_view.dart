@@ -41,16 +41,10 @@ class _ItemGridViewState extends State<ItemGridView> {
                     // color: Color(0xff48cae4),
                   ),
                   child: Image.asset(
-                    "lib/assets/images/${widget.icon}.png",
+                    "assets/images/${widget.icon}.png",
                     width: 85,
                     height: 70,
                   ),
-
-                  // Icon(
-                  //   widget.icon,
-                  //   size: 60,
-                  //   color: Theme.of(context).primaryColor,
-                  // ),
                 ),
               ),
               SizedBox(
