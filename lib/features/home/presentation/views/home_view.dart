@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../data/models/fast_screen_model.dart';
 import '../widgets/custom_app_bar.dart';
-import '../widgets/item_grid_view.dart';
+import '../widgets/item_home.dart';
 import '../widgets/my_drawer.dart';
 
 class HomeView extends StatefulWidget {
@@ -16,24 +16,22 @@ class _HomeViewState extends State<HomeView> {
   List<FastScreenModel> listScreens = [
     FastScreenModel(
         image: "sales_ report",
-        title: " تقريرالمبيعات",
+        title: "حضور وانصراف",
         colorBackground: 0xFF6FC063),
     FastScreenModel(
         image: "smartphone",
         title: "تقرير المشتريات",
-        colorBackground: 0xFF6FC063),
+        colorBackground: 0xFF7A5649),
     FastScreenModel(
-        image: "store", title: "رصيد الخزنة", colorBackground: 0xFF6FC063),
+        image: "store", title: "رصيد الخزنة", colorBackground: 0xFFD94949),
     FastScreenModel(
-        image: "stock", title: " تقريرالمبيعات", colorBackground: 0xFF6FC063),
-    FastScreenModel(
-        image: "sales_ report",
-        title: " تقريرالمبيعات",
-        colorBackground: 0xFF6FC063),
+        image: "stock", title: "جرد مخزن", colorBackground: 0xFFF8951D),
     FastScreenModel(
         image: "sales_ report",
-        title: " تقريرالمبيعات",
-        colorBackground: 0xFF6FC063),
+        title: "حساب موردين",
+        colorBackground: 0xFF9062AA),
+    FastScreenModel(
+        image: "sales_ report", title: "حساب ", colorBackground: 0xFF9062AA),
   ];
   @override
   Widget build(BuildContext context) {
@@ -42,7 +40,231 @@ class _HomeViewState extends State<HomeView> {
         title: Text("Home"),
       ),
       drawer: const MyDrawer(),
-      body: GridView.count(
+      body: ListView.builder(
+        itemCount: (listScreens.length / 2).ceil(),
+        itemBuilder: (context, index) {
+          int i = index + 1;
+          return ItemHome(
+            item1: listScreens[index + index],
+            item2: listScreens[index + i],
+            i: i,
+          );
+        },
+      ),
+    );
+  }
+}
+/*
+* Padding(
+        padding: const EdgeInsets.all(1),
+        child: Column(
+          children: [
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Expanded(
+                  flex: 4,
+                  child: Container(
+                    color: Color(0xFF6FC063),
+                    margin: EdgeInsets.all(1),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Image.asset(
+                            "assets/images/sales_ report.png",
+                            width: 85,
+                            height: 70,
+                          ),
+                        ),
+                        Container(
+                          height: 35,
+                          alignment: Alignment.center,
+                          color: Color(0xFF5C9F52),
+                          child: AutoSizeText(" تقريرالمبيعات",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white)),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Container(
+                    color: Color(0xFF3EB3E8),
+                    margin: EdgeInsets.all(1),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Image.asset(
+                            "assets/images/store.png",
+                            width: 85,
+                            height: 70,
+                          ),
+                        ),
+                        Container(
+                          height: 35,
+                          alignment: Alignment.center,
+                          color: Color(0xFF369AC7),
+                          child: AutoSizeText("رصيد الخزنة",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white)),
+                        )
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: Container(
+                    color: Color(0xFFD94949),
+                    margin: EdgeInsets.all(1),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Image.asset(
+                            "assets/images/cashier.png",
+                            width: 85,
+                            height: 70,
+                          ),
+                        ),
+                        Container(
+                          height: 35,
+                          alignment: Alignment.center,
+                          color: Color(0xFFB73D3D),
+                          child: AutoSizeText(" تقريرالمبيعات",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white)),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 4,
+                  child: Container(
+                    color: Color(0xFF9062AA),
+                    margin: EdgeInsets.all(1),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Image.asset(
+                            "assets/images/sales_ report.png",
+                            width: 85,
+                            height: 70,
+                          ),
+                        ),
+                        Container(
+                          height: 35,
+                          alignment: Alignment.center,
+                          color: Color(0xFF734F88),
+                          child: AutoSizeText(" تقريرالمبيعات",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white)),
+                        )
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Expanded(
+                  flex: 4,
+                  child: Container(
+                    color: Color(0xFFF8951D),
+                    margin: EdgeInsets.all(1),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Image.asset(
+                            "assets/images/sales_ report.png",
+                            width: 85,
+                            height: 70,
+                          ),
+                        ),
+                        Container(
+                          height: 35,
+                          alignment: Alignment.center,
+                          color: Color(0xFFE0871B),
+                          child: AutoSizeText(" تقريرالمبيعات",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white)),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Container(
+                    color: Color(0xFF7A5649),
+                    margin: EdgeInsets.all(1),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Image.asset(
+                            "assets/images/sales_ report.png",
+                            width: 85,
+                            height: 70,
+                          ),
+                        ),
+                        Container(
+                          height: 35,
+                          alignment: Alignment.center,
+                          color: Color(0xFF64463C),
+                          child: AutoSizeText(" تقريرالمبيعات",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white)),
+                        )
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ],
+        ),
+      )*/
+
+/*GridView.count(
         shrinkWrap: true,
         physics: const ScrollPhysics(),
         crossAxisCount: MediaQuery.of(context).size.width < 600 ? 3 : 4,
@@ -176,7 +398,4 @@ class _HomeViewState extends State<HomeView> {
             },
           ),
         ],
-      ),
-    );
-  }
-}
+      )*/
