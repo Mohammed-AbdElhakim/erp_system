@@ -15,23 +15,35 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   List<FastScreenModel> listScreens = [
     FastScreenModel(
+        id: "/attendanceView",
         image: "sales_ report",
         title: "حضور وانصراف",
         colorBackground: 0xFF6FC063),
     FastScreenModel(
+        id: "/attendanceView",
         image: "smartphone",
         title: "تقرير المشتريات",
         colorBackground: 0xFF7A5649),
     FastScreenModel(
-        image: "store", title: "رصيد الخزنة", colorBackground: 0xFFD94949),
+        id: "/attendanceView",
+        image: "store",
+        title: "رصيد الخزنة",
+        colorBackground: 0xFFD94949),
     FastScreenModel(
-        image: "stock", title: "جرد مخزن", colorBackground: 0xFFF8951D),
+        id: "/attendanceView",
+        image: "stock",
+        title: "جرد مخزن",
+        colorBackground: 0xFFF8951D),
     FastScreenModel(
+        id: "/attendanceView",
         image: "sales_ report",
         title: "حساب موردين",
         colorBackground: 0xFF9062AA),
     FastScreenModel(
-        image: "sales_ report", title: "حساب ", colorBackground: 0xFF9062AA),
+        id: "/attendanceView",
+        image: "sales_ report",
+        title: "حساب ",
+        colorBackground: 0xFF9062AA),
   ];
   @override
   Widget build(BuildContext context) {

@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../data/models/fast_screen_model.dart';
 
@@ -27,32 +28,37 @@ class ItemHome extends StatelessWidget {
                     ? 4
                     : 2
                 : 4,
-            child: Container(
-              color: Color(items.colorBackground),
-              margin: EdgeInsets.all(1),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Image.asset(
-                      "assets/images/${items.image}.png",
-                      width: 85,
-                      height: 70,
+            child: InkWell(
+              onTap: () {
+                GoRouter.of(context).push(items.id);
+              },
+              child: Container(
+                color: Color(items.colorBackground),
+                margin: const EdgeInsets.all(1),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Image.asset(
+                        "assets/images/${items.image}.png",
+                        width: 85,
+                        height: 70,
+                      ),
                     ),
-                  ),
-                  Container(
-                    height: 35,
-                    alignment: Alignment.center,
-                    color: Color(items.colorBackground),
-                    child: AutoSizeText(items.title,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white)),
-                  )
-                ],
+                    Container(
+                      height: 35,
+                      alignment: Alignment.center,
+                      color: Color(items.colorBackground),
+                      child: AutoSizeText(items.title,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white)),
+                    )
+                  ],
+                ),
               ),
             ),
           );
