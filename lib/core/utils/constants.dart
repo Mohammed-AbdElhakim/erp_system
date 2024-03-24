@@ -12,3 +12,12 @@ LinearGradient gradientButton = LinearGradient(
     AppColors.blueDark,
   ],
 );
+
+LinearGradient gradientContainer = LinearGradient(
+  begin: AlignmentDirectional.topStart,
+  end: AlignmentDirectional.bottomEnd,
+  colors: [
+    AppColors.blueDark,
+    AppColors.blueLight,
+  ],
+);
