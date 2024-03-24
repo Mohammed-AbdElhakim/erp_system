@@ -3,6 +3,7 @@ import 'package:location/location.dart';
 
 import '../../../../core/helper/SharedPreferences/pref.dart';
 import '../../../../core/utils/app_strings.dart';
+import 'custom_button.dart';
 
 class AttendanceViewBody extends StatefulWidget {
   const AttendanceViewBody({super.key});
@@ -15,6 +16,7 @@ class _AttendanceViewBodyState extends State<AttendanceViewBody> {
   double? lat;
   double? long;
   String? uniqueId;
+  bool youHavePermission = false;
   @override
   void initState() {
     super.initState();
@@ -54,19 +56,46 @@ class _AttendanceViewBodyState extends State<AttendanceViewBody> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const SizedBox(
-            height: 150,
-          ),
-          if (lat == null || long == null) const CircularProgressIndicator(),
-          if (lat != null || long != null) Text("lat => $lat"),
-          if (lat != null || long != null) Text("long => $long"),
-          if (uniqueId != null) Text("uniqueId => $uniqueId"),
-        ],
-      ),
-    );
+    return youHavePermission
+        ? Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SizedBox(
+                  height: 150,
+                ),
+                if (lat == null || long == null)
+                  const CircularProgressIndicator(),
+                if (lat != null || long != null) Text("lat => $lat"),
+                if (lat != null || long != null) Text("long => $long"),
+                if (uniqueId != null) Text("uniqueId => $uniqueId"),
+                const CustomButton(
+                  text: 'Presence',
+                  color: Colors.green,
+                ),
+                const CustomButton(
+                  text: 'Departure',
+                  color: Colors.red,
+                ),
+              ],
+            ),
+          )
+        : Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                    "You do not have permission yet, Refresh the page!!!"),
+                const SizedBox(height: 50),
+                ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        youHavePermission = true;
+                      });
+                    },
+                    child: const Text("Refresh"))
+              ],
+            ),
+          );
   }
 }

@@ -1,20 +1,14 @@
-import 'package:erp_system/core/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class CustomButton extends StatefulWidget {
   const CustomButton({
     super.key,
-    required this.text,
     this.onTap,
-    this.width,
-    this.height,
-    this.textStyle,
+    required this.text,
+    required this.color,
   });
   final String text;
-  final double? width;
-  final double? height;
-  final TextStyle? textStyle;
-
+  final Color color;
   final void Function()? onTap;
 
   @override
@@ -33,19 +27,17 @@ class CustomButtonState extends State<CustomButton> {
         splashColor: Colors.transparent,
         onTap: widget.onTap,
         child: Container(
-          width: widget.width,
-          height: widget.height ?? 45,
+          width: 100,
+          height: 100,
           margin: const EdgeInsets.symmetric(vertical: 5),
-          padding: const EdgeInsets.symmetric(vertical: 5),
           decoration: BoxDecoration(
-            color: AppColors.buttonColor,
+            color: widget.color,
             boxShadow: isPressed
                 ? null
                 : [
                     const BoxShadow(
-                      color: Colors.black54,
+                      color: Colors.black87,
                       blurRadius: 10,
-                      offset: Offset(0, 0),
                     ),
                   ],
             borderRadius: BorderRadius.circular(60),
@@ -53,12 +45,10 @@ class CustomButtonState extends State<CustomButton> {
           child: Center(
             child: Text(
               widget.text,
-              style: widget.textStyle ??
-                  TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: isPressed ? 14 : 16,
-                    color: Colors.white,
-                  ),
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: isPressed ? 18 : 20,
+                  color: Colors.white),
             ),
           ),
         ),
