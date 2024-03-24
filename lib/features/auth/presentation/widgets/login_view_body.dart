@@ -74,9 +74,8 @@ class LoginViewBody extends StatelessWidget {
                 CustomAlertDialog.alertWithButton(
                     context: context,
                     type: AlertType.warning,
-                    title: "Change Host",
-                    desc:
-                        "Once you click OK, the current host will be automatically deleted permanently.",
+                    title: S.of(context).change_host,
+                    desc: S.of(context).change_host_description,
                     onPressed: () {
                       Pref.saveStringToPref(key: AppStrings.hostKey, value: '');
                       GoRouter.of(context).pushReplacement(AppRouter.kHostView);

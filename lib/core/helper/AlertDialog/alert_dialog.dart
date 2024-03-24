@@ -2,6 +2,9 @@ import 'package:erp_system/core/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
+import '../../../generated/l10n.dart';
+import '../../utils/constants.dart';
+
 class CustomAlertDialog {
   static alertWithButton({
     required BuildContext context,
@@ -16,17 +19,31 @@ class CustomAlertDialog {
       type: type,
       title: title,
       desc: desc,
+      style: AlertStyle(
+        titleStyle: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: AppColors.blueLight),
+        descStyle: const TextStyle(
+          fontSize: 18,
+        ),
+      ),
       buttons: [
         DialogButton(
           onPressed: onPressed ??
               () {
                 Navigator.pop(context);
               },
+          gradient: gradientButton,
           width: 120,
           color: AppColors.blueDark,
           child: Text(
-            textButton ?? "OK",
-            style: const TextStyle(color: Colors.white, fontSize: 20),
+            textButton ?? S.of(context).ok,
+            style: const TextStyle(
+              fontWeight: FontWeight.w200,
+              fontSize: 16,
+              color: Colors.white,
+            ),
           ),
         )
       ],

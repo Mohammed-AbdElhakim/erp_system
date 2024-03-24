@@ -1,6 +1,8 @@
 import 'package:erp_system/core/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 
+import '../utils/constants.dart';
+
 class CustomButton extends StatefulWidget {
   const CustomButton({
     super.key,
@@ -39,14 +41,7 @@ class CustomButtonState extends State<CustomButton> {
           padding: const EdgeInsets.symmetric(vertical: 5),
           decoration: BoxDecoration(
             color: AppColors.blueDark,
-            gradient: LinearGradient(
-              begin: AlignmentDirectional.topCenter,
-              end: AlignmentDirectional.bottomCenter,
-              colors: [
-                AppColors.blueLight,
-                AppColors.blueDark,
-              ],
-            ),
+            gradient: gradientButton,
             boxShadow: isPressed
                 ? null
                 : [

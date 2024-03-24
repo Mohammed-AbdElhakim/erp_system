@@ -6,7 +6,8 @@
   "username_or_email": "Username or Email",
   "password": "Password",
   "change_host": "Change Host",
-
+  "change_host_description": "Once you click OK, the current host will be automatically deleted permanently.",
+  "ok": "Ok",
 
   "home": "الرئيسية",
   "item1_1": "تقارير مبيعات العملاء",

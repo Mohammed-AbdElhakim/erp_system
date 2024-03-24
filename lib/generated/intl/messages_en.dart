@@ -32,6 +32,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "bankTransFire": MessageLookupByLibrary.simpleMessage(
             "اجمالى تحويل الرصيد بين البنوك"),
         "change_host": MessageLookupByLibrary.simpleMessage("Change Host"),
+        "change_host_description": MessageLookupByLibrary.simpleMessage(
+            "Once you click OK, the current host will be automatically deleted permanently."),
         "deserved": MessageLookupByLibrary.simpleMessage("المصروفات"),
         "dynamic_pro": MessageLookupByLibrary.simpleMessage("Dynamic Pro"),
         "employeeBorrowItem":
@@ -76,6 +78,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "item9": MessageLookupByLibrary.simpleMessage("المنتاجات"),
         "login": MessageLookupByLibrary.simpleMessage("LOG IN"),
         "nowCounter": MessageLookupByLibrary.simpleMessage("الحساب الحالى"),
+        "ok": MessageLookupByLibrary.simpleMessage("Ok"),
         "password": MessageLookupByLibrary.simpleMessage("Password"),
         "productsOutStore": MessageLookupByLibrary.simpleMessage(
             "اجمالى المنتجات المخرجة فى فترة"),

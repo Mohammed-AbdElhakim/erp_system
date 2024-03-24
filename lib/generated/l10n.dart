@@ -120,6 +120,26 @@ class S {
     );
   }
 
+  /// `Once you click OK, the current host will be automatically deleted permanently.`
+  String get change_host_description {
+    return Intl.message(
+      'Once you click OK, the current host will be automatically deleted permanently.',
+      name: 'change_host_description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ok`
+  String get ok {
+    return Intl.message(
+      'Ok',
+      name: 'ok',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `الرئيسية`
   String get home {
     return Intl.message(
