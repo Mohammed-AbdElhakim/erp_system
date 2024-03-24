@@ -5,6 +5,7 @@ class AppStrings {
   static String langKey = "lang";
   static String hostKey = "host";
   static String isLoginKey = "isLogin";
+  static String uniqueIdKey = "uniqueId";
 
   static String home = "الرئيسية";
   static String item1_1 = "تقارير مبيعات العملاء";

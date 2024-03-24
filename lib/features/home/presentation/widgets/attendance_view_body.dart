@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 
+import '../../../../core/helper/SharedPreferences/pref.dart';
+import '../../../../core/utils/app_strings.dart';
+
 class AttendanceViewBody extends StatefulWidget {
   const AttendanceViewBody({super.key});
 
@@ -11,6 +14,7 @@ class AttendanceViewBody extends StatefulWidget {
 class _AttendanceViewBodyState extends State<AttendanceViewBody> {
   double? lat;
   double? long;
+  String? uniqueId;
   @override
   void initState() {
     super.initState();
@@ -18,6 +22,7 @@ class _AttendanceViewBodyState extends State<AttendanceViewBody> {
   }
 
   getLocation() async {
+    uniqueId = await Pref.getStringFromPref(key: AppStrings.uniqueIdKey) ?? "";
     Location location = Location();
 
     LocationData? locationData;
@@ -59,6 +64,7 @@ class _AttendanceViewBodyState extends State<AttendanceViewBody> {
           if (lat == null || long == null) const CircularProgressIndicator(),
           if (lat != null || long != null) Text("lat => $lat"),
           if (lat != null || long != null) Text("long => $long"),
+          if (uniqueId != null) Text("uniqueId => $uniqueId"),
         ],
       ),
     );

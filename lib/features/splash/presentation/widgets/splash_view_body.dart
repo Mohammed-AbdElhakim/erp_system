@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../../core/helper/SharedPreferences/pref.dart';
 import '../../../../core/utils/app_router.dart';
@@ -22,6 +23,7 @@ class _SplashViewBodyState extends State<SplashViewBody>
     super.initState();
     initSlidAnimation();
     navigateToNewView();
+    generateUniqueId();
   }
 
   @override
@@ -75,5 +77,14 @@ class _SplashViewBodyState extends State<SplashViewBody>
     sliderAnimation = Tween<Offset>(begin: const Offset(0, 2), end: Offset.zero)
         .animate(animationController);
     animationController.forward();
+  }
+
+  void generateUniqueId() async {
+    String uniqueId =
+        await Pref.getStringFromPref(key: AppStrings.uniqueIdKey) ?? "";
+    if (uniqueId.isEmpty) {
+      Uuid uuid = const Uuid();
+      Pref.saveStringToPref(key: AppStrings.uniqueIdKey, value: uuid.v1());
+    }
   }
 }
