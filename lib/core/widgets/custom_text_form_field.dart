@@ -1,3 +1,4 @@
+import 'package:erp_system/core/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class CustomTextFormField extends StatelessWidget {
@@ -5,12 +6,12 @@ class CustomTextFormField extends StatelessWidget {
       {super.key,
       this.controller,
       this.validatorMassage = 'Field is required',
-      required this.label,
+      required this.hintText,
       this.onChanged,
       this.onSaved});
   final TextEditingController? controller;
   final String? validatorMassage;
-  final String label;
+  final String hintText;
   final void Function(String)? onChanged;
   final void Function(String?)? onSaved;
 
@@ -25,22 +26,23 @@ class CustomTextFormField extends StatelessWidget {
           return null;
         }
       },
+      textAlign: TextAlign.center,
       onChanged: onChanged,
       onSaved: onSaved,
       decoration: InputDecoration(
-        label: Text(label),
-        filled: true,
-        fillColor: Colors.white70,
+        hintText: hintText,
+        hintStyle: TextStyle(color: AppColors.grey),
+        contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
         border: buildBorder(),
-        enabledBorder: buildBorder(color: Colors.cyan[500]),
-        focusedBorder: buildBorder(color: Colors.cyan[900]),
+        enabledBorder: buildBorder(color: AppColors.blueDark),
+        focusedBorder: buildBorder(color: AppColors.blueDark),
       ),
     );
   }
 
   OutlineInputBorder buildBorder({Color? color}) {
     return OutlineInputBorder(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(12),
         borderSide: BorderSide(
           color: color ?? Colors.grey,
         ));

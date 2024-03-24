@@ -6,6 +6,7 @@ import '../../../../core/utils/app_router.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_text_form_field.dart';
+import '../../../../generated/l10n.dart';
 
 class LoginViewForm extends StatefulWidget {
   const LoginViewForm({super.key});
@@ -23,43 +24,47 @@ class _LoginViewFormState extends State<LoginViewForm> {
     return Form(
       key: formState,
       autovalidateMode: autoValidateMode,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          CustomTextFormField(
-            label: 'Username',
-            onSaved: (value) {
-              userName = value!;
-            },
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          CustomTextFormField(
-            label: 'Password',
-            onSaved: (value) {
-              password = value!;
-            },
-          ),
-          const SizedBox(
-            height: 30,
-          ),
-          CustomButton(
-            text: "Login",
-            width: 150,
-            textStyle: const TextStyle(fontSize: 14, color: Colors.white),
-            onTap: () {
-              if (formState.currentState!.validate()) {
-                formState.currentState!.save();
-                Pref.saveBoolToPref(key: AppStrings.isLoginKey, value: true);
-                GoRouter.of(context).pushReplacement(AppRouter.kHomeView);
-              } else {
-                autoValidateMode = AutovalidateMode.always;
-                setState(() {});
-              }
-            },
-          ),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            CustomTextFormField(
+              hintText: S.of(context).username_or_email,
+              onSaved: (value) {
+                userName = value!;
+              },
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            CustomTextFormField(
+              hintText: S.of(context).password,
+              onSaved: (value) {
+                password = value!;
+              },
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              child: CustomButton(
+                text: S.of(context).login,
+                width: 150,
+                height: 35,
+                onTap: () {
+                  if (formState.currentState!.validate()) {
+                    formState.currentState!.save();
+                    Pref.saveBoolToPref(
+                        key: AppStrings.isLoginKey, value: true);
+                    GoRouter.of(context).pushReplacement(AppRouter.kHomeView);
+                  } else {
+                    autoValidateMode = AutovalidateMode.always;
+                    setState(() {});
+                  }
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

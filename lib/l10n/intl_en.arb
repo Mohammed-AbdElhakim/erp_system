@@ -1,5 +1,13 @@
 {
   "host_view": "Host",
+  "welcome": "WELCOME !",
+  "login": "LOG IN",
+  "dynamic_pro":"Dynamic Pro",
+  "username_or_email": "Username or Email",
+  "password": "Password",
+  "change_host": "Change Host",
+
+
   "home": "الرئيسية",
   "item1_1": "تقارير مبيعات العملاء",
   "item1_2": "تقارير مبيعات الكاشير",

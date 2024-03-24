@@ -31,7 +31,7 @@ class _HostViewBodyState extends State<HostViewBody> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CustomTextFormField(
-              label: S.of(context).host_view,
+              hintText: S.of(context).host_view,
               onSaved: (value) {
                 host = value!;
               },

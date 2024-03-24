@@ -60,6 +60,66 @@ class S {
     );
   }
 
+  /// `WELCOME !`
+  String get welcome {
+    return Intl.message(
+      'WELCOME !',
+      name: 'welcome',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `LOG IN`
+  String get login {
+    return Intl.message(
+      'LOG IN',
+      name: 'login',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Dynamic Pro`
+  String get dynamic_pro {
+    return Intl.message(
+      'Dynamic Pro',
+      name: 'dynamic_pro',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Username or Email`
+  String get username_or_email {
+    return Intl.message(
+      'Username or Email',
+      name: 'username_or_email',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password`
+  String get password {
+    return Intl.message(
+      'Password',
+      name: 'password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Change Host`
+  String get change_host {
+    return Intl.message(
+      'Change Host',
+      name: 'change_host',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `الرئيسية`
   String get home {
     return Intl.message(

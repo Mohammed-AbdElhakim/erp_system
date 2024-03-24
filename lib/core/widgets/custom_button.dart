@@ -39,23 +39,30 @@ class CustomButtonState extends State<CustomButton> {
           padding: const EdgeInsets.symmetric(vertical: 5),
           decoration: BoxDecoration(
             color: AppColors.blueDark,
+            gradient: LinearGradient(
+              begin: AlignmentDirectional.topCenter,
+              end: AlignmentDirectional.bottomCenter,
+              colors: [
+                AppColors.blueLight,
+                AppColors.blueDark,
+              ],
+            ),
             boxShadow: isPressed
                 ? null
                 : [
-                    const BoxShadow(
-                      color: Colors.black54,
-                      blurRadius: 10,
-                      offset: Offset(0, 0),
+                    BoxShadow(
+                      color: AppColors.blueDark,
+                      blurRadius: 3,
                     ),
                   ],
-            borderRadius: BorderRadius.circular(60),
+            borderRadius: BorderRadius.circular(12),
           ),
           child: Center(
             child: Text(
               widget.text,
               style: widget.textStyle ??
                   TextStyle(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w200,
                     fontSize: isPressed ? 14 : 16,
                     color: Colors.white,
                   ),

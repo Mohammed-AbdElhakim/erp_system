@@ -31,7 +31,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("سحب المبالغ فى البنك"),
         "bankTransFire": MessageLookupByLibrary.simpleMessage(
             "اجمالى تحويل الرصيد بين البنوك"),
+        "change_host": MessageLookupByLibrary.simpleMessage("تغير المضيف"),
         "deserved": MessageLookupByLibrary.simpleMessage("المصروفات"),
+        "dynamic_pro": MessageLookupByLibrary.simpleMessage("Dynamic Pro"),
         "employeeBorrowItem":
             MessageLookupByLibrary.simpleMessage("اجمالى المسحوبات للموظفين"),
         "employeeBorrowMoney":
@@ -72,7 +74,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "item8": MessageLookupByLibrary.simpleMessage(
             "المبالغ المتبقية على العملاء"),
         "item9": MessageLookupByLibrary.simpleMessage("المنتاجات"),
+        "login": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
         "nowCounter": MessageLookupByLibrary.simpleMessage("الحساب الحالى"),
+        "password": MessageLookupByLibrary.simpleMessage("كلمة المرور"),
         "productsOutStore": MessageLookupByLibrary.simpleMessage(
             "اجمالى المنتجات المخرجة فى فترة"),
         "rangeOrder": MessageLookupByLibrary.simpleMessage(
@@ -87,6 +91,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "stockPull": MessageLookupByLibrary.simpleMessage("سحب المبالغ"),
         "stockTransFire": MessageLookupByLibrary.simpleMessage(
             "اجمالى تحويل الرصيد بين الخزنات"),
-        "stores": MessageLookupByLibrary.simpleMessage("المخازن")
+        "stores": MessageLookupByLibrary.simpleMessage("المخازن"),
+        "username_or_email": MessageLookupByLibrary.simpleMessage(
+            "اسم المستخدم او البريد الإلكتروني"),
+        "welcome": MessageLookupByLibrary.simpleMessage("مرحباً !")
       };
 }
