@@ -1,3 +1,5 @@
+import 'package:erp_system/core/utils/app_assets.dart';
+import 'package:erp_system/core/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
@@ -5,6 +7,8 @@ import 'package:uuid/uuid.dart';
 import '../../../../core/helper/SharedPreferences/pref.dart';
 import '../../../../core/utils/app_router.dart';
 import '../../../../core/utils/app_strings.dart';
+import '../../../../core/utils/app_styles.dart';
+import '../../../../generated/l10n.dart';
 
 class SplashViewBody extends StatefulWidget {
   const SplashViewBody({super.key});
@@ -34,27 +38,39 @@ class _SplashViewBodyState extends State<SplashViewBody>
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        AnimatedBuilder(
-            animation: sliderAnimation,
-            builder: (context, _) {
-              return SlideTransition(
-                position: sliderAnimation,
-                child: const FlutterLogo(
-                  size: 100,
-                ),
-              );
-            }),
-      ],
+    return Container(
+      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(gradient: gradientContainer),
+      child: AnimatedBuilder(
+          animation: sliderAnimation,
+          builder: (context, _) {
+            return SlideTransition(
+              position: sliderAnimation,
+              child: Stack(
+                alignment: Alignment.bottomCenter,
+                children: [
+                  Image.asset(
+                    AppAssets.logo,
+                    height: 170,
+                    width: 170,
+                  ),
+                  Text(
+                    S.of(context).dynamic_pro,
+                    textAlign: TextAlign.center,
+                    style: AppStyles.textStyle20,
+                  ),
+                ],
+              ),
+            );
+          }),
     );
   }
 
   void navigateToNewView() {
     Future.delayed(
-      const Duration(seconds: 4),
+      const Duration(seconds: 5),
       () async {
         String host =
             await Pref.getStringFromPref(key: AppStrings.hostKey) ?? "";
