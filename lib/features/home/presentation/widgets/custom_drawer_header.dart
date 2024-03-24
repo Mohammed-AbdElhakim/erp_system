@@ -23,7 +23,7 @@ class CustomDrawerHeader extends StatelessWidget {
               child: CircleAvatar(
                 radius: 40,
                 child: Image.asset(
-                  "assets/images/avatar.png",
+                  "assets/images/const_img/avatar.png",
                 ),
               ),
             ),

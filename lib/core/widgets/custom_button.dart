@@ -38,7 +38,7 @@ class CustomButtonState extends State<CustomButton> {
           margin: const EdgeInsets.symmetric(vertical: 5),
           padding: const EdgeInsets.symmetric(vertical: 5),
           decoration: BoxDecoration(
-            color: AppColors.buttonColor,
+            color: AppColors.blueDark,
             boxShadow: isPressed
                 ? null
                 : [

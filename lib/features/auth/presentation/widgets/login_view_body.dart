@@ -29,7 +29,7 @@ class LoginViewBody extends StatelessWidget {
               style: TextStyle(
                 fontSize: 35,
                 fontWeight: FontWeight.bold,
-                color: AppColors.buttonColor,
+                color: AppColors.blueDark,
               ),
             ),
           ),
@@ -61,8 +61,7 @@ class LoginViewBody extends StatelessWidget {
                 },
                 child: Text(
                   "Change Host",
-                  style:
-                      TextStyle(color: AppColors.buttonColor.withOpacity(.5)),
+                  style: TextStyle(color: AppColors.blueDark.withOpacity(.5)),
                 ),
               ),
             ),

@@ -1,4 +1,5 @@
 class AppStrings {
+  static String appFontFamily = "BeINBlack";
   static String appTitle = "ERP System";
   static String enLangKey = "en";
   static String arLangKey = "ar";

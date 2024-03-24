@@ -4,6 +4,7 @@ import 'package:erp_system/core/utils/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import 'core/utils/app_colors.dart';
 import 'generated/l10n.dart';
 
 void main() {
@@ -36,9 +37,8 @@ class _ERPSystemState extends State<ERPSystem> {
     return MaterialApp.router(
       title: AppStrings.appTitle,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.cyan),
-        scaffoldBackgroundColor: Colors.cyan[50],
-        useMaterial3: false,
+        fontFamily: AppStrings.appFontFamily,
+        colorScheme: ColorScheme.fromSeed(seedColor: AppColors.blueDark),
       ),
       debugShowCheckedModeBanner: false,
       routerConfig: AppRouter.router,

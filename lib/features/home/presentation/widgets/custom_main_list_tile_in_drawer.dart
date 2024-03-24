@@ -47,7 +47,7 @@ class _CustomMainListTileInDrawerState
       leading: Padding(
         padding: const EdgeInsets.only(right: 8),
         child: Image.asset(
-          "assets/images/${widget.icon}.png",
+          "assets/images/const_img/${widget.icon}.png",
           width: 35,
           height: 35,
         ),
