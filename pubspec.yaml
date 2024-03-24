@@ -47,6 +47,9 @@ dependencies:
   shared_preferences: ^2.2.2
   rflutter_alert: ^2.0.7
   auto_size_text: ^3.0.0
+  device_info_plus: ^10.0.1
+  location: ^5.0.3
+  device_imei: ^0.0.4+2
 
 dev_dependencies:
   flutter_test:

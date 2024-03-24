@@ -1,3 +1,4 @@
+import 'package:erp_system/features/home/presentation/widgets/attendance_view_body.dart';
 import 'package:flutter/material.dart';
 
 class AttendanceView extends StatelessWidget {
@@ -6,9 +7,7 @@ class AttendanceView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Center(
-        child: Text("attendanceView"),
-      ),
+      body: AttendanceViewBody(),
     );
   }
 }
