@@ -1,3 +1,4 @@
+import 'package:erp_system/core/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
@@ -22,6 +23,7 @@ class CustomAlertDialog {
                 Navigator.pop(context);
               },
           width: 120,
+          color: AppColors.blueDark,
           child: Text(
             textButton ?? "OK",
             style: const TextStyle(color: Colors.white, fontSize: 20),

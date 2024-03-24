@@ -8,7 +8,6 @@ class AppStyles {
   );
   static TextStyle textStyle20 = TextStyle(
     fontSize: 20,
-    fontWeight: FontWeight.bold,
     color: AppColors.white,
   );
 }

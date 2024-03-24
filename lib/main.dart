@@ -37,9 +37,13 @@ class _ERPSystemState extends State<ERPSystem> {
     return MaterialApp.router(
       title: AppStrings.appTitle,
       theme: ThemeData(
-        fontFamily: AppStrings.appFontFamily,
-        primarySwatch: AppColors.primary,
-      ),
+          appBarTheme: AppBarTheme(
+              backgroundColor: AppColors.blueDark, toolbarHeight: 0),
+          fontFamily: AppStrings.appFontFamily,
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: AppColors.blueDark,
+          ),
+          useMaterial3: true),
       debugShowCheckedModeBanner: false,
       routerConfig: AppRouter.router,
       locale: _locale,
