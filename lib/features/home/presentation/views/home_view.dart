@@ -1,7 +1,8 @@
+import 'package:erp_system/core/widgets/change_status_bar_color.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../core/widgets/custom_app_bar.dart';
 import '../../data/models/fast_screen_model.dart';
-import '../widgets/custom_app_bar.dart';
 import '../widgets/item_home.dart';
 import '../widgets/my_drawer.dart';
 
@@ -47,21 +48,21 @@ class _HomeViewState extends State<HomeView> {
   ];
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const CustomAppBar(
-        title: Text("Home"),
-      ),
-      drawer: const MyDrawer(),
-      body: ListView.builder(
-        itemCount: (listScreens.length / 2).ceil(),
-        itemBuilder: (context, index) {
-          int i = index + 1;
-          return ItemHome(
-            item1: listScreens[index + index],
-            item2: listScreens[index + i],
-            i: i,
-          );
-        },
+    return ChangeStatusBarColor(
+      child: Scaffold(
+        appBar: const CustomAppBar(),
+        drawer: const MyDrawer(),
+        body: ListView.builder(
+          itemCount: (listScreens.length / 2).ceil(),
+          itemBuilder: (context, index) {
+            int i = index + 1;
+            return ItemHome(
+              item1: listScreens[index + index],
+              item2: listScreens[index + i],
+              i: i,
+            );
+          },
+        ),
       ),
     );
   }

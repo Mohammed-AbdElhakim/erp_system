@@ -1,4 +1,6 @@
+import 'package:erp_system/core/widgets/change_status_bar_color.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../../../core/widgets/custom_app_bar.dart';
 import '../widgets/host_view_body.dart';
@@ -13,9 +15,15 @@ class HostView extends StatefulWidget {
 class _HostViewState extends State<HostView> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      appBar: CustomAppBar(),
-      body: HostViewBody(),
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
+        statusBarColor: Colors.red,
+        //or set color with: Color(0xFF0000FF)
+        statusBarIconBrightness: Brightness.dark));
+    return const ChangeStatusBarColor(
+      child: Scaffold(
+        appBar: CustomAppBar(),
+        body: HostViewBody(),
+      ),
     );
   }
 }

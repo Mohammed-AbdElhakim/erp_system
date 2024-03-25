@@ -41,7 +41,7 @@ class ItemHome extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Image.asset(
-                        "assets/images/${items.image}.png",
+                        "assets/images/const_img/${items.image}.png",
                         width: 85,
                         height: 70,
                       ),
