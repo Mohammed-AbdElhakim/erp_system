@@ -15,10 +15,13 @@ class HostViewBody extends StatelessWidget {
       children: [
         CustomContainer(
           height: 120,
-          child: Text(
-            textAlign: TextAlign.center,
-            S.of(context).host_view,
-            style: AppStyles.textStyle26,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 25),
+            child: Text(
+              textAlign: TextAlign.center,
+              S.of(context).host_view,
+              style: AppStyles.textStyle26,
+            ),
           ),
         ),
         const HostViewForm(),
