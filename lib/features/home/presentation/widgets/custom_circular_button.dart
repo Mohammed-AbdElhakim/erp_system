@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class CustomButton extends StatefulWidget {
-  const CustomButton({
+class CustomCircularButton extends StatefulWidget {
+  const CustomCircularButton({
     super.key,
     this.onTap,
     required this.text,
@@ -12,10 +12,10 @@ class CustomButton extends StatefulWidget {
   final void Function()? onTap;
 
   @override
-  State<CustomButton> createState() => CustomButtonState();
+  State<CustomCircularButton> createState() => CustomCircularButtonState();
 }
 
-class CustomButtonState extends State<CustomButton> {
+class CustomCircularButtonState extends State<CustomCircularButton> {
   bool isPressed = false;
   @override
   Widget build(BuildContext context) {

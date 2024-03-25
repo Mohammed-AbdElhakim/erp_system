@@ -34,6 +34,8 @@ class LoginViewBody extends StatelessWidget {
                     desc: S.of(context).change_host_description,
                     onPressed: () {
                       Pref.saveStringToPref(key: AppStrings.hostKey, value: '');
+                      Pref.saveStringToPref(
+                          key: AppStrings.companyIdentifierKey, value: '');
                       GoRouter.of(context).pushReplacement(AppRouter.kHostView);
                     });
               },

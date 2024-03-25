@@ -33,7 +33,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "اجمالى تحويل الرصيد بين البنوك"),
         "change_host": MessageLookupByLibrary.simpleMessage("تغير المضيف"),
         "change_host_description": MessageLookupByLibrary.simpleMessage(
-            "بمجرد النقر فوق \"حسناً\"، سيتم حذف المضيف الحالي نهائيًا."),
+            "بمجرد النقر فوق \"حسناً\"، سيتم حذف المضيف الحالي ومعرف الشركة نهائيًا."),
+        "company_identifier": MessageLookupByLibrary.simpleMessage("معرف شركة"),
         "deserved": MessageLookupByLibrary.simpleMessage("المصروفات"),
         "dynamic_pro": MessageLookupByLibrary.simpleMessage("Dynamic Pro"),
         "employeeBorrowItem":

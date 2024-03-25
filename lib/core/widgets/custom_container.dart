@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
-import '../../features/auth/presentation/widgets/container_custom_clipper.dart';
 import '../utils/constants.dart';
+import 'container_custom_clipper.dart';
 
 class CustomContainer extends StatelessWidget {
-  const CustomContainer({super.key, required this.height, required this.child});
+  const CustomContainer(
+      {super.key, required this.height, required this.child, this.width});
 
   final double height;
+  final double? width;
   final Widget child;
 
   @override
@@ -15,6 +17,7 @@ class CustomContainer extends StatelessWidget {
       clipper: ContainerCustomClipper(),
       child: Container(
         height: height,
+        width: width ?? MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
           gradient: gradientContainer,
         ),

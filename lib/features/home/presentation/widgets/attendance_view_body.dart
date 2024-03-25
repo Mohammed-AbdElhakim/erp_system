@@ -3,7 +3,7 @@ import 'package:location/location.dart';
 
 import '../../../../core/helper/SharedPreferences/pref.dart';
 import '../../../../core/utils/app_strings.dart';
-import 'custom_button.dart';
+import 'custom_circular_button.dart';
 
 class AttendanceViewBody extends StatefulWidget {
   const AttendanceViewBody({super.key});
@@ -69,11 +69,11 @@ class _AttendanceViewBodyState extends State<AttendanceViewBody> {
                 if (lat != null || long != null) Text("lat => $lat"),
                 if (lat != null || long != null) Text("long => $long"),
                 if (uniqueId != null) Text("uniqueId => $uniqueId"),
-                const CustomButton(
+                const CustomCircularButton(
                   text: 'Presence',
                   color: Colors.green,
                 ),
-                const CustomButton(
+                const CustomCircularButton(
                   text: 'Departure',
                   color: Colors.red,
                 ),

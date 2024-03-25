@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
 
-import '../../../../generated/l10n.dart';
+import '../../../../core/widgets/custom_app_bar.dart';
 import '../widgets/host_view_body.dart';
 
-class HostView extends StatelessWidget {
+class HostView extends StatefulWidget {
   const HostView({super.key});
 
   @override
+  State<HostView> createState() => _HostViewState();
+}
+
+class _HostViewState extends State<HostView> {
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(S.of(context).host_view),
-      ),
-      body: const HostViewBody(),
+    return const Scaffold(
+      appBar: CustomAppBar(),
+      body: HostViewBody(),
     );
   }
 }

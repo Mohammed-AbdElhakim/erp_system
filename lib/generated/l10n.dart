@@ -120,10 +120,10 @@ class S {
     );
   }
 
-  /// `Once you click OK, the current host will be automatically deleted permanently.`
+  /// `Once you click OK, your current host and company ID will be permanently deleted.`
   String get change_host_description {
     return Intl.message(
-      'Once you click OK, the current host will be automatically deleted permanently.',
+      'Once you click OK, your current host and company ID will be permanently deleted.',
       name: 'change_host_description',
       desc: '',
       args: [],
@@ -135,6 +135,16 @@ class S {
     return Intl.message(
       'Ok',
       name: 'ok',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Company Identifier`
+  String get company_identifier {
+    return Intl.message(
+      'Company Identifier',
+      name: 'company_identifier',
       desc: '',
       args: [],
     );
