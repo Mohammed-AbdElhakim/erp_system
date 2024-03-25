@@ -22,4 +22,13 @@ class AppStyles {
     fontSize: 14,
     color: AppColors.white,
   );
+
+  static TextStyle textStyle12 = TextStyle(
+    fontSize: 12,
+    color: AppColors.white,
+  );
+  static TextStyle textStyle10 = TextStyle(
+    fontSize: 10,
+    color: AppColors.white,
+  );
 }

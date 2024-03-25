@@ -47,7 +47,7 @@ class CustomCircularButtonState extends State<CustomCircularButton> {
               widget.text,
               style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: isPressed ? 18 : 20,
+                  fontSize: isPressed ? 14 : 16,
                   color: Colors.white),
             ),
           ),

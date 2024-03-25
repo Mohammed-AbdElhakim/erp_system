@@ -9,6 +9,9 @@
   "change_host_description": "Once you click OK, your current host and company ID will be permanently deleted.",
   "ok": "Ok",
   "company_identifier": "Company Identifier",
+  "hi": "Hi, ",
+  "welcome_in": "Welcome in ",
+  "search": "Search.....",
 
   "home": "الرئيسية",
   "item1_1": "تقارير مبيعات العملاء",

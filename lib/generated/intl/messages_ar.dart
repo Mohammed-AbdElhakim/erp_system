@@ -50,6 +50,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "eradAndKhosara": MessageLookupByLibrary.simpleMessage(
             "اجمالى صافى الايرادات والخسارة فى فترة"),
         "expire": MessageLookupByLibrary.simpleMessage("تقرير انتهاء الصلاحية"),
+        "hi": MessageLookupByLibrary.simpleMessage("أهلاً، "),
         "home": MessageLookupByLibrary.simpleMessage("الرئيسية"),
         "host_view": MessageLookupByLibrary.simpleMessage("المضيف"),
         "item1_1":
@@ -90,6 +91,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "runCommand": MessageLookupByLibrary.simpleMessage("أوامرالشغل"),
         "sarfAndKapd":
             MessageLookupByLibrary.simpleMessage("اجمالى الصرف والقبض فى فترة"),
+        "search": MessageLookupByLibrary.simpleMessage("بحث....."),
         "stockInsert":
             MessageLookupByLibrary.simpleMessage("اجمالى ايداع الخزنة فى فترة"),
         "stockPull": MessageLookupByLibrary.simpleMessage("سحب المبالغ"),
@@ -98,6 +100,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "stores": MessageLookupByLibrary.simpleMessage("المخازن"),
         "username_or_email": MessageLookupByLibrary.simpleMessage(
             "اسم المستخدم او البريد الإلكتروني"),
-        "welcome": MessageLookupByLibrary.simpleMessage("مرحباً !")
+        "welcome": MessageLookupByLibrary.simpleMessage("مرحباً !"),
+        "welcome_in": MessageLookupByLibrary.simpleMessage("مرحبا بك في ")
       };
 }

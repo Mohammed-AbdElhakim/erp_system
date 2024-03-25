@@ -1,8 +1,11 @@
+import 'package:erp_system/core/widgets/custom_button.dart';
+import 'package:erp_system/core/widgets/custom_container.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 
 import '../../../../core/helper/SharedPreferences/pref.dart';
 import '../../../../core/utils/app_strings.dart';
+import '../../../../core/utils/app_styles.dart';
 import 'custom_circular_button.dart';
 
 class AttendanceViewBody extends StatefulWidget {
@@ -59,19 +62,32 @@ class _AttendanceViewBodyState extends State<AttendanceViewBody> {
     return youHavePermission
         ? Center(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(
-                  height: 150,
+                CustomContainer(
+                  height: 120,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 25),
+                    child: Text(
+                      textAlign: TextAlign.center,
+                      "الحضور والانصراف",
+                      style: AppStyles.textStyle26,
+                    ),
+                  ),
                 ),
-                if (lat == null || long == null)
-                  const CircularProgressIndicator(),
-                if (lat != null || long != null) Text("lat => $lat"),
-                if (lat != null || long != null) Text("long => $long"),
-                if (uniqueId != null) Text("uniqueId => $uniqueId"),
+                // const SizedBox(
+                //   height: 150,
+                // ),
+                // if (lat == null || long == null)
+                //   const CircularProgressIndicator(),
+                // if (lat != null || long != null) Text("lat => $lat"),
+                // if (lat != null || long != null) Text("long => $long"),
+                // if (uniqueId != null) Text("uniqueId => $uniqueId"),
                 const CustomCircularButton(
                   text: 'Presence',
                   color: Colors.green,
+                ),
+                const SizedBox(
+                  height: 30,
                 ),
                 const CustomCircularButton(
                   text: 'Departure',
@@ -84,16 +100,22 @@ class _AttendanceViewBodyState extends State<AttendanceViewBody> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text(
-                    "You do not have permission yet, Refresh the page!!!"),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 24),
+                  child: Text(
+                      textAlign: TextAlign.center,
+                      "You do not have permission yet, Refresh the page!!!"),
+                ),
                 const SizedBox(height: 50),
-                ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        youHavePermission = true;
-                      });
-                    },
-                    child: const Text("Refresh"))
+                CustomButton(
+                  text: 'Refresh',
+                  width: 110,
+                  onTap: () {
+                    setState(() {
+                      youHavePermission = true;
+                    });
+                  },
+                ),
               ],
             ),
           );

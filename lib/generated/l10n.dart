@@ -150,6 +150,36 @@ class S {
     );
   }
 
+  /// `Hi, `
+  String get hi {
+    return Intl.message(
+      'Hi, ',
+      name: 'hi',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Welcome in `
+  String get welcome_in {
+    return Intl.message(
+      'Welcome in ',
+      name: 'welcome_in',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search.....`
+  String get search {
+    return Intl.message(
+      'Search.....',
+      name: 'search',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `الرئيسية`
   String get home {
     return Intl.message(
