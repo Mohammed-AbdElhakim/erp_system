@@ -1,16 +1,16 @@
-import 'package:erp_system/core/utils/app_colors.dart';
-import 'package:erp_system/core/utils/constants.dart';
 import 'package:erp_system/core/widgets/change_status_bar_color.dart';
 import 'package:erp_system/features/home/presentation/widgets/home_view_header.dart';
+import 'package:erp_system/features/home/presentation/widgets/my_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/utils/app_colors.dart';
+import '../../../../core/utils/constants.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
 import '../../../../core/widgets/custom_text_form_field_search.dart';
 import '../../../../generated/l10n.dart';
 import '../../data/models/fast_screen_model.dart';
 import '../widgets/item_grid_view.dart';
-import '../widgets/my_drawer.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -20,6 +20,7 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  int selectIndex = 0;
   List<FastScreenModel> listScreens = [
     FastScreenModel(
         id: "/attendanceView",
@@ -79,7 +80,7 @@ class _HomeViewState extends State<HomeView> {
                   onPressed: () {},
                   icon: const Icon(Icons.notifications_none_sharp),
                 ),
-                Positioned(
+                const Positioned(
                   right: 12,
                   top: 15,
                   child: Icon(
@@ -93,101 +94,107 @@ class _HomeViewState extends State<HomeView> {
           ],
         ),
         drawer: const MyDrawer(),
-        body: Stack(
+        bottomNavigationBar: navigationMenu(),
+        body: Column(
           children: [
-            ListView(
-              children: [
-                const HomeViewHeader(
-                  name: 'Ahmed',
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: CustomTextFormFieldSearch(
-                    hintText: S.of(context).search,
+            Expanded(
+              child: CustomScrollView(
+                slivers: [
+                  const SliverToBoxAdapter(
+                    child: HomeViewHeader(
+                      name: 'Ahmed',
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  height: 35,
-                ),
-                Expanded(
-                  child: GridView.builder(
-                    shrinkWrap: true,
-                    itemCount: listScreens.length,
-                    physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      mainAxisSpacing: 35,
-                      crossAxisSpacing: 35,
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          left: 16, right: 16, bottom: 35),
+                      child: CustomTextFormFieldSearch(
+                        hintText: S.of(context).search,
+                      ),
                     ),
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    itemBuilder: (BuildContext context, int index) {
-                      return ItemGridView(
-                        icon: listScreens[index].image,
-                        title: listScreens[index].title,
-                        onTap: () {
-                          GoRouter.of(context).push(listScreens[index].id);
-                        },
-                      );
-                    },
                   ),
-                ),
-                const SizedBox(
-                  height: 50,
-                ),
-              ],
-            ),
-            Positioned(
-              bottom: 0,
-              child: Container(
-                height: 50,
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(gradient: gradientContainer),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Icon(
-                      Icons.home_outlined,
-                      size: 30,
-                      color: AppColors.white,
+                  SliverToBoxAdapter(
+                    child: GridView.builder(
+                      shrinkWrap: true,
+                      itemCount: listScreens.length,
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        mainAxisSpacing: 35,
+                        crossAxisSpacing: 35,
+                      ),
+                      padding: const EdgeInsets.only(
+                          left: 16, right: 16, bottom: 16),
+                      itemBuilder: (BuildContext context, int index) {
+                        return ItemGridView(
+                          icon: listScreens[index].image,
+                          title: listScreens[index].title,
+                          onTap: () {
+                            GoRouter.of(context).push(listScreens[index].id);
+                          },
+                        );
+                      },
                     ),
-                    Icon(
-                      Icons.location_on_outlined,
-                      size: 30,
-                      color: AppColors.white,
-                    ),
-                    Icon(
-                      Icons.email_outlined,
-                      size: 30,
-                      color: AppColors.white,
-                    ),
-                    Stack(
-                      children: [
-                        IconButton(
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.person_outline,
-                            size: 30,
-                            color: AppColors.white,
-                          ),
-                        ),
-                        Positioned(
-                          right: 10,
-                          top: 12,
-                          child: Icon(
-                            Icons.circle,
-                            color: Colors.orange,
-                            size: 12,
-                          ),
-                        )
-                      ],
-                    )
-                  ],
-                ),
+                  ),
+                ],
               ),
-            )
+            ),
+            // const NavigationMenu()
           ],
         ),
+      ),
+    );
+  }
+
+  List iconList = [
+    Icons.home_outlined,
+    Icons.location_on_outlined,
+    Icons.email_outlined,
+    Icons.person_outlined,
+  ];
+  navigationMenu() {
+    return Container(
+      height: 50,
+      width: MediaQuery.of(context).size.width,
+      decoration: BoxDecoration(gradient: gradientContainer),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: iconList.map((e) {
+          if (iconList.indexOf(e) == iconList.length-1) {
+            return Stack(
+              children: [
+                IconButton(
+                  onPressed: () {},
+                  icon: Icon(
+                    Icons.person_outline,
+                    size: 30,
+                    color: AppColors.white,
+                  ),
+                ),
+                const Positioned(
+                  right: 10,
+                  top: 12,
+                  child: Icon(
+                    Icons.circle,
+                    color: Colors.orange,
+                    size: 12,
+                  ),
+                )
+              ],
+            );
+          } else {
+            return GestureDetector(
+              onTap: () {},
+              child: Icon(
+                e,
+                size: 30,
+                color: AppColors.white,
+              ),
+            );
+          }
+        }).toList(),
       ),
     );
   }

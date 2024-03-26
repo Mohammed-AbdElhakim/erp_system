@@ -7,7 +7,11 @@ class ItemGridView extends StatefulWidget {
   final String title;
   final Function onTap;
 
-  ItemGridView({required this.icon, required this.title, required this.onTap});
+  const ItemGridView(
+      {super.key,
+      required this.icon,
+      required this.title,
+      required this.onTap});
 
   @override
   State<ItemGridView> createState() => _ItemGridViewState();

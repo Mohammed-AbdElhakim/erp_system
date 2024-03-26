@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'core/utils/app_colors.dart';
+import 'core/utils/service_locator.dart';
 import 'generated/l10n.dart';
 
 void main() {
+  setupServiceLocator();
   runApp(const ERPSystem());
 }
 
