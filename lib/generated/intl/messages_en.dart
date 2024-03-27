@@ -50,6 +50,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("الجزاءات والخصومات"),
         "eradAndKhosara": MessageLookupByLibrary.simpleMessage(
             "اجمالى صافى الايرادات والخسارة فى فترة"),
+        "error": MessageLookupByLibrary.simpleMessage("Error"),
         "expire": MessageLookupByLibrary.simpleMessage("تقرير انتهاء الصلاحية"),
         "hi": MessageLookupByLibrary.simpleMessage("Hi, "),
         "home": MessageLookupByLibrary.simpleMessage("الرئيسية"),

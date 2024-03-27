@@ -1,16 +1,16 @@
+import 'package:erp_system/core/utils/service_locator.dart';
 import 'package:erp_system/core/widgets/change_status_bar_color.dart';
-import 'package:erp_system/features/home/presentation/widgets/home_view_header.dart';
+import 'package:erp_system/features/home/data/repositories/menu/menu_repo_impl.dart';
+import 'package:erp_system/features/home/presentation/manager/getMenu/get_menu_cubit.dart';
 import 'package:erp_system/features/home/presentation/widgets/my_drawer.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/constants.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
-import '../../../../core/widgets/custom_text_form_field_search.dart';
-import '../../../../generated/l10n.dart';
 import '../../data/models/fast_screen_model.dart';
-import '../widgets/item_grid_view.dart';
+import '../widgets/home_view_body.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -95,54 +95,11 @@ class _HomeViewState extends State<HomeView> {
         ),
         drawer: const MyDrawer(),
         bottomNavigationBar: navigationMenu(),
-        body: Column(
-          children: [
-            Expanded(
-              child: CustomScrollView(
-                slivers: [
-                  const SliverToBoxAdapter(
-                    child: HomeViewHeader(
-                      name: 'Ahmed',
-                    ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                          left: 16, right: 16, bottom: 35),
-                      child: CustomTextFormFieldSearch(
-                        hintText: S.of(context).search,
-                      ),
-                    ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: GridView.builder(
-                      shrinkWrap: true,
-                      itemCount: listScreens.length,
-                      physics: const NeverScrollableScrollPhysics(),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        mainAxisSpacing: 35,
-                        crossAxisSpacing: 35,
-                      ),
-                      padding: const EdgeInsets.only(
-                          left: 16, right: 16, bottom: 16),
-                      itemBuilder: (BuildContext context, int index) {
-                        return ItemGridView(
-                          icon: listScreens[index].image,
-                          title: listScreens[index].title,
-                          onTap: () {
-                            GoRouter.of(context).push(listScreens[index].id);
-                          },
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            // const NavigationMenu()
-          ],
+        body: BlocProvider(
+          create: (context) => GetMenuCubit(
+            getIt.get<MenuRepoImpl>(),
+          )..getMenu(),
+          child: const HomeViewBody(),
         ),
       ),
     );
@@ -162,7 +119,7 @@ class _HomeViewState extends State<HomeView> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: iconList.map((e) {
-          if (iconList.indexOf(e) == iconList.length-1) {
+          if (iconList.indexOf(e) == iconList.length - 1) {
             return Stack(
               children: [
                 IconButton(

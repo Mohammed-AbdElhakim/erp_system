@@ -44,7 +44,7 @@ class ServerFailure extends Failure {
 
   factory ServerFailure.fromResponse(int statusCode, dynamic response) {
     if (statusCode == 400 || statusCode == 401 || statusCode == 403) {
-      return ServerFailure(response["meals"]);
+      return ServerFailure(response);
     } else if (statusCode == 404) {
       return const ServerFailure("Your request not found, Please try later!");
     } else if (statusCode == 500) {

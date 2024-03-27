@@ -180,6 +180,16 @@ class S {
     );
   }
 
+  /// `Error`
+  String get error {
+    return Intl.message(
+      'Error',
+      name: 'error',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `الرئيسية`
   String get home {
     return Intl.message(

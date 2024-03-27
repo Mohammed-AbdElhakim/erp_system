@@ -12,8 +12,7 @@ class GetMenuCubit extends Cubit<GetMenuState> {
   GetMenuCubit(this.menuRepo) : super(GetMenuInitial());
 
   final MenuRepo menuRepo;
-  Future<void> getMenu(
-      {required String username, required String password}) async {
+  Future<void> getMenu() async {
     emit(GetMenuLoading());
     Either<Failure, List<MenuModel>> result = await menuRepo.getMenu();
     result.fold((failure) {
