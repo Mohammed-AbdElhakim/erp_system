@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/helper/SharedPreferences/pref.dart';
+import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_strings.dart';
+import '../../../../core/utils/app_styles.dart';
 
 class LogoutItem extends StatefulWidget {
   const LogoutItem({
@@ -17,34 +19,12 @@ class LogoutItem extends StatefulWidget {
 class _LogoutItemState extends State<LogoutItem> {
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        // color: Theme.of(context).primaryColor,
-        elevation: 5,
-        shadowColor: Colors.white38,
-        child: ListTile(
-          title: const Padding(
-            padding: EdgeInsets.only(right: 20),
-            child: Text(
-              "تسجيل خروج",
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
-            ),
-          ),
-          leading: Padding(
-            padding: const EdgeInsets.only(right: 8),
-            child: Image.asset(
-              "assets/images/const_img/logout.png",
-              width: 35,
-              height: 35,
-            ),
-          ),
+    return ListTile(
+      title: Padding(
+        padding: const EdgeInsets.only(right: 20),
+        child: Text(
+          "تسجيل خروج",
+          style: AppStyles.textStyle18.copyWith(color: AppColors.blueLight),
         ),
       ),
       onTap: () {

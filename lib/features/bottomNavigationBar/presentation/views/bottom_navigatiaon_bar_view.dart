@@ -1,10 +1,14 @@
 import 'package:erp_system/features/home/presentation/views/home_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/constants.dart';
+import '../../../../core/utils/service_locator.dart';
 import '../../../../core/widgets/change_status_bar_color.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
+import '../../../home/data/repositories/menu/menu_repo_impl.dart';
+import '../../../home/presentation/manager/getMenu/get_menu_cubit.dart';
 import '../widgets/my_drawer.dart';
 
 class BottomNavigationBarView extends StatefulWidget {
@@ -20,31 +24,36 @@ class _BottomNavigationBarViewState extends State<BottomNavigationBarView> {
   @override
   Widget build(BuildContext context) {
     return ChangeStatusBarColor(
-      child: Scaffold(
-        appBar: CustomAppBar(
-          actions: [
-            Stack(
-              children: [
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.notifications_none_sharp),
-                ),
-                const Positioned(
-                  right: 12,
-                  top: 15,
-                  child: Icon(
-                    Icons.circle,
-                    color: Colors.orange,
-                    size: 12,
+      child: BlocProvider(
+        create: (context) => GetMenuCubit(
+          getIt.get<MenuRepoImpl>(),
+        )..getMenu(),
+        child: Scaffold(
+          appBar: CustomAppBar(
+            actions: [
+              Stack(
+                children: [
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.notifications_none_sharp),
                   ),
-                )
-              ],
-            ),
-          ],
+                  const Positioned(
+                    right: 12,
+                    top: 15,
+                    child: Icon(
+                      Icons.circle,
+                      color: Colors.orange,
+                      size: 12,
+                    ),
+                  )
+                ],
+              ),
+            ],
+          ),
+          drawer: const MyDrawer(),
+          bottomNavigationBar: navigationMenu(),
+          body: getMyWidget(selectIndex),
         ),
-        drawer: const MyDrawer(),
-        bottomNavigationBar: navigationMenu(),
-        body: getMyWidget(selectIndex),
       ),
     );
   }

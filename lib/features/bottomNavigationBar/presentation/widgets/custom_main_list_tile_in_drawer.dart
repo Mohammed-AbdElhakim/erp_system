@@ -1,14 +1,15 @@
+import 'package:erp_system/core/utils/app_colors.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../core/utils/app_styles.dart';
 
 class CustomMainListTileInDrawer extends StatefulWidget {
   const CustomMainListTileInDrawer({
     Key? key,
-    required this.icon,
     required this.title,
     required this.bodyList,
     // required this.isOpen,
   }) : super(key: key);
-  final String icon;
   final String title;
   final List<Widget> bodyList;
   // final isOpened isOpen;
@@ -37,30 +38,12 @@ class _CustomMainListTileInDrawerState
         padding: const EdgeInsets.only(right: 20),
         child: Text(
           widget.title,
-          style: const TextStyle(
-            fontSize: 18,
-            color: Colors.black,
-          ),
+          style: AppStyles.textStyle18.copyWith(color: AppColors.blueLight),
         ),
       ),
-      leading: Padding(
-        padding: const EdgeInsets.only(right: 8),
-        child: Image.asset(
-          "assets/images/const_img/${widget.icon}.png",
-          width: 35,
-          height: 35,
-        ),
-      ),
-      trailing: const SizedBox(),
-      // trailing: Padding(
-      //   padding: const EdgeInsets.only(left: 8),
-      //   child: Icon(
-      //     val == false ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_up,
-      //     color: val == false ? Colors.black : Theme.of(context).primaryColor,
-      //     size: 27,
-      //   ),
-      // ),
-      backgroundColor: Colors.white24,
+      trailing: val ? Icon(Icons.arrow_drop_up) : const SizedBox(),
+      // leading: const SizedBox(),
+      // backgroundColor: Colors.red,
       children: widget.bodyList,
     );
   }
