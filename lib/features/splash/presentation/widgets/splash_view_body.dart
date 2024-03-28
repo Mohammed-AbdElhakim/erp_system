@@ -78,7 +78,8 @@ class _SplashViewBodyState extends State<SplashViewBody>
             await Pref.getBoolFromPref(key: AppStrings.isLoginKey) ?? false;
         if (isLogin == true && host.isNotEmpty) {
           if (mounted) {
-            GoRouter.of(context).pushReplacement(AppRouter.kHomeView);
+            GoRouter.of(context)
+                .pushReplacement(AppRouter.kBottomNavigationBarView);
           }
         } else if (isLogin == false && host.isNotEmpty) {
           if (mounted) {

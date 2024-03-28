@@ -59,7 +59,8 @@ class _LoginViewFormState extends State<LoginViewForm> {
                         key: AppStrings.tokenKey, value: state.token);
                     Pref.saveBoolToPref(
                         key: AppStrings.isLoginKey, value: true);
-                    GoRouter.of(context).pushReplacement(AppRouter.kHomeView);
+                    GoRouter.of(context)
+                        .pushReplacement(AppRouter.kBottomNavigationBarView);
                   } else if (state is LoginFailure) {
                     CustomAlertDialog.alertWithButton(
                         context: context,

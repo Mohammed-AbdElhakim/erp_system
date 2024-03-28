@@ -3,6 +3,7 @@ import 'package:erp_system/features/home/presentation/views/home_view.dart';
 import 'package:erp_system/features/host/presentation/views/host_view.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/bottomNavigationBar/presentation/views/bottom_navigatiaon_bar_view.dart';
 import '../../features/home/presentation/views/attendance_view.dart';
 import '../../features/splash/presentation/views/splash_view.dart';
 
@@ -12,6 +13,7 @@ abstract class AppRouter {
   static const String kHostView = "/hostView";
   static const String kLoginView = "/loginView";
   static const String kHomeView = "/homeView";
+  static const String kBottomNavigationBarView = "/bottomNavigationBarView";
   static final router = GoRouter(
     routes: [
       GoRoute(
@@ -25,6 +27,10 @@ abstract class AppRouter {
       GoRoute(
         path: kLoginView,
         builder: (context, state) => const LoginView(),
+      ),
+      GoRoute(
+        path: kBottomNavigationBarView,
+        builder: (context, state) => const BottomNavigationBarView(),
       ),
       GoRoute(
         path: kHomeView,
