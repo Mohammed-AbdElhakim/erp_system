@@ -21,7 +21,7 @@ class ApiService {
     return response.data;
   }
 
-  Future<String> post({
+  Future<Map<String, dynamic>> post({
     required String endPoint,
     required Object? data,
     required Map<String, dynamic>? headers,

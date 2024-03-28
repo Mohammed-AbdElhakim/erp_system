@@ -6,6 +6,7 @@ import 'package:erp_system/features/auth/data/repositories/login/login_repo.dart
 import '../../../../../core/helper/SharedPreferences/pref.dart';
 import '../../../../../core/utils/api_service.dart';
 import '../../../../../core/utils/app_strings.dart';
+import '../../models/login_model.dart';
 
 class LoginRepoImpl implements LoginRepo {
   final ApiService apiService;
@@ -13,13 +14,14 @@ class LoginRepoImpl implements LoginRepo {
   LoginRepoImpl(this.apiService);
 
   @override
-  Future<Either<Failure, String>> loginUser(
+  Future<Either<Failure, LoginModel>> loginUser(
       {required String username, required String password}) async {
     try {
       String companyKey =
           await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
               "";
-      var data = await apiService.post(endPoint: "Auth/Login", data: {
+      Map<String, dynamic> data =
+          await apiService.post(endPoint: "Auth/Login", data: {
         "UserName": username,
         "Password": password,
       }, headers: {
@@ -34,8 +36,8 @@ class LoginRepoImpl implements LoginRepo {
         // "Connection": "keep-alive",
         "CompanyKey": companyKey,
       });
-      String token = data;
-      return right(token);
+      LoginModel loginModel = LoginModel.fromJson(data);
+      return right(loginModel);
     } catch (e) {
       if (e is DioException) {
         return left(

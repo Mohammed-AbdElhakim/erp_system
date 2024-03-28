@@ -9,5 +9,8 @@ class AppStrings {
   static String isLoginKey = "isLogin";
   static String uniqueIdKey = "uniqueId";
   static String tokenKey = "token";
-
+  static String userNameKey = "userName";
+  static String companyIDKey = "companyID";
+  static String companyNameKey = "companyName";
+  static String employeeIDKey = "employeeID";
 }

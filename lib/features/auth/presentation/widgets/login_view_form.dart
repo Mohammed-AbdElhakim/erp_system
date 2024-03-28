@@ -56,7 +56,20 @@ class _LoginViewFormState extends State<LoginViewForm> {
                 listener: (context, state) {
                   if (state is LoginSuccess) {
                     Pref.saveStringToPref(
-                        key: AppStrings.tokenKey, value: state.token);
+                        key: AppStrings.tokenKey,
+                        value: state.loginModel.token);
+                    Pref.saveStringToPref(
+                        key: AppStrings.userNameKey,
+                        value: state.loginModel.userName);
+                    Pref.saveStringToPref(
+                        key: AppStrings.companyIDKey,
+                        value: state.loginModel.companyID);
+                    Pref.saveStringToPref(
+                        key: AppStrings.companyNameKey,
+                        value: state.loginModel.companyName);
+                    Pref.saveStringToPref(
+                        key: AppStrings.employeeIDKey,
+                        value: state.loginModel.employeeID);
                     Pref.saveBoolToPref(
                         key: AppStrings.isLoginKey, value: true);
                     GoRouter.of(context)

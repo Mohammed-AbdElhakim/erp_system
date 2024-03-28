@@ -17,7 +17,7 @@ final class LoginFailure extends LoginState {
 }
 
 final class LoginSuccess extends LoginState {
-  final String token;
+  final LoginModel loginModel;
 
-  const LoginSuccess(this.token);
+  const LoginSuccess(this.loginModel);
 }
