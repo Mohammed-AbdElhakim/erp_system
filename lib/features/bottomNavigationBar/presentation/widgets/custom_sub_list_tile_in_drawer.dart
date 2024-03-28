@@ -38,6 +38,7 @@ class CustomSubListTileInDrawer extends StatelessWidget {
           ),
         ),
         onTap: () => onTap(),
+        dense: true,
       ),
     );
   }

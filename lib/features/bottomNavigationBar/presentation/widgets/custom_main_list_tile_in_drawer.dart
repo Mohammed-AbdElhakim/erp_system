@@ -21,7 +21,7 @@ class CustomMainListTileInDrawer extends StatefulWidget {
 
 class _CustomMainListTileInDrawerState
     extends State<CustomMainListTileInDrawer> {
-  late bool val = false;
+  bool val = false;
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +29,7 @@ class _CustomMainListTileInDrawerState
       expandedCrossAxisAlignment: CrossAxisAlignment.start,
       shape: Border.all(color: Colors.white, width: 0),
       collapsedShape: Border.all(color: Colors.white, width: 0),
+      dense: true,
       onExpansionChanged: (v) {
         setState(() {
           val = v;

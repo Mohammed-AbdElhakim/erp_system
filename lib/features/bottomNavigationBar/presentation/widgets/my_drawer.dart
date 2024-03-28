@@ -6,20 +6,14 @@ import '../../../../core/widgets/custom_loaging_widget.dart';
 import '../../../home/data/models/menu_model.dart';
 import '../../../home/presentation/manager/getMenu/get_menu_cubit.dart';
 import 'custom_drawer_header.dart';
-import 'custom_main_list_tile_in_drawer.dart';
-import 'custom_sub_list_tile_in_drawer.dart';
+import 'drawer_body.dart';
 import 'log_out_item.dart';
 
-class MyDrawer extends StatefulWidget {
+class MyDrawer extends StatelessWidget {
   const MyDrawer({
     Key? key,
   }) : super(key: key);
 
-  @override
-  State<MyDrawer> createState() => _MyDrawerState();
-}
-
-class _MyDrawerState extends State<MyDrawer> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<GetMenuCubit, GetMenuState>(
@@ -28,26 +22,13 @@ class _MyDrawerState extends State<MyDrawer> {
           List<MenuModel> listMenu = state.menu;
 
           return Drawer(
+            width: MediaQuery.of(context).size.width * .75,
             child: SingleChildScrollView(
               child: Column(
                 children: [
                   const CustomDrawerHeader(userName: 'Mohamed'),
-                  ListView.builder(
-                    itemCount: listMenu.length,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      return CustomMainListTileInDrawer(
-                        title: listMenu[index].moduleNameAr!,
-                        bodyList: listMenu.map((e) {
-                          return CustomSubListTileInDrawer(
-                            title: e.nameAr!,
-                            icon: e.icon!,
-                            onTap: () {},
-                          );
-                        }).toList(),
-                      );
-                    },
+                  DrawerBody(
+                    list: listMenu,
                   ),
                   const LogoutItem(),
                 ],
