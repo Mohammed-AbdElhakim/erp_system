@@ -45,9 +45,7 @@ class _HomeViewBodyState extends State<HomeViewBody> {
                 child: CustomScrollView(
                   slivers: [
                     const SliverToBoxAdapter(
-                      child: HomeViewHeader(
-                        name: 'Ahmed',
-                      ),
+                      child: HomeViewHeader(),
                     ),
                     SliverToBoxAdapter(
                       child: Padding(

@@ -1,3 +1,4 @@
+import 'package:erp_system/core/utils/app_assets.dart';
 import 'package:erp_system/core/widgets/custom_container.dart';
 import 'package:flutter/material.dart';
 
@@ -22,7 +23,7 @@ class CustomDrawerHeader extends StatelessWidget {
             child: CircleAvatar(
               radius: 40,
               child: Image.asset(
-                "assets/images/const_img/avatar.png",
+                AppAssets.logo,
               ),
             ),
           ),
