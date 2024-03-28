@@ -33,4 +33,5 @@ class AppColors {
   static Color white = const Color(0xffFFFFFF);
   static Color blueDark = const Color(0xff1B1D29);
   static Color blueLight = const Color(0xff005BAA);
+  static Color orange = const Color(0xFFF1B92C);
 }

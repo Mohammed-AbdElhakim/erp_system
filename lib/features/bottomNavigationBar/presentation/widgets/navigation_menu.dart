@@ -65,8 +65,8 @@ class _NavigationMenuState extends State<NavigationMenu> {
                   child: Icon(
                     Icons.circle,
                     color: selectIndex == e.id
-                        ? Colors.orange
-                        : Colors.orange.withOpacity(0.8),
+                        ? AppColors.orange
+                        : AppColors.orange.withOpacity(0.8),
                     size: selectIndex == e.id ? 12 : 10,
                   ),
                 )

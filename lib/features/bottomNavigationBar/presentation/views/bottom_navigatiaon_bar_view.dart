@@ -1,3 +1,4 @@
+import 'package:erp_system/core/utils/app_colors.dart';
 import 'package:erp_system/features/bottomNavigationBar/presentation/widgets/navigation_helper.dart';
 import 'package:erp_system/features/bottomNavigationBar/presentation/widgets/navigation_menu.dart';
 import 'package:flutter/material.dart';
@@ -36,12 +37,12 @@ class _BottomNavigationBarViewState extends State<BottomNavigationBarView> {
                     onPressed: () {},
                     icon: const Icon(Icons.notifications_none_sharp),
                   ),
-                  const Positioned(
+                  Positioned(
                     right: 12,
                     top: 15,
                     child: Icon(
                       Icons.circle,
-                      color: Colors.orange,
+                      color: AppColors.orange,
                       size: 12,
                     ),
                   )
