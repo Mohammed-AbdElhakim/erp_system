@@ -2,42 +2,55 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/utils/app_colors.dart';
+import '../../../../core/utils/app_strings.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/widgets/custom_loaging_widget.dart';
+import '../../../home/data/models/menu_model.dart';
 
-class CustomSubListTileInDrawer extends StatelessWidget {
+class CustomSubListTileInDrawer extends StatefulWidget {
   const CustomSubListTileInDrawer({
     Key? key,
-    required this.title,
-    required this.onTap,
-    required this.icon,
+    required this.page,
   }) : super(key: key);
 
-  final String title;
-  final Function onTap;
-  final String icon;
+  final Pages page;
+
+  @override
+  State<CustomSubListTileInDrawer> createState() =>
+      _CustomSubListTileInDrawerState();
+}
+
+class _CustomSubListTileInDrawerState extends State<CustomSubListTileInDrawer> {
+  String? lang;
+  @override
+  void didChangeDependencies() {
+    lang = Localizations.localeOf(context).toString();
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsetsDirectional.only(start: 30),
+      padding: const EdgeInsetsDirectional.only(start: 15),
       child: ListTile(
         title: Text(
-          title,
+          lang == AppStrings.enLangKey
+              ? widget.page.nameEn
+              : widget.page.nameAr,
           style: AppStyles.textStyle18.copyWith(color: AppColors.blueDark),
         ),
         leading: CachedNetworkImage(
           width: 30,
           height: 30,
           // fit: BoxFit.fill,
-          imageUrl: "http://161.97.161.180/assets/$icon",
+          imageUrl: "http://${widget.page.icon}",
           placeholder: (context, url) => const CustomLoadingWidget(),
           errorWidget: (context, url, error) => const Icon(
             Icons.error,
             size: 35,
           ),
         ),
-        onTap: () => onTap(),
+        onTap: () {},
         dense: true,
       ),
     );

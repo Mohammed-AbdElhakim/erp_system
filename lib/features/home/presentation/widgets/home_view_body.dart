@@ -4,19 +4,41 @@ import 'package:erp_system/features/home/presentation/manager/getMenu/get_menu_c
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/utils/app_strings.dart';
 import '../../../../core/widgets/custom_text_form_field_search.dart';
 import '../../../../generated/l10n.dart';
+import '../../data/models/menu_model.dart';
 import 'home_view_header.dart';
 import 'item_grid_view.dart';
 
-class HomeViewBody extends StatelessWidget {
+class HomeViewBody extends StatefulWidget {
   const HomeViewBody({super.key});
+
+  @override
+  State<HomeViewBody> createState() => _HomeViewBodyState();
+}
+
+class _HomeViewBodyState extends State<HomeViewBody> {
+  String? lang;
+  @override
+  void didChangeDependencies() {
+    lang = Localizations.localeOf(context).toString();
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<GetMenuCubit, GetMenuState>(
       builder: (context, state) {
         if (state is GetMenuSuccess) {
+          List<Pages> pagesList = [];
+          for (var element in state.menu.list) {
+            for (var page in element.pages) {
+              if (page.isFastScreen == true) {
+                pagesList.add(page);
+              }
+            }
+          }
           return Column(
             children: [
               Expanded(
@@ -39,7 +61,7 @@ class HomeViewBody extends StatelessWidget {
                     SliverToBoxAdapter(
                       child: GridView.builder(
                         shrinkWrap: true,
-                        itemCount: state.menu.length,
+                        itemCount: pagesList.length,
                         physics: const NeverScrollableScrollPhysics(),
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
@@ -51,14 +73,14 @@ class HomeViewBody extends StatelessWidget {
                             left: 16, right: 16, bottom: 16),
                         itemBuilder: (BuildContext context, int index) {
                           return ItemGridView(
-                            icon:
-                                "http://161.97.161.180/assets/${state.menu[index].icon}" ??
-                                    "",
-                            title: state.menu[index].nameAr ?? "",
+                            icon: "http://${pagesList[index].icon}",
+                            title: lang == AppStrings.enLangKey
+                                ? pagesList[index].nameEn
+                                : pagesList[index].nameAr,
                             onTap: () {
                               // GoRouter.of(context).push(listScreens[index].id);
                             },
-                            key_pageId: state.menu[index].pageId.toString(),
+                            key_pageId: pagesList[index].pageId.toString(),
                           );
                         },
                       ),

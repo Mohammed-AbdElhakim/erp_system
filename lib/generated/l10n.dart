@@ -190,381 +190,51 @@ class S {
     );
   }
 
-  /// `الرئيسية`
-  String get home {
+  /// `Cancel`
+  String get cancel {
     return Intl.message(
-      'الرئيسية',
-      name: 'home',
+      'Cancel',
+      name: 'cancel',
       desc: '',
       args: [],
     );
   }
 
-  /// `تقارير مبيعات العملاء`
-  String get item1_1 {
+  /// `Change Language`
+  String get change_language {
     return Intl.message(
-      'تقارير مبيعات العملاء',
-      name: 'item1_1',
+      'Change Language',
+      name: 'change_language',
       desc: '',
       args: [],
     );
   }
 
-  /// `تقارير مبيعات الكاشير`
-  String get item1_2 {
+  /// `عربي `
+  String get arabic {
     return Intl.message(
-      'تقارير مبيعات الكاشير',
-      name: 'item1_2',
+      'عربي ',
+      name: 'arabic',
       desc: '',
       args: [],
     );
   }
 
-  /// `تقارير مبيعات المندوبيين`
-  String get item1_3 {
+  /// `English`
+  String get english {
     return Intl.message(
-      'تقارير مبيعات المندوبيين',
-      name: 'item1_3',
+      'English',
+      name: 'english',
       desc: '',
       args: [],
     );
   }
 
-  /// `تقارير أرباح مبيعات العملاء`
-  String get item1_1_1 {
+  /// `Log Out`
+  String get log_out {
     return Intl.message(
-      'تقارير أرباح مبيعات العملاء',
-      name: 'item1_1_1',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `تقارير أرباح مبيعات الكاشير`
-  String get item1_2_2 {
-    return Intl.message(
-      'تقارير أرباح مبيعات الكاشير',
-      name: 'item1_2_2',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `تقارير أرباح مبيعات المندوبيين`
-  String get item1_3_3 {
-    return Intl.message(
-      'تقارير أرباح مبيعات المندوبيين',
-      name: 'item1_3_3',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `تقارير المشتريات فى فترة`
-  String get item2 {
-    return Intl.message(
-      'تقارير المشتريات فى فترة',
-      name: 'item2',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `تقرير كشف حساب للمورد`
-  String get item3 {
-    return Intl.message(
-      'تقرير كشف حساب للمورد',
-      name: 'item3',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `تقرير كشف حساب للعميل`
-  String get item4 {
-    return Intl.message(
-      'تقرير كشف حساب للعميل',
-      name: 'item4',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `المبالغ المسددة من مواردين`
-  String get item5 {
-    return Intl.message(
-      'المبالغ المسددة من مواردين',
-      name: 'item5',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `المبالغ المسددة من العملاء`
-  String get item6 {
-    return Intl.message(
-      'المبالغ المسددة من العملاء',
-      name: 'item6',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `المبالغ المتبقية للمواردين`
-  String get item7 {
-    return Intl.message(
-      'المبالغ المتبقية للمواردين',
-      name: 'item7',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `المبالغ المتبقية على العملاء`
-  String get item8 {
-    return Intl.message(
-      'المبالغ المتبقية على العملاء',
-      name: 'item8',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `المنتاجات`
-  String get item9 {
-    return Intl.message(
-      'المنتاجات',
-      name: 'item9',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `المصروفات`
-  String get deserved {
-    return Intl.message(
-      'المصروفات',
-      name: 'deserved',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `المخازن`
-  String get stores {
-    return Intl.message(
-      'المخازن',
-      name: 'stores',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `الحساب الحالى`
-  String get nowCounter {
-    return Intl.message(
-      'الحساب الحالى',
-      name: 'nowCounter',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `تقرير انتهاء الصلاحية`
-  String get expire {
-    return Intl.message(
-      'تقرير انتهاء الصلاحية',
-      name: 'expire',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `المنتجات التى وصلت الى الحد الادنى`
-  String get rangeOrder {
-    return Intl.message(
-      'المنتجات التى وصلت الى الحد الادنى',
-      name: 'rangeOrder',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `اجمالى ايداع الخزنة فى فترة`
-  String get stockInsert {
-    return Intl.message(
-      'اجمالى ايداع الخزنة فى فترة',
-      name: 'stockInsert',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `سحب المبالغ`
-  String get stockPull {
-    return Intl.message(
-      'سحب المبالغ',
-      name: 'stockPull',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `اجمالى تحويل الرصيد بين الخزنات`
-  String get stockTransFire {
-    return Intl.message(
-      'اجمالى تحويل الرصيد بين الخزنات',
-      name: 'stockTransFire',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `حساب البنك الحالى  `
-  String get bankNowCounter {
-    return Intl.message(
-      'حساب البنك الحالى  ',
-      name: 'bankNowCounter',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `اجمالى ايداع البنك فى فترة`
-  String get bankInsert {
-    return Intl.message(
-      'اجمالى ايداع البنك فى فترة',
-      name: 'bankInsert',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `سحب المبالغ فى البنك`
-  String get bankPull {
-    return Intl.message(
-      'سحب المبالغ فى البنك',
-      name: 'bankPull',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `اجمالى تحويل الرصيد بين البنوك`
-  String get bankTransFire {
-    return Intl.message(
-      'اجمالى تحويل الرصيد بين البنوك',
-      name: 'bankTransFire',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `اجمالى الصرف والقبض فى فترة`
-  String get sarfAndKapd {
-    return Intl.message(
-      'اجمالى الصرف والقبض فى فترة',
-      name: 'sarfAndKapd',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `اجمالى صافى الايرادات والخسارة فى فترة`
-  String get eradAndKhosara {
-    return Intl.message(
-      'اجمالى صافى الايرادات والخسارة فى فترة',
-      name: 'eradAndKhosara',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `الحضور والانصراف`
-  String get attendAndGo {
-    return Intl.message(
-      'الحضور والانصراف',
-      name: 'attendAndGo',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `العلاوات التشجيعية`
-  String get employeeIncentives {
-    return Intl.message(
-      'العلاوات التشجيعية',
-      name: 'employeeIncentives',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `الجزاءات والخصومات`
-  String get employeeSanctions {
-    return Intl.message(
-      'الجزاءات والخصومات',
-      name: 'employeeSanctions',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `اجمالى المسحوبات للموظفين`
-  String get employeeBorrowItem {
-    return Intl.message(
-      'اجمالى المسحوبات للموظفين',
-      name: 'employeeBorrowItem',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `اجمالى السلفيات فى فترة`
-  String get employeeBorrowMoney {
-    return Intl.message(
-      'اجمالى السلفيات فى فترة',
-      name: 'employeeBorrowMoney',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `اجمالى صرف المرتبات فى فترة`
-  String get employeeSalary {
-    return Intl.message(
-      'اجمالى صرف المرتبات فى فترة',
-      name: 'employeeSalary',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `تقارير المرتجعات مبيعات - مشتريات`
-  String get returnsDetails {
-    return Intl.message(
-      'تقارير المرتجعات مبيعات - مشتريات',
-      name: 'returnsDetails',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `أوامرالشغل`
-  String get runCommand {
-    return Intl.message(
-      'أوامرالشغل',
-      name: 'runCommand',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `اجمالى المنتجات المخرجة فى فترة`
-  String get productsOutStore {
-    return Intl.message(
-      'اجمالى المنتجات المخرجة فى فترة',
-      name: 'productsOutStore',
+      'Log Out',
+      name: 'log_out',
       desc: '',
       args: [],
     );

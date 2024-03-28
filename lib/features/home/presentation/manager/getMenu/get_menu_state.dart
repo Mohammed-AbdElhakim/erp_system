@@ -17,7 +17,7 @@ final class GetMenuFailure extends GetMenuState {
 }
 
 final class GetMenuSuccess extends GetMenuState {
-  final List<MenuModel> menu;
+  final MenuModel menu;
 
   const GetMenuSuccess(this.menu);
 }

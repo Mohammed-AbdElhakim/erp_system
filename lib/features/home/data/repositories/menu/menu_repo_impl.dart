@@ -14,14 +14,15 @@ class MenuRepoImpl implements MenuRepo {
   MenuRepoImpl(this.apiService);
 
   @override
-  Future<Either<Failure, List<MenuModel>>> getMenu() async {
+  Future<Either<Failure, MenuModel>> getMenu() async {
     try {
       String companyKey =
           await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
               "";
       String token =
           await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
-      var data = await apiService.get(endPoint: "home/getmenu", headers: {
+      Map<String, dynamic> data =
+          await apiService.get(endPoint: "home/getmenu", headers: {
         "Authorization": "Bearer $token",
         // "Cache-Control": "no-cache",
         // "Postman-Token": "<calculated when request is sent>",
@@ -32,12 +33,8 @@ class MenuRepoImpl implements MenuRepo {
         // "Connection": "keep-alive",
         "CompanyKey": companyKey,
       });
-      List<MenuModel> menu = [];
-
-      for (var item in data) {
-        menu.add(MenuModel.fromJson(item));
-      }
-      return right(menu);
+      MenuModel menuModel = MenuModel.fromJson(data);
+      return right(menuModel);
     } catch (e) {
       if (e is DioException) {
         return left(
