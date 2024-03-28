@@ -1,3 +1,4 @@
+import 'package:erp_system/core/widgets/custom_container.dart';
 import 'package:flutter/material.dart';
 
 class CustomDrawerHeader extends StatelessWidget {
@@ -10,21 +11,18 @@ class CustomDrawerHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DrawerHeader(
-      decoration: const BoxDecoration(color: Color(0xFF3390EC)),
+    return CustomContainer(
+      height: 200,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Align(
-            alignment: AlignmentDirectional.centerStart,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 15),
-              child: CircleAvatar(
-                radius: 40,
-                child: Image.asset(
-                  "assets/images/const_img/avatar.png",
-                ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 15),
+            child: CircleAvatar(
+              radius: 40,
+              child: Image.asset(
+                "assets/images/const_img/avatar.png",
               ),
             ),
           ),

@@ -7,7 +7,7 @@ class ApiService {
   final Dio _dio;
 
   ApiService(this._dio);
-  Future<Map<String, dynamic>> get({
+  Future<List<dynamic>> get({
     required String endPoint,
     required Map<String, dynamic>? headers,
   }) async {

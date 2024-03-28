@@ -17,8 +17,8 @@ class GetMenuCubit extends Cubit<GetMenuState> {
     Either<Failure, List<MenuModel>> result = await menuRepo.getMenu();
     result.fold((failure) {
       emit(GetMenuFailure(failure.errorMassage));
-    }, (detailsMeal) {
-      emit(GetMenuSuccess(detailsMeal));
+    }, (menuList) {
+      emit(GetMenuSuccess(menuList));
     });
   }
 }

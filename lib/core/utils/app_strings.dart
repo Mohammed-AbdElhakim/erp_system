@@ -8,6 +8,7 @@ class AppStrings {
   static String companyIdentifierKey = "companyIdentifier";
   static String isLoginKey = "isLogin";
   static String uniqueIdKey = "uniqueId";
+  static String tokenKey = "token";
 
   static String home = "الرئيسية";
   static String item1_1 = "تقارير مبيعات العملاء";

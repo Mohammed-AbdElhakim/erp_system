@@ -19,9 +19,10 @@ class MenuRepoImpl implements MenuRepo {
       String companyKey =
           await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
               "";
+      String token =
+          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       var data = await apiService.get(endPoint: "home/getmenu", headers: {
-        "Authorization":
-            "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCIsImN0eSI6IkpXVCJ9.eyJFbXBJRCI6IjQxMjEiLCJDb21JRCI6IjEiLCJOYW1lIjoiRWd5IER5bmFtaWMiLCJ1c2VyIjoiYWRtaW4iLCJuYmYiOjE3MTE0NzI4ODksImV4cCI6MTcxODM4NDg4OSwiaWF0IjoxNzExNDcyODg5LCJpc3MiOiJFUlBTeXN0ZW1BUEkiLCJhdWQiOiJFUlBTeXN0ZW1DbGllbnRzIn0.FmUeWtOMsTSpgvvVdLTmThvUD_lXvBkogN_wu7afNDbNRqdi-5zWIa9AQ-sXgYVmFe5EVO5zY9hGMwkxjBXY2w",
+        "Authorization": "Bearer $token",
         // "Cache-Control": "no-cache",
         // "Postman-Token": "<calculated when request is sent>",
         // "Host": "http://161.97.161.180:660/api",
@@ -32,7 +33,8 @@ class MenuRepoImpl implements MenuRepo {
         "CompanyKey": companyKey,
       });
       List<MenuModel> menu = [];
-      for (var item in data.values) {
+
+      for (var item in data) {
         menu.add(MenuModel.fromJson(item));
       }
       return right(menu);

@@ -51,11 +51,14 @@ class HomeViewBody extends StatelessWidget {
                             left: 16, right: 16, bottom: 16),
                         itemBuilder: (BuildContext context, int index) {
                           return ItemGridView(
-                            icon: "1",
+                            icon:
+                                "http://161.97.161.180/assets/${state.menu[index].icon}" ??
+                                    "",
                             title: state.menu[index].nameAr ?? "",
                             onTap: () {
                               // GoRouter.of(context).push(listScreens[index].id);
                             },
+                            key_pageId: state.menu[index].pageId.toString(),
                           );
                         },
                       ),

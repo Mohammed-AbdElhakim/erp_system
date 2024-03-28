@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:erp_system/core/errors/failures.dart';
@@ -36,7 +34,7 @@ class LoginRepoImpl implements LoginRepo {
         // "Connection": "keep-alive",
         "CompanyKey": companyKey,
       });
-      String token = json.encode(data);
+      String token = data;
       return right(token);
     } catch (e) {
       if (e is DioException) {

@@ -55,6 +55,8 @@ class _LoginViewFormState extends State<LoginViewForm> {
               child: BlocConsumer<LoginCubit, LoginState>(
                 listener: (context, state) {
                   if (state is LoginSuccess) {
+                    Pref.saveStringToPref(
+                        key: AppStrings.tokenKey, value: state.token);
                     Pref.saveBoolToPref(
                         key: AppStrings.isLoginKey, value: true);
                     GoRouter.of(context).pushReplacement(AppRouter.kHomeView);

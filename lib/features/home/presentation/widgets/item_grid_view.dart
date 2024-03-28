@@ -1,17 +1,22 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:erp_system/core/utils/app_colors.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../core/widgets/custom_loaging_widget.dart';
 
 class ItemGridView extends StatefulWidget {
   final String icon;
   final String title;
+  final String key_pageId;
   final Function onTap;
 
   const ItemGridView(
       {super.key,
       required this.icon,
       required this.title,
-      required this.onTap});
+      required this.onTap,
+      required this.key_pageId});
 
   @override
   State<ItemGridView> createState() => _ItemGridViewState();
@@ -38,11 +43,17 @@ class _ItemGridViewState extends State<ItemGridView> {
               Expanded(
                 flex: 2,
                 child: Container(
-                  margin: const EdgeInsets.only(top: 10),
-                  child: Image.asset(
-                    "assets/icons/${widget.icon}.png",
-                    width: 85,
-                    height: 70,
+                  margin: const EdgeInsets.only(top: 10, right: 10, left: 10),
+                  child: CachedNetworkImage(
+                    // width: 85,
+                    // height: 70,
+                    // fit: BoxFit.fill,
+                    imageUrl: widget.icon,
+                    placeholder: (context, url) => const CustomLoadingWidget(),
+                    errorWidget: (context, url, error) => const Icon(
+                      Icons.error,
+                      size: 35,
+                    ),
                   ),
                 ),
               ),
@@ -67,4 +78,22 @@ class _ItemGridViewState extends State<ItemGridView> {
       onTap: () => widget.onTap(),
     );
   }
+
+  // void getImage(String key_pageId) async {
+  //   var y = await Pref.getImage(key: key_pageId);
+  //   image = y;
+  //   setState(() {});
+  // }
 }
+/*CachedNetworkImage(
+                          // width: 85,
+                          // height: 70,
+                          // fit: BoxFit.fill,
+                          imageUrl: widget.icon,
+                          placeholder: (context, url) =>
+                              const CustomLoadingWidget(),
+                          errorWidget: (context, url, error) => const Icon(
+                            Icons.error,
+                            size: 35,
+                          ),
+                        )*/

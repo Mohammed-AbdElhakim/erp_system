@@ -40,7 +40,7 @@ class _LogoutItemState extends State<LogoutItem> {
           leading: Padding(
             padding: const EdgeInsets.only(right: 8),
             child: Image.asset(
-              "assets/images/logout.png",
+              "assets/images/const_img/logout.png",
               width: 35,
               height: 35,
             ),

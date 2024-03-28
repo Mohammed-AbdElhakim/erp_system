@@ -35,4 +35,25 @@ class Pref {
     bool? boolValue = prefs.getBool(key);
     return boolValue;
   }
+
+  // static Future<bool> saveImage({
+  //   required String key,
+  //   required String link,
+  // }) async {
+  //   http.Response response = await http.get(Uri.https(link));
+  //
+  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   if (response.statusCode == 200) {
+  //     String base64Image = base64Encode(response.bodyBytes);
+  //     return prefs.setString(key, base64Image);
+  //   } else {
+  //     return prefs.setString(key, '');
+  //   }
+  // }
+  //
+  // static Future<Uint8List> getImage({required String key}) async {
+  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   Uint8List bytes = base64Decode(prefs.getString(key) ?? "");
+  //   return bytes;
+  // }
 }
