@@ -42,7 +42,7 @@ class _CustomMainListTileInDrawerState
           style: AppStyles.textStyle18.copyWith(color: AppColors.blueLight),
         ),
       ),
-      trailing: val ? Icon(Icons.arrow_drop_up) : const SizedBox(),
+      trailing: val ? const Icon(Icons.arrow_drop_up) : const SizedBox(),
       // leading: const SizedBox(),
       // backgroundColor: Colors.red,
       children: widget.bodyList,

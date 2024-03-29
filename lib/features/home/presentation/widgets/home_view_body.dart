@@ -78,7 +78,7 @@ class _HomeViewBodyState extends State<HomeViewBody> {
                             onTap: () {
                               // GoRouter.of(context).push(listScreens[index].id);
                             },
-                            key_pageId: pagesList[index].pageId.toString(),
+                            keyPageId: pagesList[index].pageId.toString(),
                           );
                         },
                       ),

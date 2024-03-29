@@ -21,12 +21,12 @@ class LoginModel {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['token'] = token;
-    _data['employeeID'] = employeeID;
-    _data['companyID'] = companyID;
-    _data['companyName'] = companyName;
-    _data['userName'] = userName;
-    return _data;
+    final data = <String, dynamic>{};
+    data['token'] = token;
+    data['employeeID'] = employeeID;
+    data['companyID'] = companyID;
+    data['companyName'] = companyName;
+    data['userName'] = userName;
+    return data;
   }
 }

@@ -8,7 +8,7 @@ import '../../../../core/widgets/custom_loaging_widget.dart';
 class ItemGridView extends StatefulWidget {
   final String icon;
   final String title;
-  final String key_pageId;
+  final String keyPageId;
   final Function onTap;
 
   const ItemGridView(
@@ -16,7 +16,7 @@ class ItemGridView extends StatefulWidget {
       required this.icon,
       required this.title,
       required this.onTap,
-      required this.key_pageId});
+      required this.keyPageId});
 
   @override
   State<ItemGridView> createState() => _ItemGridViewState();

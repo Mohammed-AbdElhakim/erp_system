@@ -9,9 +9,9 @@ class MenuModel {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['list'] = list.map((e) => e.toJson()).toList();
-    return _data;
+    final data = <String, dynamic>{};
+    data['list'] = list.map((e) => e.toJson()).toList();
+    return data;
   }
 }
 
@@ -38,13 +38,13 @@ class ListModule {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['moduleID'] = moduleID;
-    _data['moduleKey'] = moduleKey;
-    _data['moduleNameAr'] = moduleNameAr;
-    _data['moduleNameEn'] = moduleNameEn;
-    _data['pages'] = pages.map((e) => e.toJson()).toList();
-    return _data;
+    final data = <String, dynamic>{};
+    data['moduleID'] = moduleID;
+    data['moduleKey'] = moduleKey;
+    data['moduleNameAr'] = moduleNameAr;
+    data['moduleNameEn'] = moduleNameEn;
+    data['pages'] = pages.map((e) => e.toJson()).toList();
+    return data;
   }
 }
 
@@ -77,14 +77,14 @@ class Pages {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['pageId'] = pageId;
-    _data['nameAr'] = nameAr;
-    _data['nameEn'] = nameEn;
-    _data['navigationKey'] = navigationKey;
-    _data['icon'] = icon;
-    _data['isFastScreen'] = isFastScreen;
-    _data['moduleID'] = moduleID;
-    return _data;
+    final data = <String, dynamic>{};
+    data['pageId'] = pageId;
+    data['nameAr'] = nameAr;
+    data['nameEn'] = nameEn;
+    data['navigationKey'] = navigationKey;
+    data['icon'] = icon;
+    data['isFastScreen'] = isFastScreen;
+    data['moduleID'] = moduleID;
+    return data;
   }
 }
