@@ -2,6 +2,7 @@ import 'package:erp_system/core/helper/SharedPreferences/pref.dart';
 import 'package:erp_system/core/utils/app_router.dart';
 import 'package:erp_system/core/utils/app_strings.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'core/utils/app_colors.dart';
@@ -9,6 +10,12 @@ import 'core/utils/service_locator.dart';
 import 'generated/l10n.dart';
 
 void main() {
+  SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle.dark.copyWith(
+      statusBarColor: AppColors.blueDark,
+      statusBarIconBrightness: Brightness.light,
+    ),
+  );
   setupServiceLocator();
   runApp(const ERPSystem());
 }

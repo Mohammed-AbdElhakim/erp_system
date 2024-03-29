@@ -15,10 +15,7 @@ class HostView extends StatefulWidget {
 class _HostViewState extends State<HostView> {
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
-        statusBarColor: Colors.red,
-        //or set color with: Color(0xFF0000FF)
-        statusBarIconBrightness: Brightness.dark));
+
     return const ChangeStatusBarColor(
       child: Scaffold(
         appBar: CustomAppBar(),
