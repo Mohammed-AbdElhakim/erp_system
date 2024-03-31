@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:erp_system/core/errors/failures.dart';
-import 'package:erp_system/features/home/data/models/menu_model.dart';
+import 'package:erp_system/features/home/data/models/menu_model/menu_model.dart';
 
 import '../../../../../core/helper/SharedPreferences/pref.dart';
 import '../../../../../core/utils/api_service.dart';

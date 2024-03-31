@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/utils/app_strings.dart';
-import '../../../home/data/models/menu_model.dart';
+import '../../../home/data/models/menu_model/list_module.dart';
 import 'custom_main_list_tile_in_drawer.dart';
 import 'custom_sub_list_tile_in_drawer.dart';
 

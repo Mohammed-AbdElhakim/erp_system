@@ -1,7 +1,7 @@
 import '../../../../core/helper/SharedPreferences/pref.dart';
 import '../../../../core/utils/api_service.dart';
 import '../../../../core/utils/app_strings.dart';
-import '../models/menu_model.dart';
+import '../models/menu_model/menu_model.dart';
 
 abstract class HomeRemoteDataSources {
   Future<MenuModel> getMenu();

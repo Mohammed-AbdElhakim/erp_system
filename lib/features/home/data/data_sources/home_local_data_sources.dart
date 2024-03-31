@@ -1,4 +1,4 @@
-import '../models/menu_model.dart';
+import '../models/menu_model/menu_model.dart';
 
 abstract class HomeLocalDataSources {
   MenuModel getMenu();

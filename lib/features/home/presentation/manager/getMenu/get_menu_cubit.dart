@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:erp_system/features/home/data/models/menu_model.dart';
+import 'package:erp_system/features/home/data/models/menu_model/menu_model.dart';
 
 import '../../../../../core/errors/failures.dart';
 import '../../../data/repositories/menu/menu_repo.dart';
