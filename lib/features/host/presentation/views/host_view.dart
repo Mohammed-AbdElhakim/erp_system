@@ -1,4 +1,3 @@
-import 'package:erp_system/core/widgets/change_status_bar_color.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/widgets/custom_app_bar.dart';
@@ -14,12 +13,13 @@ class HostView extends StatefulWidget {
 class _HostViewState extends State<HostView> {
   @override
   Widget build(BuildContext context) {
-
-    return const ChangeStatusBarColor(
-      child: Scaffold(
-        appBar: CustomAppBar(),
-        body: HostViewBody(),
-      ),
+    return
+        // const ChangeStatusBarColor(
+        // child:
+        const Scaffold(
+      appBar: CustomAppBar(),
+      body: HostViewBody(),
     );
+    // );
   }
 }
