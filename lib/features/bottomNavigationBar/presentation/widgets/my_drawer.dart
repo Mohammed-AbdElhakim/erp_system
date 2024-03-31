@@ -51,41 +51,7 @@ class _MyDrawerState extends State<MyDrawer> {
                   CustomDrawerItem(
                     text: S.of(context).change_language,
                     onTap: () {
-                      buildShowModalBottomSheet(
-                        context: context,
-                        textButton1: lang == AppStrings.enLangKey
-                            ? S.of(context).arabic
-                            : S.of(context).english,
-                        textButton2: lang == AppStrings.enLangKey
-                            ? S.of(context).english
-                            : S.of(context).arabic,
-                        onTapButton1: () {
-                          if (lang == AppStrings.enLangKey) {
-                            setLang(
-                                context: context,
-                                langCode: AppStrings.arLangKey);
-                          } else {
-                            setLang(
-                                context: context,
-                                langCode: AppStrings.enLangKey);
-                          }
-                          Navigator.pop(context);
-                          Navigator.pop(context);
-                        },
-                        onTapButton2: () {
-                          if (lang == AppStrings.enLangKey) {
-                            setLang(
-                                context: context,
-                                langCode: AppStrings.enLangKey);
-                          } else {
-                            setLang(
-                                context: context,
-                                langCode: AppStrings.arLangKey);
-                          }
-                          Navigator.pop(context);
-                          Navigator.pop(context);
-                        },
-                      );
+                      changeLanguage(context);
                     },
                   ),
                   CustomDrawerItem(
@@ -106,6 +72,36 @@ class _MyDrawerState extends State<MyDrawer> {
         } else {
           return const CustomLoadingWidget();
         }
+      },
+    );
+  }
+
+  void changeLanguage(BuildContext context) {
+    buildShowModalBottomSheet(
+      context: context,
+      textButton1: lang == AppStrings.enLangKey
+          ? S.of(context).arabic
+          : S.of(context).english,
+      textButton2: lang == AppStrings.enLangKey
+          ? S.of(context).english
+          : S.of(context).arabic,
+      onTapButton1: () {
+        if (lang == AppStrings.enLangKey) {
+          setLang(context: context, langCode: AppStrings.arLangKey);
+        } else {
+          setLang(context: context, langCode: AppStrings.enLangKey);
+        }
+        Navigator.pop(context);
+        Navigator.pop(context);
+      },
+      onTapButton2: () {
+        if (lang == AppStrings.enLangKey) {
+          setLang(context: context, langCode: AppStrings.enLangKey);
+        } else {
+          setLang(context: context, langCode: AppStrings.arLangKey);
+        }
+        Navigator.pop(context);
+        Navigator.pop(context);
       },
     );
   }

@@ -1,28 +1,34 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:erp_system/core/utils/app_colors.dart';
+import 'package:erp_system/core/utils/app_router.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../../core/utils/app_strings.dart';
 import '../../../../core/widgets/custom_loaging_widget.dart';
+import '../../data/models/menu_model/pages.dart';
 
 class ItemGridView extends StatefulWidget {
-  final String icon;
-  final String title;
-  final String keyPageId;
-  final Function onTap;
+  final Pages page;
 
-  const ItemGridView(
-      {super.key,
-      required this.icon,
-      required this.title,
-      required this.onTap,
-      required this.keyPageId});
+  const ItemGridView({
+    super.key,
+    required this.page,
+  });
 
   @override
   State<ItemGridView> createState() => _ItemGridViewState();
 }
 
 class _ItemGridViewState extends State<ItemGridView> {
+  String? lang;
+  @override
+  void didChangeDependencies() {
+    lang = Localizations.localeOf(context).toString();
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -48,7 +54,7 @@ class _ItemGridViewState extends State<ItemGridView> {
                     // width: 85,
                     // height: 70,
                     // fit: BoxFit.fill,
-                    imageUrl: widget.icon,
+                    imageUrl: "http://${widget.page.icon}",
                     placeholder: (context, url) => const CustomLoadingWidget(),
                     errorWidget: (context, url, error) => const Icon(
                       Icons.error,
@@ -62,7 +68,9 @@ class _ItemGridViewState extends State<ItemGridView> {
                   padding: const EdgeInsets.all(5.0),
                   child: Center(
                     child: AutoSizeText(
-                      widget.title,
+                      lang == AppStrings.enLangKey
+                          ? widget.page.nameEn
+                          : widget.page.nameAr,
                       textAlign: TextAlign.center,
                       maxFontSize: 12,
                       minFontSize: 8,
@@ -75,16 +83,13 @@ class _ItemGridViewState extends State<ItemGridView> {
           ),
         ),
       ),
-      onTap: () => widget.onTap(),
+      onTap: () {
+        GoRouter.of(context).push(AppRouter.kScreenView, extra: widget.page);
+      },
     );
   }
-
-  // void getImage(String key_pageId) async {
-  //   var y = await Pref.getImage(key: key_pageId);
-  //   image = y;
-  //   setState(() {});
-  // }
 }
+
 /*CachedNetworkImage(
                           // width: 85,
                           // height: 70,

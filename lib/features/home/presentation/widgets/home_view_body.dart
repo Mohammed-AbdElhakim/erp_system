@@ -4,27 +4,14 @@ import 'package:erp_system/features/home/presentation/manager/getMenu/get_menu_c
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/utils/app_strings.dart';
 import '../../../../core/widgets/custom_text_form_field_search.dart';
 import '../../../../generated/l10n.dart';
 import '../../data/models/menu_model/pages.dart';
 import 'home_view_header.dart';
 import 'item_grid_view.dart';
 
-class HomeViewBody extends StatefulWidget {
+class HomeViewBody extends StatelessWidget {
   const HomeViewBody({super.key});
-
-  @override
-  State<HomeViewBody> createState() => _HomeViewBodyState();
-}
-
-class _HomeViewBodyState extends State<HomeViewBody> {
-  String? lang;
-  @override
-  void didChangeDependencies() {
-    lang = Localizations.localeOf(context).toString();
-    super.didChangeDependencies();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,54 +26,39 @@ class _HomeViewBodyState extends State<HomeViewBody> {
               }
             }
           }
-          return Column(
-            children: [
-              Expanded(
-                child: CustomScrollView(
-                  slivers: [
-                    const SliverToBoxAdapter(
-                      child: HomeViewHeader(),
-                    ),
-                    SliverToBoxAdapter(
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            left: 16, right: 16, bottom: 35),
-                        child: CustomTextFormFieldSearch(
-                          hintText: S.of(context).search,
-                        ),
-                      ),
-                    ),
-                    SliverToBoxAdapter(
-                      child: GridView.builder(
-                        shrinkWrap: true,
-                        itemCount: pagesList.length,
-                        physics: const NeverScrollableScrollPhysics(),
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                          mainAxisSpacing: 35,
-                          crossAxisSpacing: 35,
-                        ),
-                        padding: const EdgeInsets.only(
-                            left: 16, right: 16, bottom: 16),
-                        itemBuilder: (BuildContext context, int index) {
-                          return ItemGridView(
-                            icon: "http://${pagesList[index].icon}",
-                            title: lang == AppStrings.enLangKey
-                                ? pagesList[index].nameEn
-                                : pagesList[index].nameAr,
-                            onTap: () {
-                              // GoRouter.of(context).push(listScreens[index].id);
-                            },
-                            keyPageId: pagesList[index].pageId.toString(),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
+          return CustomScrollView(
+            slivers: [
+              const SliverToBoxAdapter(
+                child: HomeViewHeader(),
+              ),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.only(left: 16, right: 16, bottom: 35),
+                  child: CustomTextFormFieldSearch(
+                    hintText: S.of(context).search,
+                  ),
                 ),
               ),
-              // const NavigationMenu()
+              SliverToBoxAdapter(
+                child: GridView.builder(
+                  shrinkWrap: true,
+                  itemCount: pagesList.length,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    mainAxisSpacing: 35,
+                    crossAxisSpacing: 35,
+                  ),
+                  padding:
+                      const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+                  itemBuilder: (BuildContext context, int index) {
+                    return ItemGridView(
+                      page: pagesList[index],
+                    );
+                  },
+                ),
+              ),
             ],
           );
         } else if (state is GetMenuFailure) {
