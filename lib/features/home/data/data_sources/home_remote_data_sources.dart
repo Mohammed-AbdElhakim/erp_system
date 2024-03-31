@@ -1,4 +1,5 @@
 import '../../../../core/helper/SharedPreferences/pref.dart';
+import '../../../../core/helper/localData/local_data.dart';
 import '../../../../core/utils/api_service.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../models/menu_model/menu_model.dart';
@@ -26,6 +27,8 @@ class HomeRemoteDataSourcesImpl extends HomeRemoteDataSources {
       },
     );
     MenuModel menuModel = MenuModel.fromJson(data);
+    LocalData.saveMenuModelInLocal(
+        menuModel: menuModel, boxName: AppStrings.menuModelBox);
 
     return menuModel;
   }
