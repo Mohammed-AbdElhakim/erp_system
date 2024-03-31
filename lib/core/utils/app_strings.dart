@@ -13,4 +13,7 @@ class AppStrings {
   static String companyIDKey = "companyID";
   static String companyNameKey = "companyName";
   static String employeeIDKey = "employeeID";
+  static String menuModelBox = "menu_model_box";
+  static String listModuleBox = "list_module_box";
+  static String pagesBox = "pages_box";
 }

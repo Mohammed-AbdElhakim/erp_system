@@ -1,21 +1,32 @@
 import 'package:erp_system/core/helper/SharedPreferences/pref.dart';
 import 'package:erp_system/core/utils/app_router.dart';
 import 'package:erp_system/core/utils/app_strings.dart';
+import 'package:erp_system/features/home/data/models/menu_model/list_module.dart';
+import 'package:erp_system/features/home/data/models/menu_model/menu_model.dart';
+import 'package:erp_system/features/home/data/models/menu_model/pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:hive_flutter/adapters.dart';
 
 import 'core/utils/app_colors.dart';
 import 'core/utils/service_locator.dart';
 import 'generated/l10n.dart';
 
-void main() {
+void main() async {
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle.dark.copyWith(
       statusBarColor: AppColors.blueDark,
       statusBarIconBrightness: Brightness.light,
     ),
   );
+  await Hive.initFlutter();
+  Hive.registerAdapter(MenuModelAdapter());
+  Hive.registerAdapter(ListModuleAdapter());
+  Hive.registerAdapter(PagesAdapter());
+  await Hive.openBox(AppStrings.menuModelBox);
+  await Hive.openBox(AppStrings.listModuleBox);
+  await Hive.openBox(AppStrings.pagesBox);
   setupServiceLocator();
   runApp(const ERPSystem());
 }
