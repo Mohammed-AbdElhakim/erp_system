@@ -6,10 +6,13 @@ class CustomErrorMassage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      errorMassage,
-      style: const TextStyle(
-        fontSize: 18,
+    return Center(
+      child: Text(
+        errorMassage,
+        textAlign: TextAlign.center,
+        style: const TextStyle(
+          fontSize: 18,
+        ),
       ),
     );
   }
