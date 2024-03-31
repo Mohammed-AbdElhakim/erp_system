@@ -1,3 +1,8 @@
+import 'package:hive_flutter/hive_flutter.dart';
+
+part 'pages.g.dart';
+
+@HiveType(typeId: 2)
 class Pages {
   Pages({
     required this.pageId,
@@ -8,12 +13,19 @@ class Pages {
     required this.isFastScreen,
     required this.moduleID,
   });
+  @HiveField(0)
   late final int pageId;
+  @HiveField(1)
   late final String nameAr;
+  @HiveField(2)
   late final String nameEn;
+  @HiveField(3)
   late final String navigationKey;
+  @HiveField(4)
   late final String icon;
+  @HiveField(5)
   late final bool isFastScreen;
+  @HiveField(6)
   late final int moduleID;
 
   Pages.fromJson(Map<String, dynamic> json) {
