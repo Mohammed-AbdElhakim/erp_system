@@ -17,9 +17,8 @@ void setupServiceLocator() {
       getIt.get<ApiService>(),
     ),
   );
+
   getIt.registerSingleton<MenuRepoImpl>(
-    MenuRepoImpl(
-      getIt.get<ApiService>(),
-    ),
+    MenuRepoImpl(getIt.get<ApiService>()),
   );
 }

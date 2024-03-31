@@ -1,9 +1,5 @@
 import 'package:erp_system/features/home/data/models/menu_model/pages.dart';
-import 'package:hive/hive.dart';
 
-part 'list_module.g.dart';
-
-@HiveType(typeId: 1)
 class ListModule {
   ListModule({
     required this.moduleID,
@@ -12,15 +8,10 @@ class ListModule {
     required this.moduleNameEn,
     required this.pages,
   });
-  @HiveField(0)
   late final int moduleID;
-  @HiveField(1)
   late final String moduleKey;
-  @HiveField(2)
   late final String moduleNameAr;
-  @HiveField(3)
   late final String moduleNameEn;
-  @HiveField(4)
   late final List<Pages> pages;
 
   ListModule.fromJson(Map<String, dynamic> json) {
