@@ -7,7 +7,7 @@ import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_router.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../../../../core/utils/app_styles.dart';
-import '../../../../core/widgets/custom_loaging_widget.dart';
+import '../../../../core/widgets/custom_loading_widget.dart';
 
 class CustomSubListTileInDrawer extends StatefulWidget {
   const CustomSubListTileInDrawer({

@@ -1,5 +1,5 @@
 import 'package:erp_system/core/widgets/custom_error_massage.dart';
-import 'package:erp_system/core/widgets/custom_loaging_widget.dart';
+import 'package:erp_system/core/widgets/custom_loading_widget.dart';
 import 'package:erp_system/features/home/presentation/manager/getMenu/get_menu_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

@@ -7,7 +7,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/models/menu_model/pages.dart';
 import '../../../../core/utils/app_strings.dart';
-import '../../../../core/widgets/custom_loaging_widget.dart';
+import '../../../../core/widgets/custom_loading_widget.dart';
 
 class ItemGridView extends StatefulWidget {
   final Pages page;

@@ -9,7 +9,7 @@ import '../../../../core/helper/SharedPreferences/pref.dart';
 import '../../../../core/utils/app_router.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../../../../core/widgets/custom_button.dart';
-import '../../../../core/widgets/custom_loaging_widget.dart';
+import '../../../../core/widgets/custom_loading_widget.dart';
 import '../../../../core/widgets/custom_text_form_field.dart';
 import '../../../../generated/l10n.dart';
 

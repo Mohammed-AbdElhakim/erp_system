@@ -8,7 +8,7 @@ import '../../../../core/models/menu_model/list_module.dart';
 import '../../../../core/utils/app_router.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../../../../core/widgets/custom_error_massage.dart';
-import '../../../../core/widgets/custom_loaging_widget.dart';
+import '../../../../core/widgets/custom_loading_widget.dart';
 import '../../../../generated/l10n.dart';
 import '../../../../main.dart';
 import '../../../home/presentation/manager/getMenu/get_menu_cubit.dart';
