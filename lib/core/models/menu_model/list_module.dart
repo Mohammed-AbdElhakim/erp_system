@@ -1,4 +1,4 @@
-import 'package:erp_system/features/home/data/models/menu_model/pages.dart';
+import 'package:erp_system/core/models/menu_model/pages.dart';
 
 class ListModule {
   ListModule({

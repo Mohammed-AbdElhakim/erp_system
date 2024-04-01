@@ -1,12 +1,12 @@
 import 'package:erp_system/features/auth/presentation/views/login_view.dart';
 import 'package:erp_system/features/bottomNavigationBar/presentation/views/screen_view.dart';
-import 'package:erp_system/features/home/data/models/menu_model/pages.dart';
 import 'package:erp_system/features/home/presentation/views/home_view.dart';
 import 'package:erp_system/features/host/presentation/views/host_view.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../features/bottomNavigationBar/presentation/views/bottom_navigatiaon_bar_view.dart';
 import '../../features/splash/presentation/views/splash_view.dart';
+import '../models/menu_model/pages.dart';
 
 abstract class AppRouter {
   // GoRouter configuration

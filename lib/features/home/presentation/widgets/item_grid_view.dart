@@ -5,9 +5,9 @@ import 'package:erp_system/core/utils/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/models/menu_model/pages.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../../../../core/widgets/custom_loaging_widget.dart';
-import '../../data/models/menu_model/pages.dart';
 
 class ItemGridView extends StatefulWidget {
   final Pages page;

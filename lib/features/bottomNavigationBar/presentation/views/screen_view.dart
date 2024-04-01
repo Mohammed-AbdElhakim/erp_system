@@ -2,9 +2,9 @@ import 'package:erp_system/core/utils/app_strings.dart';
 import 'package:erp_system/core/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../core/models/menu_model/pages.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/widgets/custom_container.dart';
-import '../../../home/data/models/menu_model/pages.dart';
 
 class ScreenView extends StatefulWidget {
   const ScreenView({super.key, required this.pageData});
