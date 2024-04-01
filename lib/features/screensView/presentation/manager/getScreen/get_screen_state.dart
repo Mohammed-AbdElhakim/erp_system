@@ -1,7 +1,6 @@
 part of 'get_screen_cubit.dart';
 
-@immutable
-sealed class GetScreenState extends Equatable{
+sealed class GetScreenState extends Equatable {
   const GetScreenState();
   @override
   List<Object> get props => [];
@@ -9,18 +8,16 @@ sealed class GetScreenState extends Equatable{
 
 final class GetScreenInitial extends GetScreenState {}
 
-
 final class GetScreenLoading extends GetScreenState {}
 
 final class GetScreenFailure extends GetScreenState {
   final String errorMassage;
 
-   const GetScreenFailure(this.errorMassage);
+  const GetScreenFailure(this.errorMassage);
 }
 
 final class GetScreenSuccess extends GetScreenState {
-  final MenuModel menu;
+  final ScreenModel screenModel;
 
-  const GetScreenSuccess(this.menu);
+  const GetScreenSuccess(this.screenModel);
 }
-

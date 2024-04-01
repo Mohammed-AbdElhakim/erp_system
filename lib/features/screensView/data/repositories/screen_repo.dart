@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../../../core/errors/failures.dart';
-import '../../../../../core/models/menu_model/menu_model.dart';
 import '../../../../core/models/menu_model/pages.dart';
+import '../models/column_data_model.dart';
 
 abstract class ScreenRepo {
-  Future<Either<Failure, MenuModel>> getScreen(Pages page);
+  Future<Either<Failure, ScreenModel>> getScreen(Pages page);
 }
