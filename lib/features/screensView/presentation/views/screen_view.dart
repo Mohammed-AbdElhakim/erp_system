@@ -79,7 +79,7 @@ class _ScreenViewState extends State<ScreenView> {
                   listHeader: listHeader,
                   list: state.screenModel.dataList.dynamicList,
                   listData: listData,
-                  widthFirstColumn: 100,
+                  widthFirstColumn: MediaQuery.of(context).size.width * .3,
                   widthOtherColumn: MediaQuery.of(context).size.width * .3,
                   // heightHeader: 60,
                 ),

@@ -86,11 +86,7 @@ class _MyTableState extends State<MyTable> {
           child: Container(
             decoration: BoxDecoration(
               color: AppColors.blue,
-              borderRadius: BorderRadius.circular(10),
-              border: Border(
-                bottom: BorderSide(color: AppColors.white, width: 1),
-                top: BorderSide(color: AppColors.white, width: 1),
-              ),
+              border: Border.all(color: Colors.white, width: 1),
             ),
             margin: const EdgeInsets.symmetric(horizontal: 8),
             height: widget.heightHeader,
@@ -102,7 +98,10 @@ class _MyTableState extends State<MyTable> {
                   child: Text(
                     widget.listHeader[0],
                     textAlign: TextAlign.center,
-                    style: AppStyles.textStyle14,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: AppColors.white,
+                    ),
                   ),
                 ),
                 Container(
@@ -153,15 +152,24 @@ class _MyTableState extends State<MyTable> {
                           children: <Widget>[
                             ...widget.list.map((e) {
                               return Container(
-                                color: widget.list.indexOf(e).isEven
-                                    ? widget.list.indexOf(e) == indexColor
-                                        ? Theme.of(context).primaryColor
-                                        : Theme.of(context)
-                                            .primaryColor
-                                            .withOpacity(.25)
-                                    : widget.list.indexOf(e) == indexColor
-                                        ? Colors.green.shade600
-                                        : Colors.white,
+                                decoration: BoxDecoration(
+                                  border: const Border.symmetric(
+                                      horizontal: BorderSide(
+                                          color: Colors.white, width: 1)),
+                                  color: widget.list.indexOf(e).isEven
+                                      ? widget.list.indexOf(e) == indexColor
+                                          ? Theme.of(context).primaryColor
+                                          : Theme.of(context)
+                                              .primaryColor
+                                              .withOpacity(.25)
+                                      : widget.list.indexOf(e) == indexColor
+                                          ? Theme.of(context).primaryColor
+                                          : Colors.grey.shade100,
+                                  borderRadius: BorderRadius.circular(
+                                      widget.list.indexOf(e) == indexColor
+                                          ? 10
+                                          : 0),
+                                ),
                                 margin:
                                     const EdgeInsets.symmetric(horizontal: 8),
                                 height: widget.list.indexOf(e) == indexColor
@@ -170,14 +178,9 @@ class _MyTableState extends State<MyTable> {
                                 child: InkWell(
                                   child: Row(
                                     children: <Widget>[
-                                      Container(
+                                      SizedBox(
                                           width: widget.widthFirstColumn,
                                           child: AnimatedDefaultTextStyle(
-                                            child: Text(
-                                              e[widget.listData[0]["data"]]
-                                                  .toString(),
-                                              textAlign: TextAlign.center,
-                                            ),
                                             style: TextStyle(
                                                 color: widget.list.indexOf(e) ==
                                                         indexColor
@@ -195,71 +198,34 @@ class _MyTableState extends State<MyTable> {
                                                         : FontWeight.normal),
                                             duration: const Duration(
                                                 milliseconds: 200),
+                                            child: Text(
+                                              e[widget.listData[0]["data"]]
+                                                  .toString(),
+                                              textAlign: TextAlign.center,
+                                            ),
                                           )),
                                       Container(
                                         width: 1,
                                         height: double.maxFinite,
-                                        color: Colors.grey,
+                                        color: Colors.white,
                                       ),
                                       ...List.generate(
                                         widget.columnNumber - 1,
-                                        (index) => Container(
-                                            width: widget.widthOtherColumn,
-                                            child:
-                                                widget.listData[index + 1]
-                                                            ["type"] ==
-                                                        "answer"
-                                                    ? AnimatedDefaultTextStyle(
-                                                        child: Text(
-                                                          e[widget.listData[index +
-                                                                              1]
-                                                                          [
-                                                                          "data"]]
-                                                                      .toString() ==
-                                                                  "NO"
-                                                              ? "لا"
-                                                              : "نعم",
-                                                          textAlign:
-                                                              TextAlign.center,
-                                                        ),
-                                                        style: TextStyle(
-                                                            color: widget.list
-                                                                        .indexOf(
-                                                                            e) ==
-                                                                    indexColor
-                                                                ? Colors.white
-                                                                : Colors.black,
-                                                            fontSize: widget
-                                                                        .list
-                                                                        .indexOf(
-                                                                            e) ==
-                                                                    indexColor
-                                                                ? 17
-                                                                : 16,
-                                                            fontWeight: widget
-                                                                        .list
-                                                                        .indexOf(
-                                                                            e) ==
-                                                                    indexColor
-                                                                ? FontWeight
-                                                                    .w400
-                                                                : FontWeight
-                                                                    .normal),
-                                                        duration:
-                                                            const Duration(
-                                                                milliseconds:
-                                                                    200),
-                                                      )
-                                                    : widget.listData[index + 1]
+                                        (index) => Row(
+                                          children: [
+                                            SizedBox(
+                                                width: widget.widthOtherColumn,
+                                                child:
+                                                    widget.listData[index + 1]
                                                                 ["type"] ==
-                                                            "bool"
+                                                            "answer"
                                                         ? AnimatedDefaultTextStyle(
                                                             child: Text(
                                                               e[widget.listData[index + 1]
                                                                               [
                                                                               "data"]]
                                                                           .toString() ==
-                                                                      "False"
+                                                                      "NO"
                                                                   ? "لا"
                                                                   : "نعم",
                                                               textAlign:
@@ -297,10 +263,14 @@ class _MyTableState extends State<MyTable> {
                                                           )
                                                         : widget.listData[index + 1]
                                                                     ["type"] ==
-                                                                "date"
+                                                                "bool"
                                                             ? AnimatedDefaultTextStyle(
                                                                 child: Text(
-                                                                  "${DateFormat("yyyy-MM-dd").format(DateTime.parse(e[widget.listData[index + 1]["data"]]))}",
+                                                                  e[widget.listData[index + 1]["data"]]
+                                                                              .toString() ==
+                                                                          "False"
+                                                                      ? "لا"
+                                                                      : "نعم",
                                                                   textAlign:
                                                                       TextAlign
                                                                           .center,
@@ -328,15 +298,13 @@ class _MyTableState extends State<MyTable> {
                                                                         milliseconds:
                                                                             200),
                                                               )
-                                                            : widget.listData[index + 1][
+                                                            : widget.listData[index + 1]
+                                                                        [
                                                                         "type"] ==
-                                                                    "elc"
+                                                                    "date"
                                                                 ? AnimatedDefaultTextStyle(
                                                                     child: Text(
-                                                                      e[widget.listData[index + 1]["data"]].toString() ==
-                                                                              "true"
-                                                                          ? "إلكترونى"
-                                                                          : "عند الاستلام",
+                                                                      "${DateFormat("yyyy-MM-dd").format(DateTime.parse(e[widget.listData[index + 1]["data"]]))}",
                                                                       textAlign:
                                                                           TextAlign
                                                                               .center,
@@ -360,15 +328,16 @@ class _MyTableState extends State<MyTable> {
                                                                         milliseconds:
                                                                             200),
                                                                   )
-                                                                : widget.listData[index + 1][
+                                                                : widget.listData[index + 1]
+                                                                            [
                                                                             "type"] ==
-                                                                        "listItem"
+                                                                        "elc"
                                                                     ? AnimatedDefaultTextStyle(
                                                                         child:
                                                                             Text(
-                                                                          e[widget.listData[index + 1]["data"]]
-                                                                              .length
-                                                                              .toString(),
+                                                                          e[widget.listData[index + 1]["data"]].toString() == "true"
+                                                                              ? "إلكترونى"
+                                                                              : "عند الاستلام",
                                                                           textAlign:
                                                                               TextAlign.center,
                                                                         ),
@@ -382,11 +351,11 @@ class _MyTableState extends State<MyTable> {
                                                                             const Duration(milliseconds: 200),
                                                                       )
                                                                     : widget.listData[index + 1]["type"] ==
-                                                                            "search"
+                                                                            "listItem"
                                                                         ? AnimatedDefaultTextStyle(
                                                                             child:
                                                                                 Text(
-                                                                              getDataSesrch(searchList: widget.searchList, string: e[widget.listData[index + 1]["data"]].toString()),
+                                                                              e[widget.listData[index + 1]["data"]].length.toString(),
                                                                               textAlign: TextAlign.center,
                                                                             ),
                                                                             style: TextStyle(
@@ -396,26 +365,44 @@ class _MyTableState extends State<MyTable> {
                                                                             duration:
                                                                                 const Duration(milliseconds: 200),
                                                                           )
-                                                                        : AnimatedDefaultTextStyle(
-                                                                            child:
-                                                                                Text(
-                                                                              e[widget.listData[index + 1]["data"]].toString(),
-                                                                              textAlign: TextAlign.center,
-                                                                            ),
-                                                                            style: TextStyle(
-                                                                                color: widget.list.indexOf(e) == indexColor ? Colors.white : Colors.black,
-                                                                                fontSize: widget.list.indexOf(e) == indexColor ? 17 : 16,
-                                                                                fontWeight: widget.list.indexOf(e) == indexColor ? FontWeight.w400 : FontWeight.normal),
-                                                                            duration:
-                                                                                const Duration(milliseconds: 200),
-                                                                          )),
+                                                                        : widget.listData[index + 1]["type"] == "search"
+                                                                            ? AnimatedDefaultTextStyle(
+                                                                                child: Text(
+                                                                                  getDataSesrch(searchList: widget.searchList, string: e[widget.listData[index + 1]["data"]].toString()),
+                                                                                  textAlign: TextAlign.center,
+                                                                                ),
+                                                                                style: TextStyle(color: widget.list.indexOf(e) == indexColor ? Colors.white : Colors.black, fontSize: widget.list.indexOf(e) == indexColor ? 17 : 16, fontWeight: widget.list.indexOf(e) == indexColor ? FontWeight.w400 : FontWeight.normal),
+                                                                                duration: const Duration(milliseconds: 200),
+                                                                              )
+                                                                            : AnimatedDefaultTextStyle(
+                                                                                child: Text(
+                                                                                  e[widget.listData[index + 1]["data"]].toString(),
+                                                                                  textAlign: TextAlign.center,
+                                                                                ),
+                                                                                style: TextStyle(color: widget.list.indexOf(e) == indexColor ? Colors.white : Colors.black, fontSize: widget.list.indexOf(e) == indexColor ? 17 : 16, fontWeight: widget.list.indexOf(e) == indexColor ? FontWeight.w400 : FontWeight.normal),
+                                                                                duration: const Duration(milliseconds: 200),
+                                                                              )),
+                                            if (index !=
+                                                widget.columnNumber - 2)
+                                              Container(
+                                                width: 1,
+                                                height: double.maxFinite,
+                                                color: Colors.white,
+                                              ),
+                                          ],
+                                        ),
                                       ),
                                     ],
                                   ),
                                   onTap: () {
                                     upDate(() {
-                                      indexColor = widget.list.indexOf(e);
-
+                                      if (indexColor ==
+                                          widget.list.indexOf(e)) {
+                                        indexColor = -1;
+                                      } else {
+                                        indexColor = widget.list.indexOf(e);
+                                      }
+                                      //TODO: القيمة اللى هترجع
                                       id = e[widget.listData[
                                           widget.listData.length - 1]['data']];
                                       // print(id);
