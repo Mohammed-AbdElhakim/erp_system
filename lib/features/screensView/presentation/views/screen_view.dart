@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/models/menu_model/pages.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/widgets/custom_container.dart';
+import '../../../../core/widgets/my_table.dart';
 
 class ScreenView extends StatefulWidget {
   const ScreenView({super.key, required this.pageData});
@@ -62,7 +63,27 @@ class _ScreenViewState extends State<ScreenView> {
         return BlocBuilder<GetScreenCubit, GetScreenState>(
           builder: (context, state) {
             if (state is GetScreenSuccess) {
-              return const Text("MOHAMED");
+              List<String> listHeader = [];
+              List<dynamic> listData = [];
+              for (var item in state.screenModel.columList) {
+                listHeader.add(item.ColumnName);
+              }
+              listData = List.generate(listHeader.length, (index) {
+                return {"type": "text", "data": "${listHeader[index]}"};
+              });
+              listData.add({"type": "text", "data": "${listHeader[0]}"});
+              return Expanded(
+                child: MyTable(
+                  columnNumber: listHeader.length,
+                  numberItemInList: state.screenModel.dataList.numberofrecords,
+                  listHeader: listHeader,
+                  list: state.screenModel.dataList.dynamicList,
+                  listData: listData,
+                  widthFirstColumn: 100,
+                  widthOtherColumn: MediaQuery.of(context).size.width * .3,
+                  // heightHeader: 60,
+                ),
+              );
             } else if (state is GetScreenFailure) {
               return CustomErrorMassage(errorMassage: state.errorMassage);
             } else {
