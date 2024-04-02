@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:erp_system/features/attendance/data/repositories/attendance_repo_impl.dart';
 import 'package:erp_system/features/auth/data/repositories/login/login_repo_impl.dart';
 import 'package:erp_system/features/screensView/data/repositories/screen_repo_impl.dart';
 import 'package:get_it/get_it.dart';
@@ -25,6 +26,12 @@ void setupServiceLocator() {
 
   getIt.registerSingleton<ScreenRepoImpl>(
     ScreenRepoImpl(
+      getIt.get<ApiService>(),
+    ),
+  );
+
+  getIt.registerSingleton<AttendanceRepoImpl>(
+    AttendanceRepoImpl(
       getIt.get<ApiService>(),
     ),
   );
