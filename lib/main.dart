@@ -34,7 +34,7 @@ class ERPSystem extends StatefulWidget {
 }
 
 class _ERPSystemState extends State<ERPSystem> {
-  Locale _locale = Locale(AppStrings.enLangKey);
+  Locale _locale = Locale(AppStrings.arLangKey);
 
   @override
   void didChangeDependencies() async {
@@ -67,7 +67,7 @@ class _ERPSystemState extends State<ERPSystem> {
 
   Future<void> getLocale() async {
     String language = await Pref.getStringFromPref(key: AppStrings.langKey) ??
-        AppStrings.enLangKey;
+        AppStrings.arLangKey;
     setState(() {
       _locale = Locale(language);
     });
