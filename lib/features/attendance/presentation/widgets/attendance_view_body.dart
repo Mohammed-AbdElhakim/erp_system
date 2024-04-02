@@ -1,11 +1,9 @@
 import 'package:erp_system/core/widgets/custom_button.dart';
-import 'package:erp_system/core/widgets/custom_container.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 
 import '../../../../core/helper/SharedPreferences/pref.dart';
 import '../../../../core/utils/app_strings.dart';
-import '../../../../core/utils/app_styles.dart';
 import 'custom_circular_button.dart';
 
 class AttendanceViewBody extends StatefulWidget {
@@ -60,20 +58,9 @@ class _AttendanceViewBodyState extends State<AttendanceViewBody> {
   @override
   Widget build(BuildContext context) {
     return youHavePermission
-        ? Center(
+        ? const Center(
             child: Column(
               children: [
-                CustomContainer(
-                  height: 120,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 25),
-                    child: Text(
-                      textAlign: TextAlign.center,
-                      "الحضور والانصراف",
-                      style: AppStyles.textStyle26,
-                    ),
-                  ),
-                ),
                 // const SizedBox(
                 //   height: 150,
                 // ),
@@ -82,14 +69,14 @@ class _AttendanceViewBodyState extends State<AttendanceViewBody> {
                 // if (lat != null || long != null) Text("lat => $lat"),
                 // if (lat != null || long != null) Text("long => $long"),
                 // if (uniqueId != null) Text("uniqueId => $uniqueId"),
-                const CustomCircularButton(
+                CustomCircularButton(
                   text: 'Presence',
                   color: Colors.green,
                 ),
-                const SizedBox(
+                SizedBox(
                   height: 30,
                 ),
-                const CustomCircularButton(
+                CustomCircularButton(
                   text: 'Departure',
                   color: Colors.red,
                 ),

@@ -10,6 +10,7 @@ import '../../../../core/models/menu_model/pages.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/widgets/custom_container.dart';
 import '../../../../core/widgets/my_table.dart';
+import '../../../attendance/presentation/views/attendance_view.dart';
 
 class ScreenView extends StatefulWidget {
   const ScreenView({super.key, required this.pageData});
@@ -57,8 +58,8 @@ class _ScreenViewState extends State<ScreenView> {
 
   getWidgetBody(String navigationKey) {
     switch (navigationKey) {
-      case "":
-        return;
+      case "Mobile Attendance":
+        return const AttendanceView();
       default:
         return BlocBuilder<GetScreenCubit, GetScreenState>(
           builder: (context, state) {
