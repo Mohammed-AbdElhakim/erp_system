@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 class ScreenModel {
   ScreenModel({
     required this.columList,
@@ -13,10 +15,10 @@ class ScreenModel {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['columList'] = columList.map((e) => e.toJson()).toList();
-    _data['dataList'] = dataList.toJson();
-    return _data;
+    final data = <String, dynamic>{};
+    data['columList'] = columList.map((e) => e.toJson()).toList();
+    data['dataList'] = dataList.toJson();
+    return data;
   }
 }
 
@@ -97,31 +99,31 @@ class ColumList {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['id'] = id;
-    _data['ListName'] = ListName;
-    _data['ColumnName'] = ColumnName;
-    _data['enColumnLabel'] = enColumnLabel;
-    _data['arColumnLabel'] = arColumnLabel;
-    _data['InsertVisable'] = InsertVisable;
-    _data['InsertType'] = InsertType;
-    _data['userID'] = userID;
-    _data['ListID'] = ListID;
-    _data['sort'] = sort;
-    _data['visible'] = visible;
-    _data['Cvisable'] = Cvisable;
-    _data['validation'] = validation;
-    _data['isKey'] = isKey;
-    _data['IsRquired'] = IsRquired;
-    _data['SearchName'] = SearchName;
-    _data['IsTotal'] = IsTotal;
-    _data['InsertDefult'] = InsertDefult;
-    _data['VisableDefult'] = VisableDefult;
-    _data['Width'] = Width;
-    _data['MobileVisable'] = MobileVisable;
-    _data['ComID'] = ComID;
-    _data['MasterInsertVisible'] = MasterInsertVisible;
-    return _data;
+    final data = <String, dynamic>{};
+    data['id'] = id;
+    data['ListName'] = ListName;
+    data['ColumnName'] = ColumnName;
+    data['enColumnLabel'] = enColumnLabel;
+    data['arColumnLabel'] = arColumnLabel;
+    data['InsertVisable'] = InsertVisable;
+    data['InsertType'] = InsertType;
+    data['userID'] = userID;
+    data['ListID'] = ListID;
+    data['sort'] = sort;
+    data['visible'] = visible;
+    data['Cvisable'] = Cvisable;
+    data['validation'] = validation;
+    data['isKey'] = isKey;
+    data['IsRquired'] = IsRquired;
+    data['SearchName'] = SearchName;
+    data['IsTotal'] = IsTotal;
+    data['InsertDefult'] = InsertDefult;
+    data['VisableDefult'] = VisableDefult;
+    data['Width'] = Width;
+    data['MobileVisable'] = MobileVisable;
+    data['ComID'] = ComID;
+    data['MasterInsertVisible'] = MasterInsertVisible;
+    return data;
   }
 }
 
@@ -139,10 +141,10 @@ class DataList {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['dynamicList'] = dynamicList;
-    _data['numberofrecords'] = numberofrecords;
-    return _data;
+    final data = <String, dynamic>{};
+    data['dynamicList'] = dynamicList;
+    data['numberofrecords'] = numberofrecords;
+    return data;
   }
 }
 

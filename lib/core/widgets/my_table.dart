@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 // import 'package:sweetalert/sweetalert./dart';
 // import 'package:animated_text_kit/animated_text_kit.dart';
 
-typedef onSelect = void Function(String);
+typedef ValueChanged<Map> = void Function(Map? value);
 
 class MyTable extends StatefulWidget {
   final List list;
@@ -19,8 +19,9 @@ class MyTable extends StatefulWidget {
   final double widthOtherColumn;
   final double heightHeader;
   final double heightRow;
-  final onSelect onTap;
-  MyTable({
+  final ValueChanged<Map>? onTap;
+  const MyTable({
+    super.key,
     required this.columnNumber,
     required this.list,
     this.searchList,
@@ -37,26 +38,26 @@ class MyTable extends StatefulWidget {
   });
 
   @override
-  _MyTableState createState() => _MyTableState();
+  State<MyTable> createState() => _MyTableState();
 }
 
 class _MyTableState extends State<MyTable> {
   int? indexColor;
-  late String id;
-  ScrollController _1controller = ScrollController();
-  ScrollController _2controller = ScrollController();
+  late Map<String, dynamic>? rowData;
+  ScrollController controller1 = ScrollController();
+  ScrollController controller2 = ScrollController();
   late List subList;
   late int start;
   late int end;
   late int numberPage;
-  ScrollController _controller = ScrollController();
+  ScrollController controller = ScrollController();
   late Color colorEnd;
   late Color colorStart;
-  late String myValue = "";
+  @override
   void initState() {
     super.initState();
-    _2controller.addListener(() {
-      _1controller.jumpTo(_2controller.offset);
+    controller2.addListener(() {
+      controller1.jumpTo(controller2.offset);
     });
     start = 0;
     end = widget.numberItemInList > widget.list.length
@@ -79,7 +80,7 @@ class _MyTableState extends State<MyTable> {
     return Column(
       children: <Widget>[
         SingleChildScrollView(
-          controller: _1controller,
+          controller: controller1,
           physics: const NeverScrollableScrollPhysics(),
           scrollDirection: Axis.horizontal,
           child: Container(
@@ -140,13 +141,13 @@ class _MyTableState extends State<MyTable> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SingleChildScrollView(
-                      controller: _2controller,
+                      controller: controller2,
                       physics: const ScrollPhysics(),
                       scrollDirection: Axis.horizontal,
                       child: SingleChildScrollView(
                         physics: const NeverScrollableScrollPhysics(),
                         scrollDirection: Axis.vertical,
-                        controller: _controller,
+                        controller: controller,
                         child: Column(
                           children: <Widget>[
                             ...widget.list.map((e) {
@@ -214,11 +215,6 @@ class _MyTableState extends State<MyTable> {
                                             SizedBox(
                                               width: widget.widthOtherColumn,
                                               child: AnimatedDefaultTextStyle(
-                                                child: Text(
-                                                  e[widget.listData[index + 1]]
-                                                      .toString(),
-                                                  textAlign: TextAlign.center,
-                                                ),
                                                 style: TextStyle(
                                                     color: widget.list
                                                                 .indexOf(e) ==
@@ -237,6 +233,11 @@ class _MyTableState extends State<MyTable> {
                                                         : FontWeight.normal),
                                                 duration: const Duration(
                                                     milliseconds: 200),
+                                                child: Text(
+                                                  e[widget.listData[index + 1]]
+                                                      .toString(),
+                                                  textAlign: TextAlign.center,
+                                                ),
                                               ),
                                             ),
                                             if (index !=
@@ -256,21 +257,16 @@ class _MyTableState extends State<MyTable> {
                                       if (indexColor ==
                                           widget.list.indexOf(e)) {
                                         indexColor = -1;
-                                        id = '';
-                                        print("**********************");
-                                        print(id);
-                                        print("***********************");
+                                        rowData = null;
                                       } else {
                                         indexColor = widget.list.indexOf(e);
-                                        id = e[widget.listData[
-                                            widget.listData.length - 1]];
-                                        print("**********************");
-                                        print(id);
-                                        print("***********************");
+                                        rowData = e /*[widget.listData[
+                                            widget.listData.length - 1]]*/
+                                            ;
                                       }
                                       //TODO: القيمة اللى هترجع
                                     });
-                                    onTap(id);
+                                    onTap(rowData);
                                   },
                                 ),
                               );
@@ -380,7 +376,7 @@ class _MyTableState extends State<MyTable> {
     );
   }
 
-  onTap(String st) {
-    widget.onTap(st);
+  onTap(Map? st) {
+    widget.onTap!(st);
   }
 }

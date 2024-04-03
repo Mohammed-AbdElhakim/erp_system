@@ -35,4 +35,5 @@ class AppColors {
   static Color blueLight = const Color(0xff005BAA);
   static Color orange = Colors.orange;
   static Color red = Colors.red;
+  static Color green = Colors.green;
 }

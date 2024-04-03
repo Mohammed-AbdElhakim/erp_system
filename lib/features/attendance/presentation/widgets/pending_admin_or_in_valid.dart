@@ -1,10 +1,10 @@
-import 'package:erp_system/features/attendance/presentation/manager/attendanceCubit/attendance_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/widgets/custom_button.dart';
 import '../../../../generated/l10n.dart';
+import '../manager/attendanceCubit/attendance_cubit.dart';
 
 class PendingAdminORInValid extends StatelessWidget {
   const PendingAdminORInValid({

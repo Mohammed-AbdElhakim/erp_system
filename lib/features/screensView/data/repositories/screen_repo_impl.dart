@@ -4,9 +4,7 @@ import 'package:erp_system/core/errors/failures.dart';
 import 'package:erp_system/core/models/menu_model/pages.dart';
 import 'package:erp_system/features/screensView/data/repositories/screen_repo.dart';
 
-import '../../../../core/helper/SharedPreferences/pref.dart';
 import '../../../../core/utils/api_service.dart';
-import '../../../../core/utils/app_strings.dart';
 import '../models/column_data_model.dart';
 
 class ScreenRepoImpl implements ScreenRepo {
@@ -16,11 +14,11 @@ class ScreenRepoImpl implements ScreenRepo {
   @override
   Future<Either<Failure, ScreenModel>> getScreen(Pages page) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      // String companyKey =
+      //     await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
+      //         "";
+      // String token =
+      //     await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       // Map<String, dynamic> data = await apiService.get(
       //   endPoint: "home/getmenu",
       //   headers: {
@@ -138,60 +136,36 @@ class ScreenRepoImpl implements ScreenRepo {
               "ArName": "Demo",
               "EnName": "Demo",
               "Color": "#56e907",
-              "Idq": 3,
-              "ArNameq": "Demo",
-              "EnNameq": "Demo",
-              "Colorq": "#56e907"
             },
             {
               "Id": 2,
               "ArName": "waiting",
               "EnName": "waiting",
               "Color": "#0bf4ae",
-              "Idq": 3,
-              "ArNameq": "Demo",
-              "EnNameq": "Demo",
-              "Colorq": "#56e907"
             },
             {
               "Id": 1,
               "ArName": "open",
               "EnName": "open",
               "Color": "#10f4f0",
-              "Idq": 3,
-              "ArNameq": "Demo",
-              "EnNameq": "Demo",
-              "Colorq": "#56e907"
             },
             {
               "Id": 3,
               "ArName": "Demo",
               "EnName": "Demo",
               "Color": "#56e907",
-              "Idq": 3,
-              "ArNameq": "Demo",
-              "EnNameq": "Demo",
-              "Colorq": "#56e907"
             },
             {
               "Id": 2,
               "ArName": "waiting",
               "EnName": "waiting",
               "Color": "#0bf4ae",
-              "Idq": 3,
-              "ArNameq": "Demo",
-              "EnNameq": "Demo",
-              "Colorq": "#56e907"
             },
             {
               "Id": 1,
               "ArName": "open",
               "EnName": "open",
               "Color": "#10f4f0",
-              "Idq": 3,
-              "ArNameq": "Demo",
-              "EnNameq": "Demo",
-              "Colorq": "#56e907"
             },
           ],
           "numberofrecords": 6

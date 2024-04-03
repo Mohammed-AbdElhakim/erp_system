@@ -9,9 +9,9 @@ class LocationModel {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['list'] = list.map((e) => e.toJson()).toList();
-    return _data;
+    final data = <String, dynamic>{};
+    data['list'] = list.map((e) => e.toJson()).toList();
+    return data;
   }
 }
 
@@ -38,12 +38,12 @@ class ListValue {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['employeeID'] = employeeID;
-    _data['machineID'] = machineID;
-    _data['longitude'] = longitude;
-    _data['latitude'] = latitude;
-    _data['radius'] = radius;
-    return _data;
+    final data = <String, dynamic>{};
+    data['employeeID'] = employeeID;
+    data['machineID'] = machineID;
+    data['longitude'] = longitude;
+    data['latitude'] = latitude;
+    data['radius'] = radius;
+    return data;
   }
 }

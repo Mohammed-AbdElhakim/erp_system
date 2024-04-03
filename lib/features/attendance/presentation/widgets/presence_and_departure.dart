@@ -1,4 +1,4 @@
-import 'dart:math' as Math;
+import 'dart:math' as math;
 
 import 'package:erp_system/core/utils/app_colors.dart';
 import 'package:erp_system/core/utils/app_strings.dart';
@@ -69,55 +69,58 @@ class _PresenceAndDepartureState extends State<PresenceAndDeparture> {
           }
           if (state is SendAttendanceSuccess) {
             Pref.saveBoolToPref(key: AppStrings.isAttendKey, value: !isAttend);
+
             GoRouter.of(context).pop();
           }
         },
         builder: (context, state) {
           if (state is GetAttendanceLocationsSuccess) {
-            return VerticalSlidableButton(
-              height: MediaQuery.of(context).size.height / 3,
-              buttonHeight: 60.0,
-              color: AppColors.blueGreyLight,
-              buttonColor: AppColors.blueLight,
-              dismissible: false,
-              width: 90,
-              initialPosition: isAttend == true
-                  ? SlidableButtonPosition.start
-                  : SlidableButtonPosition.end,
-              label: Center(
-                child: Text(
-                  S.of(context).swipe_to,
-                  style: AppStyles.textStyle12,
+            return Center(
+              child: VerticalSlidableButton(
+                height: MediaQuery.of(context).size.height / 3,
+                buttonHeight: 60.0,
+                color: AppColors.blueGreyLight,
+                buttonColor: isAttend ? AppColors.green : AppColors.red,
+                dismissible: false,
+                width: 90,
+                initialPosition: isAttend == true
+                    ? SlidableButtonPosition.start
+                    : SlidableButtonPosition.end,
+                label: Center(
+                  child: Text(
+                    S.of(context).swipe_to,
+                    style: AppStyles.textStyle12,
+                  ),
                 ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 25.0),
+                      child: Text(S.of(context).attend),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 25.0),
+                      child: Text(S.of(context).leave),
+                    ),
+                  ],
+                ),
+                onChanged: (position) {
+                  setState(() {
+                    if (position == SlidableButtonPosition.end) {
+                      BlocProvider.of<AttendanceCubit>(context).sendAttendance(
+                        time: DateTime.now().toIso8601String(),
+                        machineID: myLocation!.machineID.toString(),
+                      );
+                    } else {
+                      BlocProvider.of<AttendanceCubit>(context).sendAttendance(
+                        time: DateTime.now().toIso8601String(),
+                        machineID: myLocation!.machineID.toString(),
+                      );
+                    }
+                  });
+                },
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 25.0),
-                    child: Text(S.of(context).attend),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 25.0),
-                    child: Text(S.of(context).leave),
-                  ),
-                ],
-              ),
-              onChanged: (position) {
-                setState(() {
-                  if (position == SlidableButtonPosition.end) {
-                    BlocProvider.of<AttendanceCubit>(context).sendAttendance(
-                      time: DateTime.now().toIso8601String(),
-                      machineID: myLocation!.machineID.toString(),
-                    );
-                  } else {
-                    BlocProvider.of<AttendanceCubit>(context).sendAttendance(
-                      time: DateTime.now().toIso8601String(),
-                      machineID: myLocation!.machineID.toString(),
-                    );
-                  }
-                });
-              },
             );
           } else if (state is AttendanceFailure) {
             return CustomErrorMassage(errorMassage: state.errorMassage);
@@ -168,18 +171,18 @@ class _PresenceAndDepartureState extends State<PresenceAndDeparture> {
     var R = 6371; // Radius of the earth in km
     var dLat = deg2rad(lat2 - lat1); // deg2rad below
     var dLon = deg2rad(long2 - long1);
-    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(deg2rad(lat1)) *
-            Math.cos(deg2rad(lat2)) *
-            Math.sin(dLon / 2) *
-            Math.sin(dLon / 2);
-    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    var a = math.sin(dLat / 2) * math.sin(dLat / 2) +
+        math.cos(deg2rad(lat1)) *
+            math.cos(deg2rad(lat2)) *
+            math.sin(dLon / 2) *
+            math.sin(dLon / 2);
+    var c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a));
     var d = R * c; // Distance in km
     return d;
   }
 
   deg2rad(double deg) {
-    return deg * (Math.pi / 180);
+    return deg * (math.pi / 180);
   }
 
   isValidLocation(List<ListValue> list) {
@@ -188,6 +191,8 @@ class _PresenceAndDepartureState extends State<PresenceAndDeparture> {
       distance = getDistanceFromLatLonInKm(
         lat1: lat ?? 0.0,
         long1: long ?? 0.0,
+        // lat1: 31.181040,
+        // long1: 29.928099,
         lat2: item.latitude,
         long2: item.longitude,
       );
@@ -198,8 +203,6 @@ class _PresenceAndDepartureState extends State<PresenceAndDeparture> {
         setState(() {
           isLocation = true;
           myLocation = item;
-          print(isLocation);
-          print(myLocation!.toJson());
         });
         return;
       } else {

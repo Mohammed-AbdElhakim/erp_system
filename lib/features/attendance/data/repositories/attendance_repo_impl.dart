@@ -34,6 +34,7 @@ class AttendanceRepoImpl implements AttendanceRepo {
           "CompanyKey": companyKey,
         },
       );
+      // Map<String, dynamic> data = {"status": "Valid"};
       ValidDeviceModel validDeviceModel = ValidDeviceModel.fromJson(data);
       return right(validDeviceModel);
     } catch (e) {

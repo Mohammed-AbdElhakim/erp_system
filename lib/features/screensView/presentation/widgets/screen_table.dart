@@ -37,31 +37,24 @@ class _ScreenTableState extends State<ScreenTable> {
                 : item.arColumnLabel);
             listData.add(item.ColumnName);
           }
-          return Padding(
-            padding: const EdgeInsets.only(top: 20),
-            child: Column(
-              children: [
-                const Buttons(),
-                Expanded(
-                  child: MyTable(
-                    columnNumber: listHeader.length,
-                    numberItemInList: 2,
-                    // numberItemInList: state.screenModel.dataList.numberofrecords,
-                    listHeader: listHeader,
-                    list: state.screenModel.dataList.dynamicList,
-                    listData: listData,
-                    widthOtherColumn: MediaQuery.of(context).size.width * .3,
-                    widthFirstColumn: MediaQuery.of(context).size.width * .3,
-                    onTap: (w) {
-                      print("#####################");
-                      print(w);
-                      print("##########################");
-                    },
-                    // heightHeader: 60,
-                  ),
+          return Column(
+            children: [
+              const Buttons(),
+              Expanded(
+                child: MyTable(
+                  columnNumber: listHeader.length,
+                  numberItemInList: 2,
+                  // numberItemInList: state.screenModel.dataList.numberofrecords,
+                  listHeader: listHeader,
+                  list: state.screenModel.dataList.dynamicList,
+                  listData: listData,
+                  widthOtherColumn: MediaQuery.of(context).size.width * .3,
+                  widthFirstColumn: MediaQuery.of(context).size.width * .3,
+                  onTap: (value) {},
+                  // heightHeader: 60,
                 ),
-              ],
-            ),
+              ),
+            ],
           );
         } else if (state is GetScreenFailure) {
           return CustomErrorMassage(errorMassage: state.errorMassage);

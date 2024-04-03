@@ -46,7 +46,10 @@ class _ScreenViewState extends State<ScreenView> {
               ),
             ),
           ),
-          getWidgetBody(widget.pageData.navigationKey),
+          Padding(
+            padding: const EdgeInsets.only(top: 90),
+            child: getWidgetBody(widget.pageData.navigationKey),
+          )
         ],
       ),
     );
