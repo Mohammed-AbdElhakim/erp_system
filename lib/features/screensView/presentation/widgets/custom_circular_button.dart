@@ -1,13 +1,14 @@
+import 'package:erp_system/core/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class CustomCircularButton extends StatefulWidget {
   const CustomCircularButton({
     super.key,
     this.onTap,
-    required this.text,
+    required this.icon,
     required this.color,
   });
-  final String text;
+  final IconData icon;
   final Color color;
   final void Function()? onTap;
 
@@ -27,8 +28,8 @@ class CustomCircularButtonState extends State<CustomCircularButton> {
         splashColor: Colors.transparent,
         onTap: widget.onTap,
         child: Container(
-          width: 100,
-          height: 100,
+          width: 40,
+          height: 40,
           margin: const EdgeInsets.symmetric(vertical: 5),
           decoration: BoxDecoration(
             color: widget.color,
@@ -37,19 +38,23 @@ class CustomCircularButtonState extends State<CustomCircularButton> {
                 : [
                     const BoxShadow(
                       color: Colors.black87,
-                      blurRadius: 10,
+                      blurRadius: 8,
                     ),
                   ],
             borderRadius: BorderRadius.circular(60),
           ),
           child: Center(
-            child: Text(
-              widget.text,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: isPressed ? 14 : 16,
-                  color: Colors.white),
+            child: Icon(
+              widget.icon,
+              color: AppColors.white,
             ),
+            // child: Text(
+            //   widget.text,
+            //   style: TextStyle(
+            //       fontWeight: FontWeight.bold,
+            //       fontSize: isPressed ? 14 : 16,
+            //       color: Colors.white),
+            // ),
           ),
         ),
       ),

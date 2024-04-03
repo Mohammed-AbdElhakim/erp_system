@@ -1,7 +1,6 @@
 import 'package:erp_system/core/utils/app_colors.dart';
 import 'package:erp_system/core/utils/app_styles.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 // import 'package:sweetalert/sweetalert./dart';
 // import 'package:animated_text_kit/animated_text_kit.dart';
 
@@ -20,7 +19,7 @@ class MyTable extends StatefulWidget {
   final double widthOtherColumn;
   final double heightHeader;
   final double heightRow;
-  // final onSelect onTap;
+  final onSelect onTap;
   MyTable({
     required this.columnNumber,
     required this.list,
@@ -34,7 +33,7 @@ class MyTable extends StatefulWidget {
     this.heightRow = 35,
     required this.listHeader,
     required this.listData,
-    // this.onTap,
+    required this.onTap,
   });
 
   @override
@@ -65,10 +64,10 @@ class _MyTableState extends State<MyTable> {
         : widget.numberItemInList;
     subList = widget.list.sublist(start, end);
 
-    // colorEnd = widget.numberItemInList > widget.list.length
-    //     ? Colors.white
-    //     : Theme.of(context).primaryColor;
-    colorStart = Colors.teal.shade50;
+    colorEnd = widget.numberItemInList > widget.list.length
+        ? Colors.white
+        : AppColors.blueLight;
+    colorStart = AppColors.blueLight;
     numberPage = 1;
   }
 
@@ -76,7 +75,7 @@ class _MyTableState extends State<MyTable> {
   Widget build(BuildContext context) {
     colorEnd = widget.numberItemInList > widget.list.length
         ? Colors.teal.shade50
-        : Colors.green.shade600;
+        : AppColors.blueLight;
     return Column(
       children: <Widget>[
         SingleChildScrollView(
@@ -199,8 +198,7 @@ class _MyTableState extends State<MyTable> {
                                             duration: const Duration(
                                                 milliseconds: 200),
                                             child: Text(
-                                              e[widget.listData[0]["data"]]
-                                                  .toString(),
+                                              e[widget.listData[0]].toString(),
                                               textAlign: TextAlign.center,
                                             ),
                                           )),
@@ -214,174 +212,33 @@ class _MyTableState extends State<MyTable> {
                                         (index) => Row(
                                           children: [
                                             SizedBox(
-                                                width: widget.widthOtherColumn,
-                                                child:
-                                                    widget.listData[index + 1]
-                                                                ["type"] ==
-                                                            "answer"
-                                                        ? AnimatedDefaultTextStyle(
-                                                            child: Text(
-                                                              e[widget.listData[index + 1]
-                                                                              [
-                                                                              "data"]]
-                                                                          .toString() ==
-                                                                      "NO"
-                                                                  ? "لا"
-                                                                  : "نعم",
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .center,
-                                                            ),
-                                                            style: TextStyle(
-                                                                color: widget.list.indexOf(
-                                                                            e) ==
-                                                                        indexColor
-                                                                    ? Colors
-                                                                        .white
-                                                                    : Colors
-                                                                        .black,
-                                                                fontSize: widget
-                                                                            .list
-                                                                            .indexOf(
-                                                                                e) ==
-                                                                        indexColor
-                                                                    ? 17
-                                                                    : 16,
-                                                                fontWeight: widget
-                                                                            .list
-                                                                            .indexOf(
-                                                                                e) ==
-                                                                        indexColor
-                                                                    ? FontWeight
-                                                                        .w400
-                                                                    : FontWeight
-                                                                        .normal),
-                                                            duration:
-                                                                const Duration(
-                                                                    milliseconds:
-                                                                        200),
-                                                          )
-                                                        : widget.listData[index + 1]
-                                                                    ["type"] ==
-                                                                "bool"
-                                                            ? AnimatedDefaultTextStyle(
-                                                                child: Text(
-                                                                  e[widget.listData[index + 1]["data"]]
-                                                                              .toString() ==
-                                                                          "False"
-                                                                      ? "لا"
-                                                                      : "نعم",
-                                                                  textAlign:
-                                                                      TextAlign
-                                                                          .center,
-                                                                ),
-                                                                style: TextStyle(
-                                                                    color: widget.list.indexOf(e) ==
-                                                                            indexColor
-                                                                        ? Colors
-                                                                            .white
-                                                                        : Colors
-                                                                            .black,
-                                                                    fontSize:
-                                                                        widget.list.indexOf(e) ==
-                                                                                indexColor
-                                                                            ? 17
-                                                                            : 16,
-                                                                    fontWeight: widget.list.indexOf(e) ==
-                                                                            indexColor
-                                                                        ? FontWeight
-                                                                            .w400
-                                                                        : FontWeight
-                                                                            .normal),
-                                                                duration:
-                                                                    const Duration(
-                                                                        milliseconds:
-                                                                            200),
-                                                              )
-                                                            : widget.listData[index + 1]
-                                                                        [
-                                                                        "type"] ==
-                                                                    "date"
-                                                                ? AnimatedDefaultTextStyle(
-                                                                    child: Text(
-                                                                      "${DateFormat("yyyy-MM-dd").format(DateTime.parse(e[widget.listData[index + 1]["data"]]))}",
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .center,
-                                                                    ),
-                                                                    style: TextStyle(
-                                                                        color: widget.list.indexOf(e) ==
-                                                                                indexColor
-                                                                            ? Colors
-                                                                                .white
-                                                                            : Colors
-                                                                                .black,
-                                                                        fontSize: widget.list.indexOf(e) ==
-                                                                                indexColor
-                                                                            ? 17
-                                                                            : 16,
-                                                                        fontWeight: widget.list.indexOf(e) ==
-                                                                                indexColor
-                                                                            ? FontWeight.w400
-                                                                            : FontWeight.normal),
-                                                                    duration: const Duration(
-                                                                        milliseconds:
-                                                                            200),
-                                                                  )
-                                                                : widget.listData[index + 1]
-                                                                            [
-                                                                            "type"] ==
-                                                                        "elc"
-                                                                    ? AnimatedDefaultTextStyle(
-                                                                        child:
-                                                                            Text(
-                                                                          e[widget.listData[index + 1]["data"]].toString() == "true"
-                                                                              ? "إلكترونى"
-                                                                              : "عند الاستلام",
-                                                                          textAlign:
-                                                                              TextAlign.center,
-                                                                        ),
-                                                                        style: TextStyle(
-                                                                            color: widget.list.indexOf(e) == indexColor
-                                                                                ? Colors.white
-                                                                                : Colors.black,
-                                                                            fontSize: widget.list.indexOf(e) == indexColor ? 17 : 16,
-                                                                            fontWeight: widget.list.indexOf(e) == indexColor ? FontWeight.w400 : FontWeight.normal),
-                                                                        duration:
-                                                                            const Duration(milliseconds: 200),
-                                                                      )
-                                                                    : widget.listData[index + 1]["type"] ==
-                                                                            "listItem"
-                                                                        ? AnimatedDefaultTextStyle(
-                                                                            child:
-                                                                                Text(
-                                                                              e[widget.listData[index + 1]["data"]].length.toString(),
-                                                                              textAlign: TextAlign.center,
-                                                                            ),
-                                                                            style: TextStyle(
-                                                                                color: widget.list.indexOf(e) == indexColor ? Colors.white : Colors.black,
-                                                                                fontSize: widget.list.indexOf(e) == indexColor ? 17 : 16,
-                                                                                fontWeight: widget.list.indexOf(e) == indexColor ? FontWeight.w400 : FontWeight.normal),
-                                                                            duration:
-                                                                                const Duration(milliseconds: 200),
-                                                                          )
-                                                                        : widget.listData[index + 1]["type"] == "search"
-                                                                            ? AnimatedDefaultTextStyle(
-                                                                                child: Text(
-                                                                                  getDataSesrch(searchList: widget.searchList, string: e[widget.listData[index + 1]["data"]].toString()),
-                                                                                  textAlign: TextAlign.center,
-                                                                                ),
-                                                                                style: TextStyle(color: widget.list.indexOf(e) == indexColor ? Colors.white : Colors.black, fontSize: widget.list.indexOf(e) == indexColor ? 17 : 16, fontWeight: widget.list.indexOf(e) == indexColor ? FontWeight.w400 : FontWeight.normal),
-                                                                                duration: const Duration(milliseconds: 200),
-                                                                              )
-                                                                            : AnimatedDefaultTextStyle(
-                                                                                child: Text(
-                                                                                  e[widget.listData[index + 1]["data"]].toString(),
-                                                                                  textAlign: TextAlign.center,
-                                                                                ),
-                                                                                style: TextStyle(color: widget.list.indexOf(e) == indexColor ? Colors.white : Colors.black, fontSize: widget.list.indexOf(e) == indexColor ? 17 : 16, fontWeight: widget.list.indexOf(e) == indexColor ? FontWeight.w400 : FontWeight.normal),
-                                                                                duration: const Duration(milliseconds: 200),
-                                                                              )),
+                                              width: widget.widthOtherColumn,
+                                              child: AnimatedDefaultTextStyle(
+                                                child: Text(
+                                                  e[widget.listData[index + 1]]
+                                                      .toString(),
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                                style: TextStyle(
+                                                    color: widget.list
+                                                                .indexOf(e) ==
+                                                            indexColor
+                                                        ? Colors.white
+                                                        : Colors.black,
+                                                    fontSize: widget.list
+                                                                .indexOf(e) ==
+                                                            indexColor
+                                                        ? 17
+                                                        : 16,
+                                                    fontWeight: widget.list
+                                                                .indexOf(e) ==
+                                                            indexColor
+                                                        ? FontWeight.w400
+                                                        : FontWeight.normal),
+                                                duration: const Duration(
+                                                    milliseconds: 200),
+                                              ),
+                                            ),
                                             if (index !=
                                                 widget.columnNumber - 2)
                                               Container(
@@ -399,13 +256,19 @@ class _MyTableState extends State<MyTable> {
                                       if (indexColor ==
                                           widget.list.indexOf(e)) {
                                         indexColor = -1;
+                                        id = '';
+                                        print("**********************");
+                                        print(id);
+                                        print("***********************");
                                       } else {
                                         indexColor = widget.list.indexOf(e);
+                                        id = e[widget.listData[
+                                            widget.listData.length - 1]];
+                                        print("**********************");
+                                        print(id);
+                                        print("***********************");
                                       }
                                       //TODO: القيمة اللى هترجع
-                                      id = e[widget.listData[
-                                          widget.listData.length - 1]['data']];
-                                      // print(id);
                                     });
                                     onTap(id);
                                   },
@@ -416,7 +279,7 @@ class _MyTableState extends State<MyTable> {
                         ),
                       ),
                     ),
-                    // الصفحات
+                    // // الصفحات
                     // Padding(
                     //   padding: const EdgeInsets.symmetric(
                     //       vertical: 5, horizontal: 10),
@@ -426,7 +289,7 @@ class _MyTableState extends State<MyTable> {
                     //     decoration: BoxDecoration(
                     //         borderRadius: BorderRadius.circular(15),
                     //         border: Border.all(
-                    //             color: Colors.green.shade600, width: 1.5)),
+                    //             color: AppColors.blueLight, width: 1.5)),
                     //     margin: EdgeInsets.symmetric(vertical: 5),
                     //     child: Row(
                     //       mainAxisSize: MainAxisSize.max,
@@ -450,16 +313,16 @@ class _MyTableState extends State<MyTable> {
                     //                 numberPage--;
                     //                 if (start > widget.list.length) {
                     //                   subList = widget.list.sublist(start);
-                    //                   // colorEnd = Colors.green[700];
-                    //                   // colorStart = Colors.white;
+                    //                   colorEnd = AppColors.blueLight;
+                    //                   colorStart = Colors.white;
                     //                 } else {
                     //                   subList = widget.list.sublist(start, end);
                     //                   _controller.jumpTo(0);
                     //                   if (start == 0) {
                     //                     colorStart = Colors.teal.shade50;
                     //                   } else {
-                    //                     colorEnd = Colors.green.shade600;
-                    //                     colorStart = Colors.green.shade600;
+                    //                     colorEnd = AppColors.blueLight;
+                    //                     colorStart = AppColors.blueLight;
                     //                   }
                     //                 }
                     //               });
@@ -518,15 +381,6 @@ class _MyTableState extends State<MyTable> {
   }
 
   onTap(String st) {
-    // widget.onTap(st);
-  }
-
-  String getDataSesrch({required List? searchList, required String string}) {
-    for (int current = 0; current < searchList!.length; current++) {
-      if (searchList[current]['${widget.searchWord}'].toString() == string) {
-        myValue = searchList[current]['${widget.getSearchWord}'];
-      }
-    }
-    return myValue;
+    widget.onTap(st);
   }
 }
