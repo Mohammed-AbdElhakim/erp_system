@@ -239,6 +239,86 @@ class S {
       args: [],
     );
   }
+
+  /// `You do not have permission yet, Wait for the admin.`
+  String get massage_permission {
+    return Intl.message(
+      'You do not have permission yet, Wait for the admin.',
+      name: 'massage_permission',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You do not have permission.`
+  String get massage_no_permission {
+    return Intl.message(
+      'You do not have permission.',
+      name: 'massage_no_permission',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Refresh`
+  String get refresh {
+    return Intl.message(
+      'Refresh',
+      name: 'refresh',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Back`
+  String get back {
+    return Intl.message(
+      'Back',
+      name: 'back',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Not available at this location.`
+  String get no_location {
+    return Intl.message(
+      'Not available at this location.',
+      name: 'no_location',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Swipe To`
+  String get swipe_to {
+    return Intl.message(
+      'Swipe To',
+      name: 'swipe_to',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Attend`
+  String get attend {
+    return Intl.message(
+      'Attend',
+      name: 'attend',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Leave`
+  String get leave {
+    return Intl.message(
+      'Leave',
+      name: 'leave',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

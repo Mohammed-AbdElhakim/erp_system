@@ -13,6 +13,8 @@ class CustomAlertDialog {
     required String desc,
     String? textButton,
     void Function()? onPressed,
+    bool isOverlayTapDismiss = true,
+    bool isCloseButton = true,
   }) {
     return Alert(
       context: context,
@@ -20,14 +22,15 @@ class CustomAlertDialog {
       title: title,
       desc: desc,
       style: AlertStyle(
-        titleStyle: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: AppColors.blueLight),
-        descStyle: const TextStyle(
-          fontSize: 18,
-        ),
-      ),
+          titleStyle: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: AppColors.blueLight),
+          descStyle: const TextStyle(
+            fontSize: 18,
+          ),
+          isOverlayTapDismiss: isOverlayTapDismiss,
+          isCloseButton: isCloseButton),
       buttons: [
         DialogButton(
           onPressed: onPressed ??

@@ -17,7 +17,13 @@
   "change_language": "Change Language",
   "arabic": "عربي ",
   "english": "English",
-  "log_out": "Log Out"
-
-
+  "log_out": "Log Out",
+  "massage_permission": "You do not have permission yet, Wait for the admin.",
+  "massage_no_permission": "You do not have permission.",
+  "refresh": "Refresh",
+  "back": "Back",
+  "no_location": "Not available at this location.",
+  "swipe_to": "Swipe To",
+  "attend": "Attend",
+  "leave": "Leave"
 }

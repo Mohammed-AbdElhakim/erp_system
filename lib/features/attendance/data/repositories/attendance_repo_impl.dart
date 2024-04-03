@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:erp_system/core/errors/failures.dart';
@@ -26,7 +28,7 @@ class AttendanceRepoImpl implements AttendanceRepo {
 
       Map<String, dynamic> data = await apiService.post(
         endPoint: "Attendance/CheckValidDevice",
-        data: deviceKey,
+        data: jsonEncode(deviceKey),
         headers: {
           "Authorization": "Bearer $token",
           "CompanyKey": companyKey,
@@ -90,7 +92,7 @@ class AttendanceRepoImpl implements AttendanceRepo {
       String token =
           await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
 
-      Map<String, dynamic> data = await apiService.post(
+      String data = await apiService.postAttendance(
         endPoint: "Attendance/SendAttendance",
         data: {"MachineID": machineID, "CheckDateTime": time},
         headers: {
@@ -98,7 +100,7 @@ class AttendanceRepoImpl implements AttendanceRepo {
           "CompanyKey": companyKey,
         },
       );
-      return right(data.toString());
+      return right(data);
     } catch (e) {
       if (e is DioException) {
         return left(

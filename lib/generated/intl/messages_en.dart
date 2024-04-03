@@ -23,6 +23,8 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "arabic": MessageLookupByLibrary.simpleMessage("عربي "),
+        "attend": MessageLookupByLibrary.simpleMessage("Attend"),
+        "back": MessageLookupByLibrary.simpleMessage("Back"),
         "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
         "change_host": MessageLookupByLibrary.simpleMessage("Change Host"),
         "change_host_description": MessageLookupByLibrary.simpleMessage(
@@ -36,11 +38,20 @@ class MessageLookup extends MessageLookupByLibrary {
         "error": MessageLookupByLibrary.simpleMessage("Error"),
         "hi": MessageLookupByLibrary.simpleMessage("Hi, "),
         "host_view": MessageLookupByLibrary.simpleMessage("Host"),
+        "leave": MessageLookupByLibrary.simpleMessage("Leave"),
         "log_out": MessageLookupByLibrary.simpleMessage("Log Out"),
         "login": MessageLookupByLibrary.simpleMessage("LOG IN"),
+        "massage_no_permission":
+            MessageLookupByLibrary.simpleMessage("You do not have permission."),
+        "massage_permission": MessageLookupByLibrary.simpleMessage(
+            "You do not have permission yet, Wait for the admin."),
+        "no_location": MessageLookupByLibrary.simpleMessage(
+            "Not available at this location."),
         "ok": MessageLookupByLibrary.simpleMessage("Ok"),
         "password": MessageLookupByLibrary.simpleMessage("Password"),
+        "refresh": MessageLookupByLibrary.simpleMessage("Refresh"),
         "search": MessageLookupByLibrary.simpleMessage("Search....."),
+        "swipe_to": MessageLookupByLibrary.simpleMessage("Swipe To"),
         "username_or_email":
             MessageLookupByLibrary.simpleMessage("Username or Email"),
         "welcome": MessageLookupByLibrary.simpleMessage("WELCOME !"),

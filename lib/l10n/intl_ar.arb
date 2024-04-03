@@ -17,7 +17,16 @@
   "change_language": "تغير اللغة",
   "arabic": "عربي",
   "english": "English",
-  "log_out": "تسجيل الخروج"
+  "log_out": "تسجيل الخروج",
+  "massage_permission": "ليس لديك إذن بعد، انتظر المشرف.",
+  "massage_no_permission": "ليس لديك إذن.",
+  "refresh": "تحديث",
+  "back": "رجوع",
+  "no_location": "غير متاح فى هذا المكان.",
+  "swipe_to": "اسحب الى",
+  "attend": "حضور",
+  "leave": "انصراف"
+
 
 
 }

@@ -23,6 +23,8 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "arabic": MessageLookupByLibrary.simpleMessage("عربي"),
+        "attend": MessageLookupByLibrary.simpleMessage("حضور"),
+        "back": MessageLookupByLibrary.simpleMessage("رجوع"),
         "cancel": MessageLookupByLibrary.simpleMessage("إلغاء"),
         "change_host": MessageLookupByLibrary.simpleMessage("تغير المضيف"),
         "change_host_description": MessageLookupByLibrary.simpleMessage(
@@ -34,11 +36,20 @@ class MessageLookup extends MessageLookupByLibrary {
         "error": MessageLookupByLibrary.simpleMessage("خطأ"),
         "hi": MessageLookupByLibrary.simpleMessage("أهلاً، "),
         "host_view": MessageLookupByLibrary.simpleMessage("المضيف"),
+        "leave": MessageLookupByLibrary.simpleMessage("انصراف"),
         "log_out": MessageLookupByLibrary.simpleMessage("تسجيل الخروج"),
         "login": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
+        "massage_no_permission":
+            MessageLookupByLibrary.simpleMessage("ليس لديك إذن."),
+        "massage_permission": MessageLookupByLibrary.simpleMessage(
+            "ليس لديك إذن بعد، انتظر المشرف."),
+        "no_location":
+            MessageLookupByLibrary.simpleMessage("غير متاح فى هذا المكان."),
         "ok": MessageLookupByLibrary.simpleMessage("حسناً"),
         "password": MessageLookupByLibrary.simpleMessage("كلمة المرور"),
+        "refresh": MessageLookupByLibrary.simpleMessage("تحديث"),
         "search": MessageLookupByLibrary.simpleMessage("بحث....."),
+        "swipe_to": MessageLookupByLibrary.simpleMessage("اسحب الى"),
         "username_or_email": MessageLookupByLibrary.simpleMessage(
             "اسم المستخدم او البريد الإلكتروني"),
         "welcome": MessageLookupByLibrary.simpleMessage("مرحباً !"),
