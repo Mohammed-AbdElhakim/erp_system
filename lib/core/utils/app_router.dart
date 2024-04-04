@@ -1,7 +1,3 @@
-import 'package:erp_system/core/utils/service_locator.dart';
-import 'package:erp_system/features/screensView/data/repositories/screen_repo_impl.dart';
-import 'package:erp_system/features/screensView/presentation/manager/getScreen/get_screen_cubit.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../features/auth/presentation/views/login_view.dart';
@@ -46,13 +42,8 @@ abstract class AppRouter {
         path: kScreenView,
         builder: (context, state) {
           Pages page = state.extra as Pages;
-          return BlocProvider(
-            create: (context) => GetScreenCubit(
-              getIt.get<ScreenRepoImpl>(),
-            )..getScreen(page),
-            child: ScreenView(
-              pageData: page,
-            ),
+          return ScreenView(
+            pageData: page,
           );
         },
       ),

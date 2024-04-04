@@ -55,6 +55,8 @@ dependencies:
 #  iconsax: ^0.0.8
   modal_progress_hud_nsn: ^0.5.1
   slidable_button: ^3.0.0+1
+  flutter_speed_dial: ^7.0.0
+  flutter_arc_speed_dial: ^2.0.1
 #  hive: ^2.2.3
 #  hive_flutter: ^1.1.0
 

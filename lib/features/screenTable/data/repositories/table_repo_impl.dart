@@ -2,17 +2,17 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:erp_system/core/errors/failures.dart';
 import 'package:erp_system/core/models/menu_model/pages.dart';
-import 'package:erp_system/features/screensView/data/repositories/screen_repo.dart';
+import 'package:erp_system/features/screenTable/data/repositories/table_repo.dart';
 
 import '../../../../core/utils/api_service.dart';
 import '../models/column_data_model.dart';
 
-class ScreenRepoImpl implements ScreenRepo {
+class TableRepoImpl implements TableRepo {
   final ApiService apiService;
 
-  ScreenRepoImpl(this.apiService);
+  TableRepoImpl(this.apiService);
   @override
-  Future<Either<Failure, ScreenModel>> getScreen(Pages page) async {
+  Future<Either<Failure, ScreenModel>> getTable(Pages page) async {
     try {
       // String companyKey =
       //     await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
