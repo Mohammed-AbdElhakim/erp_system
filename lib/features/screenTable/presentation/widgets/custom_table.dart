@@ -57,9 +57,9 @@ class _CustomTableState extends State<CustomTable> {
                     label: Expanded(
                       child: InkWell(
                         onTap: () {
-                          print("****************************");
-                          print(widget.listHeader[index]);
-                          print("*****************************");
+                          // print("****************************");
+                          // print(widget.listHeader[index]);
+                          // print("*****************************");
                         },
                         child: Text(
                           textAlign: TextAlign.center,

@@ -1,10 +1,15 @@
+import 'package:erp_system/core/helper/AlertDialog/custom_alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_strings.dart';
+import '../../../../generated/l10n.dart';
+import '../../data/models/column_data_model.dart';
 import '../manager/getTable/get_table_cubit.dart';
+import 'color_picker_widget.dart';
+import 'text_widget.dart';
 
 class CustomFloatingActionButton extends StatefulWidget {
   const CustomFloatingActionButton({super.key});
@@ -17,6 +22,10 @@ class CustomFloatingActionButton extends StatefulWidget {
 class _CustomFloatingActionButtonState
     extends State<CustomFloatingActionButton> {
   String? lang;
+
+  List<Map<String, dynamic>> listData = [];
+  List<ColumList> listHeader = [];
+  List<dynamic> listKey = [];
 
   List<IconData> iconList = [
     Icons.search,
@@ -37,13 +46,9 @@ class _CustomFloatingActionButtonState
     return BlocConsumer<GetTableCubit, GetTableState>(
       listener: (context, state) {
         if (state is GetScreenSuccess) {
-          List<dynamic> listData = state.screenModel.dataList.dynamicList;
-          List<String> listHeader = [];
-          List<dynamic> listKey = [];
+          listData.addAll(state.screenModel.dataList.dynamicList);
+          listHeader.addAll(state.screenModel.columList);
           for (var item in state.screenModel.columList) {
-            listHeader.add(lang == AppStrings.enLangKey
-                ? item.enColumnLabel
-                : item.arColumnLabel);
             listKey.add(item.ColumnName);
           }
         }
@@ -95,15 +100,74 @@ class _CustomFloatingActionButtonState
 
   void tapIcon(IconData icon) {
     if (icon == Icons.search) {
-      print("search");
+      CustomAlertDialog.alertWithCustomContent(
+          context: context,
+          title: S.of(context).btn_search,
+          isOverlayTapDismiss: false,
+          content: buildAlertWithCustomContent(),
+          textButton: S.of(context).btn_search,
+          onPressed: () {});
     } else if (icon == Icons.refresh) {
-      print("refresh");
+      // print("refresh");
     } else if (icon == Icons.delete) {
-      print("delete");
+      // print("delete");
     } else if (icon == Icons.edit_note) {
-      print("edit note");
+      CustomAlertDialog.alertWithCustomContent(
+          context: context,
+          title: S.of(context).btn_edit,
+          isOverlayTapDismiss: false,
+          content: buildAlertWithCustomContent(),
+          textButton: S.of(context).btn_edit,
+          onPressed: () {});
     } else if (icon == Icons.add) {
-      print("add");
+      CustomAlertDialog.alertWithCustomContent(
+          context: context,
+          title: S.of(context).btn_add,
+          isOverlayTapDismiss: false,
+          content: buildAlertWithCustomContent(),
+          textButton: S.of(context).btn_add,
+          onPressed: () {});
     }
+  }
+
+  buildAlertWithCustomContent() {
+    return Column(
+      children: getMyWidgetInAlertWithCustomContent(listHeader),
+    );
+  }
+
+  List<Widget> getMyWidgetInAlertWithCustomContent(List<ColumList> listHeader) {
+    List<Widget> listWidgets = [];
+
+    for (var item in listHeader) {
+      if (item.InsertType == "text") {
+        listWidgets.add(
+          TextWidget(
+            title: lang == AppStrings.arLangKey
+                ? item.arColumnLabel
+                : item.enColumnLabel,
+            typeInput: 'text',
+          ),
+        );
+      }
+      if (item.InsertType == "number") {
+        listWidgets.add(
+          TextWidget(
+            title: lang == AppStrings.arLangKey
+                ? item.arColumnLabel
+                : item.enColumnLabel,
+            typeInput: 'number',
+          ),
+        );
+      }
+      if (item.InsertType == "color") {
+        listWidgets.add(ColorPickerWidget(
+          title: lang == AppStrings.arLangKey
+              ? item.arColumnLabel
+              : item.enColumnLabel,
+        ));
+      }
+    }
+    return listWidgets;
   }
 }

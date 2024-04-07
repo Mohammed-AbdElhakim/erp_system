@@ -11,7 +11,7 @@ import 'package:location/location.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:slidable_button/slidable_button.dart';
 
-import '../../../../core/helper/AlertDialog/alert_dialog.dart';
+import '../../../../core/helper/AlertDialog/custom_alert_dialog.dart';
 import '../../../../core/helper/SharedPreferences/pref.dart';
 import '../../../../core/utils/service_locator.dart';
 import '../../../../core/widgets/custom_loading_widget.dart';

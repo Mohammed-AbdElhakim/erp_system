@@ -25,7 +25,11 @@
   "no_location": "غير متاح فى هذا المكان.",
   "swipe_to": "اسحب الى",
   "attend": "حضور",
-  "leave": "انصراف"
+  "leave": "انصراف",
+  "btn_search": "بحث",
+  "btn_add": "إضافة",
+  "btn_edit": "تعديل",
+  "btn_delete": "حذف"
 
 
 

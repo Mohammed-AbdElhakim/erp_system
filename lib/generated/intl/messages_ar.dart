@@ -25,6 +25,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "arabic": MessageLookupByLibrary.simpleMessage("عربي"),
         "attend": MessageLookupByLibrary.simpleMessage("حضور"),
         "back": MessageLookupByLibrary.simpleMessage("رجوع"),
+        "btn_add": MessageLookupByLibrary.simpleMessage("إضافة"),
+        "btn_delete": MessageLookupByLibrary.simpleMessage("حذف"),
+        "btn_edit": MessageLookupByLibrary.simpleMessage("تعديل"),
+        "btn_search": MessageLookupByLibrary.simpleMessage("بحث"),
         "cancel": MessageLookupByLibrary.simpleMessage("إلغاء"),
         "change_host": MessageLookupByLibrary.simpleMessage("تغير المضيف"),
         "change_host_description": MessageLookupByLibrary.simpleMessage(

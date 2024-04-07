@@ -319,6 +319,46 @@ class S {
       args: [],
     );
   }
+
+  /// `Search`
+  String get btn_search {
+    return Intl.message(
+      'Search',
+      name: 'btn_search',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add`
+  String get btn_add {
+    return Intl.message(
+      'Add',
+      name: 'btn_add',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit`
+  String get btn_edit {
+    return Intl.message(
+      'Edit',
+      name: 'btn_edit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete`
+  String get btn_delete {
+    return Intl.message(
+      'Delete',
+      name: 'btn_delete',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

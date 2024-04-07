@@ -8,10 +8,12 @@ class CustomTextFormField extends StatelessWidget {
       this.validatorMassage = 'Field is required',
       required this.hintText,
       this.onChanged,
-      this.onSaved});
+      this.onSaved,
+      this.keyboardType});
   final TextEditingController? controller;
   final String? validatorMassage;
   final String hintText;
+  final TextInputType? keyboardType;
   final void Function(String)? onChanged;
   final void Function(String?)? onSaved;
 
@@ -29,6 +31,7 @@ class CustomTextFormField extends StatelessWidget {
       textAlign: TextAlign.center,
       onChanged: onChanged,
       onSaved: onSaved,
+      keyboardType: keyboardType,
       decoration: InputDecoration(
         hintText: hintText,
         hintStyle: TextStyle(color: AppColors.grey),

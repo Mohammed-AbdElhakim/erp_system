@@ -25,5 +25,10 @@
   "no_location": "Not available at this location.",
   "swipe_to": "Swipe To",
   "attend": "Attend",
-  "leave": "Leave"
+  "leave": "Leave",
+  "btn_search": "Search",
+  "btn_add": "Add",
+  "btn_edit": "Edit",
+  "btn_delete": "Delete"
+
 }
