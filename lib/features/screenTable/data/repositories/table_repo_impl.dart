@@ -29,6 +29,31 @@ class TableRepoImpl implements TableRepo {
       Map<String, dynamic> data = {
         "columList": [
           {
+            "id": 131750,
+            "ListName": "offerstates",
+            "ColumnName": "Id",
+            "enColumnLabel": " English Name ",
+            "arColumnLabel": "ID",
+            "InsertVisable": false,
+            "InsertType": "number",
+            "userID": 4121,
+            "ListID": 16844,
+            "sort": 3,
+            "visible": false,
+            "Cvisable": false,
+            "validation": "required",
+            "isKey": false,
+            "IsRquired": false,
+            "SearchName": "Id",
+            "IsTotal": false,
+            "InsertDefult": true,
+            "VisableDefult": true,
+            "Width": 140,
+            "MobileVisable": true,
+            "ComID": 1,
+            "MasterInsertVisible": false
+          },
+          {
             "id": 131749,
             "ListName": "offerstates",
             "ColumnName": "EnName",
@@ -79,31 +104,6 @@ class TableRepoImpl implements TableRepo {
             "MasterInsertVisible": true
           },
           {
-            "id": 131750,
-            "ListName": "offerstates",
-            "ColumnName": "Id",
-            "enColumnLabel": " English Name ",
-            "arColumnLabel": "ID",
-            "InsertVisable": false,
-            "InsertType": "number",
-            "userID": 4121,
-            "ListID": 16844,
-            "sort": 3,
-            "visible": false,
-            "Cvisable": false,
-            "validation": "required",
-            "isKey": false,
-            "IsRquired": false,
-            "SearchName": "Id",
-            "IsTotal": false,
-            "InsertDefult": true,
-            "VisableDefult": true,
-            "Width": 140,
-            "MobileVisable": true,
-            "ComID": 1,
-            "MasterInsertVisible": false
-          },
-          {
             "id": 131757,
             "ListName": "offerstates",
             "ColumnName": "Color",
@@ -132,8 +132,8 @@ class TableRepoImpl implements TableRepo {
         "dataList": {
           "dynamicList": [
             {
-              "Id": 3,
-              "ArName": "Demo",
+              "Id": 1,
+              "ArName": "DemoDemoDemoDemo DemoDemo DemoDemo Demo Demo",
               "EnName": "Demo",
               "Color": "#56e907",
             },
@@ -144,31 +144,67 @@ class TableRepoImpl implements TableRepo {
               "Color": "#0bf4ae",
             },
             {
-              "Id": 1,
+              "Id": 3,
               "ArName": "open",
               "EnName": "open",
               "Color": "#10f4f0",
             },
             {
-              "Id": 3,
+              "Id": 4,
               "ArName": "Demo",
               "EnName": "Demo",
               "Color": "#56e907",
             },
             {
-              "Id": 2,
+              "Id": 5,
               "ArName": "waiting",
               "EnName": "waiting",
               "Color": "#0bf4ae",
             },
             {
-              "Id": 1,
+              "Id": 6,
+              "ArName": "open",
+              "EnName": "open",
+              "Color": "#10f4f0",
+            },
+            {
+              "Id": 7,
+              "ArName": "DemoDemoDemoDemo DemoDemo DemoDemo Demo Demo",
+              "EnName": "Demo",
+              "Color": "#56e907",
+            },
+            {
+              "Id": 8,
+              "ArName": "waiting",
+              "EnName": "waiting",
+              "Color": "#0bf4ae",
+            },
+            {
+              "Id": 9,
+              "ArName": "open",
+              "EnName": "open",
+              "Color": "#10f4f0",
+            },
+            {
+              "Id": 10,
+              "ArName": "Demo",
+              "EnName": "Demo",
+              "Color": "#56e907",
+            },
+            {
+              "Id": 11,
+              "ArName": "waiting",
+              "EnName": "waiting",
+              "Color": "#0bf4ae",
+            },
+            {
+              "Id": 12,
               "ArName": "open",
               "EnName": "open",
               "Color": "#10f4f0",
             },
           ],
-          "numberofrecords": 6
+          "numberofrecords": 12
         }
       };
       ScreenModel screenModel = ScreenModel.fromJson(data);

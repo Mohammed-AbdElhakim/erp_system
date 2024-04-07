@@ -22,7 +22,7 @@ class MenuRepoImpl implements MenuRepo {
       String token =
           await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await apiService.get(
-        endPoint: "home/getmenu",
+        endPoint: "Home/GetMenu",
         headers: {
           "Authorization": "Bearer $token",
           "CompanyKey": companyKey,

@@ -1,9 +1,6 @@
-import 'package:erp_system/core/utils/app_colors.dart';
 import 'package:erp_system/core/utils/app_strings.dart';
 import 'package:erp_system/features/screenTable/presentation/widgets/screen_table_body.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_arc_speed_dial/flutter_speed_dial_menu_button.dart';
-import 'package:flutter_arc_speed_dial/main_menu_floating_action_button.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/models/menu_model/pages.dart';
@@ -13,6 +10,7 @@ import '../../../../core/widgets/custom_app_bar.dart';
 import '../../../../core/widgets/custom_container.dart';
 import '../../data/repositories/table_repo_impl.dart';
 import '../manager/getTable/get_table_cubit.dart';
+import '../widgets/custom_floating_action_button.dart';
 
 class ScreenTable extends StatefulWidget {
   const ScreenTable({super.key, required this.pageData});
@@ -39,7 +37,31 @@ class _ScreenTableState extends State<ScreenTable> {
       )..getTable(widget.pageData),
       child: Scaffold(
         appBar: const CustomAppBar(),
-        floatingActionButton: Directionality(
+        floatingActionButton: const CustomFloatingActionButton(),
+        body: Column(
+          children: [
+            CustomContainer(
+              height: 120,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 12),
+                child: Text(
+                  lang == AppStrings.enLangKey
+                      ? widget.pageData.nameEn
+                      : widget.pageData.nameAr,
+                  maxLines: 1,
+                  textAlign: TextAlign.center,
+                  style: AppStyles.textStyle26,
+                ),
+              ),
+            ),
+            const ScreenTableBody(),
+          ],
+        ),
+      ),
+    );
+  }
+}
+/*Directionality(
           textDirection: TextDirection.rtl,
           child: SpeedDialMenuButton(
             mainMenuFloatingActionButton: MainMenuFloatingActionButton(
@@ -105,31 +127,7 @@ class _ScreenTableState extends State<ScreenTable> {
             isSpeedDialFABsMini: false,
             mainFABPosX: lang == AppStrings.arLangKey ? 40 : 0,
           ),
-        ),
-        body: Column(
-          children: [
-            CustomContainer(
-              height: 120,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 12),
-                child: Text(
-                  lang == AppStrings.enLangKey
-                      ? widget.pageData.nameEn
-                      : widget.pageData.nameAr,
-                  maxLines: 1,
-                  textAlign: TextAlign.center,
-                  style: AppStyles.textStyle26,
-                ),
-              ),
-            ),
-            const ScreenTableBody(),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
+        )*/
 /*SpeedDial(
           backgroundColor: AppColors.blueLight,
           overlayOpacity: 0.5,

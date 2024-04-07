@@ -17,24 +17,24 @@ class Pages {
   late final int moduleID;
 
   Pages.fromJson(Map<String, dynamic> json) {
-    pageId = json['pageId'];
-    nameAr = json['nameAr'];
-    nameEn = json['nameEn'];
-    navigationKey = json['navigationKey'];
-    icon = json['icon'];
-    isFastScreen = json['isFastScreen'];
-    moduleID = json['moduleID'];
+    pageId = json['PageId'];
+    nameAr = json['NameAr'];
+    nameEn = json['NameEn'];
+    navigationKey = json['NavigationKey'];
+    icon = json['Icon'];
+    isFastScreen = json['IsFastScreen'];
+    moduleID = json['ModuleID'];
   }
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['pageId'] = pageId;
-    data['nameAr'] = nameAr;
-    data['nameEn'] = nameEn;
-    data['navigationKey'] = navigationKey;
-    data['icon'] = icon;
-    data['isFastScreen'] = isFastScreen;
-    data['moduleID'] = moduleID;
+    data['PageId'] = pageId;
+    data['NameAr'] = nameAr;
+    data['NameEn'] = nameEn;
+    data['NavigationKey'] = navigationKey;
+    data['Icon'] = icon;
+    data['IsFastScreen'] = isFastScreen;
+    data['ModuleID'] = moduleID;
     return data;
   }
 }
