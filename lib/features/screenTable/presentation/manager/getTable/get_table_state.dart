@@ -6,18 +6,18 @@ sealed class GetTableState extends Equatable {
   List<Object> get props => [];
 }
 
-final class GetScreenInitial extends GetTableState {}
+final class GetTableInitial extends GetTableState {}
 
-final class GetScreenLoading extends GetTableState {}
+final class GetTableLoading extends GetTableState {}
 
-final class GetScreenFailure extends GetTableState {
+final class GetTableFailure extends GetTableState {
   final String errorMassage;
 
-  const GetScreenFailure(this.errorMassage);
+  const GetTableFailure(this.errorMassage);
 }
 
-final class GetScreenSuccess extends GetTableState {
+final class GetTableSuccess extends GetTableState {
   final ScreenModel screenModel;
 
-  const GetScreenSuccess(this.screenModel);
+  const GetTableSuccess(this.screenModel);
 }

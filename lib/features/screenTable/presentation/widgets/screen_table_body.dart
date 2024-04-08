@@ -1,3 +1,4 @@
+import 'package:erp_system/features/screenTable/data/models/column_data_model.dart';
 import 'package:erp_system/features/screenTable/presentation/widgets/custom_table.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,24 +28,24 @@ class _ScreenTableBodyState extends State<ScreenTableBody> {
   Widget build(BuildContext context) {
     return BlocBuilder<GetTableCubit, GetTableState>(
       builder: (context, state) {
-        if (state is GetScreenSuccess) {
-          List<dynamic> listData = state.screenModel.dataList.dynamicList;
+        if (state is GetTableSuccess) {
+          List<dynamic>? listData = state.screenModel.dataList;
           List<String> listHeader = [];
           List<dynamic> listKey = [];
-          for (var item in state.screenModel.columList) {
+          for (var item in state.screenModel.columnList!) {
             listHeader.add(lang == AppStrings.enLangKey
-                ? item.enColumnLabel
-                : item.arColumnLabel);
-            listKey.add(item.ColumnName);
+                ? item.enColumnLabel!
+                : item.arColumnLabel!);
+            listKey.add(item.columnName);
           }
           return Expanded(
             child: CustomTable(
               listHeader: listHeader,
-              listData: listData,
+              listData: listData!,
               listKey: listKey,
             ),
           );
-        } else if (state is GetScreenFailure) {
+        } else if (state is GetTableFailure) {
           return CustomErrorMassage(errorMassage: state.errorMassage);
         } else {
           return const CustomLoadingWidget();

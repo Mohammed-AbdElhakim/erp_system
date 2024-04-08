@@ -1,4 +1,5 @@
 import 'package:erp_system/core/utils/app_strings.dart';
+import 'package:erp_system/features/screenTable/presentation/manager/getPermissions/get_permissions_cubit.dart';
 import 'package:erp_system/features/screenTable/presentation/widgets/screen_table_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,12 +9,13 @@ import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/service_locator.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
 import '../../../../core/widgets/custom_container.dart';
-import '../../data/repositories/table_repo_impl.dart';
+import '../../data/repositories/screen_repo_impl.dart';
 import '../manager/getTable/get_table_cubit.dart';
 import '../widgets/custom_floating_action_button.dart';
 
 class ScreenTable extends StatefulWidget {
   const ScreenTable({super.key, required this.pageData});
+
   final Pages pageData;
 
   @override
@@ -31,10 +33,19 @@ class _ScreenTableState extends State<ScreenTable> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => GetTableCubit(
-        getIt.get<TableRepoImpl>(),
-      )..getTable(widget.pageData),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => GetTableCubit(
+            getIt.get<ScreenRepoImpl>(),
+          )..getTable(widget.pageData),
+        ),
+        BlocProvider(
+          create: (context) => GetPermissionsCubit(
+            getIt.get<ScreenRepoImpl>(),
+          )..getPagePermissions(widget.pageData.pageId.toString()),
+        ),
+      ],
       child: Scaffold(
         appBar: const CustomAppBar(),
         floatingActionButton: const CustomFloatingActionButton(),

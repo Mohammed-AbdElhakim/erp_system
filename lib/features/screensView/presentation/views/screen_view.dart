@@ -11,15 +11,17 @@ class ScreenView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return getWidgetBody(pageData.navigationKey);
+    return getWidgetBody(pageData.url);
   }
 
   getWidgetBody(String navigationKey) {
     switch (navigationKey) {
-      case "Mobile Attendance":
+      case "mobileAttendance":
         return AttendanceView(pageData: pageData);
-      default:
+      case "general":
         return ScreenTable(pageData: pageData);
+      // default:
+      //   return ScreenTable(pageData: pageData);
     }
   }
 }

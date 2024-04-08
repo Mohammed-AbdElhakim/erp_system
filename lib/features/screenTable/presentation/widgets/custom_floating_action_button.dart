@@ -1,12 +1,14 @@
-import 'package:erp_system/core/helper/AlertDialog/custom_alert_dialog.dart';
+import 'package:erp_system/features/screenTable/presentation/manager/getPermissions/get_permissions_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
+import '../../../../core/helper/AlertDialog/custom_alert_dialog.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../../../../generated/l10n.dart';
 import '../../data/models/column_data_model.dart';
+import '../../data/models/permission_model.dart';
 import '../manager/getTable/get_table_cubit.dart';
 import 'color_picker_widget.dart';
 import 'text_widget.dart';
@@ -23,16 +25,21 @@ class _CustomFloatingActionButtonState
     extends State<CustomFloatingActionButton> {
   String? lang;
 
+  bool delete = false;
+  bool edit = false;
+  bool add = false;
+  bool search = false;
+
   List<Map<String, dynamic>> listData = [];
-  List<ColumList> listHeader = [];
+  List<ColumnList> listHeader = [];
   List<dynamic> listKey = [];
 
   List<IconData> iconList = [
-    Icons.search,
-    Icons.refresh,
-    Icons.delete,
-    Icons.edit_note,
-    Icons.add,
+    // Icons.search,
+    // Icons.search,
+    // Icons.search,
+    // Icons.search,
+    // Icons.search,
   ];
 
   @override
@@ -43,18 +50,49 @@ class _CustomFloatingActionButtonState
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<GetTableCubit, GetTableState>(
+    return BlocListener<GetPermissionsCubit, GetPermissionsState>(
       listener: (context, state) {
-        if (state is GetScreenSuccess) {
-          listData.addAll(state.screenModel.dataList.dynamicList);
-          listHeader.addAll(state.screenModel.columList);
-          for (var item in state.screenModel.columList) {
-            listKey.add(item.ColumnName);
+        if (state is GetPermissionSuccess) {
+          PermissionModel permissionModel = state.permissionModel;
+          if (permissionModel.showSearch == true) {
+            setState(() {
+              iconList.add(Icons.search);
+            });
+          }
+          if (permissionModel.showRefersh == true) {
+            setState(() {
+              iconList.add(Icons.refresh);
+            });
+          }
+          if (permissionModel.showDelete == true) {
+            setState(() {
+              iconList.add(Icons.delete);
+            });
+          }
+
+          if (permissionModel.showEdit == true) {
+            setState(() {
+              iconList.add(Icons.edit_note);
+            });
+          }
+          if (permissionModel.showNew == true) {
+            setState(() {
+              iconList.add(Icons.add);
+            });
           }
         }
       },
-      builder: (context, state) {
-        return SpeedDial(
+      child: BlocListener<GetTableCubit, GetTableState>(
+        listener: (context, state) {
+          if (state is GetTableSuccess) {
+            listData.addAll(state.screenModel.dataList!);
+            listHeader.addAll(state.screenModel.columnList!);
+            for (var item in state.screenModel.columnList!) {
+              listKey.add(item.columnName);
+            }
+          }
+        },
+        child: SpeedDial(
           backgroundColor: AppColors.blueLight,
           overlayOpacity: 0.5,
           activeIcon: Icons.close,
@@ -79,8 +117,8 @@ class _CustomFloatingActionButtonState
             Icons.settings,
             color: AppColors.white,
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 
@@ -136,35 +174,36 @@ class _CustomFloatingActionButtonState
     );
   }
 
-  List<Widget> getMyWidgetInAlertWithCustomContent(List<ColumList> listHeader) {
+  List<Widget> getMyWidgetInAlertWithCustomContent(
+      List<ColumnList> listHeader) {
     List<Widget> listWidgets = [];
 
     for (var item in listHeader) {
-      if (item.InsertType == "text") {
+      if (item.insertType == "text") {
         listWidgets.add(
           TextWidget(
             title: lang == AppStrings.arLangKey
-                ? item.arColumnLabel
-                : item.enColumnLabel,
+                ? item.arColumnLabel!
+                : item.enColumnLabel!,
             typeInput: 'text',
           ),
         );
       }
-      if (item.InsertType == "number") {
+      if (item.insertType == "number") {
         listWidgets.add(
           TextWidget(
             title: lang == AppStrings.arLangKey
-                ? item.arColumnLabel
-                : item.enColumnLabel,
+                ? item.arColumnLabel!
+                : item.enColumnLabel!,
             typeInput: 'number',
           ),
         );
       }
-      if (item.InsertType == "color") {
+      if (item.insertType == "color") {
         listWidgets.add(ColorPickerWidget(
           title: lang == AppStrings.arLangKey
-              ? item.arColumnLabel
-              : item.enColumnLabel,
+              ? item.arColumnLabel!
+              : item.enColumnLabel!,
         ));
       }
     }
