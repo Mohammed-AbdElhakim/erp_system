@@ -2,6 +2,8 @@ import 'package:erp_system/core/utils/app_assets.dart';
 import 'package:erp_system/core/widgets/custom_container.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../generated/l10n.dart';
+
 class CustomDrawerHeader extends StatelessWidget {
   const CustomDrawerHeader({
     Key? key,
@@ -27,9 +29,9 @@ class CustomDrawerHeader extends StatelessWidget {
               ),
             ),
           ),
-          const Text(
-            "ERP System",
-            style: TextStyle(
+          Text(
+            S.of(context).dynamic_pro,
+            style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w900,
               color: Colors.white,
