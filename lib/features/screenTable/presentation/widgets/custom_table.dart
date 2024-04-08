@@ -25,7 +25,8 @@ class _CustomTableState extends State<CustomTable> {
   late Color colorStart;
   late int numberPage;
   late int numberItemInList;
-  ScrollController controller = ScrollController();
+  ScrollController controllerVertical = ScrollController();
+  ScrollController controllerHorizontal = ScrollController();
   List<int> listNumberItemInList = [10, 25, 50, 100];
 
   @override
@@ -41,16 +42,22 @@ class _CustomTableState extends State<CustomTable> {
         Expanded(
           child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
-            controller: controller,
+            controller: controllerVertical,
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
+              controller: controllerHorizontal,
               child: DataTable(
                 headingRowColor: MaterialStateColor.resolveWith(
                   (states) {
                     return Colors.blue;
                   },
                 ),
-                border: TableBorder.all(color: Colors.grey.shade400),
+                columnSpacing: 30,
+                horizontalMargin: 20,
+                dataRowMinHeight: 35,
+                dataRowMaxHeight: 35,
+                headingRowHeight: 35,
+                border: TableBorder.all(color: Colors.grey.shade300),
                 columns: List.generate(
                   widget.listHeader.length,
                   (index) => DataColumn(
@@ -75,17 +82,40 @@ class _CustomTableState extends State<CustomTable> {
                   (index) => DataRow(
                       cells: List.generate(
                     widget.listHeader.length,
-                    (i) => DataCell(Container(
-                      width: subList[index]['${widget.listKey[i]}']
+                    (i) => DataCell(InkWell(
+                      onTap: subList[index]['${widget.listKey[i]}']
                                   .toString()
                                   .length >
                               30
-                          ? 250
+                          ? () {
+                              showDialog(
+                                context: context,
+                                builder: (context) => Dialog(
+                                  child: Container(
+                                    padding:
+                                        const EdgeInsetsDirectional.symmetric(
+                                            horizontal: 16, vertical: 32),
+                                    child: Text(
+                                        "${subList[index][widget.listKey[i]]}"),
+                                  ),
+                                ),
+                              );
+                            }
                           : null,
-                      alignment: Alignment.center,
-                      child: Text(
-                          textAlign: TextAlign.center,
-                          "${subList[index][widget.listKey[i]]}"),
+                      child: Container(
+                        width: subList[index]['${widget.listKey[i]}']
+                                    .toString()
+                                    .length >
+                                30
+                            ? 250
+                            : null,
+                        alignment: Alignment.center,
+                        child: Text(
+                            textAlign: TextAlign.center,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            "${subList[index][widget.listKey[i]]}"),
+                      ),
                     )),
                   )),
                 ),
@@ -93,8 +123,15 @@ class _CustomTableState extends State<CustomTable> {
             ),
           ),
         ),
-        SizedBox(
+        Container(
           height: 80,
+          decoration: BoxDecoration(
+            color: AppColors.white,
+            boxShadow: [
+              BoxShadow(color: AppColors.grey, blurRadius: 10, spreadRadius: 1),
+            ],
+            // border: Border(top: BorderSide(color: AppColors.grey)),
+          ),
           child: Padding(
             padding: const EdgeInsetsDirectional.only(
                 bottom: 5, top: 5, start: 10, end: 85),
@@ -133,7 +170,8 @@ class _CustomTableState extends State<CustomTable> {
                                 colorEnd = AppColors.white;
                               } else {
                                 subList = widget.listData.sublist(start, end);
-                                controller.jumpTo(0);
+                                controllerVertical.jumpTo(0);
+                                controllerHorizontal.jumpTo(0);
                                 if (start == 0) {
                                   colorStart = AppColors.white;
                                 } else {
@@ -170,11 +208,14 @@ class _CustomTableState extends State<CustomTable> {
                               numberPage++;
                               if (end >= widget.listData.length) {
                                 subList = widget.listData.sublist(start);
+                                controllerVertical.jumpTo(0);
+                                controllerHorizontal.jumpTo(0);
                                 colorStart = AppColors.blueLight;
                                 colorEnd = AppColors.white;
                               } else {
                                 subList = widget.listData.sublist(start, end);
-                                controller.jumpTo(0);
+                                controllerVertical.jumpTo(0);
+                                controllerHorizontal.jumpTo(0);
                                 colorStart = AppColors.blueLight;
                                 colorEnd = AppColors.blueLight;
                               }
