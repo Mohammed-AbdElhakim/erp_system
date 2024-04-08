@@ -7,6 +7,9 @@ class Pages {
     required this.icon,
     required this.isFastScreen,
     required this.moduleID,
+    required this.url,
+    required this.tableSrc,
+    required this.editSrc,
   });
   late final int pageId;
   late final String nameAr;
@@ -15,6 +18,9 @@ class Pages {
   late final String icon;
   late final bool isFastScreen;
   late final int moduleID;
+  late final String url;
+  late final String tableSrc;
+  late final String editSrc;
 
   Pages.fromJson(Map<String, dynamic> json) {
     pageId = json['PageId'];
@@ -24,6 +30,9 @@ class Pages {
     icon = json['Icon'];
     isFastScreen = json['IsFastScreen'];
     moduleID = json['ModuleID'];
+    url = json['Url'];
+    tableSrc = json['TableSrc'];
+    editSrc = json['EditSrc'];
   }
 
   Map<String, dynamic> toJson() {
@@ -35,6 +44,9 @@ class Pages {
     data['Icon'] = icon;
     data['IsFastScreen'] = isFastScreen;
     data['ModuleID'] = moduleID;
+    data['Url'] = url;
+    data['TableSrc'] = tableSrc;
+    data['EditSrc'] = editSrc;
     return data;
   }
 }

@@ -27,23 +27,23 @@ class ListValue {
   late final int machineID;
   late final double longitude;
   late final double latitude;
-  late final int radius;
+  late final double radius;
 
   ListValue.fromJson(Map<String, dynamic> json) {
-    employeeID = json['employeeID'];
-    machineID = json['machineID'];
-    longitude = json['longitude'];
-    latitude = json['latitude'];
-    radius = json['radius'];
+    employeeID = json['EmployeeID'];
+    machineID = json['MachineID'];
+    longitude = json['Longitude'];
+    latitude = json['Latitude'];
+    radius = json['Radius'];
   }
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['employeeID'] = employeeID;
-    data['machineID'] = machineID;
-    data['longitude'] = longitude;
-    data['latitude'] = latitude;
-    data['radius'] = radius;
+    data['EmployeeID'] = employeeID;
+    data['MachineID'] = machineID;
+    data['Longitude'] = longitude;
+    data['Latitude'] = latitude;
+    data['Radius'] = radius;
     return data;
   }
 }

@@ -35,12 +35,12 @@ class AttendanceCubit extends Cubit<AttendanceState> {
   }
 
   Future<void> sendAttendance(
-      {required String machineID, required String time}) async {
+      {required String machineID,
+      required String time,
+      required String checkType}) async {
     emit(AttendanceLoading());
     Either<Failure, String> result = await attendanceRepo.sendAttendance(
-      machineID: machineID,
-      time: time,
-    );
+        machineID: machineID, time: time, checkType: checkType);
     result.fold((failure) {
       emit(AttendanceFailure(failure.errorMassage));
     }, (send) {

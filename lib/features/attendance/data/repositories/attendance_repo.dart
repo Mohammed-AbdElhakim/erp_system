@@ -8,5 +8,7 @@ abstract class AttendanceRepo {
   Future<Either<Failure, ValidDeviceModel>> checkValidDevice();
   Future<Either<Failure, LocationModel>> getAttendanceLocations();
   Future<Either<Failure, String>> sendAttendance(
-      {required String machineID, required String time});
+      {required String machineID,
+      required String time,
+      required String checkType});
 }

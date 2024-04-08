@@ -111,11 +111,13 @@ class _PresenceAndDepartureState extends State<PresenceAndDeparture> {
                       BlocProvider.of<AttendanceCubit>(context).sendAttendance(
                         time: DateTime.now().toIso8601String(),
                         machineID: myLocation!.machineID.toString(),
+                        checkType: "CheckOut",
                       );
                     } else {
                       BlocProvider.of<AttendanceCubit>(context).sendAttendance(
                         time: DateTime.now().toIso8601String(),
                         machineID: myLocation!.machineID.toString(),
+                        checkType: "CheckIn",
                       );
                     }
                   });
