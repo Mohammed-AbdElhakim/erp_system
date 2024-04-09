@@ -10,19 +10,27 @@ import '../../../../generated/l10n.dart';
 import 'home_view_header.dart';
 import 'item_grid_view.dart';
 
-class HomeViewBody extends StatelessWidget {
+class HomeViewBody extends StatefulWidget {
   const HomeViewBody({super.key});
 
+  @override
+  State<HomeViewBody> createState() => _HomeViewBodyState();
+}
+
+class _HomeViewBodyState extends State<HomeViewBody> {
+  List<Pages> pagesList = [];
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<GetMenuCubit, GetMenuState>(
       builder: (context, state) {
         if (state is GetMenuSuccess) {
-          List<Pages> pagesList = [];
+          List<Pages> pagesListInFastScreen = [];
+          List<Pages> allPagesList = [];
           for (var element in state.menu.list) {
             for (var page in element.pages) {
+              allPagesList.add(page);
               if (page.isFastScreen == true) {
-                pagesList.add(page);
+                pagesListInFastScreen.add(page);
               }
             }
           }
@@ -37,13 +45,26 @@ class HomeViewBody extends StatelessWidget {
                       const EdgeInsets.only(left: 16, right: 16, bottom: 35),
                   child: CustomTextFormFieldSearch(
                     hintText: S.of(context).search,
+                    onChanged: (value) {
+                      if (value.isEmpty) {
+                        pagesList = pagesListInFastScreen;
+                        setState(() {});
+                      } else {
+                        pagesList = allPagesList
+                            .where((page) => page.nameAr.contains(value))
+                            .toList();
+                        setState(() {});
+                      }
+                    },
                   ),
                 ),
               ),
               SliverToBoxAdapter(
                 child: GridView.builder(
                   shrinkWrap: true,
-                  itemCount: pagesList.length,
+                  itemCount: pagesList.isEmpty
+                      ? pagesListInFastScreen.length
+                      : pagesList.length,
                   physics: const NeverScrollableScrollPhysics(),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
@@ -54,7 +75,9 @@ class HomeViewBody extends StatelessWidget {
                       const EdgeInsets.only(left: 16, right: 16, bottom: 16),
                   itemBuilder: (BuildContext context, int index) {
                     return ItemGridView(
-                      page: pagesList[index],
+                      page: pagesList.isEmpty
+                          ? pagesListInFastScreen[index]
+                          : pagesList[index],
                     );
                   },
                 ),
