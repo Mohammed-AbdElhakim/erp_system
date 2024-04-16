@@ -40,6 +40,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "dynamic_pro": MessageLookupByLibrary.simpleMessage("Dynamic Pro"),
         "english": MessageLookupByLibrary.simpleMessage("English"),
         "error": MessageLookupByLibrary.simpleMessage("Error"),
+        "from": MessageLookupByLibrary.simpleMessage("From"),
         "hi": MessageLookupByLibrary.simpleMessage("Hi, "),
         "host_view": MessageLookupByLibrary.simpleMessage("Host"),
         "leave": MessageLookupByLibrary.simpleMessage("Leave"),
@@ -56,6 +57,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "refresh": MessageLookupByLibrary.simpleMessage("Refresh"),
         "search": MessageLookupByLibrary.simpleMessage("Search....."),
         "swipe_to": MessageLookupByLibrary.simpleMessage("Swipe To"),
+        "to": MessageLookupByLibrary.simpleMessage("TO"),
         "username_or_email":
             MessageLookupByLibrary.simpleMessage("Username or Email"),
         "welcome": MessageLookupByLibrary.simpleMessage("WELCOME !"),

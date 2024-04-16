@@ -29,6 +29,8 @@
   "btn_search": "Search",
   "btn_add": "Add",
   "btn_edit": "Edit",
-  "btn_delete": "Delete"
+  "btn_delete": "Delete",
+  "from": "From",
+  "to": "TO"
 
 }

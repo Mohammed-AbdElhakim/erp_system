@@ -29,7 +29,9 @@
   "btn_search": "بحث",
   "btn_add": "إضافة",
   "btn_edit": "تعديل",
-  "btn_delete": "حذف"
+  "btn_delete": "حذف",
+  "from": "من",
+  "to": "إلى"
 
 
 

@@ -38,6 +38,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "dynamic_pro": MessageLookupByLibrary.simpleMessage("Dynamic Pro"),
         "english": MessageLookupByLibrary.simpleMessage("English"),
         "error": MessageLookupByLibrary.simpleMessage("خطأ"),
+        "from": MessageLookupByLibrary.simpleMessage("من"),
         "hi": MessageLookupByLibrary.simpleMessage("أهلاً، "),
         "host_view": MessageLookupByLibrary.simpleMessage("المضيف"),
         "leave": MessageLookupByLibrary.simpleMessage("انصراف"),
@@ -54,6 +55,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "refresh": MessageLookupByLibrary.simpleMessage("تحديث"),
         "search": MessageLookupByLibrary.simpleMessage("بحث....."),
         "swipe_to": MessageLookupByLibrary.simpleMessage("اسحب الى"),
+        "to": MessageLookupByLibrary.simpleMessage("إلى"),
         "username_or_email": MessageLookupByLibrary.simpleMessage(
             "اسم المستخدم او البريد الإلكتروني"),
         "welcome": MessageLookupByLibrary.simpleMessage("مرحباً !"),

@@ -1,4 +1,6 @@
+import 'package:erp_system/core/widgets/custom_button.dart';
 import 'package:erp_system/features/screenTable/presentation/manager/getPermissions/get_permissions_cubit.dart';
+import 'package:erp_system/features/screenTable/presentation/widgets/dropdown_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -10,7 +12,9 @@ import '../../../../generated/l10n.dart';
 import '../../data/models/permission_model.dart';
 import '../../data/models/screen_model.dart';
 import '../manager/getTable/get_table_cubit.dart';
+import 'check_box_widget.dart';
 import 'color_picker_widget.dart';
+import 'date_widget.dart';
 import 'text_widget.dart';
 
 class CustomFloatingActionButton extends StatefulWidget {
@@ -25,21 +29,13 @@ class _CustomFloatingActionButtonState
     extends State<CustomFloatingActionButton> {
   String? lang;
 
-  bool delete = false;
-  bool edit = false;
-  bool add = false;
-  bool search = false;
-
   List<Map<String, dynamic>> listData = [];
   List<ColumnList> listHeader = [];
   List<dynamic> listKey = [];
 
   List<IconData> iconList = [
-    // Icons.search,
-    // Icons.search,
-    // Icons.search,
-    // Icons.search,
-    // Icons.search,
+    Icons.search,
+    Icons.refresh,
   ];
 
   @override
@@ -54,16 +50,7 @@ class _CustomFloatingActionButtonState
       listener: (context, state) {
         if (state is GetPermissionSuccess) {
           PermissionModel permissionModel = state.permissionModel;
-          if (permissionModel.showSearch == true) {
-            setState(() {
-              iconList.add(Icons.search);
-            });
-          }
-          if (permissionModel.showRefersh == true) {
-            setState(() {
-              iconList.add(Icons.refresh);
-            });
-          }
+
           if (permissionModel.showDelete == true) {
             setState(() {
               iconList.add(Icons.delete);
@@ -139,72 +126,140 @@ class _CustomFloatingActionButtonState
   void tapIcon(IconData icon) {
     if (icon == Icons.search) {
       CustomAlertDialog.alertWithCustomContent(
-          context: context,
-          title: S.of(context).btn_search,
-          isOverlayTapDismiss: false,
-          content: buildAlertWithCustomContent(),
-          textButton: S.of(context).btn_search,
-          onPressed: () {});
+        context: context,
+        title: S.of(context).btn_search,
+        isOverlayTapDismiss: false,
+        content: buildAlertWithCustomContent(type: 'search'),
+      );
     } else if (icon == Icons.refresh) {
       // print("refresh");
     } else if (icon == Icons.delete) {
       // print("delete");
     } else if (icon == Icons.edit_note) {
       CustomAlertDialog.alertWithCustomContent(
-          context: context,
-          title: S.of(context).btn_edit,
-          isOverlayTapDismiss: false,
-          content: buildAlertWithCustomContent(),
-          textButton: S.of(context).btn_edit,
-          onPressed: () {});
+        context: context,
+        title: S.of(context).btn_edit,
+        isOverlayTapDismiss: false,
+        content: buildAlertWithCustomContent(type: 'edit'),
+      );
     } else if (icon == Icons.add) {
       CustomAlertDialog.alertWithCustomContent(
-          context: context,
-          title: S.of(context).btn_add,
-          isOverlayTapDismiss: false,
-          content: buildAlertWithCustomContent(),
-          textButton: S.of(context).btn_add,
-          onPressed: () {});
+        context: context,
+        title: S.of(context).btn_add,
+        isOverlayTapDismiss: false,
+        content: buildAlertWithCustomContent(type: 'add'),
+      );
     }
   }
 
-  buildAlertWithCustomContent() {
+  buildAlertWithCustomContent({required String type}) {
     return Column(
-      children: getMyWidgetInAlertWithCustomContent(listHeader),
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (type == 'search')
+          ...getMyWidgetInAlertWithCustomContentToSearch(listHeader),
+        if (type != 'search')
+          ...getMyWidgetInAlertWithCustomContentToAddAndEdit(listHeader),
+        Padding(
+          padding: const EdgeInsets.only(top: 45),
+          child: Center(
+            child: CustomButton(
+              text: type == 'search'
+                  ? S.of(context).btn_search
+                  : type == 'add'
+                      ? S.of(context).btn_add
+                      : S.of(context).btn_edit,
+              width: 80,
+            ),
+          ),
+        )
+      ],
     );
   }
 
-  List<Widget> getMyWidgetInAlertWithCustomContent(
+  List<Widget> getMyWidgetInAlertWithCustomContentToSearch(
       List<ColumnList> listHeader) {
     List<Widget> listWidgets = [];
 
     for (var item in listHeader) {
-      if (item.insertType == "text") {
+      String title = lang == AppStrings.arLangKey
+          ? item.arColumnLabel!
+          : item.enColumnLabel!;
+      if (item.insertType == "text" && item.visible == true) {
         listWidgets.add(
           TextWidget(
-            title: lang == AppStrings.arLangKey
-                ? item.arColumnLabel!
-                : item.enColumnLabel!,
+            title: title,
             typeInput: 'text',
           ),
         );
       }
-      if (item.insertType == "number") {
+      if (item.insertType == "number" && item.visible == true) {
         listWidgets.add(
           TextWidget(
-            title: lang == AppStrings.arLangKey
-                ? item.arColumnLabel!
-                : item.enColumnLabel!,
+            title: title,
             typeInput: 'number',
           ),
         );
       }
-      if (item.insertType == "color") {
+      if (item.insertType == "color" && item.visible == true) {
         listWidgets.add(ColorPickerWidget(
-          title: lang == AppStrings.arLangKey
-              ? item.arColumnLabel!
-              : item.enColumnLabel!,
+          title: title,
         ));
+      }
+      if (item.insertType == "date" && item.visible == true) {
+        listWidgets.add(DateWidget(
+          title: title,
+        ));
+      }
+      if (item.insertType == "dropdown" && item.visible == true) {
+        listWidgets.add(DropdownWidget(title: title));
+      }
+      if (item.insertType == "checkbox" && item.visible == true) {
+        listWidgets.add(CheckBoxWidget(title: title));
+      }
+    }
+    return listWidgets;
+  }
+
+  List<Widget> getMyWidgetInAlertWithCustomContentToAddAndEdit(
+      List<ColumnList> listHeader) {
+    List<Widget> listWidgets = [];
+
+    for (var item in listHeader) {
+      String title = lang == AppStrings.arLangKey
+          ? item.arColumnLabel!
+          : item.enColumnLabel!;
+      if (item.insertType == "text" && item.insertVisable == true) {
+        listWidgets.add(
+          TextWidget(
+            title: title,
+            typeInput: 'text',
+          ),
+        );
+      }
+      if (item.insertType == "number" && item.insertVisable == true) {
+        listWidgets.add(
+          TextWidget(
+            title: title,
+            typeInput: 'number',
+          ),
+        );
+      }
+      if (item.insertType == "color" && item.insertVisable == true) {
+        listWidgets.add(ColorPickerWidget(
+          title: title,
+        ));
+      }
+      if (item.insertType == "date" && item.insertVisable == true) {
+        listWidgets.add(DateWidget(
+          title: title,
+        ));
+      }
+      if (item.insertType == "dropdown" && item.insertVisable == true) {
+        listWidgets.add(DropdownWidget(title: title));
+      }
+      if (item.insertType == "checkbox" && item.insertVisable == true) {
+        listWidgets.add(CheckBoxWidget(title: title));
       }
     }
     return listWidgets;

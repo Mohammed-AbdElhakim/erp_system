@@ -57,41 +57,21 @@ class CustomAlertDialog {
     required BuildContext context,
     required String title,
     required Widget content,
-    String? textButton,
-    void Function()? onPressed,
     bool isOverlayTapDismiss = true,
     bool isCloseButton = true,
   }) {
     return Alert(
-      context: context,
-      title: title,
-      content: content,
-      style: AlertStyle(
+        context: context,
+        title: title,
+        content: content,
+        style: AlertStyle(
           titleStyle: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
               color: AppColors.blueLight),
           isOverlayTapDismiss: isOverlayTapDismiss,
-          isCloseButton: isCloseButton),
-      buttons: [
-        DialogButton(
-          onPressed: onPressed ??
-              () {
-                Navigator.pop(context);
-              },
-          gradient: gradientButton,
-          width: 120,
-          color: AppColors.blueDark,
-          child: Text(
-            textButton ?? S.of(context).ok,
-            style: const TextStyle(
-              fontWeight: FontWeight.w200,
-              fontSize: 16,
-              color: Colors.white,
-            ),
-          ),
-        )
-      ],
-    ).show();
+          isCloseButton: isCloseButton,
+        ),
+        buttons: []).show();
   }
 }
