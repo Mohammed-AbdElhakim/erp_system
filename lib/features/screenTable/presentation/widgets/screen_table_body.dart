@@ -1,15 +1,19 @@
-import 'package:erp_system/features/screenTable/data/models/column_data_model.dart';
-import 'package:erp_system/features/screenTable/presentation/widgets/custom_table.dart';
+import 'package:erp_system/features/screenTable/data/models/screen_model.dart';
+import 'package:erp_system/features/screenTable/presentation/widgets/pagination_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:linked_scroll_controller/linked_scroll_controller.dart';
 
+import '../../../../core/models/menu_model/pages.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../../../../core/widgets/custom_error_massage.dart';
 import '../../../../core/widgets/custom_loading_widget.dart';
 import '../manager/getTable/get_table_cubit.dart';
+import 'custom_table.dart';
 
 class ScreenTableBody extends StatefulWidget {
-  const ScreenTableBody({super.key});
+  const ScreenTableBody({super.key, required this.pageData});
+  final Pages pageData;
 
   @override
   State<ScreenTableBody> createState() => _ScreenTableBodyState();
@@ -17,6 +21,26 @@ class ScreenTableBody extends StatefulWidget {
 
 class _ScreenTableBodyState extends State<ScreenTableBody> {
   String? lang;
+  LinkedScrollControllerGroup controllerGroup = LinkedScrollControllerGroup();
+  ScrollController? headerScrollController;
+  ScrollController? dataScrollController;
+
+  late int allPages;
+  late int numberPage;
+  late int dropdownValue;
+  List<int> listNumberItemInList = [10, 25, 50, 100];
+  String orderBy = '';
+  bool isDesc = false;
+
+  @override
+  void initState() {
+    super.initState();
+    headerScrollController = controllerGroup.addAndGet();
+    dataScrollController = controllerGroup.addAndGet();
+
+    numberPage = 1;
+    dropdownValue = listNumberItemInList[0];
+  }
 
   @override
   void didChangeDependencies() {
@@ -29,21 +53,59 @@ class _ScreenTableBodyState extends State<ScreenTableBody> {
     return BlocBuilder<GetTableCubit, GetTableState>(
       builder: (context, state) {
         if (state is GetTableSuccess) {
+          int? numberOfRecords = state.screenModel.numberOfRecords;
           List<dynamic>? listData = state.screenModel.dataList;
           List<String> listHeader = [];
           List<dynamic> listKey = [];
+          List<ColumnList> listColumn = [];
           for (var item in state.screenModel.columnList!) {
             listHeader.add(lang == AppStrings.enLangKey
                 ? item.enColumnLabel!
                 : item.arColumnLabel!);
             listKey.add(item.columnName);
+            listColumn.add(item);
           }
-          return Expanded(
-            child: CustomTable(
-              listHeader: listHeader,
-              listData: listData!,
-              listKey: listKey,
+
+          allPages = (numberOfRecords! ~/ dropdownValue) + 1;
+          return CustomTable(
+            listHeader: listHeader,
+            listKey: listKey,
+            listData: listData!,
+            listColumn: listColumn,
+            paginationWidget: PaginationWidget(
+              allPages: allPages,
+              dropdownValue: dropdownValue,
+              listNumberItemInList: listNumberItemInList,
+              myPage: numberPage,
+              numberOfRecords: numberOfRecords,
+              onChangeLimit: (limit) {
+                setState(() {
+                  dropdownValue = limit;
+                  numberPage = 1;
+                  allPages = (numberOfRecords ~/ dropdownValue) + 1;
+                });
+                getData(context);
+              },
+              onTapMin: () {
+                setState(() {
+                  numberPage--;
+                });
+                getData(context);
+              },
+              onTapAdd: () {
+                setState(() {
+                  numberPage++;
+                });
+                getData(context);
+              },
             ),
+            onTapHeader: (String titleHeader) {
+              setState(() {
+                orderBy = titleHeader;
+                isDesc = !isDesc;
+              });
+              getData(context);
+            },
           );
         } else if (state is GetTableFailure) {
           return CustomErrorMassage(errorMassage: state.errorMassage);
@@ -51,6 +113,19 @@ class _ScreenTableBodyState extends State<ScreenTableBody> {
           return const CustomLoadingWidget();
         }
       },
+    );
+  }
+
+  void getData(BuildContext context) {
+    BlocProvider.of<GetTableCubit>(context).getTable(
+      pageId: widget.pageData.pageId.toString(),
+      employee: false,
+      isdesc: isDesc,
+      limit: dropdownValue,
+      offset: (numberPage * dropdownValue) - dropdownValue,
+      orderby: orderBy,
+      statment: '',
+      selectcolumns: '',
     );
   }
 }

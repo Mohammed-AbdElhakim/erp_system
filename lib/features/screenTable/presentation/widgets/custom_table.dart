@@ -1,270 +1,198 @@
 import 'package:flutter/material.dart';
+import 'package:linked_scroll_controller/linked_scroll_controller.dart';
 
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_styles.dart';
+import '../../data/models/screen_model.dart';
+
+typedef OnTapHeader<String> = void Function(String titleHeader);
 
 class CustomTable extends StatefulWidget {
-  const CustomTable(
-      {super.key,
-      required this.listHeader,
-      required this.listData,
-      required this.listKey});
+  const CustomTable({
+    super.key,
+    required this.listHeader,
+    required this.listData,
+    required this.listKey,
+    required this.paginationWidget,
+    required this.onTapHeader,
+    required this.listColumn,
+  });
   final List<String> listHeader;
   final List<dynamic> listData;
   final List<dynamic> listKey;
+  final List<ColumnList> listColumn;
+  final Widget paginationWidget;
+  final OnTapHeader<String> onTapHeader;
 
   @override
   State<CustomTable> createState() => _CustomTableState();
 }
 
 class _CustomTableState extends State<CustomTable> {
-  late List subList;
-  late int start;
-  late int end;
-  late Color colorEnd;
-  late Color colorStart;
-  late int numberPage;
-  late int numberItemInList;
-  ScrollController controllerVertical = ScrollController();
-  ScrollController controllerHorizontal = ScrollController();
-  List<int> listNumberItemInList = [10, 25, 50, 100];
+  LinkedScrollControllerGroup controllerGroup = LinkedScrollControllerGroup();
+  ScrollController? headerScrollController;
+  ScrollController? dataScrollController;
 
   @override
   void initState() {
-    initValues(0);
+    headerScrollController = controllerGroup.addAndGet();
+    dataScrollController = controllerGroup.addAndGet();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            controller: controllerVertical,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              controller: controllerHorizontal,
-              child: DataTable(
-                headingRowColor: MaterialStateColor.resolveWith(
-                  (states) {
-                    return Colors.blue;
-                  },
-                ),
-                columnSpacing: 30,
-                horizontalMargin: 20,
-                dataRowMinHeight: 35,
-                dataRowMaxHeight: 35,
-                headingRowHeight: 35,
-                border: TableBorder.all(color: Colors.grey.shade300),
-                columns: List.generate(
-                  widget.listHeader.length,
-                  (index) => DataColumn(
-                    label: Expanded(
-                      child: InkWell(
-                        onTap: () {
-                          // print("****************************");
-                          // print(widget.listHeader[index]);
-                          // print("*****************************");
-                        },
-                        child: Text(
-                          textAlign: TextAlign.center,
-                          widget.listHeader[index],
-                          style: AppStyles.textStyle18,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                rows: List.generate(
-                  subList.length,
-                  (index) => DataRow(
-                      cells: List.generate(
-                    widget.listHeader.length,
-                    (i) => DataCell(InkWell(
-                      onTap: subList[index]['${widget.listKey[i]}']
-                                  .toString()
-                                  .length >
-                              30
-                          ? () {
-                              showDialog(
-                                context: context,
-                                builder: (context) => Dialog(
-                                  child: Container(
-                                    padding:
-                                        const EdgeInsetsDirectional.symmetric(
-                                            horizontal: 16, vertical: 32),
-                                    child: Text(
-                                        "${subList[index][widget.listKey[i]]}"),
-                                  ),
-                                ),
-                              );
-                            }
-                          : null,
-                      child: Container(
-                        width: subList[index]['${widget.listKey[i]}']
-                                    .toString()
-                                    .length >
-                                30
-                            ? 250
-                            : null,
-                        alignment: Alignment.center,
-                        child: Text(
-                            textAlign: TextAlign.center,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            "${subList[index][widget.listKey[i]]}"),
-                      ),
-                    )),
-                  )),
-                ),
-              ),
-            ),
-          ),
-        ),
-        Container(
-          height: 80,
-          decoration: BoxDecoration(
-            color: AppColors.white,
-            boxShadow: [
-              BoxShadow(color: AppColors.grey, blurRadius: 10, spreadRadius: 1),
-            ],
-            // border: Border(top: BorderSide(color: AppColors.grey)),
-          ),
-          child: Padding(
-            padding: const EdgeInsetsDirectional.only(
-                bottom: 5, top: 5, start: 10, end: 85),
+    return Expanded(
+      child: Stack(
+        children: [
+          //TODO:data
+          SingleChildScrollView(
             child: Column(
               children: [
-                Container(
-                  height: 35,
-                  width: MediaQuery.of(context).size.width,
-                  // decoration: BoxDecoration(
-                  //     borderRadius: BorderRadius.circular(15),
-                  //     border: Border.all(color: AppColors.blueLight, width: 1)),
-                  margin: const EdgeInsets.symmetric(vertical: 5),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      InkWell(
-                        child: Container(
-                          width: 60,
-                          alignment: Alignment.center,
-                          child: Icon(
-                            Icons.arrow_left,
-                            color: colorStart,
-                            size: 30,
+                //TODO:data rows
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  controller: dataScrollController,
+                  child: DataTable(
+                    columnSpacing: 30,
+                    horizontalMargin: 20,
+                    dataRowMinHeight: 35,
+                    dataRowMaxHeight: 35,
+                    headingRowHeight: 35,
+                    headingRowColor:
+                        MaterialStateProperty.all(AppColors.blueLight),
+                    columns: List.generate(
+                      widget.listHeader.length,
+                      (index) {
+                        return DataColumn(
+                          label: Expanded(
+                            child: SizedBox(
+                              width: 100,
+                              child: Text(
+                                widget.listHeader[index],
+                                textAlign: TextAlign.center,
+                                style: AppStyles.textStyle14,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    rows: List.generate(
+                      widget.listData.length,
+                      (index) => DataRow(
+                        cells: List.generate(
+                          widget.listHeader.length,
+                          (i) => DataCell(
+                            SizedBox(
+                              width: 100,
+                              child: InkWell(
+                                onTap: widget.listData[index]
+                                                ['${widget.listKey[i]}']
+                                            .toString()
+                                            .length >
+                                        10
+                                    ? () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) => Dialog(
+                                            child: Container(
+                                              padding:
+                                                  const EdgeInsetsDirectional
+                                                      .symmetric(
+                                                      horizontal: 16,
+                                                      vertical: 32),
+                                              child: Text(
+                                                  "${widget.listData[index][widget.listKey[i]]}"),
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                    : null,
+                                child: Container(
+                                  width: widget.listData[index]
+                                                  ['${widget.listKey[i]}']
+                                              .toString()
+                                              .length >
+                                          10
+                                      ? 100
+                                      : null,
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                      textAlign: TextAlign.center,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      "${widget.listData[index][widget.listKey[i]]}"),
+                                ),
+                              ),
+                            ),
                           ),
                         ),
-                        onTap: () {
-                          if (subList.first != widget.listData.first) {
-                            setState(() {
-                              start = start - numberItemInList;
-                              end = end - numberItemInList;
-                              numberPage--;
-                              if (start > widget.listData.length) {
-                                subList = widget.listData.sublist(start);
-                                colorStart = AppColors.blueLight;
-                                colorEnd = AppColors.white;
-                              } else {
-                                subList = widget.listData.sublist(start, end);
-                                controllerVertical.jumpTo(0);
-                                controllerHorizontal.jumpTo(0);
-                                if (start == 0) {
-                                  colorStart = AppColors.white;
-                                } else {
-                                  colorEnd = AppColors.blueLight;
-                                  colorStart = AppColors.blueLight;
-                                }
-                              }
-                            });
-                          }
-                        },
-                      ),
-                      Expanded(
-                          child: Text(
-                        "Pages $numberPage From ${(widget.listData.length ~/ numberItemInList) + 1} ",
-                        textAlign: TextAlign.center,
-                      )),
-                      InkWell(
-                        child: Container(
-                          width: 60,
-                          alignment: Alignment.center,
-                          child: Icon(
-                            Icons.arrow_right,
-                            color: end >= widget.listData.length
-                                ? AppColors.white
-                                : AppColors.blueLight,
-                            size: 30,
-                          ),
-                        ),
-                        onTap: () {
-                          if (subList.last != widget.listData.last) {
-                            setState(() {
-                              start = start + numberItemInList;
-                              end = end + numberItemInList;
-                              numberPage++;
-                              if (end >= widget.listData.length) {
-                                subList = widget.listData.sublist(start);
-                                controllerVertical.jumpTo(0);
-                                controllerHorizontal.jumpTo(0);
-                                colorStart = AppColors.blueLight;
-                                colorEnd = AppColors.white;
-                              } else {
-                                subList = widget.listData.sublist(start, end);
-                                controllerVertical.jumpTo(0);
-                                controllerHorizontal.jumpTo(0);
-                                colorStart = AppColors.blueLight;
-                                colorEnd = AppColors.blueLight;
-                              }
-                            });
-                          }
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: List.generate(
-                    listNumberItemInList.length,
-                    (index) => Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      child: InkWell(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
-                          child: Text("${listNumberItemInList[index]}"),
-                        ),
-                        onTap: () {
-                          setState(() {
-                            initValues(index);
-                          });
-                        },
                       ),
                     ),
                   ),
                 ),
+                //TODO:pages
+                widget.paginationWidget,
               ],
             ),
           ),
-        ),
-      ],
+          //TODO:header
+          Row(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  controller: headerScrollController,
+                  child: DataTable(
+                    columnSpacing: 30,
+                    horizontalMargin: 20,
+                    dataRowMinHeight: 50,
+                    dataRowMaxHeight: 50,
+                    headingRowHeight: 35,
+                    headingRowColor:
+                        MaterialStateProperty.all(AppColors.blueLight),
+                    columns: List.generate(
+                      widget.listHeader.length,
+                      (index) {
+                        return DataColumn(
+                          label: InkWell(
+                            onTap: () {
+                              widget.onTapHeader(
+                                  widget.listColumn[index].columnName!);
+                            },
+                            child: SizedBox(
+                              width: 100,
+                              child: Text(
+                                widget.listHeader[index],
+                                textAlign: TextAlign.center,
+                                style: AppStyles.textStyle14,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    rows: const [],
+                  ),
+                ),
+              ),
+            ],
+          )
+        ],
+      ),
     );
   }
 
-  void initValues(int index) {
-    start = 0;
-    numberItemInList = listNumberItemInList[index];
-    end = numberItemInList > widget.listData.length
-        ? widget.listData.length
-        : numberItemInList;
-    subList = widget.listData.sublist(start, end);
-    colorEnd = numberItemInList > widget.listData.length
-        ? AppColors.white
-        : AppColors.blueLight;
-    colorStart = AppColors.white;
-    numberPage = 1;
-  }
+  // onTapHeader(ColumnList? value, int numberPage, int limit) {
+  //   widget.onTapHeader!(value, numberPage, limit);
+  // }
+  //
+  // onTapAdd(int? value, int limit) {
+  //   widget.onTapAdd!(value, limit);
+  // }
+  //
+  // onTapDecrease(int? value, int limit) {
+  //   widget.onTapDecrease!(value, limit);
+  // }
 }

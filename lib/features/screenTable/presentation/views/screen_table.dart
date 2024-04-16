@@ -1,10 +1,10 @@
-import 'package:erp_system/core/utils/app_strings.dart';
 import 'package:erp_system/features/screenTable/presentation/manager/getPermissions/get_permissions_cubit.dart';
 import 'package:erp_system/features/screenTable/presentation/widgets/screen_table_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/models/menu_model/pages.dart';
+import '../../../../core/utils/app_strings.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/service_locator.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
@@ -38,7 +38,16 @@ class _ScreenTableState extends State<ScreenTable> {
         BlocProvider(
           create: (context) => GetTableCubit(
             getIt.get<ScreenRepoImpl>(),
-          )..getTable(widget.pageData),
+          )..getTable(
+              pageId: widget.pageData.pageId.toString(),
+              employee: false,
+              isdesc: false,
+              limit: 10,
+              offset: 0,
+              orderby: '',
+              statment: '',
+              selectcolumns: '',
+            ),
         ),
         BlocProvider(
           create: (context) => GetPermissionsCubit(
@@ -65,7 +74,9 @@ class _ScreenTableState extends State<ScreenTable> {
                 ),
               ),
             ),
-            const ScreenTableBody(),
+            ScreenTableBody(
+              pageData: widget.pageData,
+            ),
           ],
         ),
       ),

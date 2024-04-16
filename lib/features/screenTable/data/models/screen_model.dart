@@ -1,8 +1,6 @@
-
-
 class ScreenModel {
   List<ColumnList>? columnList;
-  List<Map<String,dynamic>>? dataList;
+  List<Map<String, dynamic>>? dataList;
   int? numberOfRecords;
 
   ScreenModel({this.columnList, this.dataList, this.numberOfRecords});
@@ -11,11 +9,11 @@ class ScreenModel {
     if (json['columnList'] != null) {
       columnList = <ColumnList>[];
       json['columnList'].forEach((v) {
-        columnList!.add(new ColumnList.fromJson(v));
+        columnList!.add(ColumnList.fromJson(v));
       });
     }
     if (json['dataList'] != null) {
-      dataList = <Map<String,dynamic>>[];
+      dataList = <Map<String, dynamic>>[];
       json['dataList'].forEach((v) {
         dataList!.add(v);
       });
@@ -24,14 +22,14 @@ class ScreenModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.columnList != null) {
-      data['columnList'] = this.columnList!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (columnList != null) {
+      data['columnList'] = columnList!.map((v) => v.toJson()).toList();
     }
-    if (this.dataList != null) {
-      data['dataList'] = this.dataList!.map((v) => v).toList();
+    if (dataList != null) {
+      data['dataList'] = dataList!.map((v) => v).toList();
     }
-    data['numberOfRecords'] = this.numberOfRecords;
+    data['numberOfRecords'] = numberOfRecords;
     return data;
   }
 }
@@ -72,37 +70,37 @@ class ColumnList {
 
   ColumnList(
       {this.id,
-        this.listName,
-        this.searchName,
-        this.columnName,
-        this.insertType,
-        this.droModel,
-        this.droValue,
-        this.droText,
-        this.droCompany,
-        this.arColumnLabel,
-        this.isTotal,
-        this.visible,
-        this.insertVisable,
-        this.isRquired,
-        this.enColumnLabel,
-        this.sort,
-        this.width,
-        this.validation,
-        this.isKey,
-        this.visableDefult,
-        this.insertDefult,
-        this.isGeneral,
-        this.categoryID,
-        this.mobileVisable,
-        this.isMobileHeader,
-        this.isDepartment,
-        this.isMulti,
-        this.disable,
-        this.userVisible,
-        this.isUnique,
-        this.pageId,
-        this.droCondition});
+      this.listName,
+      this.searchName,
+      this.columnName,
+      this.insertType,
+      this.droModel,
+      this.droValue,
+      this.droText,
+      this.droCompany,
+      this.arColumnLabel,
+      this.isTotal,
+      this.visible,
+      this.insertVisable,
+      this.isRquired,
+      this.enColumnLabel,
+      this.sort,
+      this.width,
+      this.validation,
+      this.isKey,
+      this.visableDefult,
+      this.insertDefult,
+      this.isGeneral,
+      this.categoryID,
+      this.mobileVisable,
+      this.isMobileHeader,
+      this.isDepartment,
+      this.isMulti,
+      this.disable,
+      this.userVisible,
+      this.isUnique,
+      this.pageId,
+      this.droCondition});
 
   ColumnList.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -140,43 +138,42 @@ class ColumnList {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['ListName'] = this.listName;
-    data['SearchName'] = this.searchName;
-    data['ColumnName'] = this.columnName;
-    data['InsertType'] = this.insertType;
-    data['DroModel'] = this.droModel;
-    data['DroValue'] = this.droValue;
-    data['DroText'] = this.droText;
-    data['DroCompany'] = this.droCompany;
-    data['arColumnLabel'] = this.arColumnLabel;
-    data['IsTotal'] = this.isTotal;
-    data['visible'] = this.visible;
-    data['InsertVisable'] = this.insertVisable;
-    data['IsRquired'] = this.isRquired;
-    data['enColumnLabel'] = this.enColumnLabel;
-    data['sort'] = this.sort;
-    data['Width'] = this.width;
-    data['validation'] = this.validation;
-    data['isKey'] = this.isKey;
-    data['VisableDefult'] = this.visableDefult;
-    data['InsertDefult'] = this.insertDefult;
-    data['IsGeneral'] = this.isGeneral;
-    data['CategoryID'] = this.categoryID;
-    data['MobileVisable'] = this.mobileVisable;
-    data['IsMobileHeader'] = this.isMobileHeader;
-    data['IsDepartment'] = this.isDepartment;
-    data['IsMulti'] = this.isMulti;
-    data['Disable'] = this.disable;
-    data['UserVisible'] = this.userVisible;
-    data['IsUnique'] = this.isUnique;
-    data['PageId'] = this.pageId;
-    data['DroCondition'] = this.droCondition;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['ListName'] = listName;
+    data['SearchName'] = searchName;
+    data['ColumnName'] = columnName;
+    data['InsertType'] = insertType;
+    data['DroModel'] = droModel;
+    data['DroValue'] = droValue;
+    data['DroText'] = droText;
+    data['DroCompany'] = droCompany;
+    data['arColumnLabel'] = arColumnLabel;
+    data['IsTotal'] = isTotal;
+    data['visible'] = visible;
+    data['InsertVisable'] = insertVisable;
+    data['IsRquired'] = isRquired;
+    data['enColumnLabel'] = enColumnLabel;
+    data['sort'] = sort;
+    data['Width'] = width;
+    data['validation'] = validation;
+    data['isKey'] = isKey;
+    data['VisableDefult'] = visableDefult;
+    data['InsertDefult'] = insertDefult;
+    data['IsGeneral'] = isGeneral;
+    data['CategoryID'] = categoryID;
+    data['MobileVisable'] = mobileVisable;
+    data['IsMobileHeader'] = isMobileHeader;
+    data['IsDepartment'] = isDepartment;
+    data['IsMulti'] = isMulti;
+    data['Disable'] = disable;
+    data['UserVisible'] = userVisible;
+    data['IsUnique'] = isUnique;
+    data['PageId'] = pageId;
+    data['DroCondition'] = droCondition;
     return data;
   }
 }
-
 
 // // ignore_for_file: non_constant_identifier_names
 //

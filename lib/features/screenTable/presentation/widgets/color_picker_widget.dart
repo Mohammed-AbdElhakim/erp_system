@@ -22,7 +22,7 @@ class ColorPickerWidget extends StatelessWidget {
             pickerColor: Colors.white,
             enableAlpha: false,
             // showLabel: false,
-            labelTypes: [],
+            labelTypes: const [],
             onColorChanged: (Color value) {},
           )
         ],

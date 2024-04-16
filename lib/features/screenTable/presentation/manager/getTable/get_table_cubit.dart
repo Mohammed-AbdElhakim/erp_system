@@ -3,8 +3,7 @@ import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../../../core/errors/failures.dart';
-import '../../../../../core/models/menu_model/pages.dart';
-import '../../../../screenTable/data/models/column_data_model.dart';
+import '../../../../screenTable/data/models/screen_model.dart';
 import '../../../data/repositories/screen_repo.dart';
 
 part 'get_table_state.dart';
@@ -12,9 +11,27 @@ part 'get_table_state.dart';
 class GetTableCubit extends Cubit<GetTableState> {
   GetTableCubit(this.screenRepo) : super(GetTableInitial());
   final ScreenRepo screenRepo;
-  Future<void> getTable(Pages page) async {
+  Future<void> getTable({
+    required String pageId,
+    required bool employee,
+    required bool isdesc,
+    required int limit,
+    required int offset,
+    required String orderby,
+    required String statment,
+    required String selectcolumns,
+  }) async {
     emit(GetTableLoading());
-    Either<Failure, ScreenModel> result = await screenRepo.getTable(page);
+    Either<Failure, ScreenModel> result = await screenRepo.getTable(
+      pageId: pageId,
+      employee: employee,
+      isdesc: isdesc,
+      limit: limit,
+      offset: offset,
+      orderby: orderby,
+      statment: statment,
+      selectcolumns: selectcolumns,
+    );
     result.fold((failure) {
       emit(GetTableFailure(failure.errorMassage));
     }, (menuList) {

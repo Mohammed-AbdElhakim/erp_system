@@ -59,6 +59,7 @@ dependencies:
   flutter_arc_speed_dial: ^2.0.1
   cross_scroll: ^0.1.1
   flutter_colorpicker: ^1.0.3
+  linked_scroll_controller: ^0.2.0
 #  hive: ^2.2.3
 #  hive_flutter: ^1.1.0
 
