@@ -31,7 +31,9 @@
   "btn_edit": "تعديل",
   "btn_delete": "حذف",
   "from": "من",
-  "to": "إلى"
+  "to": "إلى",
+  "massage_edit_long_press": "يرجى الضغط المطول على العنصر الذي تريد تعديله.",
+  "massage_number_zero": "إلغاء الأرصدة الصفرية."
 
 
 

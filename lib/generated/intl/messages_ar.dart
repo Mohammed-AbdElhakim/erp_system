@@ -44,8 +44,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "leave": MessageLookupByLibrary.simpleMessage("انصراف"),
         "log_out": MessageLookupByLibrary.simpleMessage("تسجيل الخروج"),
         "login": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
+        "massage_edit_long_press": MessageLookupByLibrary.simpleMessage(
+            "يرجى الضغط المطول على العنصر الذي تريد تعديله."),
         "massage_no_permission":
             MessageLookupByLibrary.simpleMessage("ليس لديك إذن."),
+        "massage_number_zero":
+            MessageLookupByLibrary.simpleMessage("إلغاء الأرصدة الصفرية."),
         "massage_permission": MessageLookupByLibrary.simpleMessage(
             "ليس لديك إذن بعد، انتظر المشرف."),
         "no_location":

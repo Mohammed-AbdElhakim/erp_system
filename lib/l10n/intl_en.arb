@@ -31,6 +31,8 @@
   "btn_edit": "Edit",
   "btn_delete": "Delete",
   "from": "From",
-  "to": "TO"
+  "to": "TO",
+  "massage_edit_long_press":"Please long press on the item you want to edit.",
+  "massage_number_zero": "Eliminate zero balances."
 
 }

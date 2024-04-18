@@ -160,7 +160,7 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
                   ),
                 ],
               ),
-              //TODO:إلغاء الارصدة الصفريه
+              //TODO: number =0
               StatefulBuilder(
                 builder: (BuildContext context,
                     void Function(void Function()) nsetState) {
@@ -169,7 +169,7 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
                       value: checkboxValue,
                       controlAffinity: ListTileControlAffinity.leading,
                       title: Text(
-                        "إلغاء الأرصدة الصفرية",
+                        S.of(context).massage_number_zero,
                         style:
                             AppStyles.textStyle14.copyWith(color: Colors.black),
                       ),

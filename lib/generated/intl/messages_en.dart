@@ -46,8 +46,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "leave": MessageLookupByLibrary.simpleMessage("Leave"),
         "log_out": MessageLookupByLibrary.simpleMessage("Log Out"),
         "login": MessageLookupByLibrary.simpleMessage("LOG IN"),
+        "massage_edit_long_press": MessageLookupByLibrary.simpleMessage(
+            "Please long press on the item you want to edit."),
         "massage_no_permission":
             MessageLookupByLibrary.simpleMessage("You do not have permission."),
+        "massage_number_zero":
+            MessageLookupByLibrary.simpleMessage("Eliminate zero balances."),
         "massage_permission": MessageLookupByLibrary.simpleMessage(
             "You do not have permission yet, Wait for the admin."),
         "no_location": MessageLookupByLibrary.simpleMessage(

@@ -169,7 +169,7 @@ class _CustomFloatingActionButtonState
             context: context,
             type: AlertType.error,
             title: S.of(context).error,
-            desc: "برجاء الضغط المطول على العنصر المراد تعديله");
+            desc: S.of(context).massage_edit_long_press);
       }
     } else if (icon == Icons.add) {
       CustomAlertDialog.alertWithCustomContent(

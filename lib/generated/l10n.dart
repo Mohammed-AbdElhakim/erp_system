@@ -379,6 +379,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Please long press on the item you want to edit.`
+  String get massage_edit_long_press {
+    return Intl.message(
+      'Please long press on the item you want to edit.',
+      name: 'massage_edit_long_press',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Eliminate zero balances.`
+  String get massage_number_zero {
+    return Intl.message(
+      'Eliminate zero balances.',
+      name: 'massage_number_zero',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
