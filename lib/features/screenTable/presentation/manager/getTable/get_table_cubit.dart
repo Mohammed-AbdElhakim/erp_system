@@ -11,6 +11,7 @@ part 'get_table_state.dart';
 class GetTableCubit extends Cubit<GetTableState> {
   GetTableCubit(this.screenRepo) : super(GetTableInitial());
   final ScreenRepo screenRepo;
+
   Future<void> getTable({
     required String pageId,
     required bool employee,
@@ -20,6 +21,8 @@ class GetTableCubit extends Cubit<GetTableState> {
     required String orderby,
     required String statment,
     required String selectcolumns,
+    required int numberOfPage,
+    required int dropdownValueOfLimit,
   }) async {
     emit(GetTableLoading());
     Either<Failure, ScreenModel> result = await screenRepo.getTable(
@@ -35,7 +38,7 @@ class GetTableCubit extends Cubit<GetTableState> {
     result.fold((failure) {
       emit(GetTableFailure(failure.errorMassage));
     }, (menuList) {
-      emit(GetTableSuccess(menuList));
+      emit(GetTableSuccess(menuList, numberOfPage, dropdownValueOfLimit));
     });
   }
 }

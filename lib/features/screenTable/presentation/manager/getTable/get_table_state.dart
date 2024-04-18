@@ -18,6 +18,8 @@ final class GetTableFailure extends GetTableState {
 
 final class GetTableSuccess extends GetTableState {
   final ScreenModel screenModel;
+  final int numberPage;
+  final int dropdownValue;
 
-  const GetTableSuccess(this.screenModel);
+  const GetTableSuccess(this.screenModel, this.numberPage, this.dropdownValue);
 }

@@ -37,7 +37,6 @@ class _ScreenTableBodyState extends State<ScreenTableBody> {
     super.initState();
     headerScrollController = controllerGroup.addAndGet();
     dataScrollController = controllerGroup.addAndGet();
-
     numberPage = 1;
     dropdownValue = listNumberItemInList[0];
   }
@@ -65,8 +64,17 @@ class _ScreenTableBodyState extends State<ScreenTableBody> {
             listKey.add(item.columnName);
             listColumn.add(item);
           }
-
+          numberPage = state.numberPage;
+          dropdownValue = state.dropdownValue;
           allPages = (numberOfRecords! ~/ dropdownValue) + 1;
+
+          print("***********************************************");
+          print("listData => ${listData!.length}");
+          print("all pages => $allPages");
+          print("number page => $numberPage");
+          print("drop => $dropdownValue");
+          print("***********************************************");
+
           return CustomTable(
             listHeader: listHeader,
             listKey: listKey,
@@ -77,7 +85,7 @@ class _ScreenTableBodyState extends State<ScreenTableBody> {
               dropdownValue: dropdownValue,
               listNumberItemInList: listNumberItemInList,
               myPage: numberPage,
-              numberOfRecords: numberOfRecords,
+              numberOfRecords: numberOfRecords!,
               onChangeLimit: (limit) {
                 setState(() {
                   dropdownValue = limit;
@@ -126,6 +134,8 @@ class _ScreenTableBodyState extends State<ScreenTableBody> {
       orderby: orderBy,
       statment: '',
       selectcolumns: '',
+      numberOfPage: numberPage,
+      dropdownValueOfLimit: dropdownValue,
     );
   }
 }

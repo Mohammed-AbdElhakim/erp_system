@@ -3,10 +3,14 @@ import 'package:erp_system/core/utils/app_router.dart';
 import 'package:erp_system/core/utils/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'core/utils/app_colors.dart';
 import 'core/utils/service_locator.dart';
+import 'features/screenTable/data/repositories/screen_repo_impl.dart';
+import 'features/screenTable/presentation/manager/getPermissions/get_permissions_cubit.dart';
+import 'features/screenTable/presentation/manager/getTable/get_table_cubit.dart';
 import 'generated/l10n.dart';
 
 void main() async {
@@ -44,24 +48,38 @@ class _ERPSystemState extends State<ERPSystem> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: AppStrings.appTitle,
-      theme: ThemeData(
-          fontFamily: AppStrings.appFontFamily,
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: AppColors.blueDark,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => GetTableCubit(
+            getIt.get<ScreenRepoImpl>(),
           ),
-          useMaterial3: true),
-      debugShowCheckedModeBanner: false,
-      routerConfig: AppRouter.router,
-      locale: _locale,
-      supportedLocales: S.delegate.supportedLocales,
-      localizationsDelegates: const [
-        S.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
+        ),
+        BlocProvider(
+          create: (context) => GetPermissionsCubit(
+            getIt.get<ScreenRepoImpl>(),
+          ),
+        )
       ],
+      child: MaterialApp.router(
+        title: AppStrings.appTitle,
+        theme: ThemeData(
+            fontFamily: AppStrings.appFontFamily,
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: AppColors.blueDark,
+            ),
+            useMaterial3: true),
+        debugShowCheckedModeBanner: false,
+        routerConfig: AppRouter.router,
+        locale: _locale,
+        supportedLocales: S.delegate.supportedLocales,
+        localizationsDelegates: const [
+          S.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+      ),
     );
   }
 

@@ -3,10 +3,16 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/widgets/custom_text_form_field.dart';
 
-class TextWidget extends StatelessWidget {
-  const TextWidget({super.key, required this.title, required this.typeInput});
+class TextWidget extends StatefulWidget {
+  const TextWidget({super.key, required this.title});
   final String title;
-  final String typeInput;
+
+  @override
+  State<TextWidget> createState() => _TextWidgetState();
+}
+
+class _TextWidgetState extends State<TextWidget> {
+  String myValue = '';
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -15,14 +21,17 @@ class TextWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            title,
+            widget.title,
             style: AppStyles.textStyle14.copyWith(color: Colors.grey),
           ),
           CustomTextFormField(
             hintText: '',
-            keyboardType: typeInput == "number"
-                ? TextInputType.number
-                : TextInputType.text,
+            keyboardType: TextInputType.text,
+            onChanged: (value) {
+              setState(() {
+                myValue = value;
+              });
+            },
           )
         ],
       ),

@@ -12,13 +12,14 @@ import '../../../../generated/l10n.dart';
 import '../../data/models/permission_model.dart';
 import '../../data/models/screen_model.dart';
 import '../manager/getTable/get_table_cubit.dart';
+import 'build_alert_search.dart';
 import 'check_box_widget.dart';
 import 'color_picker_widget.dart';
 import 'date_widget.dart';
-import 'text_widget.dart';
 
 class CustomFloatingActionButton extends StatefulWidget {
-  const CustomFloatingActionButton({super.key});
+  const CustomFloatingActionButton({super.key, required this.pageId});
+  final String pageId;
 
   @override
   State<CustomFloatingActionButton> createState() =>
@@ -30,7 +31,7 @@ class _CustomFloatingActionButtonState
   String? lang;
 
   List<Map<String, dynamic>> listData = [];
-  List<ColumnList> listHeader = [];
+  List<ColumnList> columnList = [];
   List<dynamic> listKey = [];
 
   List<IconData> iconList = [
@@ -73,7 +74,7 @@ class _CustomFloatingActionButtonState
         listener: (context, state) {
           if (state is GetTableSuccess) {
             listData.addAll(state.screenModel.dataList!);
-            listHeader.addAll(state.screenModel.columnList!);
+            columnList.addAll(state.screenModel.columnList!);
             for (var item in state.screenModel.columnList!) {
               listKey.add(item.columnName);
             }
@@ -129,10 +130,23 @@ class _CustomFloatingActionButtonState
         context: context,
         title: S.of(context).btn_search,
         isOverlayTapDismiss: false,
-        content: buildAlertWithCustomContent(type: 'search'),
+        content: BuildAlertSearch(
+          columnList: columnList,
+          pageId: widget.pageId,
+        ),
       );
     } else if (icon == Icons.refresh) {
-      // print("refresh");
+      BlocProvider.of<GetTableCubit>(context).getTable(
+          pageId: widget.pageId,
+          employee: false,
+          isdesc: false,
+          limit: 10,
+          offset: 0,
+          orderby: '',
+          statment: '',
+          selectcolumns: '',
+          dropdownValueOfLimit: 10,
+          numberOfPage: 1);
     } else if (icon == Icons.delete) {
       // print("delete");
     } else if (icon == Icons.edit_note) {
@@ -152,14 +166,15 @@ class _CustomFloatingActionButtonState
     }
   }
 
+//*************************************************
   buildAlertWithCustomContent({required String type}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (type == 'search')
-          ...getMyWidgetInAlertWithCustomContentToSearch(listHeader),
+          ...getMyWidgetInAlertWithCustomContentToSearch(columnList),
         if (type != 'search')
-          ...getMyWidgetInAlertWithCustomContentToAddAndEdit(listHeader),
+          ...getMyWidgetInAlertWithCustomContentToAddAndEdit(columnList),
         Padding(
           padding: const EdgeInsets.only(top: 45),
           child: Center(
@@ -185,22 +200,22 @@ class _CustomFloatingActionButtonState
       String title = lang == AppStrings.arLangKey
           ? item.arColumnLabel!
           : item.enColumnLabel!;
-      if (item.insertType == "text" && item.visible == true) {
-        listWidgets.add(
-          TextWidget(
-            title: title,
-            typeInput: 'text',
-          ),
-        );
-      }
-      if (item.insertType == "number" && item.visible == true) {
-        listWidgets.add(
-          TextWidget(
-            title: title,
-            typeInput: 'number',
-          ),
-        );
-      }
+      // if (item.insertType == "text" && item.visible == true) {
+      //   listWidgets.add(
+      //     TextWidget(
+      //       title: title,
+      //       typeInput: 'text',
+      //     ),
+      //   );
+      // }
+      // if (item.insertType == "number" && item.visible == true) {
+      //   listWidgets.add(
+      //     TextWidget(
+      //       title: title,
+      //       typeInput: 'number',
+      //     ),
+      //   );
+      // }
       if (item.insertType == "color" && item.visible == true) {
         listWidgets.add(ColorPickerWidget(
           title: title,
@@ -229,22 +244,22 @@ class _CustomFloatingActionButtonState
       String title = lang == AppStrings.arLangKey
           ? item.arColumnLabel!
           : item.enColumnLabel!;
-      if (item.insertType == "text" && item.insertVisable == true) {
-        listWidgets.add(
-          TextWidget(
-            title: title,
-            typeInput: 'text',
-          ),
-        );
-      }
-      if (item.insertType == "number" && item.insertVisable == true) {
-        listWidgets.add(
-          TextWidget(
-            title: title,
-            typeInput: 'number',
-          ),
-        );
-      }
+      // if (item.insertType == "text" && item.insertVisable == true) {
+      //   listWidgets.add(
+      //     TextWidget(
+      //       title: title,
+      //       typeInput: 'text',
+      //     ),
+      //   );
+      // }
+      // if (item.insertType == "number" && item.insertVisable == true) {
+      //   listWidgets.add(
+      //     TextWidget(
+      //       title: title,
+      //       typeInput: 'number',
+      //     ),
+      //   );
+      // }
       if (item.insertType == "color" && item.insertVisable == true) {
         listWidgets.add(ColorPickerWidget(
           title: title,

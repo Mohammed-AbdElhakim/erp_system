@@ -6,10 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/models/menu_model/pages.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../../../../core/utils/app_styles.dart';
-import '../../../../core/utils/service_locator.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
 import '../../../../core/widgets/custom_container.dart';
-import '../../data/repositories/screen_repo_impl.dart';
 import '../manager/getTable/get_table_cubit.dart';
 import '../widgets/custom_floating_action_button.dart';
 
@@ -32,53 +30,50 @@ class _ScreenTableState extends State<ScreenTable> {
   }
 
   @override
+  void initState() {
+    BlocProvider.of<GetTableCubit>(context).getTable(
+        pageId: widget.pageData.pageId.toString(),
+        employee: false,
+        isdesc: false,
+        limit: 10,
+        offset: 0,
+        orderby: '',
+        statment: "",
+        selectcolumns: '',
+        dropdownValueOfLimit: 10,
+        numberOfPage: 1);
+    BlocProvider.of<GetPermissionsCubit>(context)
+        .getPagePermissions(widget.pageData.pageId.toString());
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => GetTableCubit(
-            getIt.get<ScreenRepoImpl>(),
-          )..getTable(
-              pageId: widget.pageData.pageId.toString(),
-              employee: false,
-              isdesc: false,
-              limit: 10,
-              offset: 0,
-              orderby: '',
-              statment: '',
-              selectcolumns: '',
-            ),
-        ),
-        BlocProvider(
-          create: (context) => GetPermissionsCubit(
-            getIt.get<ScreenRepoImpl>(),
-          )..getPagePermissions(widget.pageData.pageId.toString()),
-        ),
-      ],
-      child: Scaffold(
-        appBar: const CustomAppBar(),
-        floatingActionButton: const CustomFloatingActionButton(),
-        body: Column(
-          children: [
-            CustomContainer(
-              height: 120,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 12),
-                child: Text(
-                  lang == AppStrings.enLangKey
-                      ? widget.pageData.nameEn
-                      : widget.pageData.nameAr,
-                  maxLines: 1,
-                  textAlign: TextAlign.center,
-                  style: AppStyles.textStyle26,
-                ),
+    return Scaffold(
+      appBar: const CustomAppBar(),
+      floatingActionButton: CustomFloatingActionButton(
+        pageId: widget.pageData.pageId.toString(),
+      ),
+      body: Column(
+        children: [
+          CustomContainer(
+            height: 120,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 12),
+              child: Text(
+                lang == AppStrings.enLangKey
+                    ? widget.pageData.nameEn
+                    : widget.pageData.nameAr,
+                maxLines: 1,
+                textAlign: TextAlign.center,
+                style: AppStyles.textStyle26,
               ),
             ),
-            ScreenTableBody(
-              pageData: widget.pageData,
-            ),
-          ],
-        ),
+          ),
+          ScreenTableBody(
+            pageData: widget.pageData,
+          ),
+        ],
       ),
     );
   }
