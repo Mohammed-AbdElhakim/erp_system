@@ -1,5 +1,6 @@
 import 'package:erp_system/core/utils/app_styles.dart';
 import 'package:erp_system/features/screenTable/presentation/manager/getTable/get_table_cubit.dart';
+import 'package:erp_system/features/screenTable/presentation/widgets/screen_table_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -37,7 +38,16 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
   }
 
   @override
+  void dispose() {
+    ScreenTableBody.rowData = {};
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    print("%%%%%%%%%%%%%%%%%%");
+    print(ScreenTableBody.rowData);
+    print("%%%%%%%%%%%%%%%%%%%%");
     return Form(
       key: formKey,
       child: Column(

@@ -1,9 +1,11 @@
 import 'package:erp_system/core/widgets/custom_button.dart';
 import 'package:erp_system/features/screenTable/presentation/manager/getPermissions/get_permissions_cubit.dart';
 import 'package:erp_system/features/screenTable/presentation/widgets/dropdown_widget.dart';
+import 'package:erp_system/features/screenTable/presentation/widgets/screen_table_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 import '../../../../core/helper/AlertDialog/custom_alert_dialog.dart';
 import '../../../../core/models/menu_model/pages.dart';
@@ -152,15 +154,23 @@ class _CustomFloatingActionButtonState
     } else if (icon == Icons.delete) {
       // print("delete");
     } else if (icon == Icons.edit_note) {
-      CustomAlertDialog.alertWithCustomContent(
-        context: context,
-        title: S.of(context).btn_edit,
-        isOverlayTapDismiss: false,
-        content: BuildAlertEdit(
-          columnList: columnList,
-          pageData: widget.pageData,
-        ),
-      );
+      if (ScreenTableBody.rowData.isNotEmpty) {
+        CustomAlertDialog.alertWithCustomContent(
+          context: context,
+          title: S.of(context).btn_edit,
+          isOverlayTapDismiss: false,
+          content: BuildAlertEdit(
+            columnList: columnList,
+            pageData: widget.pageData,
+          ),
+        );
+      } else {
+        CustomAlertDialog.alertWithButton(
+            context: context,
+            type: AlertType.error,
+            title: S.of(context).error,
+            desc: "برجاء الضغط المطول على العنصر المراد تعديله");
+      }
     } else if (icon == Icons.add) {
       CustomAlertDialog.alertWithCustomContent(
         context: context,
