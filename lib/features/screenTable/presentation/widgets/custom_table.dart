@@ -6,6 +6,7 @@ import '../../../../core/utils/app_styles.dart';
 import '../../data/models/screen_model.dart';
 
 typedef OnTapHeader<String> = void Function(String titleHeader);
+typedef OnTapRow<T> = void Function(T rowData);
 
 class CustomTable extends StatefulWidget {
   const CustomTable({
@@ -16,6 +17,7 @@ class CustomTable extends StatefulWidget {
     required this.paginationWidget,
     required this.onTapHeader,
     required this.listColumn,
+    required this.onTapRow,
   });
   final List<String> listHeader;
   final List<dynamic> listData;
@@ -23,6 +25,7 @@ class CustomTable extends StatefulWidget {
   final List<ColumnList> listColumn;
   final Widget paginationWidget;
   final OnTapHeader<String> onTapHeader;
+  final OnTapRow<Map<String, dynamic>> onTapRow;
 
   @override
   State<CustomTable> createState() => _CustomTableState();
@@ -81,6 +84,9 @@ class _CustomTableState extends State<CustomTable> {
                     rows: List.generate(
                       widget.listData.length,
                       (index) => DataRow(
+                        onLongPress: () {
+                          widget.onTapRow(widget.listData[index]);
+                        },
                         cells: List.generate(
                           widget.listHeader.length,
                           (i) => DataCell(

@@ -14,6 +14,7 @@ import 'custom_table.dart';
 class ScreenTableBody extends StatefulWidget {
   const ScreenTableBody({super.key, required this.pageData});
   final Pages pageData;
+  static Map<String, dynamic> rowData = {};
 
   @override
   State<ScreenTableBody> createState() => _ScreenTableBodyState();
@@ -42,6 +43,12 @@ class _ScreenTableBodyState extends State<ScreenTableBody> {
   }
 
   @override
+  void dispose() {
+    ScreenTableBody.rowData = {};
+    super.dispose();
+  }
+
+  @override
   void didChangeDependencies() {
     lang = Localizations.localeOf(context).toString();
     super.didChangeDependencies();
@@ -67,13 +74,6 @@ class _ScreenTableBodyState extends State<ScreenTableBody> {
           numberPage = state.numberPage;
           dropdownValue = state.dropdownValue;
           allPages = (numberOfRecords! ~/ dropdownValue) + 1;
-
-          print("***********************************************");
-          print("listData => ${listData!.length}");
-          print("all pages => $allPages");
-          print("number page => $numberPage");
-          print("drop => $dropdownValue");
-          print("***********************************************");
 
           return CustomTable(
             listHeader: listHeader,
@@ -113,6 +113,9 @@ class _ScreenTableBodyState extends State<ScreenTableBody> {
                 isDesc = !isDesc;
               });
               getData(context);
+            },
+            onTapRow: (rowData) {
+              ScreenTableBody.rowData = rowData;
             },
           );
         } else if (state is GetTableFailure) {
