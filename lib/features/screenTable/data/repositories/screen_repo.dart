@@ -16,4 +16,6 @@ abstract class ScreenRepo {
     required String selectcolumns,
   });
   Future<Either<Failure, PermissionModel>> getPagePermissions(String pageId);
+  Future<Either<Failure, Map<String, dynamic>>> getById(
+      String controllerName, String id);
 }

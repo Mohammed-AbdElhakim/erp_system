@@ -96,4 +96,36 @@ class ScreenRepoImpl implements ScreenRepo {
       );
     }
   }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> getById(
+      String controllerName, String id) async {
+    try {
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
+              "";
+      String token =
+          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      Map<String, dynamic> data = await apiService.get(
+        endPoint: "home/GetById?controllerName=$controllerName&Id=$id",
+        headers: {
+          "Authorization": "Bearer $token",
+          "CompanyKey": companyKey,
+        },
+      );
+
+      return right(data);
+    } catch (e) {
+      if (e is DioException) {
+        return left(
+          ServerFailure.fromDioException(e),
+        );
+      }
+      return left(
+        ServerFailure(
+          e.toString(),
+        ),
+      );
+    }
+  }
 }
