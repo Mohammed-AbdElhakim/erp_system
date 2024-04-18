@@ -52,7 +52,7 @@ class _ScreenTableState extends State<ScreenTable> {
     return Scaffold(
       appBar: const CustomAppBar(),
       floatingActionButton: CustomFloatingActionButton(
-        pageId: widget.pageData.pageId.toString(),
+        pageData: widget.pageData,
       ),
       body: Column(
         children: [

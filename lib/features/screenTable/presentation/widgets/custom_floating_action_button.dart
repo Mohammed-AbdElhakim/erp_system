@@ -6,20 +6,22 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 import '../../../../core/helper/AlertDialog/custom_alert_dialog.dart';
+import '../../../../core/models/menu_model/pages.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../../../../generated/l10n.dart';
 import '../../data/models/permission_model.dart';
 import '../../data/models/screen_model.dart';
 import '../manager/getTable/get_table_cubit.dart';
+import 'build_alert_edit.dart';
 import 'build_alert_search.dart';
 import 'check_box_widget.dart';
 import 'color_picker_widget.dart';
 import 'date_widget.dart';
 
 class CustomFloatingActionButton extends StatefulWidget {
-  const CustomFloatingActionButton({super.key, required this.pageId});
-  final String pageId;
+  const CustomFloatingActionButton({super.key, required this.pageData});
+  final Pages pageData;
 
   @override
   State<CustomFloatingActionButton> createState() =>
@@ -132,12 +134,12 @@ class _CustomFloatingActionButtonState
         isOverlayTapDismiss: false,
         content: BuildAlertSearch(
           columnList: columnList,
-          pageId: widget.pageId,
+          pageId: widget.pageData.pageId.toString(),
         ),
       );
     } else if (icon == Icons.refresh) {
       BlocProvider.of<GetTableCubit>(context).getTable(
-          pageId: widget.pageId,
+          pageId: widget.pageData.pageId.toString(),
           employee: false,
           isdesc: false,
           limit: 10,
@@ -154,7 +156,10 @@ class _CustomFloatingActionButtonState
         context: context,
         title: S.of(context).btn_edit,
         isOverlayTapDismiss: false,
-        content: buildAlertWithCustomContent(type: 'edit'),
+        content: BuildAlertEdit(
+          columnList: columnList,
+          pageData: widget.pageData,
+        ),
       );
     } else if (icon == Icons.add) {
       CustomAlertDialog.alertWithCustomContent(
