@@ -1,5 +1,9 @@
 import 'package:erp_system/core/utils/app_styles.dart';
-import 'package:erp_system/features/screenTable/presentation/manager/getTable/get_table_cubit.dart';
+import 'package:erp_system/core/utils/service_locator.dart';
+import 'package:erp_system/core/widgets/custom_error_massage.dart';
+import 'package:erp_system/core/widgets/custom_loading_widget.dart';
+import 'package:erp_system/features/screenTable/data/repositories/screen_repo_impl.dart';
+import 'package:erp_system/features/screenTable/presentation/manager/getById/get_by_id_cubit.dart';
 import 'package:erp_system/features/screenTable/presentation/widgets/screen_table_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,10 +30,8 @@ class BuildAlertEdit extends StatefulWidget {
 
 class _BuildAlertEditState extends State<BuildAlertEdit> {
   String? lang;
-  String statment = '';
   GlobalKey<FormState> formKey = GlobalKey();
-  bool checkboxValue = false;
-  String date = '';
+  Map<String, dynamic> newRowData = {};
 
   @override
   void didChangeDependencies() {
@@ -45,57 +47,71 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
 
   @override
   Widget build(BuildContext context) {
-    print("%%%%%%%%%%%%%%%%%%");
-    print(ScreenTableBody.rowData);
-    print("%%%%%%%%%%%%%%%%%%%%");
-    return Form(
-      key: formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ...getMyWidgetList(widget.columnList),
-          Padding(
-            padding: const EdgeInsets.only(top: 45),
-            child: Center(
-              child: CustomButton(
-                text: S.of(context).btn_edit,
-                width: 80,
-                onTap: () {
-                  formKey.currentState!.save();
-                  BlocProvider.of<GetTableCubit>(context).getTable(
-                      pageId: widget.pageData.pageId.toString(),
-                      employee: false,
-                      isdesc: false,
-                      limit: 10,
-                      offset: 0,
-                      orderby: '',
-                      statment: statment,
-                      selectcolumns: '',
-                      numberOfPage: 1,
-                      dropdownValueOfLimit: 10);
-                  print("***************");
-                  print(statment);
-                  print("***************");
-                  Navigator.pop(context);
-                  // GoRouter.of(context).pushReplacementNamed(AppRouter.kScreenView);
-                },
+    return BlocProvider(
+      create: (context) => GetByIdCubit(getIt.get<ScreenRepoImpl>())
+        ..getById(
+            id: ScreenTableBody.rowData['CustomerAccountID'].toString(),
+            controllerName: widget.pageData.controllerName),
+      child: BlocBuilder<GetByIdCubit, GetByIdState>(
+        builder: (context, state) {
+          if (state is GetByIdSuccess) {
+            return Form(
+              key: formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ...getMyWidgetList(widget.columnList, state.valueGetById),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 45),
+                    child: Center(
+                      child: CustomButton(
+                        text: S.of(context).btn_edit,
+                        width: 80,
+                        onTap: () {
+                          formKey.currentState!.save();
+                          print("//////////////////");
+                          print(newRowData);
+                          print("//////////////////");
+                          // BlocProvider.of<GetTableCubit>(context).getTable(
+                          //     pageId: widget.pageData.pageId.toString(),
+                          //     employee: false,
+                          //     isdesc: false,
+                          //     limit: 10,
+                          //     offset: 0,
+                          //     orderby: '',
+                          //     statment: '',
+                          //     selectcolumns: '',
+                          //     numberOfPage: 1,
+                          //     dropdownValueOfLimit: 10);
+
+                          // Navigator.pop(context);
+                        },
+                      ),
+                    ),
+                  )
+                ],
               ),
-            ),
-          )
-        ],
+            );
+          } else if (state is GetByIdFailure) {
+            return CustomErrorMassage(errorMassage: state.errorMassage);
+          } else {
+            return const CustomLoadingWidget();
+          }
+        },
       ),
     );
   }
 
-  getMyWidgetList(List<ColumnList> columnList) {
+  getMyWidgetList(List<ColumnList> columnList, Map<String, dynamic> rowData) {
     List<Widget> listWidgets = [];
-
     for (var item in columnList) {
       String title = lang == AppStrings.arLangKey
           ? item.arColumnLabel!
           : item.enColumnLabel!;
       if (item.insertType == "text" && item.insertVisable == true) {
         //TODO:text
+        TextEditingController controller =
+            TextEditingController(text: rowData[item.columnName].toString());
         listWidgets.add(Padding(
           padding: const EdgeInsets.symmetric(vertical: 5),
           child: Column(
@@ -107,12 +123,16 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
               ),
               CustomTextFormField(
                 hintText: '',
+                controller: controller,
                 keyboardType: TextInputType.text,
-                onSaved: (value) {
-                  if (value!.isNotEmpty) {
+                onSaved: (newValue) {
+                  if (newValue!.isNotEmpty) {
                     setState(() {
-                      statment =
-                          "${statment}and ${item.searchName} like N'%$value%' ";
+                      rowData.updateAll((key, value) =>
+                          key == item.columnName!.toString()
+                              ? value = newValue
+                              : value);
+                      newRowData = rowData;
                     });
                   }
                 },
@@ -123,6 +143,9 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
       }
       if (item.insertType == "number" && item.insertVisable == true) {
         //TODO:number
+        TextEditingController controller =
+            TextEditingController(text: rowData[item.columnName]);
+
         listWidgets.add(Padding(
           padding: const EdgeInsets.symmetric(vertical: 5),
           child: Column(
@@ -135,10 +158,17 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
               CustomTextFormField(
                 hintText: '',
                 keyboardType: TextInputType.number,
-                onSaved: (value) {
-                  if (value!.isNotEmpty) {
+                controller: controller,
+                onSaved: (newValue) {
+                  if (newValue!.isNotEmpty) {
+                    // newRowData[item.columnName!] = newValue;
+
                     setState(() {
-                      statment = "${statment}and ${item.searchName} <= $value ";
+                      rowData.updateAll((key, value) =>
+                          key == item.columnName!.toString()
+                              ? value = newValue
+                              : value);
+                      newRowData = rowData;
                     });
                   }
                 },
@@ -149,6 +179,10 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
       }
       if (item.insertType == "date" && item.insertVisable == true) {
         //TODO:Date
+        String date = rowData[item.columnName].toString() != ''
+            ? DateFormat("yyyy-MM-dd", 'en')
+                .format(DateTime.parse(rowData[item.columnName].toString()))
+            : '';
         listWidgets.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -175,8 +209,14 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                                 DateFormat("yyyy-MM-dd", 'en').format(dateTime);
                             // dateFrom = dateTime.toString();
                           });
-                          statment =
-                              "${statment}and Convert(date,  ${item.searchName} )>= Convert(date, '$date') ";
+
+                          setState(() {
+                            newRowData.updateAll((key, value) =>
+                                key == item.columnName!.toString()
+                                    ? value = dateTime
+                                    : value);
+                            newRowData = rowData;
+                          });
                         }
                       },
                       child: Container(
@@ -205,10 +245,11 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
       }
       //TODO:checkbox
       if (item.insertType == "checkbox" && item.insertVisable == true) {
+        bool checkboxValue = rowData[item.columnName] ?? false;
+
         listWidgets.add(
           StatefulBuilder(
-            builder: (BuildContext context,
-                void Function(void Function()) csetState) {
+            builder: (context, csetState) {
               return CheckboxListTile(
                   contentPadding: EdgeInsets.zero,
                   value: checkboxValue,
@@ -220,16 +261,13 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                   onChanged: (newValue) {
                     csetState(() {
                       checkboxValue = !checkboxValue;
-                      if (checkboxValue == true) {
-                        statment = "${statment}and ${item.searchName} = 1 ";
-                      } else {
-                        if (statment.contains("and ${item.searchName} = 1 ")) {
-                          statment = statment.replaceAll(
-                              "and ${item.searchName} = 1 ", '');
-                        }
-                        statment =
-                            "${statment}and (${item.searchName} = 0 or ${item.searchName} is null) ";
-                      }
+                    });
+                    setState(() {
+                      rowData.updateAll((key, value) =>
+                          key == item.columnName!.toString()
+                              ? value = checkboxValue
+                              : value);
+                      newRowData = rowData;
                     });
                   });
             },
