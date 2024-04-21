@@ -50,7 +50,7 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
     return BlocProvider(
       create: (context) => GetByIdCubit(getIt.get<ScreenRepoImpl>())
         ..getById(
-            id: ScreenTableBody.rowData['CustomerAccountID'].toString(),
+            id: ScreenTableBody.rowData[widget.pageData.primary].toString(),
             controllerName: widget.pageData.controllerName),
       child: BlocBuilder<GetByIdCubit, GetByIdState>(
         builder: (context, state) {
@@ -84,7 +84,7 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                           //     numberOfPage: 1,
                           //     dropdownValueOfLimit: 10);
 
-                          // Navigator.pop(context);
+                          Navigator.pop(context);
                         },
                       ),
                     ),
@@ -130,7 +130,7 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                     setState(() {
                       rowData.updateAll((key, value) =>
                           key == item.columnName!.toString()
-                              ? value = newValue
+                              ? value = controller.text
                               : value);
                       newRowData = rowData;
                     });
@@ -144,7 +144,7 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
       if (item.insertType == "number" && item.insertVisable == true) {
         //TODO:number
         TextEditingController controller =
-            TextEditingController(text: rowData[item.columnName]);
+            TextEditingController(text: rowData[item.columnName].toString());
 
         listWidgets.add(Padding(
           padding: const EdgeInsets.symmetric(vertical: 5),
@@ -166,7 +166,7 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                     setState(() {
                       rowData.updateAll((key, value) =>
                           key == item.columnName!.toString()
-                              ? value = newValue
+                              ? value = controller.text
                               : value);
                       newRowData = rowData;
                     });
@@ -179,10 +179,8 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
       }
       if (item.insertType == "date" && item.insertVisable == true) {
         //TODO:Date
-        String date = rowData[item.columnName].toString() != ''
-            ? DateFormat("yyyy-MM-dd", 'en')
-                .format(DateTime.parse(rowData[item.columnName].toString()))
-            : '';
+        String date = DateFormat("yyyy-MM-dd", 'en')
+            .format(DateTime.parse(rowData[item.columnName].toString()));
         listWidgets.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -210,7 +208,7 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                             // dateFrom = dateTime.toString();
                           });
 
-                          setState(() {
+                          dsetState(() {
                             newRowData.updateAll((key, value) =>
                                 key == item.columnName!.toString()
                                     ? value = dateTime
@@ -262,7 +260,7 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                     csetState(() {
                       checkboxValue = !checkboxValue;
                     });
-                    setState(() {
+                    csetState(() {
                       rowData.updateAll((key, value) =>
                           key == item.columnName!.toString()
                               ? value = checkboxValue
@@ -278,11 +276,4 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
 
     return listWidgets;
   }
-}
-
-class ListModel {
-  final Widget widget;
-  final String data;
-
-  ListModel({required this.widget, required this.data});
 }
