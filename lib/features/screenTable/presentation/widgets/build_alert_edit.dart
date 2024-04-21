@@ -36,6 +36,10 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
   @override
   void didChangeDependencies() {
     lang = Localizations.localeOf(context).toString();
+
+    print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+    print(widget.columnList.length);
+    print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
     super.didChangeDependencies();
   }
 
@@ -113,7 +117,7 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                               //     selectcolumns: '',
                               //     numberOfPage: 1,
                               //     dropdownValueOfLimit: 10);
-
+                              widget.columnList.clear();
                               Navigator.pop(context);
                             },
                           ),

@@ -36,6 +36,9 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
     lang = Localizations.localeOf(context).toString();
     dateFrom = S.of(context).from;
     dateTo = S.of(context).to;
+    print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+    print(widget.columnList.length);
+    print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
     super.didChangeDependencies();
   }
 
@@ -84,17 +87,19 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
                     width: 80,
                     onTap: () {
                       formKey.currentState!.save();
-                      BlocProvider.of<GetTableCubit>(context).getTable(
-                          pageId: widget.pageId,
-                          employee: false,
-                          isdesc: false,
-                          limit: 10,
-                          offset: 0,
-                          orderby: '',
-                          statment: statment,
-                          selectcolumns: '',
-                          numberOfPage: 1,
-                          dropdownValueOfLimit: 10);
+                      BlocProvider.of<GetTableCubit>(context)
+                          .getTable(
+                              pageId: widget.pageId,
+                              employee: false,
+                              isdesc: false,
+                              limit: 10,
+                              offset: 0,
+                              orderby: '',
+                              statment: statment,
+                              selectcolumns: '',
+                              numberOfPage: 1,
+                              dropdownValueOfLimit: 10)
+                          .then((value) => widget.columnList.clear());
                       print("***************");
                       print(statment);
                       print("***************");
@@ -113,7 +118,6 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
 
   getMyWidgetList(List<ColumnList> columnList) {
     List<Widget> listWidgets = [];
-
     for (var item in columnList) {
       String title = lang == AppStrings.arLangKey
           ? item.arColumnLabel!
