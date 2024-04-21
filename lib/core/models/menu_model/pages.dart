@@ -11,7 +11,7 @@ class Pages {
     required this.tableSrc,
     required this.editSrc,
     required this.controllerName,
-    // required this.primary,
+    required this.primary,
   });
   late final int pageId;
   late final String nameAr;
@@ -24,7 +24,7 @@ class Pages {
   late final String tableSrc;
   late final String editSrc;
   late final String controllerName;
-  // late final String primary;
+  late final String primary;
 
   Pages.fromJson(Map<String, dynamic> json) {
     pageId = json['PageId'];
@@ -38,7 +38,7 @@ class Pages {
     tableSrc = json['TableSrc'];
     editSrc = json['EditSrc'];
     controllerName = json['ControllerName'];
-    // primary = json['Primary'];
+    primary = json['Primary'];
   }
 
   Map<String, dynamic> toJson() {
@@ -54,7 +54,7 @@ class Pages {
     data['TableSrc'] = tableSrc;
     data['EditSrc'] = editSrc;
     data['ControllerName'] = controllerName;
-    // data['Primary'] = primary;
+    data['Primary'] = primary;
     return data;
   }
 }
