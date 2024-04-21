@@ -11,11 +11,15 @@ class CustomButton extends StatefulWidget {
     this.width,
     this.height,
     this.textStyle,
+    this.color,
+    this.noGradient,
   });
   final String text;
   final double? width;
   final double? height;
   final TextStyle? textStyle;
+  final Color? color;
+  final bool? noGradient;
 
   final void Function()? onTap;
 
@@ -40,8 +44,8 @@ class CustomButtonState extends State<CustomButton> {
           margin: const EdgeInsets.symmetric(vertical: 5),
           padding: const EdgeInsets.symmetric(vertical: 5),
           decoration: BoxDecoration(
-            color: AppColors.blueDark,
-            gradient: gradientButton,
+            color: widget.color ?? AppColors.blueDark,
+            gradient: widget.noGradient != true ? gradientButton : null,
             boxShadow: isPressed
                 ? null
                 : [

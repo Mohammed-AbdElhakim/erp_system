@@ -159,6 +159,7 @@ class _CustomFloatingActionButtonState
           context: context,
           title: S.of(context).btn_edit,
           isOverlayTapDismiss: false,
+          isCloseButton: false,
           content: BuildAlertEdit(
             columnList: columnList,
             pageData: widget.pageData,

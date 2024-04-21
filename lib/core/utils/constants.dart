@@ -12,6 +12,14 @@ LinearGradient gradientButton = LinearGradient(
     AppColors.blueDark,
   ],
 );
+LinearGradient gradientButtonCancel = LinearGradient(
+  begin: AlignmentDirectional.topCenter,
+  end: AlignmentDirectional.bottomCenter,
+  colors: [
+    AppColors.grey,
+    AppColors.grey.withOpacity(.2),
+  ],
+);
 
 LinearGradient gradientContainer = LinearGradient(
   begin: AlignmentDirectional.topStart,

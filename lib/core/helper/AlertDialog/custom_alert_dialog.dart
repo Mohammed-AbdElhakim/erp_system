@@ -65,13 +65,13 @@ class CustomAlertDialog {
         title: title,
         content: content,
         style: AlertStyle(
-          titleStyle: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: AppColors.blueLight),
-          isOverlayTapDismiss: isOverlayTapDismiss,
-          isCloseButton: isCloseButton,
-        ),
+            titleStyle: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: AppColors.blueLight),
+            isOverlayTapDismiss: isOverlayTapDismiss,
+            isCloseButton: isCloseButton,
+            isButtonVisible: false),
         buttons: []).show();
   }
 }

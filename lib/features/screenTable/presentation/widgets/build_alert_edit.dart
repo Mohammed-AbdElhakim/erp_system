@@ -55,41 +55,73 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
       child: BlocBuilder<GetByIdCubit, GetByIdState>(
         builder: (context, state) {
           if (state is GetByIdSuccess) {
-            return Form(
-              key: formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ...getMyWidgetList(widget.columnList, state.valueGetById),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 45),
-                    child: Center(
-                      child: CustomButton(
-                        text: S.of(context).btn_edit,
-                        width: 80,
-                        onTap: () {
-                          formKey.currentState!.save();
-                          print("//////////////////");
-                          print(newRowData);
-                          print("//////////////////");
-                          // BlocProvider.of<GetTableCubit>(context).getTable(
-                          //     pageId: widget.pageData.pageId.toString(),
-                          //     employee: false,
-                          //     isdesc: false,
-                          //     limit: 10,
-                          //     offset: 0,
-                          //     orderby: '',
-                          //     statment: '',
-                          //     selectcolumns: '',
-                          //     numberOfPage: 1,
-                          //     dropdownValueOfLimit: 10);
-
-                          Navigator.pop(context);
-                        },
+            return SizedBox(
+              height: MediaQuery.of(context).size.height * .75,
+              child: Form(
+                key: formKey,
+                child: Stack(
+                  alignment: Alignment.center,
+                  clipBehavior: Clip.none,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 35),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ...getMyWidgetList(
+                                widget.columnList, state.valueGetById),
+                          ],
+                        ),
                       ),
                     ),
-                  )
-                ],
+                    Positioned(
+                      bottom: -25,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          CustomButton(
+                            text: S.of(context).cancel,
+                            width: 40,
+                            height: 25,
+                            noGradient: true,
+                            textStyle: AppStyles.textStyle12,
+                            color: Colors.grey,
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                          const SizedBox(
+                            width: 50,
+                          ),
+                          CustomButton(
+                            text: S.of(context).btn_edit,
+                            width: 80,
+                            onTap: () {
+                              formKey.currentState!.save();
+                              print("//////////////////");
+                              print(newRowData);
+                              print("//////////////////");
+                              // BlocProvider.of<GetTableCubit>(context).getTable(
+                              //     pageId: widget.pageData.pageId.toString(),
+                              //     employee: false,
+                              //     isdesc: false,
+                              //     limit: 10,
+                              //     offset: 0,
+                              //     orderby: '',
+                              //     statment: '',
+                              //     selectcolumns: '',
+                              //     numberOfPage: 1,
+                              //     dropdownValueOfLimit: 10);
+
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             );
           } else if (state is GetByIdFailure) {

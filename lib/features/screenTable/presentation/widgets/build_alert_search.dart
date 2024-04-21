@@ -41,41 +41,72 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ...getMyWidgetList(widget.columnList),
-          Padding(
-            padding: const EdgeInsets.only(top: 45),
-            child: Center(
-              child: CustomButton(
-                text: S.of(context).btn_search,
-                width: 80,
-                onTap: () {
-                  formKey.currentState!.save();
-                  BlocProvider.of<GetTableCubit>(context).getTable(
-                      pageId: widget.pageId,
-                      employee: false,
-                      isdesc: false,
-                      limit: 10,
-                      offset: 0,
-                      orderby: '',
-                      statment: statment,
-                      selectcolumns: '',
-                      numberOfPage: 1,
-                      dropdownValueOfLimit: 10);
-                  print("***************");
-                  print(statment);
-                  print("***************");
-                  Navigator.pop(context);
-                  // GoRouter.of(context).pushReplacementNamed(AppRouter.kScreenView);
-                },
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * .75,
+      child: Form(
+        key: formKey,
+        child: Stack(
+          alignment: Alignment.center,
+          clipBehavior: Clip.none,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 35),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ...getMyWidgetList(widget.columnList),
+                  ],
+                ),
               ),
             ),
-          )
-        ],
+            Positioned(
+              bottom: -25,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  CustomButton(
+                    text: S.of(context).cancel,
+                    width: 40,
+                    height: 25,
+                    noGradient: true,
+                    textStyle: AppStyles.textStyle12,
+                    color: Colors.grey,
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  const SizedBox(
+                    width: 50,
+                  ),
+                  CustomButton(
+                    text: S.of(context).btn_search,
+                    width: 80,
+                    onTap: () {
+                      formKey.currentState!.save();
+                      BlocProvider.of<GetTableCubit>(context).getTable(
+                          pageId: widget.pageId,
+                          employee: false,
+                          isdesc: false,
+                          limit: 10,
+                          offset: 0,
+                          orderby: '',
+                          statment: statment,
+                          selectcolumns: '',
+                          numberOfPage: 1,
+                          dropdownValueOfLimit: 10);
+                      print("***************");
+                      print(statment);
+                      print("***************");
+                      Navigator.pop(context);
+                      // GoRouter.of(context).pushReplacementNamed(AppRouter.kScreenView);
+                    },
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
