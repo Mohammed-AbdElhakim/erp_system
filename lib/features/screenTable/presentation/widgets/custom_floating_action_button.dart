@@ -134,6 +134,7 @@ class _CustomFloatingActionButtonState
         context: context,
         title: S.of(context).btn_search,
         isOverlayTapDismiss: false,
+        isCloseButton: false,
         content: BuildAlertSearch(
           columnList: columnList,
           pageId: widget.pageData.pageId.toString(),
