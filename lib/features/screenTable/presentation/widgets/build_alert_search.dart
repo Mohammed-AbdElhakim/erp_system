@@ -11,12 +11,14 @@ import '../../../../core/widgets/custom_text_form_field.dart';
 import '../../../../generated/l10n.dart';
 import '../../data/models/screen_model.dart';
 import 'dropdown_widget.dart';
+import 'screen_table_body.dart';
 
 class BuildAlertSearch extends StatefulWidget {
   const BuildAlertSearch(
       {super.key, required this.columnList, required this.pageId});
   final List<ColumnList> columnList;
   final String pageId;
+  static String statement = '';
 
   @override
   State<BuildAlertSearch> createState() => _BuildAlertSearchState();
@@ -87,6 +89,7 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
                     width: 80,
                     onTap: () {
                       formKey.currentState!.save();
+                      ScreenTableBody.isSearch = true;
                       BlocProvider.of<GetTableCubit>(context)
                           .getTable(
                               pageId: widget.pageId,
@@ -141,6 +144,7 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
                     setState(() {
                       statment =
                           "${statment}and ${item.searchName} like N'%$value%' ";
+                      BuildAlertSearch.statement = statment;
                     });
                   }
                 },
@@ -172,6 +176,7 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
                           setState(() {
                             statment =
                                 "${statment}and ${item.searchName} >= $value ";
+                            BuildAlertSearch.statement = statment;
                           });
                         }
                       },
@@ -188,6 +193,7 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
                           setState(() {
                             statment =
                                 "${statment}and ${item.searchName} <= $value ";
+                            BuildAlertSearch.statement = statment;
                           });
                         }
                       },
@@ -214,12 +220,14 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
                           if (checkboxValue == true) {
                             statment =
                                 "${statment}and ${item.searchName} <> 0 and ${item.searchName} is not null ";
+                            BuildAlertSearch.statement = statment;
                           } else {
                             if (statment.contains(
                                 "and ${item.searchName} <> 0 and ${item.searchName} is not null ")) {
                               statment = statment.replaceAll(
                                   "and ${item.searchName} <> 0 and ${item.searchName} is not null ",
                                   '');
+                              BuildAlertSearch.statement = statment;
                             }
                           }
                         });
@@ -264,6 +272,7 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
                                 });
                                 statment =
                                     "${statment}and Convert(date,  ${item.searchName} )>= Convert(date, '$dateFrom') ";
+                                BuildAlertSearch.statement = statment;
                               }
                             },
                             child: Container(
@@ -304,6 +313,7 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
                                 });
                                 statment =
                                     "${statment}and  Convert(date,${item.searchName}) <= Convert(date, '$dateTo') ";
+                                BuildAlertSearch.statement = statment;
                               }
                             },
                             child: Container(
@@ -353,13 +363,16 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
                       checkboxValue2 = !checkboxValue2;
                       if (checkboxValue2 == true) {
                         statment = "${statment}and ${item.searchName} = 1 ";
+                        BuildAlertSearch.statement = statment;
                       } else {
                         if (statment.contains("and ${item.searchName} = 1 ")) {
                           statment = statment.replaceAll(
                               "and ${item.searchName} = 1 ", '');
+                          BuildAlertSearch.statement = statment;
                         }
                         statment =
                             "${statment}and (${item.searchName} = 0 or ${item.searchName} is null) ";
+                        BuildAlertSearch.statement = statment;
                       }
                     });
                   });
@@ -371,11 +384,4 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
 
     return listWidgets;
   }
-}
-
-class ListModel {
-  final Widget widget;
-  final String data;
-
-  ListModel({required this.widget, required this.data});
 }

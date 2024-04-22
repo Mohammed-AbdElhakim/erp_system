@@ -136,6 +136,7 @@ class _CustomFloatingActionButtonState
         ),
       );
     } else if (icon == Icons.refresh) {
+      ScreenTableBody.isSearch == false;
       BlocProvider.of<GetTableCubit>(context).getTable(
           pageId: widget.pageData.pageId.toString(),
           employee: false,

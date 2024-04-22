@@ -1,4 +1,5 @@
 import 'package:erp_system/features/screenTable/data/models/screen_model.dart';
+import 'package:erp_system/features/screenTable/presentation/widgets/build_alert_search.dart';
 import 'package:erp_system/features/screenTable/presentation/widgets/pagination_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,6 +16,7 @@ class ScreenTableBody extends StatefulWidget {
   const ScreenTableBody({super.key, required this.pageData});
   final Pages pageData;
   static Map<String, dynamic> rowData = {};
+  static bool isSearch = false;
 
   @override
   State<ScreenTableBody> createState() => _ScreenTableBodyState();
@@ -45,6 +47,7 @@ class _ScreenTableBodyState extends State<ScreenTableBody> {
   @override
   void dispose() {
     ScreenTableBody.rowData = {};
+    ScreenTableBody.isSearch == false;
     super.dispose();
   }
 
@@ -135,7 +138,8 @@ class _ScreenTableBodyState extends State<ScreenTableBody> {
       limit: dropdownValue,
       offset: (numberPage * dropdownValue) - dropdownValue,
       orderby: orderBy,
-      statment: '',
+      statment:
+          ScreenTableBody.isSearch == true ? BuildAlertSearch.statement : '',
       selectcolumns: '',
       numberOfPage: numberPage,
       dropdownValueOfLimit: dropdownValue,
