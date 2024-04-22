@@ -3,6 +3,7 @@ import 'package:erp_system/core/utils/service_locator.dart';
 import 'package:erp_system/core/widgets/custom_error_massage.dart';
 import 'package:erp_system/core/widgets/custom_loading_widget.dart';
 import 'package:erp_system/features/screenTable/data/repositories/screen_repo_impl.dart';
+import 'package:erp_system/features/screenTable/presentation/manager/addEdit/add_edit_cubit.dart';
 import 'package:erp_system/features/screenTable/presentation/manager/getById/get_by_id_cubit.dart';
 import 'package:erp_system/features/screenTable/presentation/widgets/screen_table_body.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_text_form_field.dart';
 import '../../../../generated/l10n.dart';
 import '../../data/models/screen_model.dart';
+import '../manager/getTable/get_table_cubit.dart';
 import 'dropdown_widget.dart';
 
 class BuildAlertEdit extends StatefulWidget {
@@ -133,21 +135,29 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                             width: 80,
                             onTap: () {
                               formKey.currentState!.save();
+                              BlocProvider.of<AddEditCubit>(context)
+                                  .edit(
+                                      controllerName:
+                                          widget.pageData.controllerName,
+                                      body: newRowData)
+                                  .then((value) {
+                                widget.columnList.clear();
+                              });
+                              BlocProvider.of<GetTableCubit>(context).getTable(
+                                  pageId: widget.pageData.pageId.toString(),
+                                  employee: false,
+                                  isdesc: false,
+                                  limit: 10,
+                                  offset: 0,
+                                  orderby: '',
+                                  statment: '',
+                                  selectcolumns: '',
+                                  numberOfPage: 1,
+                                  dropdownValueOfLimit: 10);
                               print("//////////////////");
                               print(newRowData);
                               print("//////////////////");
-                              // BlocProvider.of<GetTableCubit>(context).getTable(
-                              //     pageId: widget.pageData.pageId.toString(),
-                              //     employee: false,
-                              //     isdesc: false,
-                              //     limit: 10,
-                              //     offset: 0,
-                              //     orderby: '',
-                              //     statment: '',
-                              //     selectcolumns: '',
-                              //     numberOfPage: 1,
-                              //     dropdownValueOfLimit: 10);
-                              widget.columnList.clear();
+
                               Navigator.pop(context);
                             },
                           ),
