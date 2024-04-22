@@ -95,7 +95,7 @@ class AttendanceRepoImpl implements AttendanceRepo {
       String token =
           await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
 
-      String data = await apiService.postAttendance(
+      String data = await apiService.post2(
         endPoint: "Attendance/SendAttendance",
         data: {
           "MachineID": machineID,
