@@ -9,7 +9,9 @@ import 'package:erp_system/features/screenTable/presentation/widgets/screen_tabl
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
+import '../../../../core/helper/AlertDialog/custom_alert_dialog.dart';
 import '../../../../core/models/menu_model/pages.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_strings.dart';
@@ -38,7 +40,6 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
   @override
   void didChangeDependencies() {
     lang = Localizations.localeOf(context).toString();
-
     print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
     print(widget.columnList.length);
     print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
@@ -130,35 +131,52 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                           const SizedBox(
                             width: 50,
                           ),
-                          CustomButton(
-                            text: S.of(context).btn_edit,
-                            width: 80,
-                            onTap: () {
-                              formKey.currentState!.save();
-                              BlocProvider.of<AddEditCubit>(context)
-                                  .edit(
-                                      controllerName:
-                                          widget.pageData.controllerName,
-                                      body: newRowData)
-                                  .then((value) {
+                          BlocConsumer<AddEditCubit, AddEditState>(
+                            listener: (context, state) {
+                              if (state is AddEditSuccess) {
+                                BlocProvider.of<GetTableCubit>(context)
+                                    .getTable(
+                                        pageId:
+                                            widget.pageData.pageId.toString(),
+                                        employee: false,
+                                        isdesc: false,
+                                        limit: 10,
+                                        offset: 0,
+                                        orderby: '',
+                                        statment: '',
+                                        selectcolumns: '',
+                                        numberOfPage: 1,
+                                        dropdownValueOfLimit: 10);
                                 widget.columnList.clear();
-                              });
-                              BlocProvider.of<GetTableCubit>(context).getTable(
-                                  pageId: widget.pageData.pageId.toString(),
-                                  employee: false,
-                                  isdesc: false,
-                                  limit: 10,
-                                  offset: 0,
-                                  orderby: '',
-                                  statment: '',
-                                  selectcolumns: '',
-                                  numberOfPage: 1,
-                                  dropdownValueOfLimit: 10);
-                              print("//////////////////");
-                              print(newRowData);
-                              print("//////////////////");
+                                Navigator.pop(context);
+                              } else if (state is AddEditFailure) {
+                                CustomAlertDialog.alertWithButton(
+                                    context: context,
+                                    type: AlertType.error,
+                                    title: S.of(context).error,
+                                    desc: state.errorMassage);
+                              }
+                            },
+                            builder: (context, state) {
+                              if (state is AddEditLoading) {
+                                return const CustomLoadingWidget();
+                              } else {
+                                return CustomButton(
+                                  text: S.of(context).btn_edit,
+                                  width: 80,
+                                  onTap: () {
+                                    formKey.currentState!.save();
+                                    BlocProvider.of<AddEditCubit>(context).edit(
+                                        controllerName:
+                                            widget.pageData.controllerName,
+                                        body: newRowData);
 
-                              Navigator.pop(context);
+                                    print("//////////////////");
+                                    print(newRowData);
+                                    print("//////////////////");
+                                  },
+                                );
+                              }
                             },
                           ),
                         ],

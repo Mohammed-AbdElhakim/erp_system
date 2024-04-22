@@ -1,14 +1,20 @@
 import 'package:erp_system/core/utils/app_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
+import '../../../../core/helper/AlertDialog/custom_alert_dialog.dart';
 import '../../../../core/models/menu_model/pages.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../../../../core/widgets/custom_button.dart';
+import '../../../../core/widgets/custom_loading_widget.dart';
 import '../../../../core/widgets/custom_text_form_field.dart';
 import '../../../../generated/l10n.dart';
 import '../../data/models/screen_model.dart';
+import '../manager/addEdit/add_edit_cubit.dart';
+import '../manager/getTable/get_table_cubit.dart';
 import 'dropdown_widget.dart';
 
 class BuildAlertAdd extends StatefulWidget {
@@ -106,27 +112,49 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                   const SizedBox(
                     width: 50,
                   ),
-                  CustomButton(
-                    text: S.of(context).btn_add,
-                    width: 80,
-                    onTap: () {
-                      formKey.currentState!.save();
-                      print("//////////////////");
-                      print(newRowData);
-                      print("//////////////////");
-                      // BlocProvider.of<GetTableCubit>(context).getTable(
-                      //     pageId: widget.pageData.pageId.toString(),
-                      //     employee: false,
-                      //     isdesc: false,
-                      //     limit: 10,
-                      //     offset: 0,
-                      //     orderby: '',
-                      //     statment: '',
-                      //     selectcolumns: '',
-                      //     numberOfPage: 1,
-                      //     dropdownValueOfLimit: 10);
-                      widget.columnList.clear();
-                      Navigator.pop(context);
+                  BlocConsumer<AddEditCubit, AddEditState>(
+                    listener: (context, state) {
+                      if (state is AddEditSuccess) {
+                        BlocProvider.of<GetTableCubit>(context).getTable(
+                            pageId: widget.pageData.pageId.toString(),
+                            employee: false,
+                            isdesc: false,
+                            limit: 10,
+                            offset: 0,
+                            orderby: '',
+                            statment: '',
+                            selectcolumns: '',
+                            numberOfPage: 1,
+                            dropdownValueOfLimit: 10);
+                        widget.columnList.clear();
+                        Navigator.pop(context);
+                      } else if (state is AddEditFailure) {
+                        CustomAlertDialog.alertWithButton(
+                            context: context,
+                            type: AlertType.error,
+                            title: S.of(context).error,
+                            desc: state.errorMassage);
+                      }
+                    },
+                    builder: (context, state) {
+                      if (state is AddEditLoading) {
+                        return const CustomLoadingWidget();
+                      } else {
+                        return CustomButton(
+                          text: S.of(context).btn_add,
+                          width: 80,
+                          onTap: () {
+                            formKey.currentState!.save();
+                            BlocProvider.of<AddEditCubit>(context).add(
+                                controllerName: widget.pageData.controllerName,
+                                body: newRowData);
+
+                            print("//////////////////");
+                            print(newRowData);
+                            print("//////////////////");
+                          },
+                        );
+                      }
                     },
                   ),
                 ],

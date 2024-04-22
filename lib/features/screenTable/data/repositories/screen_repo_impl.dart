@@ -141,7 +141,7 @@ class ScreenRepoImpl implements ScreenRepo {
       String token =
           await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
 
-      String data = await apiService.post2(
+      int data = await apiService.post3(
         endPoint: "home/AddEdit?controllerName=$controllerName",
         data: body,
         headers: {
@@ -149,7 +149,7 @@ class ScreenRepoImpl implements ScreenRepo {
           "CompanyKey": companyKey,
         },
       );
-      return right(data);
+      return right(data.toString());
     } catch (e) {
       if (e is DioException) {
         return left(
@@ -176,7 +176,7 @@ class ScreenRepoImpl implements ScreenRepo {
       String token =
           await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
 
-      String data = await apiService.put(
+      int data = await apiService.put(
         endPoint: "home/AddEdit?controllerName=$controllerName",
         data: body,
         headers: {
@@ -184,7 +184,7 @@ class ScreenRepoImpl implements ScreenRepo {
           "CompanyKey": companyKey,
         },
       );
-      return right(data);
+      return right(data.toString());
     } catch (e) {
       if (e is DioException) {
         return left(
