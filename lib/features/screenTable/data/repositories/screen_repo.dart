@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:erp_system/features/screenTable/data/models/dropdown_model.dart';
 
 import '../../../../../core/errors/failures.dart';
 import '../models/permission_model.dart';
@@ -26,5 +27,13 @@ abstract class ScreenRepo {
   Future<Either<Failure, String>> edit({
     required String controllerName,
     required Map<String, dynamic> body,
+  });
+
+  Future<Either<Failure, DropdownModel>> getDropdownList({
+    required String droModel,
+    required String droValue,
+    required String droText,
+    required String droCondition,
+    required String droCompany,
   });
 }
