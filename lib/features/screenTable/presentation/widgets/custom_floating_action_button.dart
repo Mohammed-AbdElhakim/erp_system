@@ -72,6 +72,8 @@ class _CustomFloatingActionButtonState
       child: BlocListener<GetTableCubit, GetTableState>(
         listener: (context, state) {
           if (state is GetTableSuccess) {
+            listData.clear();
+            columnList.clear();
             listData.addAll(state.screenModel.dataList!);
             columnList.addAll(state.screenModel.columnList!);
             for (var item in state.screenModel.columnList!) {

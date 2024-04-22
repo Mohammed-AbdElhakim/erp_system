@@ -280,8 +280,18 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
           item.insertVisable == true &&
           item.categoryID == categoryID) {
         //TODO:Date
-        String date = DateFormat("yyyy-MM-dd", 'en')
-            .format(DateTime.parse(rowData[item.columnName].toString()));
+        print("//////////////***********************");
+        print(item.columnName);
+        String date;
+        if (rowData[item.columnName] != null) {
+          date = DateFormat("yyyy-MM-dd", 'en')
+              .format(DateTime.parse(rowData[item.columnName].toString()));
+        } else {
+          date = DateFormat("yyyy-MM-dd", 'en').format(DateTime.now());
+        }
+
+        print(date);
+        print("------------------------------------");
         listWidgets.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
