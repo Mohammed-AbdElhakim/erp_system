@@ -1,12 +1,5 @@
 import 'package:erp_system/core/utils/app_styles.dart';
-import 'package:erp_system/core/utils/service_locator.dart';
-import 'package:erp_system/core/widgets/custom_error_massage.dart';
-import 'package:erp_system/core/widgets/custom_loading_widget.dart';
-import 'package:erp_system/features/screenTable/data/repositories/screen_repo_impl.dart';
-import 'package:erp_system/features/screenTable/presentation/manager/getById/get_by_id_cubit.dart';
-import 'package:erp_system/features/screenTable/presentation/widgets/screen_table_body.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/models/menu_model/pages.dart';
@@ -18,17 +11,17 @@ import '../../../../generated/l10n.dart';
 import '../../data/models/screen_model.dart';
 import 'dropdown_widget.dart';
 
-class BuildAlertEdit extends StatefulWidget {
-  const BuildAlertEdit(
+class BuildAlertAdd extends StatefulWidget {
+  const BuildAlertAdd(
       {super.key, required this.columnList, required this.pageData});
   final List<ColumnList> columnList;
   final Pages pageData;
 
   @override
-  State<BuildAlertEdit> createState() => _BuildAlertEditState();
+  State<BuildAlertAdd> createState() => _BuildAlertAddState();
 }
 
-class _BuildAlertEditState extends State<BuildAlertEdit> {
+class _BuildAlertAddState extends State<BuildAlertAdd> {
   String? lang;
   GlobalKey<FormState> formKey = GlobalKey();
   Map<String, dynamic> newRowData = {};
@@ -45,100 +38,82 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
 
   @override
   void dispose() {
-    ScreenTableBody.rowData = {};
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => GetByIdCubit(getIt.get<ScreenRepoImpl>())
-        ..getById(
-            id: ScreenTableBody.rowData[widget.pageData.primary].toString(),
-            controllerName: widget.pageData.controllerName),
-      child: BlocBuilder<GetByIdCubit, GetByIdState>(
-        builder: (context, state) {
-          if (state is GetByIdSuccess) {
-            return SizedBox(
-              height: MediaQuery.of(context).size.height * .75,
-              child: Form(
-                key: formKey,
-                child: Stack(
-                  alignment: Alignment.center,
-                  clipBehavior: Clip.none,
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * .75,
+      child: Form(
+        key: formKey,
+        child: Stack(
+          alignment: Alignment.center,
+          clipBehavior: Clip.none,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 35),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 35),
-                      child: SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ...getMyWidgetList(
-                                widget.columnList, state.valueGetById),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      bottom: -25,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          CustomButton(
-                            text: S.of(context).cancel,
-                            width: 40,
-                            height: 25,
-                            noGradient: true,
-                            textStyle: AppStyles.textStyle12,
-                            color: Colors.grey,
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                          ),
-                          const SizedBox(
-                            width: 50,
-                          ),
-                          CustomButton(
-                            text: S.of(context).btn_edit,
-                            width: 80,
-                            onTap: () {
-                              formKey.currentState!.save();
-                              print("//////////////////");
-                              print(newRowData);
-                              print("//////////////////");
-                              // BlocProvider.of<GetTableCubit>(context).getTable(
-                              //     pageId: widget.pageData.pageId.toString(),
-                              //     employee: false,
-                              //     isdesc: false,
-                              //     limit: 10,
-                              //     offset: 0,
-                              //     orderby: '',
-                              //     statment: '',
-                              //     selectcolumns: '',
-                              //     numberOfPage: 1,
-                              //     dropdownValueOfLimit: 10);
-                              widget.columnList.clear();
-                              Navigator.pop(context);
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
+                    ...getMyWidgetList(widget.columnList),
                   ],
                 ),
               ),
-            );
-          } else if (state is GetByIdFailure) {
-            return CustomErrorMassage(errorMassage: state.errorMassage);
-          } else {
-            return const CustomLoadingWidget();
-          }
-        },
+            ),
+            Positioned(
+              bottom: -25,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  CustomButton(
+                    text: S.of(context).cancel,
+                    width: 40,
+                    height: 25,
+                    noGradient: true,
+                    textStyle: AppStyles.textStyle12,
+                    color: Colors.grey,
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  const SizedBox(
+                    width: 50,
+                  ),
+                  CustomButton(
+                    text: S.of(context).btn_edit,
+                    width: 80,
+                    onTap: () {
+                      formKey.currentState!.save();
+                      print("//////////////////");
+                      print(newRowData);
+                      print("//////////////////");
+                      // BlocProvider.of<GetTableCubit>(context).getTable(
+                      //     pageId: widget.pageData.pageId.toString(),
+                      //     employee: false,
+                      //     isdesc: false,
+                      //     limit: 10,
+                      //     offset: 0,
+                      //     orderby: '',
+                      //     statment: '',
+                      //     selectcolumns: '',
+                      //     numberOfPage: 1,
+                      //     dropdownValueOfLimit: 10);
+                      widget.columnList.clear();
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  getMyWidgetList(List<ColumnList> columnList, Map<String, dynamic> rowData) {
+  getMyWidgetList(List<ColumnList> columnList) {
     List<Widget> listWidgets = [];
     for (var item in columnList) {
       String title = lang == AppStrings.arLangKey
@@ -146,8 +121,7 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
           : item.enColumnLabel!;
       if (item.insertType == "text" && item.insertVisable == true) {
         //TODO:text
-        TextEditingController controller =
-            TextEditingController(text: rowData[item.columnName].toString());
+        TextEditingController controller = TextEditingController();
         listWidgets.add(Padding(
           padding: const EdgeInsets.symmetric(vertical: 5),
           child: Column(
@@ -164,11 +138,12 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                 onSaved: (newValue) {
                   if (newValue!.isNotEmpty) {
                     setState(() {
-                      rowData.updateAll((key, value) =>
-                          key == item.columnName!.toString()
-                              ? value = controller.text
-                              : value);
-                      newRowData = rowData;
+                      newRowData
+                          .addAll({item.columnName!.toString(): newValue});
+                      // newRowData.updateAll((key, value) =>
+                      //     key == item.columnName!.toString()
+                      //         ? value = controller.text
+                      //         : value);
                     });
                   }
                 },
@@ -179,8 +154,7 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
       }
       if (item.insertType == "number" && item.insertVisable == true) {
         //TODO:number
-        TextEditingController controller =
-            TextEditingController(text: rowData[item.columnName].toString());
+        TextEditingController controller = TextEditingController();
 
         listWidgets.add(Padding(
           padding: const EdgeInsets.symmetric(vertical: 5),
@@ -200,11 +174,12 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                     // newRowData[item.columnName!] = newValue;
 
                     setState(() {
-                      rowData.updateAll((key, value) =>
-                          key == item.columnName!.toString()
-                              ? value = controller.text
-                              : value);
-                      newRowData = rowData;
+                      newRowData
+                          .addAll({item.columnName!.toString(): newValue});
+                      // newRowData.updateAll((key, value) =>
+                      //     key == item.columnName!.toString()
+                      //         ? value = controller.text
+                      //         : value);
                     });
                   }
                 },
@@ -215,8 +190,7 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
       }
       if (item.insertType == "date" && item.insertVisable == true) {
         //TODO:Date
-        String date = DateFormat("yyyy-MM-dd", 'en')
-            .format(DateTime.parse(rowData[item.columnName].toString()));
+        String date = '';
         listWidgets.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -245,11 +219,12 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                           });
 
                           dsetState(() {
-                            rowData.updateAll((key, value) =>
-                                key == item.columnName!.toString()
-                                    ? value = dateTime
-                                    : value);
-                            newRowData = rowData;
+                            newRowData.addAll(
+                                {item.columnName!.toString(): dateTime});
+                            // newRowData.updateAll((key, value) =>
+                            //     key == item.columnName!.toString()
+                            //         ? value = dateTime
+                            //         : value);
                           });
                         }
                       },
@@ -279,7 +254,7 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
       }
       //TODO:checkbox
       if (item.insertType == "checkbox" && item.insertVisable == true) {
-        bool checkboxValue = rowData[item.columnName] ?? false;
+        bool checkboxValue = false;
 
         listWidgets.add(
           StatefulBuilder(
@@ -297,11 +272,12 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                       checkboxValue = !checkboxValue;
                     });
                     csetState(() {
-                      rowData.updateAll((key, value) =>
-                          key == item.columnName!.toString()
-                              ? value = checkboxValue
-                              : value);
-                      newRowData = rowData;
+                      newRowData
+                          .addAll({item.columnName!.toString(): checkboxValue});
+                      // newRowData.updateAll((key, value) =>
+                      //     key == item.columnName!.toString()
+                      //         ? value = checkboxValue
+                      //         : value);
                     });
                   });
             },
