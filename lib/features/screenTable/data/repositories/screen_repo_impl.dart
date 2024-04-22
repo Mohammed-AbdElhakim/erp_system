@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:erp_system/core/errors/failures.dart';
+import 'package:erp_system/features/screenTable/data/models/dropdown_model.dart';
 import 'package:erp_system/features/screenTable/data/models/permission_model.dart';
 import 'package:erp_system/features/screenTable/data/repositories/screen_repo.dart';
 
@@ -185,6 +186,45 @@ class ScreenRepoImpl implements ScreenRepo {
         },
       );
       return right(data.toString());
+    } catch (e) {
+      if (e is DioException) {
+        return left(
+          ServerFailure.fromDioException(e),
+        );
+      }
+      return left(
+        ServerFailure(
+          e.toString(),
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<Failure, DropdownModel>> getDropdownList({
+    required String droModel,
+    required String droValue,
+    required String droText,
+    required String droCondition,
+    required String droCompany,
+  }) async {
+    try {
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
+              "";
+      String token =
+          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      Map<String, dynamic> data = await apiService.get(
+        endPoint:
+            "home/getDropDown?DroModel=$droModel&DroValue=$droValue&DroText=$droText&DroCondition=$droCondition&DroCompany=$droCompany",
+        headers: {
+          "Authorization": "Bearer $token",
+          "CompanyKey": companyKey,
+        },
+      );
+      DropdownModel dropdownModel = DropdownModel.fromJson(data);
+
+      return right(dropdownModel);
     } catch (e) {
       if (e is DioException) {
         return left(
