@@ -1,8 +1,44 @@
 import 'package:bloc/bloc.dart';
+import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
+
+import '../../../../../core/errors/failures.dart';
+import '../../../data/repositories/screen_repo.dart';
 
 part 'add_edit_state.dart';
 
 class AddEditCubit extends Cubit<AddEditState> {
-  AddEditCubit() : super(AddEditInitial());
+  AddEditCubit(this.screenRepo) : super(AddEditInitial());
+  final ScreenRepo screenRepo;
+  Future<void> add({
+    required String controllerName,
+    required Map<String, dynamic> body,
+  }) async {
+    emit(AddEditLoading());
+    Either<Failure, String> result = await screenRepo.add(
+      body: body,
+      controllerName: controllerName,
+    );
+    result.fold((failure) {
+      emit(AddEditFailure(failure.errorMassage));
+    }, (send) {
+      emit(AddEditSuccess());
+    });
+  }
+
+  Future<void> edit({
+    required String controllerName,
+    required Map<String, dynamic> body,
+  }) async {
+    emit(AddEditLoading());
+    Either<Failure, String> result = await screenRepo.edit(
+      body: body,
+      controllerName: controllerName,
+    );
+    result.fold((failure) {
+      emit(AddEditFailure(failure.errorMassage));
+    }, (send) {
+      emit(AddEditSuccess());
+    });
+  }
 }

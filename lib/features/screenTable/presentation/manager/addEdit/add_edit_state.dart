@@ -16,8 +16,4 @@ final class AddEditFailure extends AddEditState {
   const AddEditFailure(this.errorMassage);
 }
 
-final class AddEditSuccess extends AddEditState {
-  // final LoginModel loginModel;
-
-  // const AddEditSuccess(this.loginModel);
-}
+final class AddEditSuccess extends AddEditState {}
