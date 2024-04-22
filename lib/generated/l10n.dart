@@ -419,6 +419,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Total number of entries : `
+  String get Total_number_of_entries {
+    return Intl.message(
+      'Total number of entries : ',
+      name: 'Total_number_of_entries',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

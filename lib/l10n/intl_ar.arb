@@ -35,7 +35,8 @@
   "massage_edit_long_press": "يرجى الضغط المطول على العنصر الذي تريد تعديله.",
   "massage_number_zero": "إلغاء الأرصدة الصفرية.",
   "multiple_choices": "إختيارات متعددة",
-  "basic_data": "بيانات أساسية"
+  "basic_data": "بيانات أساسية",
+  "Total_number_of_entries": "إجمالي عدد الإدخالات : "
 
 
 
