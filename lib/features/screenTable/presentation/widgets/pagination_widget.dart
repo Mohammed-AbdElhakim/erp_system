@@ -36,10 +36,11 @@ class _PaginationWidgetState extends State<PaginationWidget> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 85, left: 8, right: 8),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
             height: 35,
+            width: MediaQuery.of(context).size.width * .65,
             decoration: BoxDecoration(
               color: AppColors.white,
               border: Border.all(
@@ -55,62 +56,102 @@ class _PaginationWidgetState extends State<PaginationWidget> {
               mainAxisSize: MainAxisSize.max,
               // mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                SizedBox(
-                    height: 50.0,
-                    width: 110.0,
-                    child: DropdownButton(
-                      value: widget.dropdownValue,
-                      elevation: 16,
-                      isExpanded: true,
-                      underline: const SizedBox(),
-                      onChanged: (int? newValue) {
-                        widget.onChangeLimit(newValue!);
-                      },
-                      items: widget.listNumberItemInList
-                          .map<DropdownMenuItem<int>>((int value) {
-                        return DropdownMenuItem<int>(
-                          value: value,
-                          child: Center(child: Text(value.toString())),
-                        );
-                      }).toList(),
-                    )),
-                const SizedBox(width: 25),
-                if (widget.myPage > 1 && widget.myPage <= widget.allPages)
-                  InkWell(
-                    onTap: widget.onTapMin,
-                    child: Container(
-                      width: 40,
-                      alignment: Alignment.center,
-                      child: Icon(
-                        Icons.arrow_left,
-                        color: AppColors.blueLight,
-                        size: 30,
-                      ),
+                // if (widget.myPage > 1 && widget.myPage <= widget.allPages)
+                InkWell(
+                  onTap: (widget.myPage > 1 && widget.myPage <= widget.allPages)
+                      ? widget.onTapMin
+                      : () {},
+                  child: Container(
+                    width: 50,
+                    alignment: Alignment.center,
+                    child: Icon(
+                      Icons.arrow_left,
+                      color: (widget.myPage > 1 &&
+                              widget.myPage <= widget.allPages)
+                          ? AppColors.blueLight
+                          : Colors.transparent,
+                      size: 30,
                     ),
                   ),
+                ),
                 Expanded(
                     child: Text(
                   "${widget.myPage} ... ${widget.allPages}",
                   textAlign: TextAlign.center,
                 )),
-                if (widget.allPages > 1 && widget.myPage < widget.allPages)
-                  InkWell(
-                    onTap: widget.onTapAdd,
-                    child: Container(
-                      width: 40,
-                      alignment: Alignment.center,
-                      child: Icon(
-                        Icons.arrow_right,
-                        color: AppColors.blueLight,
-                        size: 30,
-                      ),
+                // if (widget.allPages > 1 && widget.myPage < widget.allPages)
+                InkWell(
+                  onTap:
+                      (widget.allPages > 1 && widget.myPage < widget.allPages)
+                          ? widget.onTapAdd
+                          : () {},
+                  child: Container(
+                    width: 50,
+                    alignment: Alignment.center,
+                    child: Icon(
+                      Icons.arrow_right,
+                      color: (widget.allPages > 1 &&
+                              widget.myPage < widget.allPages)
+                          ? AppColors.blueLight
+                          : Colors.transparent,
+                      size: 30,
                     ),
                   ),
+                ),
               ],
             ),
           ),
-          Text(
-              "${S.of(context).Total_number_of_entries}  ${widget.numberOfRecords}")
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Text(
+                  "${S.of(context).Total_number_of_entries}  ${widget.numberOfRecords}"),
+              SizedBox(
+                  height: 50.0,
+                  width: 110.0,
+                  child: DropdownButton(
+                    value: widget.dropdownValue,
+                    elevation: 16,
+                    isExpanded: true,
+                    underline: const SizedBox(),
+                    onChanged: (int? newValue) {
+                      widget.onChangeLimit(newValue!);
+                    },
+                    items: widget.listNumberItemInList
+                        .map<DropdownMenuItem<int>>((int value) {
+                      return DropdownMenuItem<int>(
+                        value: value,
+                        child: Center(child: Text(value.toString())),
+                      );
+                    }).toList(),
+                  )),
+              // SizedBox(
+              //   height: 45.0,
+              //   width: 110.0,
+              //   child: DropdownMenu(
+              //     expandedInsets:
+              //         EdgeInsets.zero,
+              //     textStyle:
+              //         AppStyles.textStyle14.copyWith(color: Colors.black),
+              //     initialSelection: widget.dropdownValue,
+              //     dropdownMenuEntries: List.generate(
+              //       widget.listNumberItemInList.length,
+              //       (index) => DropdownMenuEntry(
+              //           value: widget.listNumberItemInList[index],
+              //           label: "${widget.listNumberItemInList[index]}"),
+              //     ),
+              //     onSelected: (newValue) {
+              //       if (newValue != null) {
+              //         widget.onChangeLimit(newValue);
+              //         // setState(() {
+              //         //   dropdownMenuValue = newValue;
+              //         // });
+              //       }
+              //     },
+              //   ),
+              // ),
+            ],
+          )
         ],
       ),
     );
