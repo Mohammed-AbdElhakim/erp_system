@@ -1,4 +1,6 @@
 import 'package:erp_system/core/utils/app_styles.dart';
+import 'package:erp_system/features/screenTable/data/models/dropdown_model.dart';
+import 'package:erp_system/features/screenTable/presentation/manager/getDropdownList/get_dropdown_list_cubit.dart';
 import 'package:erp_system/features/screenTable/presentation/manager/getTable/get_table_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,11 +8,12 @@ import 'package:intl/intl.dart';
 
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_strings.dart';
+import '../../../../core/utils/service_locator.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_text_form_field.dart';
 import '../../../../generated/l10n.dart';
 import '../../data/models/screen_model.dart';
-import 'dropdown_widget.dart';
+import '../../data/repositories/screen_repo_impl.dart';
 import 'screen_table_body.dart';
 
 class BuildAlertSearch extends StatefulWidget {
@@ -342,7 +345,64 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
       }
       //TODO:dropdown
       if (item.insertType == "dropdown" && item.visible == true) {
-        listWidgets.add(DropdownWidget(title: title));
+        List<ListDropdown> dropList = [];
+        listWidgets.add(
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: AppStyles.textStyle14.copyWith(color: Colors.grey),
+                ),
+                SizedBox(
+                  height: 40,
+                  child: BlocProvider(
+                    create: (context) =>
+                        GetDropdownListCubit(getIt.get<ScreenRepoImpl>())
+                          ..getDropdownList(
+                            droModel: item.droModel ?? "",
+                            droValue: item.droValue ?? "",
+                            droText: item.droText ?? "",
+                            droCondition: item.droCondition ?? "",
+                            droCompany: item.droCompany ?? "",
+                          ),
+                    child: BlocConsumer<GetDropdownListCubit,
+                        GetDropdownListState>(
+                      listener: (context, state) {
+                        if (state is GetDropdownListSuccess) {
+                          dropList = state.dropdownModel.list;
+                        }
+                      },
+                      builder: (context, state) {
+                        return DropdownMenu(
+                          expandedInsets: EdgeInsets.zero,
+                          dropdownMenuEntries: List.generate(
+                            dropList.length,
+                            (index) => DropdownMenuEntry(
+                                value: dropList[index].value,
+                                label: dropList[index].text),
+                          ),
+                          onSelected: (value) {
+                            if (value != null) {
+                              print("11111111111111111111111111");
+                              print(value);
+                              print("11111111111111111111111111");
+                              // setState(() {
+                              //   dropdownMenuValue = value;
+                              // });
+                            }
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
       }
       //TODO:checkbox
       if (item.insertType == "checkbox" && item.visible == true) {
