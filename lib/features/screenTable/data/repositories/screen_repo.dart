@@ -18,4 +18,13 @@ abstract class ScreenRepo {
   Future<Either<Failure, PermissionModel>> getPagePermissions(String pageId);
   Future<Either<Failure, Map<String, dynamic>>> getById(
       String controllerName, String id);
+
+  Future<Either<Failure, String>> add({
+    required String controllerName,
+    required Map<String, dynamic> body,
+  });
+  Future<Either<Failure, String>> edit({
+    required String controllerName,
+    required Map<String, dynamic> body,
+  });
 }
