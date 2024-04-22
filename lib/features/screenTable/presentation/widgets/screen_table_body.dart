@@ -76,7 +76,9 @@ class _ScreenTableBodyState extends State<ScreenTableBody> {
           }
           numberPage = state.numberPage;
           dropdownValue = state.dropdownValue;
-          allPages = (numberOfRecords! ~/ dropdownValue) + 1;
+          allPages = (numberOfRecords! % dropdownValue) == 0
+              ? (numberOfRecords ~/ dropdownValue)
+              : (numberOfRecords ~/ dropdownValue) + 1;
 
           return CustomTable(
             listHeader: listHeader,
@@ -88,12 +90,14 @@ class _ScreenTableBodyState extends State<ScreenTableBody> {
               dropdownValue: dropdownValue,
               listNumberItemInList: listNumberItemInList,
               myPage: numberPage,
-              numberOfRecords: numberOfRecords!,
+              numberOfRecords: numberOfRecords,
               onChangeLimit: (limit) {
                 setState(() {
                   dropdownValue = limit;
                   numberPage = 1;
-                  allPages = (numberOfRecords ~/ dropdownValue) + 1;
+                  allPages = (numberOfRecords % dropdownValue) == 0
+                      ? (numberOfRecords ~/ dropdownValue)
+                      : (numberOfRecords ~/ dropdownValue) + 1;
                 });
                 getData(context);
               },
