@@ -25,6 +25,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "arabic": MessageLookupByLibrary.simpleMessage("عربي"),
         "attend": MessageLookupByLibrary.simpleMessage("حضور"),
         "back": MessageLookupByLibrary.simpleMessage("رجوع"),
+        "basic_data": MessageLookupByLibrary.simpleMessage("بيانات أساسية"),
         "btn_add": MessageLookupByLibrary.simpleMessage("إضافة"),
         "btn_delete": MessageLookupByLibrary.simpleMessage("حذف"),
         "btn_edit": MessageLookupByLibrary.simpleMessage("تعديل"),
@@ -52,6 +53,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("إلغاء الأرصدة الصفرية."),
         "massage_permission": MessageLookupByLibrary.simpleMessage(
             "ليس لديك إذن بعد، انتظر المشرف."),
+        "multiple_choices":
+            MessageLookupByLibrary.simpleMessage("إختيارات متعددة"),
         "no_location":
             MessageLookupByLibrary.simpleMessage("غير متاح فى هذا المكان."),
         "ok": MessageLookupByLibrary.simpleMessage("حسناً"),

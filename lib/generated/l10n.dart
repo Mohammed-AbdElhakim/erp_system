@@ -399,6 +399,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Multiple choices`
+  String get multiple_choices {
+    return Intl.message(
+      'Multiple choices',
+      name: 'multiple_choices',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Basic data`
+  String get basic_data {
+    return Intl.message(
+      'Basic data',
+      name: 'basic_data',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

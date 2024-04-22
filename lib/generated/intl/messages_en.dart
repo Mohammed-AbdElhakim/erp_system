@@ -25,6 +25,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "arabic": MessageLookupByLibrary.simpleMessage("عربي "),
         "attend": MessageLookupByLibrary.simpleMessage("Attend"),
         "back": MessageLookupByLibrary.simpleMessage("Back"),
+        "basic_data": MessageLookupByLibrary.simpleMessage("Basic data"),
         "btn_add": MessageLookupByLibrary.simpleMessage("Add"),
         "btn_delete": MessageLookupByLibrary.simpleMessage("Delete"),
         "btn_edit": MessageLookupByLibrary.simpleMessage("Edit"),
@@ -54,6 +55,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Eliminate zero balances."),
         "massage_permission": MessageLookupByLibrary.simpleMessage(
             "You do not have permission yet, Wait for the admin."),
+        "multiple_choices":
+            MessageLookupByLibrary.simpleMessage("Multiple choices"),
         "no_location": MessageLookupByLibrary.simpleMessage(
             "Not available at this location."),
         "ok": MessageLookupByLibrary.simpleMessage("Ok"),

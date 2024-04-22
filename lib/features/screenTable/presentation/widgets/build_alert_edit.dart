@@ -73,8 +73,38 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            if (getMyWidgetList(
+                                    widget.columnList, state.valueGetById, 10)
+                                .isNotEmpty)
+                              Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 12, vertical: 8),
+                                  decoration: BoxDecoration(
+                                      color: AppColors.grey.withOpacity(.4),
+                                      borderRadius: BorderRadius.circular(15)),
+                                  child: Text(
+                                    S.of(context).basic_data,
+                                    style: AppStyles.textStyle18
+                                        .copyWith(color: Colors.black),
+                                  )),
                             ...getMyWidgetList(
-                                widget.columnList, state.valueGetById),
+                                widget.columnList, state.valueGetById, 10),
+                            if (getMyWidgetList(
+                                    widget.columnList, state.valueGetById, 11)
+                                .isNotEmpty)
+                              Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 12, vertical: 8),
+                                  decoration: BoxDecoration(
+                                      color: AppColors.grey.withOpacity(.4),
+                                      borderRadius: BorderRadius.circular(15)),
+                                  child: Text(
+                                    S.of(context).multiple_choices,
+                                    style: AppStyles.textStyle18
+                                        .copyWith(color: Colors.black),
+                                  )),
+                            ...getMyWidgetList(
+                                widget.columnList, state.valueGetById, 11),
                           ],
                         ),
                       ),
@@ -138,13 +168,16 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
     );
   }
 
-  getMyWidgetList(List<ColumnList> columnList, Map<String, dynamic> rowData) {
+  getMyWidgetList(List<ColumnList> columnList, Map<String, dynamic> rowData,
+      int categoryID) {
     List<Widget> listWidgets = [];
     for (var item in columnList) {
       String title = lang == AppStrings.arLangKey
           ? item.arColumnLabel!
           : item.enColumnLabel!;
-      if (item.insertType == "text" && item.insertVisable == true) {
+      if (item.insertType == "text" &&
+          item.insertVisable == true &&
+          item.categoryID == categoryID) {
         //TODO:text
         TextEditingController controller =
             TextEditingController(text: rowData[item.columnName].toString());
@@ -177,7 +210,9 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
           ),
         ));
       }
-      if (item.insertType == "number" && item.insertVisable == true) {
+      if (item.insertType == "number" &&
+          item.insertVisable == true &&
+          item.categoryID == categoryID) {
         //TODO:number
         TextEditingController controller =
             TextEditingController(text: rowData[item.columnName].toString());
@@ -213,7 +248,9 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
           ),
         ));
       }
-      if (item.insertType == "date" && item.insertVisable == true) {
+      if (item.insertType == "date" &&
+          item.insertVisable == true &&
+          item.categoryID == categoryID) {
         //TODO:Date
         String date = DateFormat("yyyy-MM-dd", 'en')
             .format(DateTime.parse(rowData[item.columnName].toString()));
@@ -274,11 +311,15 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
         );
       }
       //TODO:dropdown
-      if (item.insertType == "dropdown" && item.insertVisable == true) {
+      if (item.insertType == "dropdown" &&
+          item.insertVisable == true &&
+          item.categoryID == categoryID) {
         listWidgets.add(DropdownWidget(title: title));
       }
       //TODO:checkbox
-      if (item.insertType == "checkbox" && item.insertVisable == true) {
+      if (item.insertType == "checkbox" &&
+          item.insertVisable == true &&
+          item.categoryID == categoryID) {
         bool checkboxValue = rowData[item.columnName] ?? false;
 
         listWidgets.add(

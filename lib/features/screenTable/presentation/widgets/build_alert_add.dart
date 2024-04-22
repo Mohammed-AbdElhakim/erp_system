@@ -57,7 +57,32 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ...getMyWidgetList(widget.columnList),
+                    if (getMyWidgetList(widget.columnList, 10).isNotEmpty)
+                      Container(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                          decoration: BoxDecoration(
+                              color: AppColors.grey.withOpacity(.4),
+                              borderRadius: BorderRadius.circular(15)),
+                          child: Text(
+                            S.of(context).basic_data,
+                            style: AppStyles.textStyle18
+                                .copyWith(color: Colors.black),
+                          )),
+                    ...getMyWidgetList(widget.columnList, 10),
+                    if (getMyWidgetList(widget.columnList, 11).isNotEmpty)
+                      Container(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                          decoration: BoxDecoration(
+                              color: AppColors.grey.withOpacity(.4),
+                              borderRadius: BorderRadius.circular(15)),
+                          child: Text(
+                            S.of(context).multiple_choices,
+                            style: AppStyles.textStyle18
+                                .copyWith(color: Colors.black),
+                          )),
+                    ...getMyWidgetList(widget.columnList, 11),
                   ],
                 ),
               ),
@@ -82,7 +107,7 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                     width: 50,
                   ),
                   CustomButton(
-                    text: S.of(context).btn_edit,
+                    text: S.of(context).btn_add,
                     width: 80,
                     onTap: () {
                       formKey.currentState!.save();
@@ -113,13 +138,15 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
     );
   }
 
-  getMyWidgetList(List<ColumnList> columnList) {
+  List<Widget> getMyWidgetList(List<ColumnList> columnList, int categoryID) {
     List<Widget> listWidgets = [];
     for (var item in columnList) {
       String title = lang == AppStrings.arLangKey
           ? item.arColumnLabel!
           : item.enColumnLabel!;
-      if (item.insertType == "text" && item.insertVisable == true) {
+      if (item.insertType == "text" &&
+          item.insertVisable == true &&
+          item.categoryID == categoryID) {
         //TODO:text
         TextEditingController controller = TextEditingController();
         listWidgets.add(Padding(
@@ -152,7 +179,9 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
           ),
         ));
       }
-      if (item.insertType == "number" && item.insertVisable == true) {
+      if (item.insertType == "number" &&
+          item.insertVisable == true &&
+          item.categoryID == categoryID) {
         //TODO:number
         TextEditingController controller = TextEditingController();
 
@@ -188,7 +217,9 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
           ),
         ));
       }
-      if (item.insertType == "date" && item.insertVisable == true) {
+      if (item.insertType == "date" &&
+          item.insertVisable == true &&
+          item.categoryID == categoryID) {
         //TODO:Date
         String date = '';
         listWidgets.add(
@@ -249,11 +280,15 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
         );
       }
       //TODO:dropdown
-      if (item.insertType == "dropdown" && item.insertVisable == true) {
+      if (item.insertType == "dropdown" &&
+          item.insertVisable == true &&
+          item.categoryID == categoryID) {
         listWidgets.add(DropdownWidget(title: title));
       }
       //TODO:checkbox
-      if (item.insertType == "checkbox" && item.insertVisable == true) {
+      if (item.insertType == "checkbox" &&
+          item.insertVisable == true &&
+          item.categoryID == categoryID) {
         bool checkboxValue = false;
 
         listWidgets.add(

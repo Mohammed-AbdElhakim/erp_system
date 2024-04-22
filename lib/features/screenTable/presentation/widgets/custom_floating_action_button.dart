@@ -171,7 +171,7 @@ class _CustomFloatingActionButtonState
     } else if (icon == Icons.add) {
       CustomAlertDialog.alertWithCustomContent(
         context: context,
-        title: S.of(context).btn_edit,
+        title: S.of(context).btn_add,
         isOverlayTapDismiss: false,
         isCloseButton: false,
         content: BuildAlertAdd(
