@@ -1,10 +1,10 @@
 import 'package:erp_system/core/utils/app_styles.dart';
 import 'package:erp_system/features/screenTable/data/models/dropdown_model.dart';
-import 'package:erp_system/features/screenTable/presentation/manager/getDropdownList/get_dropdown_list_cubit.dart';
 import 'package:erp_system/features/screenTable/presentation/manager/getTable/get_table_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:multiselect/multiselect.dart';
 
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_strings.dart';
@@ -14,6 +14,7 @@ import '../../../../core/widgets/custom_text_form_field.dart';
 import '../../../../generated/l10n.dart';
 import '../../data/models/screen_model.dart';
 import '../../data/repositories/screen_repo_impl.dart';
+import '../manager/getDropdownList/get_dropdown_list_cubit.dart';
 import 'screen_table_body.dart';
 
 class BuildAlertSearch extends StatefulWidget {
@@ -35,6 +36,9 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
   bool checkboxValue2 = false;
   late String dateFrom;
   late String dateTo;
+  late String companyKey;
+  late String token;
+  late String host;
 
   @override
   void didChangeDependencies() {
@@ -46,6 +50,16 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
     print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
     super.didChangeDependencies();
   }
+
+  // @override
+  // void initState() async {
+  //   companyKey =
+  //       await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
+  //           "";
+  //   token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+  //   host = await Pref.getStringFromPref(key: AppStrings.hostKey) ?? "";
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -346,6 +360,9 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
       //TODO:dropdown
       if (item.insertType == "dropdown" && item.visible == true) {
         List<ListDropdown> dropList = [];
+        List<String> selected = [];
+        List<int> intSelected = [];
+        String stFinial = "";
         listWidgets.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -376,23 +393,53 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
                         }
                       },
                       builder: (context, state) {
-                        return DropdownMenu(
-                          expandedInsets: EdgeInsets.zero,
-                          dropdownMenuEntries: List.generate(
-                            dropList.length,
-                            (index) => DropdownMenuEntry(
-                                value: dropList[index].value,
-                                label: dropList[index].text),
-                          ),
-                          onSelected: (value) {
-                            if (value != null) {
-                              print("11111111111111111111111111");
-                              print(value);
-                              print("11111111111111111111111111");
-                              // setState(() {
-                              //   dropdownMenuValue = value;
-                              // });
-                            }
+                        return StatefulBuilder(
+                          builder: (context, dsetState) {
+                            String st = "";
+                            return DropDownMultiSelect(
+                              onChanged: (List<String> x) {
+                                dsetState(() {
+                                  selected = x;
+                                });
+                                intSelected.clear();
+                                for (var s in selected) {
+                                  for (var d in dropList) {
+                                    if (s == d.text) {
+                                      intSelected.add(d.value);
+                                    }
+                                  }
+                                }
+                                if (statment.contains(stFinial)) {
+                                  statment = statment.replaceAll(stFinial, '');
+                                  BuildAlertSearch.statement = statment;
+                                }
+                                st += "and( ";
+
+                                for (var element in intSelected) {
+                                  st += "${item.searchName} = $element";
+                                  if (element !=
+                                      intSelected[intSelected.length - 1]) {
+                                    st += " or ";
+                                  }
+                                }
+                                st += " )";
+                                stFinial = st;
+
+                                statment = "$statment $stFinial";
+                                BuildAlertSearch.statement = statment;
+                                print("2222222222222222");
+                                print(selected);
+                                print(st);
+                                print(statment);
+                                print("2222222222222222");
+                              },
+                              options: List.generate(dropList.length,
+                                  (index) => dropList[index].text),
+                              selectedValues: selected,
+                              whenEmpty: '',
+                              selected_values_style: AppStyles.textStyle14
+                                  .copyWith(color: Colors.black),
+                            );
                           },
                         );
                       },
