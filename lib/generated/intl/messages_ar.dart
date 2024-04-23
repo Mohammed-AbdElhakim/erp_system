@@ -41,6 +41,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "dynamic_pro": MessageLookupByLibrary.simpleMessage("Dynamic Pro"),
         "english": MessageLookupByLibrary.simpleMessage("English"),
         "error": MessageLookupByLibrary.simpleMessage("خطأ"),
+        "field_is_required":
+            MessageLookupByLibrary.simpleMessage("هذا الحقل مطلوب"),
         "from": MessageLookupByLibrary.simpleMessage("من"),
         "hi": MessageLookupByLibrary.simpleMessage("أهلاً، "),
         "host_view": MessageLookupByLibrary.simpleMessage("المضيف"),

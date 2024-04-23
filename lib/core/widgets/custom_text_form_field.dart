@@ -1,11 +1,13 @@
 import 'package:erp_system/core/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 
+import '../../generated/l10n.dart';
+
 class CustomTextFormField extends StatelessWidget {
   const CustomTextFormField(
       {super.key,
       this.controller,
-      this.validatorMassage = 'Field is required',
+      this.validatorMassage,
       required this.hintText,
       this.onChanged,
       this.onSaved,
@@ -23,7 +25,7 @@ class CustomTextFormField extends StatelessWidget {
       controller: controller,
       validator: (value) {
         if (value?.isEmpty ?? true) {
-          return validatorMassage;
+          return validatorMassage ?? S.of(context).field_is_required;
         } else {
           return null;
         }

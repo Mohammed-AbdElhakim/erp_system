@@ -36,6 +36,7 @@
   "massage_number_zero": "Eliminate zero balances.",
   "multiple_choices": "Multiple choices",
   "basic_data": "Basic data",
-  "Total_number_of_entries": "Total number of entries : "
+  "Total_number_of_entries": "Total number of entries : ",
+  "field_is_required":"Field is required"
 
 }

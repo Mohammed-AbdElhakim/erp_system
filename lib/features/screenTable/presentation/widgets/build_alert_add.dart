@@ -147,14 +147,17 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                           text: S.of(context).btn_add,
                           width: 80,
                           onTap: () {
-                            formKey.currentState!.save();
-                            BlocProvider.of<AddEditCubit>(context).add(
-                                controllerName: widget.pageData.controllerName,
-                                body: newRowData);
-
-                            print("//////////////////");
-                            print(newRowData);
-                            print("//////////////////");
+                            /* // if (formKey.currentState!.validate()) {
+                            //formKey.currentState!.save();
+                            //   BlocProvider.of<AddEditCubit>(context).add(
+                            //       controllerName:
+                            //           widget.pageData.controllerName,
+                            //       body: newRowData);
+                            //
+                            // print("**************");
+                            // print(newRowData);
+                            // print("******************");
+                            // }*/
                           },
                         );
                       }
@@ -185,9 +188,19 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                title,
-                style: AppStyles.textStyle14.copyWith(color: Colors.grey),
+              Row(
+                children: [
+                  Text(
+                    title,
+                    style: AppStyles.textStyle14.copyWith(color: Colors.grey),
+                  ),
+                  if (item.isRquired == false)
+                    const Icon(
+                      Icons.star,
+                      color: Colors.red,
+                      size: 10,
+                    )
+                ],
               ),
               CustomTextFormField(
                 hintText: '',
@@ -205,7 +218,7 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                     });
                   }
                 },
-              )
+              ),
             ],
           ),
         ));
@@ -221,9 +234,19 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                title,
-                style: AppStyles.textStyle14.copyWith(color: Colors.grey),
+              Row(
+                children: [
+                  Text(
+                    title,
+                    style: AppStyles.textStyle14.copyWith(color: Colors.grey),
+                  ),
+                  if (item.isRquired == false)
+                    const Icon(
+                      Icons.star,
+                      color: Colors.red,
+                      size: 10,
+                    )
+                ],
               ),
               CustomTextFormField(
                 hintText: '',
@@ -259,9 +282,19 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  title,
-                  style: AppStyles.textStyle14.copyWith(color: Colors.grey),
+                Row(
+                  children: [
+                    Text(
+                      title,
+                      style: AppStyles.textStyle14.copyWith(color: Colors.grey),
+                    ),
+                    if (item.isRquired == false)
+                      const Icon(
+                        Icons.star,
+                        color: Colors.red,
+                        size: 10,
+                      )
+                  ],
                 ),
                 StatefulBuilder(
                   builder: (context, dsetState) {
@@ -304,7 +337,7 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                           )),
                     );
                   },
-                )
+                ),
               ],
             ),
           ),
@@ -321,9 +354,19 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  title,
-                  style: AppStyles.textStyle14.copyWith(color: Colors.grey),
+                Row(
+                  children: [
+                    Text(
+                      title,
+                      style: AppStyles.textStyle14.copyWith(color: Colors.grey),
+                    ),
+                    if (item.isRquired == false)
+                      const Icon(
+                        Icons.star,
+                        color: Colors.red,
+                        size: 10,
+                      )
+                  ],
                 ),
                 SizedBox(
                   height: 40,
@@ -388,9 +431,20 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                   contentPadding: EdgeInsets.zero,
                   value: checkboxValue,
                   controlAffinity: ListTileControlAffinity.leading,
-                  title: Text(
-                    title,
-                    style: AppStyles.textStyle14.copyWith(color: Colors.black),
+                  title: Row(
+                    children: [
+                      Text(
+                        title,
+                        style:
+                            AppStyles.textStyle14.copyWith(color: Colors.black),
+                      ),
+                      if (item.isRquired == false)
+                        const Icon(
+                          Icons.star,
+                          color: Colors.red,
+                          size: 10,
+                        )
+                    ],
                   ),
                   onChanged: (newValue) {
                     csetState(() {

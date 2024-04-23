@@ -43,6 +43,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "dynamic_pro": MessageLookupByLibrary.simpleMessage("Dynamic Pro"),
         "english": MessageLookupByLibrary.simpleMessage("English"),
         "error": MessageLookupByLibrary.simpleMessage("Error"),
+        "field_is_required":
+            MessageLookupByLibrary.simpleMessage("Field is required"),
         "from": MessageLookupByLibrary.simpleMessage("From"),
         "hi": MessageLookupByLibrary.simpleMessage("Hi, "),
         "host_view": MessageLookupByLibrary.simpleMessage("Host"),
