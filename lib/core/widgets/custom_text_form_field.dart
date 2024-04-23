@@ -11,6 +11,7 @@ class CustomTextFormField extends StatelessWidget {
       required this.hintText,
       this.onChanged,
       this.onSaved,
+      this.isValidator = true,
       this.keyboardType});
   final TextEditingController? controller;
   final String? validatorMassage;
@@ -18,18 +19,21 @@ class CustomTextFormField extends StatelessWidget {
   final TextInputType? keyboardType;
   final void Function(String)? onChanged;
   final void Function(String?)? onSaved;
+  final bool? isValidator;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
-      validator: (value) {
-        if (value?.isEmpty ?? true) {
-          return validatorMassage ?? S.of(context).field_is_required;
-        } else {
-          return null;
-        }
-      },
+      validator: isValidator == true
+          ? (value) {
+              if (value?.isEmpty ?? true) {
+                return validatorMassage ?? S.of(context).field_is_required;
+              } else {
+                return null;
+              }
+            }
+          : null,
       textAlign: TextAlign.center,
       onChanged: onChanged,
       onSaved: onSaved,

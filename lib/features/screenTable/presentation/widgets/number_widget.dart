@@ -5,8 +5,8 @@ import '../../../../core/widgets/custom_text_form_field.dart';
 
 typedef OnTapSave<T> = void Function(T valeu);
 
-class TextWidget extends StatelessWidget {
-  const TextWidget(
+class NumberWidget extends StatelessWidget {
+  const NumberWidget(
       {super.key,
       required this.title,
       required this.isRequired,
@@ -42,7 +42,7 @@ class TextWidget extends StatelessWidget {
             hintText: '',
             controller: controller,
             isValidator: isRequired,
-            keyboardType: TextInputType.text,
+            keyboardType: TextInputType.number,
             onSaved: (newValue) {
               if (newValue!.isNotEmpty) {
                 onTapSave(newValue);

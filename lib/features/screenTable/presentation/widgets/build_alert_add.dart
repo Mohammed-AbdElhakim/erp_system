@@ -34,6 +34,7 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
   String? lang;
   GlobalKey<FormState> formKey = GlobalKey();
   Map<String, dynamic> newRowData = {};
+  bool isShow = false;
 
   @override
   void didChangeDependencies() {
@@ -46,8 +47,8 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
+  void initState() {
+    super.initState();
   }
 
   @override
@@ -78,7 +79,18 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                             style: AppStyles.textStyle18
                                 .copyWith(color: Colors.black),
                           )),
-                    ...getMyWidgetList(widget.columnList, 10),
+                    // ...getMyWidgetList(widget.columnList, 10),
+                    ...List.generate(
+                        getMyWidgetList(widget.columnList, 10).length, (my) {
+                      ItemList itemList =
+                          getMyWidgetList(widget.columnList, 10)[my];
+                      return itemList.show == true
+                          ? itemList.widget
+                          : isShow == true
+                              ? itemList.widget
+                              : SizedBox();
+                    }),
+
                     if (getMyWidgetList(widget.columnList, 11).isNotEmpty)
                       Container(
                           padding:
@@ -91,7 +103,26 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                             style: AppStyles.textStyle18
                                 .copyWith(color: Colors.black),
                           )),
-                    ...getMyWidgetList(widget.columnList, 11),
+                    // ...getMyWidgetList(widget.columnList, 11),
+                    ...List.generate(
+                        getMyWidgetList(widget.columnList, 11).length, (my) {
+                      ItemList itemList =
+                          getMyWidgetList(widget.columnList, 11)[my];
+                      return itemList.show == true
+                          ? itemList.widget
+                          : isShow == true
+                              ? itemList.widget
+                              : SizedBox();
+                    }),
+
+                    TextButton(
+                      onPressed: () {
+                        setState(() {
+                          isShow = !isShow;
+                        });
+                      },
+                      child: Text(!isShow ? "عرض المزيد" : "عرض أقل"),
+                    ),
                   ],
                 ),
               ),
@@ -147,17 +178,17 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                           text: S.of(context).btn_add,
                           width: 80,
                           onTap: () {
-                            /* // if (formKey.currentState!.validate()) {
-                            //formKey.currentState!.save();
-                            //   BlocProvider.of<AddEditCubit>(context).add(
-                            //       controllerName:
-                            //           widget.pageData.controllerName,
-                            //       body: newRowData);
-                            //
-                            // print("**************");
-                            // print(newRowData);
-                            // print("******************");
-                            // }*/
+                            if (formKey.currentState!.validate()) {
+                              formKey.currentState!.save();
+                              BlocProvider.of<AddEditCubit>(context).add(
+                                  controllerName:
+                                      widget.pageData.controllerName,
+                                  body: newRowData);
+
+                              print("**************");
+                              print(newRowData);
+                              print("******************");
+                            }
                           },
                         );
                       }
@@ -172,8 +203,8 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
     );
   }
 
-  List<Widget> getMyWidgetList(List<ColumnList> columnList, int categoryID) {
-    List<Widget> listWidgets = [];
+  List<ItemList> getMyWidgetList(List<ColumnList> columnList, int categoryID) {
+    List<ItemList> list = [];
     for (var item in columnList) {
       String title = lang == AppStrings.arLangKey
           ? item.arColumnLabel!
@@ -183,262 +214,21 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
           item.categoryID == categoryID) {
         //TODO:text
         TextEditingController controller = TextEditingController();
-        listWidgets.add(Padding(
-          padding: const EdgeInsets.symmetric(vertical: 5),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
+        list.add(
+          ItemList(
+            widget: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    title,
-                    style: AppStyles.textStyle14.copyWith(color: Colors.grey),
-                  ),
-                  if (item.isRquired == false)
-                    const Icon(
-                      Icons.star,
-                      color: Colors.red,
-                      size: 10,
-                    )
-                ],
-              ),
-              CustomTextFormField(
-                hintText: '',
-                controller: controller,
-                keyboardType: TextInputType.text,
-                onSaved: (newValue) {
-                  if (newValue!.isNotEmpty) {
-                    setState(() {
-                      newRowData
-                          .addAll({item.columnName!.toString(): newValue});
-                      // newRowData.updateAll((key, value) =>
-                      //     key == item.columnName!.toString()
-                      //         ? value = controller.text
-                      //         : value);
-                    });
-                  }
-                },
-              ),
-            ],
-          ),
-        ));
-      }
-      if (item.insertType == "number" &&
-          item.insertVisable == true &&
-          item.categoryID == categoryID) {
-        //TODO:number
-        TextEditingController controller = TextEditingController();
-
-        listWidgets.add(Padding(
-          padding: const EdgeInsets.symmetric(vertical: 5),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Text(
-                    title,
-                    style: AppStyles.textStyle14.copyWith(color: Colors.grey),
-                  ),
-                  if (item.isRquired == false)
-                    const Icon(
-                      Icons.star,
-                      color: Colors.red,
-                      size: 10,
-                    )
-                ],
-              ),
-              CustomTextFormField(
-                hintText: '',
-                keyboardType: TextInputType.number,
-                controller: controller,
-                onSaved: (newValue) {
-                  if (newValue!.isNotEmpty) {
-                    // newRowData[item.columnName!] = newValue;
-
-                    setState(() {
-                      newRowData
-                          .addAll({item.columnName!.toString(): newValue});
-                      // newRowData.updateAll((key, value) =>
-                      //     key == item.columnName!.toString()
-                      //         ? value = controller.text
-                      //         : value);
-                    });
-                  }
-                },
-              ),
-            ],
-          ),
-        ));
-      }
-      if (item.insertType == "date" &&
-          item.insertVisable == true &&
-          item.categoryID == categoryID) {
-        //TODO:Date
-        String date = '';
-        listWidgets.add(
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 5),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      title,
-                      style: AppStyles.textStyle14.copyWith(color: Colors.grey),
-                    ),
-                    if (item.isRquired == false)
-                      const Icon(
-                        Icons.star,
-                        color: Colors.red,
-                        size: 10,
-                      )
-                  ],
-                ),
-                StatefulBuilder(
-                  builder: (context, dsetState) {
-                    return InkWell(
-                      onTap: () async {
-                        DateTime? dateTime = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(1980),
-                          lastDate: DateTime(2100),
-                        );
-                        if (dateTime != null) {
-                          dsetState(() {
-                            date =
-                                DateFormat("yyyy-MM-dd", 'en').format(dateTime);
-                            // dateFrom = dateTime.toString();
-                          });
-
-                          dsetState(() {
-                            newRowData.addAll(
-                                {item.columnName!.toString(): dateTime});
-                            // newRowData.updateAll((key, value) =>
-                            //     key == item.columnName!.toString()
-                            //         ? value = dateTime
-                            //         : value);
-                          });
-                        }
-                      },
-                      child: Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              border: Border.all(color: AppColors.blueDark)),
-                          alignment: Alignment.center,
-                          padding: const EdgeInsets.all(8),
-                          child: Text(
-                            date,
-                            textAlign: TextAlign.center,
-                            style: AppStyles.textStyle14
-                                .copyWith(color: Colors.black),
-                          )),
-                    );
-                  },
-                ),
-              ],
-            ),
-          ),
-        );
-      }
-      //TODO:dropdown
-      if (item.insertType == "dropdown" &&
-          item.insertVisable == true &&
-          item.categoryID == categoryID) {
-        List<ListDropdown> dropList = [];
-        listWidgets.add(
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 5),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      title,
-                      style: AppStyles.textStyle14.copyWith(color: Colors.grey),
-                    ),
-                    if (item.isRquired == false)
-                      const Icon(
-                        Icons.star,
-                        color: Colors.red,
-                        size: 10,
-                      )
-                  ],
-                ),
-                SizedBox(
-                  height: 40,
-                  child: BlocProvider(
-                    create: (context) =>
-                        GetDropdownListCubit(getIt.get<ScreenRepoImpl>())
-                          ..getDropdownList(
-                            droModel: item.droModel ?? "",
-                            droValue: item.droValue ?? "",
-                            droText: item.droText ?? "",
-                            droCondition: item.droCondition ?? "",
-                            droCompany: item.droCompany ?? "",
-                          ),
-                    child: BlocConsumer<GetDropdownListCubit,
-                        GetDropdownListState>(
-                      listener: (context, state) {
-                        if (state is GetDropdownListSuccess) {
-                          dropList = state.dropdownModel.list;
-                        }
-                      },
-                      builder: (context, state) {
-                        return DropdownMenu(
-                          expandedInsets: EdgeInsets.zero,
-                          dropdownMenuEntries: List.generate(
-                            dropList.length,
-                            (index) => DropdownMenuEntry(
-                                value: dropList[index].value,
-                                label: dropList[index].text),
-                          ),
-                          onSelected: (value) {
-                            if (value != null) {
-                              print("1111111111111  add  1111111111111");
-                              print(value);
-                              print("1111111111111  add  1111111111111");
-                              newRowData
-                                  .addAll({item.searchName!.toString(): value});
-                              // setState(() {
-                              //   dropdownMenuValue = value;
-                              // });
-                            }
-                          },
-                        );
-                      },
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      }
-      //TODO:checkbox
-      if (item.insertType == "checkbox" &&
-          item.insertVisable == true &&
-          item.categoryID == categoryID) {
-        bool checkboxValue = false;
-
-        listWidgets.add(
-          StatefulBuilder(
-            builder: (context, csetState) {
-              return CheckboxListTile(
-                  contentPadding: EdgeInsets.zero,
-                  value: checkboxValue,
-                  controlAffinity: ListTileControlAffinity.leading,
-                  title: Row(
+                  Row(
                     children: [
                       Text(
                         title,
                         style:
-                            AppStyles.textStyle14.copyWith(color: Colors.black),
+                            AppStyles.textStyle14.copyWith(color: Colors.grey),
                       ),
-                      if (item.isRquired == false)
+                      if (item.isRquired! == true)
                         const Icon(
                           Icons.star,
                           color: Colors.red,
@@ -446,25 +236,280 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                         )
                     ],
                   ),
-                  onChanged: (newValue) {
-                    csetState(() {
-                      checkboxValue = !checkboxValue;
-                    });
-                    csetState(() {
-                      newRowData
-                          .addAll({item.columnName!.toString(): checkboxValue});
-                      // newRowData.updateAll((key, value) =>
-                      //     key == item.columnName!.toString()
-                      //         ? value = checkboxValue
-                      //         : value);
-                    });
-                  });
-            },
+                  CustomTextFormField(
+                    hintText: '',
+                    controller: controller,
+                    isValidator: item.isRquired!,
+                    keyboardType: TextInputType.text,
+                    onSaved: (newValue) {
+                      if (newValue!.isNotEmpty) {
+                        setState(() {
+                          newRowData
+                              .addAll({item.columnName!.toString(): newValue});
+                        });
+                      }
+                    },
+                  ),
+                ],
+              ),
+            ),
+            show: item.insertDefult!,
           ),
         );
       }
-    }
+      if (item.insertType == "number" &&
+          item.insertVisable == true &&
+          item.categoryID == categoryID) {
+        //TODO:number
+        TextEditingController controller = TextEditingController();
 
-    return listWidgets;
+        list.add(
+          ItemList(
+            widget: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        title,
+                        style:
+                            AppStyles.textStyle14.copyWith(color: Colors.grey),
+                      ),
+                      if (item.isRquired! == true)
+                        const Icon(
+                          Icons.star,
+                          color: Colors.red,
+                          size: 10,
+                        )
+                    ],
+                  ),
+                  CustomTextFormField(
+                    hintText: '',
+                    controller: controller,
+                    isValidator: item.isRquired!,
+                    keyboardType: TextInputType.number,
+                    onSaved: (newValue) {
+                      if (newValue!.isNotEmpty) {
+                        setState(() {
+                          newRowData
+                              .addAll({item.columnName!.toString(): newValue});
+                        });
+                      }
+                    },
+                  ),
+                ],
+              ),
+            ),
+            show: item.insertDefult!,
+          ),
+        );
+      }
+
+      if (item.insertType == "date" &&
+          item.insertVisable == true &&
+          item.categoryID == categoryID) {
+        //TODO:Date
+        String date = '';
+        list.add(ItemList(
+            widget: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        title,
+                        style:
+                            AppStyles.textStyle14.copyWith(color: Colors.grey),
+                      ),
+                      if (item.isRquired == true)
+                        const Icon(
+                          Icons.star,
+                          color: Colors.red,
+                          size: 10,
+                        )
+                    ],
+                  ),
+                  StatefulBuilder(
+                    builder: (context, dsetState) {
+                      return InkWell(
+                        onTap: () async {
+                          DateTime? dateTime = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(1980),
+                            lastDate: DateTime(2100),
+                          );
+                          if (dateTime != null) {
+                            dsetState(() {
+                              date = DateFormat("yyyy-MM-dd", 'en')
+                                  .format(dateTime);
+                              // dateFrom = dateTime.toString();
+                            });
+
+                            dsetState(() {
+                              newRowData.addAll(
+                                  {item.columnName!.toString(): dateTime});
+                              // newRowData.updateAll((key, value) =>
+                              //     key == item.columnName!.toString()
+                              //         ? value = dateTime
+                              //         : value);
+                            });
+                          }
+                        },
+                        child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                border: Border.all(color: AppColors.blueDark)),
+                            alignment: Alignment.center,
+                            padding: const EdgeInsets.all(8),
+                            child: Text(
+                              date,
+                              textAlign: TextAlign.center,
+                              style: AppStyles.textStyle14
+                                  .copyWith(color: Colors.black),
+                            )),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+            show: item.insertDefult!));
+      }
+
+      //TODO:dropdown
+      if (item.insertType == "dropdown" &&
+          item.insertVisable == true &&
+          item.categoryID == categoryID) {
+        List<ListDropdown> dropList = [];
+        list.add(ItemList(
+            widget: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        title,
+                        style:
+                            AppStyles.textStyle14.copyWith(color: Colors.grey),
+                      ),
+                      if (item.isRquired == true)
+                        const Icon(
+                          Icons.star,
+                          color: Colors.red,
+                          size: 10,
+                        )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 40,
+                    child: BlocProvider(
+                      create: (context) =>
+                          GetDropdownListCubit(getIt.get<ScreenRepoImpl>())
+                            ..getDropdownList(
+                              droModel: item.droModel ?? "",
+                              droValue: item.droValue ?? "",
+                              droText: item.droText ?? "",
+                              droCondition: item.droCondition ?? "",
+                              droCompany: item.droCompany ?? "",
+                            ),
+                      child: BlocConsumer<GetDropdownListCubit,
+                          GetDropdownListState>(
+                        listener: (context, state) {
+                          if (state is GetDropdownListSuccess) {
+                            dropList = state.dropdownModel.list;
+                          }
+                        },
+                        builder: (context, state) {
+                          return DropdownMenu(
+                            expandedInsets: EdgeInsets.zero,
+                            dropdownMenuEntries: List.generate(
+                              dropList.length,
+                              (index) => DropdownMenuEntry(
+                                  value: dropList[index].value,
+                                  label: dropList[index].text),
+                            ),
+                            onSelected: (value) {
+                              if (value != null) {
+                                print("1111111111111  add  1111111111111");
+                                print(value);
+                                print("1111111111111  add  1111111111111");
+                                newRowData.addAll(
+                                    {item.searchName!.toString(): value});
+                                // setState(() {
+                                //   dropdownMenuValue = value;
+                                // });
+                              }
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            show: item.isRquired!));
+      }
+      //TODO:checkbox
+      if (item.insertType == "checkbox" &&
+          item.insertVisable == true &&
+          item.categoryID == categoryID) {
+        bool checkboxValue = false;
+
+        list.add(ItemList(
+            widget: StatefulBuilder(
+              builder: (context, csetState) {
+                return CheckboxListTile(
+                    contentPadding: EdgeInsets.zero,
+                    value: checkboxValue,
+                    controlAffinity: ListTileControlAffinity.leading,
+                    title: Row(
+                      children: [
+                        Text(
+                          title,
+                          style: AppStyles.textStyle14
+                              .copyWith(color: Colors.black),
+                        ),
+                        if (item.isRquired == true)
+                          const Icon(
+                            Icons.star,
+                            color: Colors.red,
+                            size: 10,
+                          )
+                      ],
+                    ),
+                    onChanged: (newValue) {
+                      csetState(() {
+                        checkboxValue = !checkboxValue;
+                      });
+                      csetState(() {
+                        newRowData.addAll(
+                            {item.columnName!.toString(): checkboxValue});
+                        // newRowData.updateAll((key, value) =>
+                        //     key == item.columnName!.toString()
+                        //         ? value = checkboxValue
+                        //         : value);
+                      });
+                    });
+              },
+            ),
+            show: item.isRquired!));
+      }
+    }
+    return list;
   }
+}
+
+class ItemList {
+  final Widget widget;
+  final bool show;
+
+  ItemList({required this.widget, required this.show});
 }
