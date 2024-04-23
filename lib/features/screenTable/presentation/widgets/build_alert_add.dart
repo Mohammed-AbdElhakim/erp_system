@@ -39,10 +39,6 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
   @override
   void didChangeDependencies() {
     lang = Localizations.localeOf(context).toString();
-
-    print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-    print(widget.columnList.length);
-    print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
     super.didChangeDependencies();
   }
 
@@ -69,8 +65,8 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                   children: [
                     if (getMyWidgetList(widget.columnList, 10).isNotEmpty)
                       Container(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 8),
                           decoration: BoxDecoration(
                               color: AppColors.grey.withOpacity(.4),
                               borderRadius: BorderRadius.circular(15)),
@@ -88,13 +84,13 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                           ? itemList.widget
                           : isShow == true
                               ? itemList.widget
-                              : SizedBox();
+                              : const SizedBox();
                     }),
 
                     if (getMyWidgetList(widget.columnList, 11).isNotEmpty)
                       Container(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 8),
                           decoration: BoxDecoration(
                               color: AppColors.grey.withOpacity(.4),
                               borderRadius: BorderRadius.circular(15)),
@@ -112,7 +108,7 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                           ? itemList.widget
                           : isShow == true
                               ? itemList.widget
-                              : SizedBox();
+                              : const SizedBox();
                     }),
 
                     TextButton(
@@ -184,10 +180,6 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                                   controllerName:
                                       widget.pageData.controllerName,
                                   body: newRowData);
-
-                              print("**************");
-                              print(newRowData);
-                              print("******************");
                             }
                           },
                         );
@@ -209,10 +201,10 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
       String title = lang == AppStrings.arLangKey
           ? item.arColumnLabel!
           : item.enColumnLabel!;
+      //text
       if (item.insertType == "text" &&
           item.insertVisable == true &&
           item.categoryID == categoryID) {
-        //TODO:text
         TextEditingController controller = TextEditingController();
         list.add(
           ItemList(
@@ -257,10 +249,10 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
           ),
         );
       }
+      //number
       if (item.insertType == "number" &&
           item.insertVisable == true &&
           item.categoryID == categoryID) {
-        //TODO:number
         TextEditingController controller = TextEditingController();
 
         list.add(
@@ -306,11 +298,10 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
           ),
         );
       }
-
+      //Date
       if (item.insertType == "date" &&
           item.insertVisable == true &&
           item.categoryID == categoryID) {
-        //TODO:Date
         String date = '';
         list.add(ItemList(
             widget: Padding(
@@ -381,7 +372,7 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
             show: item.insertDefult!));
       }
 
-      //TODO:dropdown
+      //dropdown
       if (item.insertType == "dropdown" &&
           item.insertVisable == true &&
           item.categoryID == categoryID) {
@@ -436,14 +427,8 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                           ),
                           onSelected: (value) {
                             if (value != null) {
-                              print("1111111111111  add  1111111111111");
-                              print(value);
-                              print("1111111111111  add  1111111111111");
                               newRowData
                                   .addAll({item.searchName!.toString(): value});
-                              // setState(() {
-                              //   dropdownMenuValue = value;
-                              // });
                             }
                           },
                         );
@@ -457,7 +442,7 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
           show: item.insertDefult!,
         ));
       }
-      //TODO:checkbox
+      //checkbox
       if (item.insertType == "checkbox" &&
           item.insertVisable == true &&
           item.categoryID == categoryID) {

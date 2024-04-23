@@ -260,11 +260,12 @@ class _MyTableState extends State<MyTable> {
                                         rowData = null;
                                       } else {
                                         indexColor = widget.list.indexOf(e);
-                                        rowData = e /*[widget.listData[
+                                        rowData =
+                                                e /*[widget.listData[
                                             widget.listData.length - 1]]*/
                                             ;
                                       }
-                                      //TODO: القيمة اللى هترجع
+                                      // القيمة اللى هترجع
                                     });
                                     onTap(rowData);
                                   },

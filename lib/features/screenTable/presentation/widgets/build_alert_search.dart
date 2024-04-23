@@ -45,21 +45,9 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
     lang = Localizations.localeOf(context).toString();
     dateFrom = S.of(context).from;
     dateTo = S.of(context).to;
-    print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-    print(widget.columnList.length);
-    print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+
     super.didChangeDependencies();
   }
-
-  // @override
-  // void initState() async {
-  //   companyKey =
-  //       await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-  //           "";
-  //   token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
-  //   host = await Pref.getStringFromPref(key: AppStrings.hostKey) ?? "";
-  //   super.initState();
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -120,11 +108,8 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
                               numberOfPage: 1,
                               dropdownValueOfLimit: 10)
                           .then((value) => widget.columnList.clear());
-                      print("***************");
-                      print(statment);
-                      print("***************");
+
                       Navigator.pop(context);
-                      // GoRouter.of(context).pushReplacementNamed(AppRouter.kScreenView);
                     },
                   )
                 ],
@@ -142,8 +127,8 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
       String title = lang == AppStrings.arLangKey
           ? item.arColumnLabel!
           : item.enColumnLabel!;
+      //text
       if (item.insertType == "text" && item.visible == true) {
-        //TODO:text
         listWidgets.add(Padding(
           padding: const EdgeInsets.symmetric(vertical: 5),
           child: Column(
@@ -170,8 +155,8 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
           ),
         ));
       }
+      //number
       if (item.insertType == "number" && item.visible == true) {
-        //TODO:number
         listWidgets.add(Padding(
           padding: const EdgeInsets.symmetric(vertical: 5),
           child: Column(
@@ -183,7 +168,7 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
               ),
               Row(
                 children: [
-                  //TODO: number from
+                  //number from
                   Expanded(
                     child: CustomTextFormField(
                       hintText: S.of(context).from,
@@ -200,7 +185,7 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
                     ),
                   ),
                   const SizedBox(width: 8),
-                  //TODO:number to
+                  //number to
                   Expanded(
                     child: CustomTextFormField(
                       hintText: S.of(context).to,
@@ -218,7 +203,7 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
                   ),
                 ],
               ),
-              //TODO: number =0
+              // number =0
               StatefulBuilder(
                 builder: (BuildContext context,
                     void Function(void Function()) nsetState) {
@@ -255,8 +240,8 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
           ),
         ));
       }
+      //Date
       if (item.insertType == "date" && item.visible == true) {
-        //TODO:Date
         listWidgets.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -269,7 +254,7 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
                 ),
                 Row(
                   children: [
-                    //TODO:Date From
+                    //Date From
                     StatefulBuilder(
                       builder: (context, dsetState) {
                         return Expanded(
@@ -310,7 +295,7 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
                       },
                     ),
                     const SizedBox(width: 8),
-                    //TODO:Date To
+                    //Date To
                     StatefulBuilder(
                       builder: (context, dsetState) {
                         return Expanded(
@@ -357,7 +342,7 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
           ),
         );
       }
-      //TODO:dropdown
+      //dropdown
       if (item.insertType == "dropdown" && item.visible == true) {
         List<ListDropdown> dropList = [];
         List<String> selected = [];
@@ -427,11 +412,6 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
 
                                 statment = "$statment $stFinial";
                                 BuildAlertSearch.statement = statment;
-                                print("2222222222222222");
-                                print(selected);
-                                print(st);
-                                print(statment);
-                                print("2222222222222222");
                               },
                               options: List.generate(dropList.length,
                                   (index) => dropList[index].text),
@@ -451,7 +431,7 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
           ),
         );
       }
-      //TODO:checkbox
+      //checkbox
       if (item.insertType == "checkbox" && item.visible == true) {
         listWidgets.add(
           StatefulBuilder(

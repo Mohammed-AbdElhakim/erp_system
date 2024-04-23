@@ -10,9 +10,9 @@ class DropdownModel {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['list'] = list.map((e) => e.toJson()).toList();
-    return _data;
+    final data = <String, dynamic>{};
+    data['list'] = list.map((e) => e.toJson()).toList();
+    return data;
   }
 }
 
@@ -30,9 +30,9 @@ class ListDropdown {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['value'] = value;
-    _data['text'] = text;
-    return _data;
+    final data = <String, dynamic>{};
+    data['value'] = value;
+    data['text'] = text;
+    return data;
   }
 }

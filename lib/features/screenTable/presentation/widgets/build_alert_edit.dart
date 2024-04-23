@@ -42,9 +42,7 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
   @override
   void didChangeDependencies() {
     lang = Localizations.localeOf(context).toString();
-    print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-    print(widget.columnList.length);
-    print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+
     super.didChangeDependencies();
   }
 
@@ -82,7 +80,7 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                                     widget.columnList, state.valueGetById, 10)
                                 .isNotEmpty)
                               Container(
-                                  padding: EdgeInsets.symmetric(
+                                  padding: const EdgeInsets.symmetric(
                                       horizontal: 12, vertical: 8),
                                   decoration: BoxDecoration(
                                       color: AppColors.grey.withOpacity(.4),
@@ -104,7 +102,7 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                                   ? itemList.widget
                                   : isShow == true
                                       ? itemList.widget
-                                      : SizedBox();
+                                      : const SizedBox();
                             }),
                             // ...getMyWidgetList(
                             //     widget.columnList, state.valueGetById, 10),
@@ -112,7 +110,7 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                                     widget.columnList, state.valueGetById, 11)
                                 .isNotEmpty)
                               Container(
-                                  padding: EdgeInsets.symmetric(
+                                  padding: const EdgeInsets.symmetric(
                                       horizontal: 12, vertical: 8),
                                   decoration: BoxDecoration(
                                       color: AppColors.grey.withOpacity(.4),
@@ -134,7 +132,7 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                                   ? itemList.widget
                                   : isShow == true
                                       ? itemList.widget
-                                      : SizedBox();
+                                      : const SizedBox();
                             }),
 
                             TextButton(
@@ -211,12 +209,6 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                                               controllerName: widget
                                                   .pageData.controllerName,
                                               body: newRowData);
-
-                                      print(
-                                          "////////######################//////////");
-                                      print(newRowData);
-                                      print(
-                                          "/////////########################/////////");
                                     }
                                   },
                                 );
@@ -248,10 +240,10 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
       String title = lang == AppStrings.arLangKey
           ? item.arColumnLabel!
           : item.enColumnLabel!;
+      //text
       if (item.insertType == "text" &&
           item.insertVisable == true &&
           item.categoryID == categoryID) {
-        //TODO:text
         TextEditingController controller =
             TextEditingController(text: rowData[item.columnName].toString());
         list.add(ItemList(
@@ -297,10 +289,10 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
           show: item.insertDefult!,
         ));
       }
+      //number
       if (item.insertType == "number" &&
           item.insertVisable == true &&
           item.categoryID == categoryID) {
-        //TODO:number
         TextEditingController controller =
             TextEditingController(text: rowData[item.columnName].toString());
 
@@ -349,12 +341,10 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
           show: item.insertDefult!,
         ));
       }
+      //Date
       if (item.insertType == "date" &&
           item.insertVisable == true &&
           item.categoryID == categoryID) {
-        //TODO:Date
-        print("//////////////***********************");
-        print(item.columnName);
         String date;
         if (rowData[item.columnName] != null) {
           date = DateFormat("yyyy-MM-dd", 'en')
@@ -363,8 +353,6 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
           date = DateFormat("yyyy-MM-dd", 'en').format(DateTime.now());
         }
 
-        print(date);
-        print("------------------------------------");
         list.add(ItemList(
           widget: Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -432,15 +420,12 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
           show: item.insertDefult!,
         ));
       }
-      //TODO:dropdown
+      //dropdown
       if (item.insertType == "dropdown" &&
           item.insertVisable == true &&
           item.categoryID == categoryID) {
         int dropValue = rowData[item.searchName] ?? 0;
-        print("-------------------------");
-        print(item.searchName);
-        print(rowData[item.searchName]);
-        print("-------------------------");
+
         List<ListDropdown> dropList = [];
         list.add(ItemList(
           widget: Padding(
@@ -483,14 +468,8 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                           ),
                           onSelected: (value) {
                             if (value != null) {
-                              print("1111111111111  edit  1111111111111");
-                              print(value);
-                              print("1111111111111  edit  1111111111111");
                               newRowData
                                   .addAll({item.searchName!.toString(): value});
-                              // setState(() {
-                              //   dropdownMenuValue = value;
-                              // });
                             }
                           },
                         );
@@ -504,7 +483,7 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
           show: item.insertDefult!,
         ));
       }
-      //TODO:checkbox
+      //checkbox
       if (item.insertType == "checkbox" &&
           item.insertVisable == true &&
           item.categoryID == categoryID) {
