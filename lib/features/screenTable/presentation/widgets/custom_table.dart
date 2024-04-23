@@ -47,6 +47,7 @@ class _CustomTableState extends State<CustomTable> {
   Widget build(BuildContext context) {
     return Expanded(
       child: Stack(
+        alignment: Alignment.topCenter,
         children: [
           //TODO:data
           SingleChildScrollView(
@@ -144,46 +145,41 @@ class _CustomTableState extends State<CustomTable> {
             ),
           ),
           //TODO:header
-          Row(
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  controller: headerScrollController,
-                  child: DataTable(
-                    columnSpacing: 30,
-                    horizontalMargin: 20,
-                    dataRowMinHeight: 50,
-                    dataRowMaxHeight: 50,
-                    headingRowHeight: 35,
-                    headingRowColor:
-                        MaterialStateProperty.all(AppColors.blueLight),
-                    columns: List.generate(
-                      widget.listHeader.length,
-                      (index) {
-                        return DataColumn(
-                          label: InkWell(
-                            onTap: () {
-                              widget.onTapHeader(
-                                  widget.listColumn[index].columnName!);
-                            },
-                            child: SizedBox(
-                              width: 100,
-                              child: Text(
-                                widget.listHeader[index],
-                                textAlign: TextAlign.center,
-                                style: AppStyles.textStyle14,
-                              ),
-                            ),
+          Expanded(
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              controller: headerScrollController,
+              child: DataTable(
+                columnSpacing: 30,
+                horizontalMargin: 20,
+                dataRowMinHeight: 50,
+                dataRowMaxHeight: 50,
+                headingRowHeight: 35,
+                headingRowColor: MaterialStateProperty.all(AppColors.blueLight),
+                columns: List.generate(
+                  widget.listHeader.length,
+                  (index) {
+                    return DataColumn(
+                      label: InkWell(
+                        onTap: () {
+                          widget.onTapHeader(
+                              widget.listColumn[index].columnName!);
+                        },
+                        child: SizedBox(
+                          width: 100,
+                          child: Text(
+                            widget.listHeader[index],
+                            textAlign: TextAlign.center,
+                            style: AppStyles.textStyle14,
                           ),
-                        );
-                      },
-                    ),
-                    rows: const [],
-                  ),
+                        ),
+                      ),
+                    );
+                  },
                 ),
+                rows: const [],
               ),
-            ],
+            ),
           )
         ],
       ),
