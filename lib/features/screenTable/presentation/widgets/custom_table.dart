@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:linked_scroll_controller/linked_scroll_controller.dart';
 
 import '../../../../core/utils/app_colors.dart';
@@ -125,11 +126,19 @@ class _CustomTableState extends State<CustomTable> {
                                       ? 100
                                       : null,
                                   alignment: Alignment.center,
-                                  child: Text(
-                                      textAlign: TextAlign.center,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      "${widget.listData[index][widget.listKey[i]]}"),
+                                  // child: Text(
+                                  //     textAlign: TextAlign.center,
+                                  //     maxLines: 1,
+                                  //     overflow: TextOverflow.ellipsis,
+                                  //     "${widget.listData[index][widget.listKey[i]]}"),
+                                  child: buildMyWidget(
+                                      "${widget.listData[index][widget.listKey[i]]}",
+                                      widget.listColumn[i].insertType!),
+                                  // child: const Icon(
+                                  //   Icons.check,
+                                  //   size: 20,
+                                  //   color: Colors.green,
+                                  // ),
                                 ),
                               ),
                             ),
@@ -145,40 +154,38 @@ class _CustomTableState extends State<CustomTable> {
             ),
           ),
           //TODO:header
-          Expanded(
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              controller: headerScrollController,
-              child: DataTable(
-                columnSpacing: 30,
-                horizontalMargin: 20,
-                dataRowMinHeight: 50,
-                dataRowMaxHeight: 50,
-                headingRowHeight: 35,
-                headingRowColor: MaterialStateProperty.all(AppColors.blueLight),
-                columns: List.generate(
-                  widget.listHeader.length,
-                  (index) {
-                    return DataColumn(
-                      label: InkWell(
-                        onTap: () {
-                          widget.onTapHeader(
-                              widget.listColumn[index].columnName!);
-                        },
-                        child: SizedBox(
-                          width: 100,
-                          child: Text(
-                            widget.listHeader[index],
-                            textAlign: TextAlign.center,
-                            style: AppStyles.textStyle14,
-                          ),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            controller: headerScrollController,
+            child: DataTable(
+              columnSpacing: 30,
+              horizontalMargin: 20,
+              dataRowMinHeight: 50,
+              dataRowMaxHeight: 50,
+              headingRowHeight: 35,
+              headingRowColor: MaterialStateProperty.all(AppColors.blueLight),
+              columns: List.generate(
+                widget.listHeader.length,
+                (index) {
+                  return DataColumn(
+                    label: InkWell(
+                      onTap: () {
+                        widget
+                            .onTapHeader(widget.listColumn[index].columnName!);
+                      },
+                      child: SizedBox(
+                        width: 100,
+                        child: Text(
+                          widget.listHeader[index],
+                          textAlign: TextAlign.center,
+                          style: AppStyles.textStyle14,
                         ),
                       ),
-                    );
-                  },
-                ),
-                rows: const [],
+                    ),
+                  );
+                },
               ),
+              rows: const [],
             ),
           )
         ],
@@ -186,15 +193,37 @@ class _CustomTableState extends State<CustomTable> {
     );
   }
 
-  // onTapHeader(ColumnList? value, int numberPage, int limit) {
-  //   widget.onTapHeader!(value, numberPage, limit);
-  // }
-  //
-  // onTapAdd(int? value, int limit) {
-  //   widget.onTapAdd!(value, limit);
-  // }
-  //
-  // onTapDecrease(int? value, int limit) {
-  //   widget.onTapDecrease!(value, limit);
-  // }
+  buildMyWidget(String value, String insertType) {
+    switch (insertType) {
+      case "date":
+        String date =
+            DateFormat("yyyy-MM-dd", 'en').format(DateTime.parse(value));
+        return Text(
+            textAlign: TextAlign.center,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            date);
+      case "checkbox":
+        if (value == "true") {
+          return const Icon(
+            Icons.check,
+            size: 20,
+            color: Colors.green,
+          );
+        } else if (value == "false") {
+          return const Icon(
+            Icons.close,
+            size: 20,
+            color: Colors.red,
+          );
+        }
+
+      default:
+        return Text(
+            textAlign: TextAlign.center,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            value);
+    }
+  }
 }
