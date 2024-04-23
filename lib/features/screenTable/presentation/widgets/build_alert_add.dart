@@ -387,17 +387,95 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
           item.categoryID == categoryID) {
         List<ListDropdown> dropList = [];
         list.add(ItemList(
-            widget: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 5),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
+          widget: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      title,
+                      style: AppStyles.textStyle14.copyWith(color: Colors.grey),
+                    ),
+                    if (item.isRquired == true)
+                      const Icon(
+                        Icons.star,
+                        color: Colors.red,
+                        size: 10,
+                      )
+                  ],
+                ),
+                SizedBox(
+                  height: 40,
+                  child: BlocProvider(
+                    create: (context) =>
+                        GetDropdownListCubit(getIt.get<ScreenRepoImpl>())
+                          ..getDropdownList(
+                            droModel: item.droModel ?? "",
+                            droValue: item.droValue ?? "",
+                            droText: item.droText ?? "",
+                            droCondition: item.droCondition ?? "",
+                            droCompany: item.droCompany ?? "",
+                          ),
+                    child: BlocConsumer<GetDropdownListCubit,
+                        GetDropdownListState>(
+                      listener: (context, state) {
+                        if (state is GetDropdownListSuccess) {
+                          dropList = state.dropdownModel.list;
+                        }
+                      },
+                      builder: (context, state) {
+                        return DropdownMenu(
+                          expandedInsets: EdgeInsets.zero,
+                          dropdownMenuEntries: List.generate(
+                            dropList.length,
+                            (index) => DropdownMenuEntry(
+                                value: dropList[index].value,
+                                label: dropList[index].text),
+                          ),
+                          onSelected: (value) {
+                            if (value != null) {
+                              print("1111111111111  add  1111111111111");
+                              print(value);
+                              print("1111111111111  add  1111111111111");
+                              newRowData
+                                  .addAll({item.searchName!.toString(): value});
+                              // setState(() {
+                              //   dropdownMenuValue = value;
+                              // });
+                            }
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          show: item.insertDefult!,
+        ));
+      }
+      //TODO:checkbox
+      if (item.insertType == "checkbox" &&
+          item.insertVisable == true &&
+          item.categoryID == categoryID) {
+        bool checkboxValue = false;
+
+        list.add(ItemList(
+          widget: StatefulBuilder(
+            builder: (context, csetState) {
+              return CheckboxListTile(
+                  contentPadding: EdgeInsets.zero,
+                  value: checkboxValue,
+                  controlAffinity: ListTileControlAffinity.leading,
+                  title: Row(
                     children: [
                       Text(
                         title,
                         style:
-                            AppStyles.textStyle14.copyWith(color: Colors.grey),
+                            AppStyles.textStyle14.copyWith(color: Colors.black),
                       ),
                       if (item.isRquired == true)
                         const Icon(
@@ -407,100 +485,23 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                         )
                     ],
                   ),
-                  SizedBox(
-                    height: 40,
-                    child: BlocProvider(
-                      create: (context) =>
-                          GetDropdownListCubit(getIt.get<ScreenRepoImpl>())
-                            ..getDropdownList(
-                              droModel: item.droModel ?? "",
-                              droValue: item.droValue ?? "",
-                              droText: item.droText ?? "",
-                              droCondition: item.droCondition ?? "",
-                              droCompany: item.droCompany ?? "",
-                            ),
-                      child: BlocConsumer<GetDropdownListCubit,
-                          GetDropdownListState>(
-                        listener: (context, state) {
-                          if (state is GetDropdownListSuccess) {
-                            dropList = state.dropdownModel.list;
-                          }
-                        },
-                        builder: (context, state) {
-                          return DropdownMenu(
-                            expandedInsets: EdgeInsets.zero,
-                            dropdownMenuEntries: List.generate(
-                              dropList.length,
-                              (index) => DropdownMenuEntry(
-                                  value: dropList[index].value,
-                                  label: dropList[index].text),
-                            ),
-                            onSelected: (value) {
-                              if (value != null) {
-                                print("1111111111111  add  1111111111111");
-                                print(value);
-                                print("1111111111111  add  1111111111111");
-                                newRowData.addAll(
-                                    {item.searchName!.toString(): value});
-                                // setState(() {
-                                //   dropdownMenuValue = value;
-                                // });
-                              }
-                            },
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            show: item.isRquired!));
-      }
-      //TODO:checkbox
-      if (item.insertType == "checkbox" &&
-          item.insertVisable == true &&
-          item.categoryID == categoryID) {
-        bool checkboxValue = false;
-
-        list.add(ItemList(
-            widget: StatefulBuilder(
-              builder: (context, csetState) {
-                return CheckboxListTile(
-                    contentPadding: EdgeInsets.zero,
-                    value: checkboxValue,
-                    controlAffinity: ListTileControlAffinity.leading,
-                    title: Row(
-                      children: [
-                        Text(
-                          title,
-                          style: AppStyles.textStyle14
-                              .copyWith(color: Colors.black),
-                        ),
-                        if (item.isRquired == true)
-                          const Icon(
-                            Icons.star,
-                            color: Colors.red,
-                            size: 10,
-                          )
-                      ],
-                    ),
-                    onChanged: (newValue) {
-                      csetState(() {
-                        checkboxValue = !checkboxValue;
-                      });
-                      csetState(() {
-                        newRowData.addAll(
-                            {item.columnName!.toString(): checkboxValue});
-                        // newRowData.updateAll((key, value) =>
-                        //     key == item.columnName!.toString()
-                        //         ? value = checkboxValue
-                        //         : value);
-                      });
+                  onChanged: (newValue) {
+                    csetState(() {
+                      checkboxValue = !checkboxValue;
                     });
-              },
-            ),
-            show: item.isRquired!));
+                    csetState(() {
+                      newRowData
+                          .addAll({item.columnName!.toString(): checkboxValue});
+                      // newRowData.updateAll((key, value) =>
+                      //     key == item.columnName!.toString()
+                      //         ? value = checkboxValue
+                      //         : value);
+                    });
+                  });
+            },
+          ),
+          show: item.insertDefult!,
+        ));
       }
     }
     return list;
