@@ -245,8 +245,10 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
       if (item.insertType == "text" &&
           item.insertVisable == true &&
           item.categoryID == categoryID) {
-        TextEditingController controller =
-            TextEditingController(text: rowData[item.columnName].toString());
+        TextEditingController controller = TextEditingController(
+            text: rowData[item.columnName].toString() == "null"
+                ? ''
+                : rowData[item.columnName].toString());
         list.add(ItemList(
           widget: Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -294,8 +296,10 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
       if (item.insertType == "number" &&
           item.insertVisable == true &&
           item.categoryID == categoryID) {
-        TextEditingController controller =
-            TextEditingController(text: rowData[item.columnName].toString());
+        TextEditingController controller = TextEditingController(
+            text: rowData[item.columnName].toString() == "null"
+                ? ''
+                : rowData[item.columnName].toString());
 
         list.add(ItemList(
           widget: Padding(
