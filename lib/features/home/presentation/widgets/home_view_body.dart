@@ -38,10 +38,15 @@ class _HomeViewBodyState extends State<HomeViewBody> {
           }
           return CustomScrollView(
             slivers: [
-              if (widget.isPortrait)
-                const SliverToBoxAdapter(
-                  child: HomeViewHeader(),
-                ),
+              widget.isPortrait
+                  ? const SliverToBoxAdapter(
+                      child: HomeViewHeader(),
+                    )
+                  : const SliverToBoxAdapter(
+                      child: SizedBox(
+                        height: 25,
+                      ),
+                    ),
               SliverToBoxAdapter(
                 child: Padding(
                   padding:

@@ -65,21 +65,24 @@ class _ScreenTableState extends State<ScreenTable> {
           ),
           body: Column(
             children: [
-              if (isPortrait)
-                CustomContainer(
-                  height: 120,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 12),
-                    child: Text(
-                      lang == AppStrings.enLangKey
-                          ? widget.pageData.nameEn
-                          : widget.pageData.nameAr,
-                      maxLines: 1,
-                      textAlign: TextAlign.center,
-                      style: AppStyles.textStyle26,
+              isPortrait
+                  ? CustomContainer(
+                      height: 120,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 12),
+                        child: Text(
+                          lang == AppStrings.enLangKey
+                              ? widget.pageData.nameEn
+                              : widget.pageData.nameAr,
+                          maxLines: 1,
+                          textAlign: TextAlign.center,
+                          style: AppStyles.textStyle26,
+                        ),
+                      ),
+                    )
+                  : const SizedBox(
+                      height: 25,
                     ),
-                  ),
-                ),
               ScreenTableBody(
                 pageData: widget.pageData,
               ),
