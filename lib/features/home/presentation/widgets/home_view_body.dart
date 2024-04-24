@@ -11,7 +11,9 @@ import 'home_view_header.dart';
 import 'item_grid_view.dart';
 
 class HomeViewBody extends StatefulWidget {
-  const HomeViewBody({super.key});
+  const HomeViewBody({super.key, required this.isPortrait});
+
+  final bool isPortrait;
 
   @override
   State<HomeViewBody> createState() => _HomeViewBodyState();
@@ -36,9 +38,13 @@ class _HomeViewBodyState extends State<HomeViewBody> {
           }
           return CustomScrollView(
             slivers: [
-              const SliverToBoxAdapter(
-                child: HomeViewHeader(),
-              ),
+              widget.isPortrait
+                  ? const SliverToBoxAdapter(
+                      child: HomeViewHeader(),
+                    )
+                  : SizedBox(
+                      height: 25,
+                    ),
               SliverToBoxAdapter(
                 child: Padding(
                   padding:
@@ -66,10 +72,12 @@ class _HomeViewBodyState extends State<HomeViewBody> {
                       ? pagesListInFastScreen.length
                       : pagesList.length,
                   physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: widget.isPortrait ? 3 : 5,
                     mainAxisSpacing: 35,
                     crossAxisSpacing: 35,
+                    // mainAxisExtent: MediaQuery.of(context).size.width * .25,
+                    // childAspectRatio: MediaQuery.of(context).size.width * .5,
                   ),
                   padding:
                       const EdgeInsets.only(left: 16, right: 16, bottom: 16),

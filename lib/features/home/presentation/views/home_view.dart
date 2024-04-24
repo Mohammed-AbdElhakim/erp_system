@@ -13,10 +13,17 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
-    return const ChangeStatusBarColor(
-      child: Scaffold(
-        body: HomeViewBody(),
-      ),
+    return OrientationBuilder(
+      builder: (context, orientation) {
+        final bool isPortrait = orientation == Orientation.portrait;
+        return ChangeStatusBarColor(
+          child: Scaffold(
+            body: HomeViewBody(
+              isPortrait: isPortrait,
+            ),
+          ),
+        );
+      },
     );
   }
 }

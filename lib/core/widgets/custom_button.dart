@@ -31,13 +31,13 @@ class CustomButtonState extends State<CustomButton> {
   bool isPressed = false;
   @override
   Widget build(BuildContext context) {
-    return Listener(
-      onPointerDown: onPointerDown,
-      onPointerUp: onPointerUp,
-      child: InkWell(
-        highlightColor: Colors.transparent,
-        splashColor: Colors.transparent,
-        onTap: widget.onTap,
+    return InkWell(
+      highlightColor: Colors.transparent,
+      splashColor: Colors.transparent,
+      onTap: widget.onTap,
+      child: Listener(
+        onPointerDown: onPointerDown,
+        onPointerUp: onPointerUp,
         child: Container(
           width: widget.width,
           height: widget.height ?? 45,
