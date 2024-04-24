@@ -36,6 +36,7 @@ class _CustomTableState extends State<CustomTable> {
   LinkedScrollControllerGroup controllerGroup = LinkedScrollControllerGroup();
   ScrollController? headerScrollController;
   ScrollController? dataScrollController;
+  int? indexColorRow;
 
   @override
   void initState() {
@@ -59,8 +60,8 @@ class _CustomTableState extends State<CustomTable> {
                   scrollDirection: Axis.horizontal,
                   controller: dataScrollController,
                   child: DataTable(
-                    columnSpacing: 30,
-                    horizontalMargin: 20,
+                    columnSpacing: 0,
+                    horizontalMargin: 0,
                     dataRowMinHeight: 35,
                     dataRowMaxHeight: 35,
                     headingRowHeight: 35,
@@ -87,58 +88,73 @@ class _CustomTableState extends State<CustomTable> {
                       widget.listData.length,
                       (index) => DataRow(
                         onLongPress: () {
-                          widget.onTapRow(widget.listData[index]);
+                          if (indexColorRow == index) {
+                            setState(() {
+                              indexColorRow = -1;
+                            });
+
+                            widget.onTapRow({});
+                          } else {
+                            setState(() {
+                              indexColorRow = index;
+                            });
+
+                            widget.onTapRow(widget.listData[index]);
+                          }
                         },
                         cells: List.generate(
                           widget.listHeader.length,
                           (i) => DataCell(
                             SizedBox(
-                              width: 100,
+                              width: 120,
                               child: InkWell(
-                                onTap: widget.listData[index]
-                                                ['${widget.listKey[i]}']
-                                            .toString()
-                                            .length >
-                                        10
-                                    ? () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (context) => Dialog(
-                                            child: Container(
-                                              padding:
-                                                  const EdgeInsetsDirectional
-                                                      .symmetric(
-                                                      horizontal: 16,
-                                                      vertical: 32),
-                                              child: Text(
-                                                  "${widget.listData[index][widget.listKey[i]]}"),
-                                            ),
-                                          ),
-                                        );
-                                      }
+                                onTap: widget.listColumn[i].insertType! !=
+                                        "date"
+                                    ? widget.listData[index]
+                                                    ['${widget.listKey[i]}']
+                                                .toString()
+                                                .length >
+                                            12
+                                        ? () {
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) => Dialog(
+                                                child: InkWell(
+                                                  onDoubleTap: () {},
+                                                  child: Container(
+                                                    alignment: Alignment.center,
+                                                    padding:
+                                                        const EdgeInsetsDirectional
+                                                            .symmetric(
+                                                            horizontal: 16,
+                                                            vertical: 32),
+                                                    child: Text(
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        "${widget.listData[index][widget.listKey[i]]}"),
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                          }
+                                        : null
                                     : null,
                                 child: Container(
+                                  color: index == indexColorRow
+                                      ? AppColors.blueGreyDark
+                                      : Colors.transparent,
                                   width: widget.listData[index]
                                                   ['${widget.listKey[i]}']
                                               .toString()
                                               .length >
-                                          10
+                                          12
                                       ? 100
                                       : null,
                                   alignment: Alignment.center,
-                                  // child: Text(
-                                  //     textAlign: TextAlign.center,
-                                  //     maxLines: 1,
-                                  //     overflow: TextOverflow.ellipsis,
-                                  //     "${widget.listData[index][widget.listKey[i]]}"),
                                   child: buildMyWidget(
                                       "${widget.listData[index][widget.listKey[i]]}",
-                                      widget.listColumn[i].insertType!),
-                                  // child: const Icon(
-                                  //   Icons.check,
-                                  //   size: 20,
-                                  //   color: Colors.green,
-                                  // ),
+                                      widget.listColumn[i].insertType!,
+                                      index),
                                 ),
                               ),
                             ),
@@ -158,8 +174,8 @@ class _CustomTableState extends State<CustomTable> {
             scrollDirection: Axis.horizontal,
             controller: headerScrollController,
             child: DataTable(
-              columnSpacing: 30,
-              horizontalMargin: 20,
+              columnSpacing: 0,
+              horizontalMargin: 0,
               dataRowMinHeight: 50,
               dataRowMaxHeight: 50,
               headingRowHeight: 35,
@@ -174,7 +190,7 @@ class _CustomTableState extends State<CustomTable> {
                             .onTapHeader(widget.listColumn[index].columnName!);
                       },
                       child: SizedBox(
-                        width: 100,
+                        width: 120,
                         child: Text(
                           widget.listHeader[index],
                           textAlign: TextAlign.center,
@@ -193,16 +209,19 @@ class _CustomTableState extends State<CustomTable> {
     );
   }
 
-  buildMyWidget(String value, String insertType) {
+  buildMyWidget(String value, String insertType, int indexRow) {
     switch (insertType) {
       case "date":
         String date =
             DateFormat("yyyy-MM-dd", 'en').format(DateTime.parse(value));
         return Text(
-            textAlign: TextAlign.center,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            date);
+          textAlign: TextAlign.center,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          date,
+          style: TextStyle(
+              color: indexRow == indexColorRow ? Colors.white : Colors.black),
+        );
       case "checkbox":
         if (value == "true") {
           return const Icon(
@@ -220,10 +239,13 @@ class _CustomTableState extends State<CustomTable> {
 
       default:
         return Text(
-            textAlign: TextAlign.center,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            value);
+          textAlign: TextAlign.center,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          value,
+          style: TextStyle(
+              color: indexRow == indexColorRow ? Colors.white : Colors.black),
+        );
     }
   }
 }
