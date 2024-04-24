@@ -31,34 +31,43 @@ class _AttendanceViewState extends State<AttendanceView> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeStatusBarColor(
-      child: BlocProvider(
-        create: (context) => AttendanceCubit(
-          getIt.get<AttendanceRepoImpl>(),
-        )..checkValidDevice(),
-        child: Scaffold(
-          appBar: const CustomAppBar(),
-          body: Column(
-            children: [
-              CustomContainer(
-                height: 120,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 12),
-                  child: Text(
-                    lang == AppStrings.enLangKey
-                        ? widget.pageData.nameEn
-                        : widget.pageData.nameAr,
-                    maxLines: 1,
-                    textAlign: TextAlign.center,
-                    style: AppStyles.textStyle26,
+    return OrientationBuilder(builder: (context, orientation) {
+      final bool isPortrait = orientation == Orientation.portrait;
+      return ChangeStatusBarColor(
+        child: BlocProvider(
+          create: (context) => AttendanceCubit(
+            getIt.get<AttendanceRepoImpl>(),
+          )..checkValidDevice(),
+          child: Scaffold(
+            appBar: CustomAppBar(
+              isPortrait: isPortrait,
+              title: lang == AppStrings.enLangKey
+                  ? widget.pageData.nameEn
+                  : widget.pageData.nameAr,
+            ),
+            body: Column(
+              children: [
+                if (isPortrait)
+                  CustomContainer(
+                    height: 120,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 12),
+                      child: Text(
+                        lang == AppStrings.enLangKey
+                            ? widget.pageData.nameEn
+                            : widget.pageData.nameAr,
+                        maxLines: 1,
+                        textAlign: TextAlign.center,
+                        style: AppStyles.textStyle26,
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              const AttendanceViewBody(),
-            ],
+                const AttendanceViewBody(),
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/widgets/change_status_bar_color.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
+import '../../../../generated/l10n.dart';
 import '../widgets/host_view_body.dart';
 
 class HostView extends StatefulWidget {
@@ -14,11 +15,19 @@ class HostView extends StatefulWidget {
 class _HostViewState extends State<HostView> {
   @override
   Widget build(BuildContext context) {
-    return const ChangeStatusBarColor(
-      child: Scaffold(
-        appBar: CustomAppBar(),
-        body: HostViewBody(),
-      ),
-    );
+    return OrientationBuilder(builder: (context, orientation) {
+      final bool isPortrait = orientation == Orientation.portrait;
+      return ChangeStatusBarColor(
+        child: Scaffold(
+          appBar: CustomAppBar(
+            isPortrait: isPortrait,
+            title: S.of(context).host_view,
+          ),
+          body: HostViewBody(
+            isPortrait: isPortrait,
+          ),
+        ),
+      );
+    });
   }
 }

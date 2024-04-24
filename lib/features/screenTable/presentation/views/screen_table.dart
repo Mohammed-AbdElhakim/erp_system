@@ -50,35 +50,44 @@ class _ScreenTableState extends State<ScreenTable> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeStatusBarColor(
-      child: Scaffold(
-        appBar: const CustomAppBar(),
-        floatingActionButton: CustomFloatingActionButton(
-          pageData: widget.pageData,
-        ),
-        body: Column(
-          children: [
-            CustomContainer(
-              height: 120,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 12),
-                child: Text(
-                  lang == AppStrings.enLangKey
-                      ? widget.pageData.nameEn
-                      : widget.pageData.nameAr,
-                  maxLines: 1,
-                  textAlign: TextAlign.center,
-                  style: AppStyles.textStyle26,
+    return OrientationBuilder(builder: (context, orientation) {
+      final bool isPortrait = orientation == Orientation.portrait;
+      return ChangeStatusBarColor(
+        child: Scaffold(
+          appBar: CustomAppBar(
+            isPortrait: isPortrait,
+            title: lang == AppStrings.enLangKey
+                ? widget.pageData.nameEn
+                : widget.pageData.nameAr,
+          ),
+          floatingActionButton: CustomFloatingActionButton(
+            pageData: widget.pageData,
+          ),
+          body: Column(
+            children: [
+              if (isPortrait)
+                CustomContainer(
+                  height: 120,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 12),
+                    child: Text(
+                      lang == AppStrings.enLangKey
+                          ? widget.pageData.nameEn
+                          : widget.pageData.nameAr,
+                      maxLines: 1,
+                      textAlign: TextAlign.center,
+                      style: AppStyles.textStyle26,
+                    ),
+                  ),
                 ),
+              ScreenTableBody(
+                pageData: widget.pageData,
               ),
-            ),
-            ScreenTableBody(
-              pageData: widget.pageData,
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 }
 /*Directionality(
