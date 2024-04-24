@@ -71,7 +71,8 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
               ),
             ),
             Positioned(
-              bottom: -25,
+              bottom: 0,
+              // bottom: -25,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [

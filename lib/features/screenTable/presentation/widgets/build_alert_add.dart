@@ -124,7 +124,8 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
               ),
             ),
             Positioned(
-              bottom: -25,
+              bottom: 0,
+              // bottom: -25,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [

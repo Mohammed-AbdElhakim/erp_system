@@ -150,7 +150,8 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                       ),
                     ),
                     Positioned(
-                      bottom: -25,
+                      bottom: 0,
+                      // bottom: -25,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
