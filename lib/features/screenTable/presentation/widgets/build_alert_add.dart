@@ -58,12 +58,13 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
           clipBehavior: Clip.none,
           children: [
             Padding(
-              padding: const EdgeInsets.only(bottom: 35),
+              padding: const EdgeInsets.only(bottom: 60),
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    if (getMyWidgetList(widget.columnList, 10).isNotEmpty)
+                    if (getMyWidgetList(widget.columnList, 10, true | false)
+                        .isNotEmpty)
                       Container(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 12, vertical: 8),
@@ -75,19 +76,11 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                             style: AppStyles.textStyle18
                                 .copyWith(color: Colors.black),
                           )),
-                    // ...getMyWidgetList(widget.columnList, 10),
-                    ...List.generate(
-                        getMyWidgetList(widget.columnList, 10).length, (my) {
-                      ItemList itemList =
-                          getMyWidgetList(widget.columnList, 10)[my];
-                      return itemList.show == true
-                          ? itemList.widget
-                          : isShow == true
-                              ? itemList.widget
-                              : const SizedBox();
-                    }),
-
-                    if (getMyWidgetList(widget.columnList, 11).isNotEmpty)
+                    ...getMyWidgetList(widget.columnList, 10, true),
+                    if (isShow == true)
+                      ...getMyWidgetList(widget.columnList, 10, false),
+                    if (getMyWidgetList(widget.columnList, 11, true | false)
+                        .isNotEmpty)
                       Container(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 12, vertical: 8),
@@ -99,18 +92,9 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                             style: AppStyles.textStyle18
                                 .copyWith(color: Colors.black),
                           )),
-                    // ...getMyWidgetList(widget.columnList, 11),
-                    ...List.generate(
-                        getMyWidgetList(widget.columnList, 11).length, (my) {
-                      ItemList itemList =
-                          getMyWidgetList(widget.columnList, 11)[my];
-                      return itemList.show == true
-                          ? itemList.widget
-                          : isShow == true
-                              ? itemList.widget
-                              : const SizedBox();
-                    }),
-
+                    ...getMyWidgetList(widget.columnList, 11, true),
+                    if (isShow == true)
+                      ...getMyWidgetList(widget.columnList, 11, false),
                     TextButton(
                       onPressed: () {
                         setState(() {
@@ -196,8 +180,9 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
     );
   }
 
-  List<ItemList> getMyWidgetList(List<ColumnList> columnList, int categoryID) {
-    List<ItemList> list = [];
+  List<Widget> getMyWidgetList(
+      List<ColumnList> columnList, int categoryID, bool show) {
+    List<Widget> list = [];
     for (var item in columnList) {
       String title = lang == AppStrings.arLangKey
           ? item.arColumnLabel!
@@ -205,181 +190,166 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
       //text
       if (item.insertType == "text" &&
           item.insertVisable == true &&
-          item.categoryID == categoryID) {
-        TextEditingController controller = TextEditingController();
+          item.categoryID == categoryID &&
+          item.insertDefult == show) {
         list.add(
-          ItemList(
-            widget: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 5),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Text(
-                        title,
-                        style:
-                            AppStyles.textStyle14.copyWith(color: Colors.grey),
-                      ),
-                      if (item.isRquired! == true)
-                        const Icon(
-                          Icons.star,
-                          color: Colors.red,
-                          size: 10,
-                        )
-                    ],
-                  ),
-                  CustomTextFormField(
-                    hintText: '',
-                    controller: controller,
-                    isValidator: item.isRquired!,
-                    keyboardType: TextInputType.text,
-                    onSaved: (newValue) {
-                      if (newValue!.isNotEmpty) {
-                        setState(() {
-                          newRowData
-                              .addAll({item.columnName!.toString(): newValue});
-                        });
-                      }
-                    },
-                  ),
-                ],
-              ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      title,
+                      style: AppStyles.textStyle14.copyWith(color: Colors.grey),
+                    ),
+                    if (item.isRquired! == true)
+                      const Icon(
+                        Icons.star,
+                        color: Colors.red,
+                        size: 10,
+                      )
+                  ],
+                ),
+                CustomTextFormField(
+                  hintText: '',
+                  isValidator: item.isRquired!,
+                  keyboardType: TextInputType.text,
+                  onSaved: (newValue) {
+                    if (newValue!.isNotEmpty) {
+                      setState(() {
+                        newRowData
+                            .addAll({item.columnName!.toString(): newValue});
+                      });
+                    }
+                  },
+                ),
+              ],
             ),
-            show: item.insertDefult!,
           ),
         );
       }
       //number
       if (item.insertType == "number" &&
           item.insertVisable == true &&
-          item.categoryID == categoryID) {
-        TextEditingController controller = TextEditingController();
-
+          item.categoryID == categoryID &&
+          item.insertDefult == show) {
         list.add(
-          ItemList(
-            widget: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 5),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Text(
-                        title,
-                        style:
-                            AppStyles.textStyle14.copyWith(color: Colors.grey),
-                      ),
-                      if (item.isRquired! == true)
-                        const Icon(
-                          Icons.star,
-                          color: Colors.red,
-                          size: 10,
-                        )
-                    ],
-                  ),
-                  CustomTextFormField(
-                    hintText: '',
-                    controller: controller,
-                    isValidator: item.isRquired!,
-                    keyboardType: TextInputType.number,
-                    onSaved: (newValue) {
-                      if (newValue!.isNotEmpty) {
-                        setState(() {
-                          newRowData
-                              .addAll({item.columnName!.toString(): newValue});
-                        });
-                      }
-                    },
-                  ),
-                ],
-              ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      title,
+                      style: AppStyles.textStyle14.copyWith(color: Colors.grey),
+                    ),
+                    if (item.isRquired! == true)
+                      const Icon(
+                        Icons.star,
+                        color: Colors.red,
+                        size: 10,
+                      )
+                  ],
+                ),
+                CustomTextFormField(
+                  hintText: '',
+                  isValidator: item.isRquired!,
+                  keyboardType: TextInputType.number,
+                  onSaved: (newValue) {
+                    if (newValue!.isNotEmpty) {
+                      setState(() {
+                        newRowData
+                            .addAll({item.columnName!.toString(): newValue});
+                      });
+                    }
+                  },
+                ),
+              ],
             ),
-            show: item.insertDefult!,
           ),
         );
       }
       //Date
       if (item.insertType == "date" &&
           item.insertVisable == true &&
-          item.categoryID == categoryID) {
+          item.categoryID == categoryID &&
+          item.insertDefult == show) {
         String date = '';
-        list.add(ItemList(
-            widget: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 5),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Text(
-                        title,
-                        style:
-                            AppStyles.textStyle14.copyWith(color: Colors.grey),
-                      ),
-                      if (item.isRquired == true)
-                        const Icon(
-                          Icons.star,
-                          color: Colors.red,
-                          size: 10,
-                        )
-                    ],
-                  ),
-                  StatefulBuilder(
-                    builder: (context, dsetState) {
-                      return InkWell(
-                        onTap: () async {
-                          DateTime? dateTime = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime(1980),
-                            lastDate: DateTime(2100),
-                          );
-                          if (dateTime != null) {
-                            dsetState(() {
-                              date = DateFormat("yyyy-MM-dd", 'en')
-                                  .format(dateTime);
-                              // dateFrom = dateTime.toString();
-                            });
+        list.add(
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      title,
+                      style: AppStyles.textStyle14.copyWith(color: Colors.grey),
+                    ),
+                    if (item.isRquired == true)
+                      const Icon(
+                        Icons.star,
+                        color: Colors.red,
+                        size: 10,
+                      )
+                  ],
+                ),
+                StatefulBuilder(
+                  builder: (context, dsetState) {
+                    return InkWell(
+                      onTap: () async {
+                        DateTime? dateTime = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(1980),
+                          lastDate: DateTime(2100),
+                        );
+                        if (dateTime != null) {
+                          dsetState(() {
+                            date =
+                                DateFormat("yyyy-MM-dd", 'en').format(dateTime);
+                          });
 
-                            dsetState(() {
-                              newRowData.addAll(
-                                  {item.columnName!.toString(): dateTime});
-                              // newRowData.updateAll((key, value) =>
-                              //     key == item.columnName!.toString()
-                              //         ? value = dateTime
-                              //         : value);
-                            });
-                          }
-                        },
-                        child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                border: Border.all(color: AppColors.blueDark)),
-                            alignment: Alignment.center,
-                            padding: const EdgeInsets.all(8),
-                            child: Text(
-                              date,
-                              textAlign: TextAlign.center,
-                              style: AppStyles.textStyle14
-                                  .copyWith(color: Colors.black),
-                            )),
-                      );
-                    },
-                  ),
-                ],
-              ),
+                          dsetState(() {
+                            newRowData.addAll(
+                                {item.columnName!.toString(): dateTime});
+                          });
+                        }
+                      },
+                      child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              border: Border.all(color: AppColors.blueDark)),
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.all(8),
+                          child: Text(
+                            date,
+                            textAlign: TextAlign.center,
+                            style: AppStyles.textStyle14
+                                .copyWith(color: Colors.black),
+                          )),
+                    );
+                  },
+                ),
+              ],
             ),
-            show: item.insertDefult!));
+          ),
+        );
       }
 
       //dropdown
       if (item.insertType == "dropdown" &&
           item.insertVisable == true &&
-          item.categoryID == categoryID) {
+          item.categoryID == categoryID &&
+          item.insertDefult == show) {
         List<ListDropdown> dropList = [];
-        list.add(ItemList(
-          widget: Padding(
+        list.add(
+          Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -440,17 +410,16 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
               ],
             ),
           ),
-          show: item.insertDefult!,
-        ));
+        );
       }
       //checkbox
       if (item.insertType == "checkbox" &&
           item.insertVisable == true &&
-          item.categoryID == categoryID) {
+          item.categoryID == categoryID &&
+          item.insertDefult == show) {
         bool checkboxValue = false;
-
-        list.add(ItemList(
-          widget: StatefulBuilder(
+        list.add(
+          StatefulBuilder(
             builder: (context, csetState) {
               return CheckboxListTile(
                   contentPadding: EdgeInsets.zero,
@@ -478,25 +447,13 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                     csetState(() {
                       newRowData
                           .addAll({item.columnName!.toString(): checkboxValue});
-                      // newRowData.updateAll((key, value) =>
-                      //     key == item.columnName!.toString()
-                      //         ? value = checkboxValue
-                      //         : value);
                     });
                   });
             },
           ),
-          show: item.insertDefult!,
-        ));
+        );
       }
     }
     return list;
   }
-}
-
-class ItemList {
-  final Widget widget;
-  final bool show;
-
-  ItemList({required this.widget, required this.show});
 }
