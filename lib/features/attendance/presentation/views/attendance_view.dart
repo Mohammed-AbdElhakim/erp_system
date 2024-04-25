@@ -1,3 +1,4 @@
+import 'package:erp_system/core/utils/methods.dart';
 import 'package:erp_system/core/utils/service_locator.dart';
 import 'package:erp_system/features/attendance/data/repositories/attendance_repo_impl.dart';
 import 'package:erp_system/features/attendance/presentation/manager/attendanceCubit/attendance_cubit.dart';
@@ -31,46 +32,43 @@ class _AttendanceViewState extends State<AttendanceView> {
 
   @override
   Widget build(BuildContext context) {
-    return OrientationBuilder(builder: (context, orientation) {
-      final bool isPortrait = orientation == Orientation.portrait;
-      return ChangeStatusBarColor(
-        child: BlocProvider(
-          create: (context) => AttendanceCubit(
-            getIt.get<AttendanceRepoImpl>(),
-          )..checkValidDevice(),
-          child: Scaffold(
-            appBar: CustomAppBar(
-              isPortrait: isPortrait,
-              title: lang == AppStrings.enLangKey
-                  ? widget.pageData.nameEn
-                  : widget.pageData.nameAr,
-            ),
-            body: Column(
-              children: [
-                isPortrait
-                    ? CustomContainer(
-                        height: 120,
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 12),
-                          child: Text(
-                            lang == AppStrings.enLangKey
-                                ? widget.pageData.nameEn
-                                : widget.pageData.nameAr,
-                            maxLines: 1,
-                            textAlign: TextAlign.center,
-                            style: AppStyles.textStyle26,
-                          ),
+    return ChangeStatusBarColor(
+      child: BlocProvider(
+        create: (context) => AttendanceCubit(
+          getIt.get<AttendanceRepoImpl>(),
+        )..checkValidDevice(),
+        child: Scaffold(
+          appBar: CustomAppBar(
+            isPortrait: isOrientationPortrait(context),
+            title: lang == AppStrings.enLangKey
+                ? widget.pageData.nameEn
+                : widget.pageData.nameAr,
+          ),
+          body: Column(
+            children: [
+              isOrientationPortrait(context)
+                  ? CustomContainer(
+                      height: 120,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 12),
+                        child: Text(
+                          lang == AppStrings.enLangKey
+                              ? widget.pageData.nameEn
+                              : widget.pageData.nameAr,
+                          maxLines: 1,
+                          textAlign: TextAlign.center,
+                          style: AppStyles.textStyle26,
                         ),
-                      )
-                    : const SizedBox(
-                        height: 25,
                       ),
-                const AttendanceViewBody(),
-              ],
-            ),
+                    )
+                  : const SizedBox(
+                      height: 25,
+                    ),
+              const AttendanceViewBody(),
+            ],
           ),
         ),
-      );
-    });
+      ),
+    );
   }
 }

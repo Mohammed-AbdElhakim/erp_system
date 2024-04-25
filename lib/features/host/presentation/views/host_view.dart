@@ -1,3 +1,4 @@
+import 'package:erp_system/core/utils/methods.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/widgets/change_status_bar_color.dart';
@@ -15,19 +16,16 @@ class HostView extends StatefulWidget {
 class _HostViewState extends State<HostView> {
   @override
   Widget build(BuildContext context) {
-    return OrientationBuilder(builder: (context, orientation) {
-      final bool isPortrait = orientation == Orientation.portrait;
-      return ChangeStatusBarColor(
-        child: Scaffold(
-          appBar: CustomAppBar(
-            isPortrait: isPortrait,
-            title: S.of(context).host_view,
-          ),
-          body: HostViewBody(
-            isPortrait: isPortrait,
-          ),
+    return ChangeStatusBarColor(
+      child: Scaffold(
+        appBar: CustomAppBar(
+          isPortrait: isOrientationPortrait(context),
+          title: S.of(context).host_view,
         ),
-      );
-    });
+        body: HostViewBody(
+          isPortrait: isOrientationPortrait(context),
+        ),
+      ),
+    );
   }
 }

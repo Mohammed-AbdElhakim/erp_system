@@ -1,3 +1,4 @@
+import 'package:erp_system/core/utils/methods.dart';
 import 'package:erp_system/core/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -28,13 +29,11 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    Orientation orientation = MediaQuery.of(context).orientation;
-    bool isPortrait = orientation == Orientation.portrait;
     return ChangeStatusBarColor(
       child: Scaffold(
         drawer: const MyDrawer(),
         appBar: CustomAppBar(
-          isPortrait: isPortrait,
+          isPortrait: isOrientationPortrait(context),
           title:
               "${S.of(context).hi} $userName \n${S.of(context).welcome_in}$companyName",
           style: AppStyles.textStyle16,
@@ -59,7 +58,7 @@ class _HomeViewState extends State<HomeView> {
           ],
         ),
         body: HomeViewBody(
-          isPortrait: isPortrait,
+          isPortrait: isOrientationPortrait(context),
         ),
       ),
     );

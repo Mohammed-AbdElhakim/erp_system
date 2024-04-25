@@ -1,3 +1,4 @@
+import 'package:erp_system/core/utils/methods.dart';
 import 'package:erp_system/features/screenTable/presentation/manager/getPermissions/get_permissions_cubit.dart';
 import 'package:erp_system/features/screenTable/presentation/widgets/screen_table_body.dart';
 import 'package:flutter/material.dart';
@@ -50,47 +51,44 @@ class _ScreenTableState extends State<ScreenTable> {
 
   @override
   Widget build(BuildContext context) {
-    return OrientationBuilder(builder: (context, orientation) {
-      final bool isPortrait = orientation == Orientation.portrait;
-      return ChangeStatusBarColor(
-        child: Scaffold(
-          appBar: CustomAppBar(
-            isPortrait: isPortrait,
-            title: lang == AppStrings.enLangKey
-                ? widget.pageData.nameEn
-                : widget.pageData.nameAr,
-          ),
-          floatingActionButton: CustomFloatingActionButton(
-            pageData: widget.pageData,
-          ),
-          body: Column(
-            children: [
-              isPortrait
-                  ? CustomContainer(
-                      height: 120,
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 12),
-                        child: Text(
-                          lang == AppStrings.enLangKey
-                              ? widget.pageData.nameEn
-                              : widget.pageData.nameAr,
-                          maxLines: 1,
-                          textAlign: TextAlign.center,
-                          style: AppStyles.textStyle26,
-                        ),
-                      ),
-                    )
-                  : const SizedBox(
-                      height: 25,
-                    ),
-              ScreenTableBody(
-                pageData: widget.pageData,
-              ),
-            ],
-          ),
+    return ChangeStatusBarColor(
+      child: Scaffold(
+        appBar: CustomAppBar(
+          isPortrait: isOrientationPortrait(context),
+          title: lang == AppStrings.enLangKey
+              ? widget.pageData.nameEn
+              : widget.pageData.nameAr,
         ),
-      );
-    });
+        floatingActionButton: CustomFloatingActionButton(
+          pageData: widget.pageData,
+        ),
+        body: Column(
+          children: [
+            isOrientationPortrait(context)
+                ? CustomContainer(
+                    height: 120,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 12),
+                      child: Text(
+                        lang == AppStrings.enLangKey
+                            ? widget.pageData.nameEn
+                            : widget.pageData.nameAr,
+                        maxLines: 1,
+                        textAlign: TextAlign.center,
+                        style: AppStyles.textStyle26,
+                      ),
+                    ),
+                  )
+                : const SizedBox(
+                    height: 25,
+                  ),
+            ScreenTableBody(
+              pageData: widget.pageData,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 /*Directionality(
