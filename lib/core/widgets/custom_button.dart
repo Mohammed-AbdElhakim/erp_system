@@ -13,6 +13,7 @@ class CustomButton extends StatefulWidget {
     this.textStyle,
     this.color,
     this.noGradient,
+    this.noShadow,
   });
   final String text;
   final double? width;
@@ -20,6 +21,7 @@ class CustomButton extends StatefulWidget {
   final TextStyle? textStyle;
   final Color? color;
   final bool? noGradient;
+  final bool? noShadow;
 
   final void Function()? onTap;
 
@@ -50,7 +52,9 @@ class CustomButtonState extends State<CustomButton> {
                 ? null
                 : [
                     BoxShadow(
-                      color: AppColors.blueDark,
+                      color: widget.noShadow != true
+                          ? AppColors.blueDark
+                          : Colors.transparent,
                       blurRadius: 3,
                     ),
                   ],

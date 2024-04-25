@@ -115,11 +115,12 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                 children: [
                   CustomButton(
                     text: S.of(context).cancel,
-                    width: 40,
-                    height: 25,
+                    width: 80,
                     noGradient: true,
-                    textStyle: AppStyles.textStyle12,
-                    color: Colors.grey,
+                    color: Colors.transparent,
+                    noShadow: true,
+                    textStyle:
+                        AppStyles.textStyle16.copyWith(color: Colors.grey),
                     onTap: () {
                       Navigator.pop(context);
                     },

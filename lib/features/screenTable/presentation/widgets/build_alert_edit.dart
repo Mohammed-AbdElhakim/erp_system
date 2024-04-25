@@ -71,7 +71,7 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                   clipBehavior: Clip.none,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(bottom: 35),
+                      padding: const EdgeInsets.only(bottom: 60),
                       child: SingleChildScrollView(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -157,11 +157,12 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                         children: [
                           CustomButton(
                             text: S.of(context).cancel,
-                            width: 40,
-                            height: 25,
+                            width: 80,
                             noGradient: true,
-                            textStyle: AppStyles.textStyle12,
-                            color: Colors.grey,
+                            color: Colors.transparent,
+                            noShadow: true,
+                            textStyle: AppStyles.textStyle16
+                                .copyWith(color: Colors.grey),
                             onTap: () {
                               Navigator.pop(context);
                             },
