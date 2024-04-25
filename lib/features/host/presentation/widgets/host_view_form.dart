@@ -49,7 +49,7 @@ class _HostViewFormState extends State<HostViewForm> {
             ),
             CustomButton(
               width: 150,
-              text: 'ok',
+              text: S.of(context).ok,
               onTap: () {
                 if (formState.currentState!.validate()) {
                   formState.currentState!.save();

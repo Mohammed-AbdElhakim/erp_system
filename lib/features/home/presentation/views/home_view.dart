@@ -27,42 +27,39 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    return OrientationBuilder(
-      builder: (context, orientation) {
-        final bool isPortrait = orientation == Orientation.portrait;
-        return ChangeStatusBarColor(
-          child: Scaffold(
-            drawer: const MyDrawer(),
-            appBar: CustomAppBar(
-              isPortrait: isPortrait,
-              title:
-                  "${S.of(context).hi} $userName \n${S.of(context).welcome_in}$companyName",
-              actions: [
-                Stack(
-                  children: [
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.notifications_none_sharp),
-                    ),
-                    Positioned(
-                      right: 12,
-                      top: 15,
-                      child: Icon(
-                        Icons.circle,
-                        color: AppColors.orange,
-                        size: 12,
-                      ),
-                    )
-                  ],
+    Orientation orientation = MediaQuery.of(context).orientation;
+    bool isPortrait = orientation == Orientation.portrait;
+    return ChangeStatusBarColor(
+      child: Scaffold(
+        drawer: const MyDrawer(),
+        appBar: CustomAppBar(
+          isPortrait: isPortrait,
+          title:
+              "${S.of(context).hi} $userName \n${S.of(context).welcome_in}$companyName",
+          actions: [
+            Stack(
+              children: [
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.notifications_none_sharp),
                 ),
+                Positioned(
+                  right: 12,
+                  top: 15,
+                  child: Icon(
+                    Icons.circle,
+                    color: AppColors.orange,
+                    size: 12,
+                  ),
+                )
               ],
             ),
-            body: HomeViewBody(
-              isPortrait: isPortrait,
-            ),
-          ),
-        );
-      },
+          ],
+        ),
+        body: HomeViewBody(
+          isPortrait: isPortrait,
+        ),
+      ),
     );
   }
 

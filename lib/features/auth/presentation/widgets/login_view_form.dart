@@ -24,6 +24,7 @@ class _LoginViewFormState extends State<LoginViewForm> {
   AutovalidateMode autoValidateMode = AutovalidateMode.disabled;
   GlobalKey<FormState> formState = GlobalKey<FormState>();
   String userName = '', password = '';
+  bool obscureText = true;
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +47,16 @@ class _LoginViewFormState extends State<LoginViewForm> {
             ),
             CustomTextFormField(
               hintText: S.of(context).password,
+              obscureText: obscureText,
+              prefixIcon: IconButton(
+                onPressed: () {
+                  setState(() {
+                    obscureText = !obscureText;
+                  });
+                },
+                icon:
+                    Icon(obscureText ? Icons.visibility : Icons.visibility_off),
+              ),
               onSaved: (value) {
                 password = value!;
               },

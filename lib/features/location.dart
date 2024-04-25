@@ -17,51 +17,49 @@ class _LocationState extends State<Location> {
   bool show = false;
   @override
   Widget build(BuildContext context) {
-    return OrientationBuilder(builder: (context, orientation) {
-      final bool isPortrait = orientation == Orientation.portrait;
-
-      return Scaffold(
-        drawer: const MyDrawer(),
-        appBar: CustomAppBar(
-          isPortrait: isPortrait,
-          title: "Location",
-          actions: [
-            Stack(
-              children: [
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.notifications_none_sharp),
-                ),
-                Positioned(
-                  right: 12,
-                  top: 15,
-                  child: Icon(
-                    Icons.circle,
-                    color: AppColors.orange,
-                    size: 12,
-                  ),
-                )
-              ],
-            ),
-          ],
-        ),
-        body: SingleChildScrollView(
-          child: Column(
+    Orientation orientation = MediaQuery.of(context).orientation;
+    bool isPortrait = orientation == Orientation.portrait;
+    return Scaffold(
+      drawer: const MyDrawer(),
+      appBar: CustomAppBar(
+        isPortrait: isPortrait,
+        title: "Location",
+        actions: [
+          Stack(
             children: [
-              ...getMyWidgetList(),
-              if (show == true) ...getMyWidgetList(),
-              TextButton(
-                  onPressed: () {
-                    setState(() {
-                      show = !show;
-                    });
-                  },
-                  child: Text("onTap"))
+              IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.notifications_none_sharp),
+              ),
+              Positioned(
+                right: 12,
+                top: 15,
+                child: Icon(
+                  Icons.circle,
+                  color: AppColors.orange,
+                  size: 12,
+                ),
+              )
             ],
           ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            ...getMyWidgetList(),
+            if (show == true) ...getMyWidgetList(),
+            TextButton(
+                onPressed: () {
+                  setState(() {
+                    show = !show;
+                  });
+                },
+                child: Text("onTap"))
+          ],
         ),
-      );
-    });
+      ),
+    );
   }
 
   List<Widget> getMyWidgetList() {
