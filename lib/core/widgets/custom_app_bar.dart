@@ -7,11 +7,17 @@ import '../utils/app_styles.dart';
 import '../utils/constants.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const CustomAppBar(
-      {super.key, this.actions, required this.isPortrait, required this.title});
+  const CustomAppBar({
+    super.key,
+    this.actions,
+    required this.isPortrait,
+    required this.title,
+    this.style,
+  });
   final List<Widget>? actions;
   final bool isPortrait;
   final String title;
+  final TextStyle? style;
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -48,7 +54,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 Text(
                   title,
                   textAlign: TextAlign.center,
-                  style: AppStyles.textStyle20,
+                  style: style ?? AppStyles.textStyle20,
                 ),
                 Column(
                   children: [

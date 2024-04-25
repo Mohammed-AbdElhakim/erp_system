@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/helper/SharedPreferences/pref.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_strings.dart';
+import '../../../../core/utils/app_styles.dart';
 import '../../../../core/widgets/change_status_bar_color.dart';
 import '../../../../generated/l10n.dart';
 import '../../../bottomNavigationBar/presentation/widgets/my_drawer.dart';
@@ -36,6 +37,7 @@ class _HomeViewState extends State<HomeView> {
           isPortrait: isPortrait,
           title:
               "${S.of(context).hi} $userName \n${S.of(context).welcome_in}$companyName",
+          style: AppStyles.textStyle16,
           actions: [
             Stack(
               children: [

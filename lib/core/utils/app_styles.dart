@@ -18,6 +18,10 @@ class AppStyles {
     fontSize: 18,
     color: AppColors.white,
   );
+  static TextStyle textStyle16 = TextStyle(
+    fontSize: 16,
+    color: AppColors.white,
+  );
   static TextStyle textStyle14 = TextStyle(
     fontSize: 14,
     color: AppColors.white,
