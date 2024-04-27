@@ -417,7 +417,33 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                             },
                           );
                         } else {
-                          return SizedBox();
+                          List<ListDropdownModel> dropList;
+                          dropList = dropListData;
+                          return CustomDropdown<String>.search(
+                            hintText: '',
+                            decoration: CustomDropdownDecoration(
+                                headerStyle: AppStyles.textStyle16
+                                    .copyWith(color: Colors.black),
+                                closedFillColor: Colors.transparent,
+                                closedBorder:
+                                    Border.all(color: AppColors.blueDark)),
+                            validator: (value) {
+                              if (value?.isEmpty ?? true) {
+                                return S.of(context).field_is_required;
+                              } else {
+                                return null;
+                              }
+                            },
+                            items: List.generate(
+                                dropList.isEmpty ? 1 : dropList.length,
+                                (index) => dropList.isEmpty
+                                    ? ''
+                                    : dropList[index].text),
+                            onChanged: (value) {
+                              newRowData
+                                  .addAll({item.searchName!.toString(): value});
+                            },
+                          );
                         }
                         // return DropdownMenu(
                         //   enableFilter: true,
