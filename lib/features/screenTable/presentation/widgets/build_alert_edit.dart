@@ -1,3 +1,4 @@
+import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:erp_system/core/utils/app_styles.dart';
 import 'package:erp_system/core/utils/service_locator.dart';
 import 'package:erp_system/core/widgets/custom_error_massage.dart';
@@ -18,7 +19,7 @@ import '../../../../core/utils/app_strings.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_text_form_field.dart';
 import '../../../../generated/l10n.dart';
-import '../../data/models/dropdown_model.dart';
+import '../../data/models/dropdown_model/dropdown_model.dart';
 import '../../data/models/screen_model.dart';
 import '../manager/getDropdownList/get_dropdown_list_cubit.dart';
 import '../manager/getTable/get_table_cubit.dart';
@@ -46,11 +47,11 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
     super.didChangeDependencies();
   }
 
-  @override
-  void dispose() {
-    ScreenTableBody.rowData = {};
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   ScreenTableBody.rowData = {};
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -430,11 +431,137 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
       if (item.insertType == "dropdown" &&
           item.insertVisable == true &&
           item.categoryID == categoryID) {
-        int dropValue = rowData[item.searchName] ?? 0;
+        String? dropValue = rowData[item.columnName];
 
-        List<ListDropdown> dropList = [];
+        List<ListDropdownModel> dropListData = [];
         list.add(ItemList(
           widget: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      title,
+                      style: AppStyles.textStyle14.copyWith(color: Colors.grey),
+                    ),
+                    if (item.isRquired == true)
+                      const Icon(
+                        Icons.star,
+                        color: Colors.red,
+                        size: 10,
+                      )
+                  ],
+                ),
+                SizedBox(
+                  // height: 40,
+                  child: BlocProvider(
+                    create: (context) =>
+                        GetDropdownListCubit(getIt.get<ScreenRepoImpl>())
+                          ..getDropdownList(
+                            droModel: item.droModel ?? "",
+                            droValue: item.droValue ?? "",
+                            droText: item.droText ?? "",
+                            droCondition: item.droCondition ?? "",
+                            droCompany: item.droCompany ?? "",
+                          ),
+                    child: BlocConsumer<GetDropdownListCubit,
+                        GetDropdownListState>(
+                      listener: (context, state) {
+                        if (state is GetDropdownListSuccess) {
+                          dropListData = state.dropdownModel.list;
+                        }
+                      },
+                      builder: (context, state) {
+                        if (state is GetDropdownListSuccess) {
+                          List<ListDropdownModel> dropList;
+                          dropList = dropListData;
+                          return CustomDropdown<String>.search(
+                            hintText: '',
+                            initialItem: dropValue,
+                            decoration: CustomDropdownDecoration(
+                                headerStyle: AppStyles.textStyle16
+                                    .copyWith(color: Colors.black),
+                                closedFillColor: Colors.transparent,
+                                closedBorder:
+                                    Border.all(color: AppColors.blueDark)),
+                            validator: (value) {
+                              if (value?.isEmpty ?? true) {
+                                return S.of(context).field_is_required;
+                              } else {
+                                return null;
+                              }
+                            },
+                            items: List.generate(
+                                dropList.isEmpty ? 1 : dropList.length,
+                                (index) => dropList.isEmpty
+                                    ? ''
+                                    : dropList[index].text),
+                            onChanged: (value) {
+                              newRowData
+                                  .addAll({item.searchName!.toString(): value});
+                            },
+                          );
+                        } else {
+                          List<ListDropdownModel> dropList;
+                          dropList = dropListData;
+                          return CustomDropdown<String>.search(
+                            hintText: '',
+                            decoration: CustomDropdownDecoration(
+                                headerStyle: AppStyles.textStyle16
+                                    .copyWith(color: Colors.black),
+                                closedFillColor: Colors.transparent,
+                                closedBorder:
+                                    Border.all(color: AppColors.blueDark)),
+                            validator: (value) {
+                              if (value?.isEmpty ?? true) {
+                                return S.of(context).field_is_required;
+                              } else {
+                                return null;
+                              }
+                            },
+                            items: List.generate(
+                                dropList.isEmpty ? 1 : dropList.length,
+                                (index) => dropList.isEmpty
+                                    ? ''
+                                    : dropList[index].text),
+                            onChanged: (value) {
+                              newRowData
+                                  .addAll({item.searchName!.toString(): value});
+                            },
+                          );
+                        }
+                        // return DropdownMenu(
+                        //   enableFilter: true,
+                        //   enableSearch: false,
+                        //   searchCallback: (entries, query) {
+                        //     print("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                        //     print(query);
+                        //     print(entries);
+                        //     print("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                        //   },
+                        //   expandedInsets: EdgeInsets.zero,
+                        //   dropdownMenuEntries: List.generate(
+                        //     dropList.length,
+                        //     (index) => DropdownMenuEntry(
+                        //         value: dropList[index].value,
+                        //         label: dropList[index].text),
+                        //   ),
+                        //   onSelected: (value) {
+                        //     if (value != null) {
+                        //       newRowData
+                        //           .addAll({item.searchName!.toString(): value});
+                        //     }
+                        //   },
+                        // );
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ) /* Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -485,7 +612,8 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                 ),
               ],
             ),
-          ),
+          )*/
+          ,
           show: item.insertDefult!,
         ));
       }

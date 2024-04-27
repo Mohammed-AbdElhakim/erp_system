@@ -1,13 +1,13 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:erp_system/core/errors/failures.dart';
-import 'package:erp_system/features/screenTable/data/models/dropdown_model.dart';
 import 'package:erp_system/features/screenTable/data/models/permission_model.dart';
 import 'package:erp_system/features/screenTable/data/repositories/screen_repo.dart';
 
 import '../../../../core/helper/SharedPreferences/pref.dart';
 import '../../../../core/utils/api_service.dart';
 import '../../../../core/utils/app_strings.dart';
+import '../models/dropdown_model/dropdown_model.dart';
 import '../models/screen_model.dart';
 
 class ScreenRepoImpl implements ScreenRepo {
@@ -225,6 +225,29 @@ class ScreenRepoImpl implements ScreenRepo {
       DropdownModel dropdownModel = DropdownModel.fromJson(data);
 
       return right(dropdownModel);
+      // var list = getData();
+      // if (list.isNotEmpty) {
+      //   return right(list);
+      // } else {
+      //   String companyKey = await Pref.getStringFromPref(
+      //           key: AppStrings.companyIdentifierKey) ??
+      //       "";
+      //   String token =
+      //       await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      //   Map<String, dynamic> data = await apiService.get(
+      //     endPoint:
+      //         "home/getDropDown?DroModel=$droModel&DroValue=$droValue&DroText=$droText&DroCondition=$droCondition&DroCompany=$droCompany",
+      //     headers: {
+      //       "Authorization": "Bearer $token",
+      //       "CompanyKey": companyKey,
+      //     },
+      //   );
+      //   DropdownModel dropdownModel = DropdownModel.fromJson(data);
+      //
+      //   saveData(dropdownModel);
+      //
+      //   return right(dropdownModel.list.cast<ListDropdownModel>());
+      // }
     } catch (e) {
       if (e is DioException) {
         return left(
@@ -238,4 +261,14 @@ class ScreenRepoImpl implements ScreenRepo {
       );
     }
   }
+
+  // void saveData(DropdownModel dropdownModel) {
+  //   var box = Hive.box(AppStrings.listDropdownBox);
+  //   box.addAll(dropdownModel.list);
+  // }
+  //
+  // List<ListDropdownModel> getData() {
+  //   var box = Hive.box<ListDropdownModel>(AppStrings.listDropdownBox);
+  //   return box.values.toList();
+  // }
 }

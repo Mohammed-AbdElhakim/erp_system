@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:erp_system/features/screenTable/data/models/dropdown_model.dart';
 
 import '../../../../../core/errors/failures.dart';
+import '../../../data/models/dropdown_model/dropdown_model.dart';
 import '../../../data/repositories/screen_repo.dart';
 
 part 'get_dropdown_list_state.dart';
@@ -19,6 +19,7 @@ class GetDropdownListCubit extends Cubit<GetDropdownListState> {
     required String droCompany,
   }) async {
     emit(GetDropdownListLoading());
+
     Either<Failure, DropdownModel> result = await screenRepo.getDropdownList(
         droModel: droModel,
         droValue: droValue,

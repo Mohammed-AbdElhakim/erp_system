@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
-import 'package:erp_system/features/screenTable/data/models/dropdown_model.dart';
 
 import '../../../../../core/errors/failures.dart';
+import '../models/dropdown_model/dropdown_model.dart';
 import '../models/permission_model.dart';
 import '../models/screen_model.dart';
 

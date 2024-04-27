@@ -1,10 +1,9 @@
+import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:erp_system/core/utils/app_styles.dart';
-import 'package:erp_system/features/screenTable/data/models/dropdown_model.dart';
 import 'package:erp_system/features/screenTable/presentation/manager/getTable/get_table_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:multiselect/multiselect.dart';
 
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_strings.dart';
@@ -12,6 +11,7 @@ import '../../../../core/utils/service_locator.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_text_form_field.dart';
 import '../../../../generated/l10n.dart';
+import '../../data/models/dropdown_model/dropdown_model.dart';
 import '../../data/models/screen_model.dart';
 import '../../data/repositories/screen_repo_impl.dart';
 import '../manager/getDropdownList/get_dropdown_list_cubit.dart';
@@ -346,7 +346,7 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
       }
       //dropdown
       if (item.insertType == "dropdown" && item.visible == true) {
-        List<ListDropdown> dropList = [];
+        List<ListDropdownModel> dropList = [];
         List<String> selected = [];
         List<int> intSelected = [];
         String stFinial = "";
@@ -361,7 +361,7 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
                   style: AppStyles.textStyle14.copyWith(color: Colors.grey),
                 ),
                 SizedBox(
-                  height: 40,
+                  // height: 40,
                   child: BlocProvider(
                     create: (context) =>
                         GetDropdownListCubit(getIt.get<ScreenRepoImpl>())
@@ -383,8 +383,20 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
                         return StatefulBuilder(
                           builder: (context, dsetState) {
                             String st = "";
-                            return DropDownMultiSelect(
-                              onChanged: (List<String> x) {
+                            return CustomDropdown<String>.multiSelectSearch(
+                              hintText: '',
+                              decoration: CustomDropdownDecoration(
+                                  headerStyle: AppStyles.textStyle16
+                                      .copyWith(color: Colors.black),
+                                  closedFillColor: Colors.transparent,
+                                  closedBorder:
+                                      Border.all(color: AppColors.blueDark)),
+                              items: List.generate(
+                                  dropList.isEmpty ? 1 : dropList.length,
+                                  (index) => dropList.isEmpty
+                                      ? ''
+                                      : dropList[index].text),
+                              onListChanged: (x) {
                                 dsetState(() {
                                   selected = x;
                                 });
@@ -415,13 +427,46 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
                                 statment = "$statment $stFinial";
                                 BuildAlertSearch.statement = statment;
                               },
-                              options: List.generate(dropList.length,
-                                  (index) => dropList[index].text),
-                              selectedValues: selected,
-                              whenEmpty: '',
-                              selected_values_style: AppStyles.textStyle14
-                                  .copyWith(color: Colors.black),
                             );
+                            // return DropDownMultiSelect(
+                            //   onChanged: (List<String> x) {
+                            //     dsetState(() {
+                            //       selected = x;
+                            //     });
+                            //     intSelected.clear();
+                            //     for (var s in selected) {
+                            //       for (var d in dropList) {
+                            //         if (s == d.text) {
+                            //           intSelected.add(d.value);
+                            //         }
+                            //       }
+                            //     }
+                            //     if (statment.contains(stFinial)) {
+                            //       statment = statment.replaceAll(stFinial, '');
+                            //       BuildAlertSearch.statement = statment;
+                            //     }
+                            //     st += "and( ";
+                            //
+                            //     for (var element in intSelected) {
+                            //       st += "${item.searchName} = $element";
+                            //       if (element !=
+                            //           intSelected[intSelected.length - 1]) {
+                            //         st += " or ";
+                            //       }
+                            //     }
+                            //     st += " )";
+                            //     stFinial = st;
+                            //
+                            //     statment = "$statment $stFinial";
+                            //     BuildAlertSearch.statement = statment;
+                            //   },
+                            //   options: List.generate(dropList.length,
+                            //       (index) => dropList[index].text),
+                            //   selectedValues: selected,
+                            //   whenEmpty: '',
+                            //   selected_values_style: AppStyles.textStyle14
+                            //       .copyWith(color: Colors.black),
+                            // );
                           },
                         );
                       },

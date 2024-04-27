@@ -55,7 +55,7 @@ class _LocationState extends State<Location> {
                     show = !show;
                   });
                 },
-                child: Text("onTap"))
+                child: const Text("onTap"))
           ],
         ),
       ),

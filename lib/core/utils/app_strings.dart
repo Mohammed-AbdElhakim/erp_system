@@ -14,4 +14,5 @@ class AppStrings {
   static String companyNameKey = "companyName";
   static String employeeIDKey = "employeeID";
   static String isAttendKey = "isAttend";
+  static String listDropdownBox = "ListDropdownBox";
 }

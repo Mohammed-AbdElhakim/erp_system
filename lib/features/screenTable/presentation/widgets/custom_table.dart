@@ -120,9 +120,7 @@ class _CustomTableState extends State<CustomTable> {
                                               context: context,
                                               builder: (context) => Dialog(
                                                 child: InkWell(
-                                                  onDoubleTap: () {},
                                                   child: Container(
-                                                    alignment: Alignment.center,
                                                     padding:
                                                         const EdgeInsetsDirectional
                                                             .symmetric(

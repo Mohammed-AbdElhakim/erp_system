@@ -1,3 +1,4 @@
+import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:erp_system/core/utils/app_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,7 +14,7 @@ import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_loading_widget.dart';
 import '../../../../core/widgets/custom_text_form_field.dart';
 import '../../../../generated/l10n.dart';
-import '../../data/models/dropdown_model.dart';
+import '../../data/models/dropdown_model/dropdown_model.dart';
 import '../../data/models/screen_model.dart';
 import '../../data/repositories/screen_repo_impl.dart';
 import '../manager/addEdit/add_edit_cubit.dart';
@@ -348,7 +349,8 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
           item.insertVisable == true &&
           item.categoryID == categoryID &&
           item.insertDefult == show) {
-        List<ListDropdown> dropList = [];
+        List<ListDropdownModel> dropListData = [];
+
         list.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -370,7 +372,7 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                   ],
                 ),
                 SizedBox(
-                  height: 40,
+                  // height: 40,
                   child: BlocProvider(
                     create: (context) =>
                         GetDropdownListCubit(getIt.get<ScreenRepoImpl>())
@@ -385,25 +387,61 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                         GetDropdownListState>(
                       listener: (context, state) {
                         if (state is GetDropdownListSuccess) {
-                          dropList = state.dropdownModel.list;
+                          dropListData = state.dropdownModel.list;
                         }
                       },
                       builder: (context, state) {
-                        return DropdownMenu(
-                          expandedInsets: EdgeInsets.zero,
-                          dropdownMenuEntries: List.generate(
-                            dropList.length,
-                            (index) => DropdownMenuEntry(
-                                value: dropList[index].value,
-                                label: dropList[index].text),
-                          ),
-                          onSelected: (value) {
-                            if (value != null) {
+                        if (state is GetDropdownListSuccess) {
+                          List<ListDropdownModel> dropList;
+                          dropList = dropListData;
+                          return CustomDropdown<String>.search(
+                            hintText: '',
+                            decoration: CustomDropdownDecoration(
+                                headerStyle: AppStyles.textStyle16
+                                    .copyWith(color: Colors.black),
+                                closedFillColor: Colors.transparent,
+                                closedBorder:
+                                    Border.all(color: AppColors.blueDark)),
+                            validator: (value) {
+                              if (value?.isEmpty ?? true) {
+                                return S.of(context).field_is_required;
+                              } else {
+                                return null;
+                              }
+                            },
+                            items: List.generate(dropList.length,
+                                (index) => dropList[index].text),
+                            onChanged: (value) {
                               newRowData
                                   .addAll({item.searchName!.toString(): value});
-                            }
-                          },
-                        );
+                            },
+                          );
+                        } else {
+                          return SizedBox();
+                        }
+                        // return DropdownMenu(
+                        //   enableFilter: true,
+                        //   enableSearch: false,
+                        //   searchCallback: (entries, query) {
+                        //     print("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                        //     print(query);
+                        //     print(entries);
+                        //     print("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                        //   },
+                        //   expandedInsets: EdgeInsets.zero,
+                        //   dropdownMenuEntries: List.generate(
+                        //     dropList.length,
+                        //     (index) => DropdownMenuEntry(
+                        //         value: dropList[index].value,
+                        //         label: dropList[index].text),
+                        //   ),
+                        //   onSelected: (value) {
+                        //     if (value != null) {
+                        //       newRowData
+                        //           .addAll({item.searchName!.toString(): value});
+                        //     }
+                        //   },
+                        // );
                       },
                     ),
                   ),
@@ -458,3 +496,91 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
     return list;
   }
 }
+
+/*InkWell(
+                          child: Container(
+                            height: 65,
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(color: AppColors.blueDark),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Select",
+                                  style: AppStyles.textStyle16
+                                      .copyWith(color: Colors.black),
+                                ),
+                                const Icon(Icons.arrow_drop_down),
+                              ],
+                            ),
+                          ),
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  icon: Row(
+                                    children: [
+                                      InkWell(
+                                        child: const Icon(Icons.refresh),
+                                        onTap: () {
+                                          BlocProvider.of<GetDropdownListCubit>(
+                                                  context)
+                                              .getDropdownList(
+                                            droModel: item.droModel ?? "",
+                                            droValue: item.droValue ?? "",
+                                            droText: item.droText ?? "",
+                                            droCondition:
+                                                item.droCondition ?? "",
+                                            droCompany: item.droCompany ?? "",
+                                          );
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                  title: CustomTextFormField(
+                                    hintText: "search",
+                                    onChanged: (query) {
+                                      final suggestions =
+                                          dropList.where((element) {
+                                        final text = element.text.toLowerCase();
+                                        final inPut = query.toLowerCase();
+                                        return text.contains(inPut);
+                                      });
+                                      setState(() {
+                                        dropList = suggestions.toList();
+                                      });
+                                    },
+                                  ),
+                                  content: ListView.builder(
+                                    shrinkWrap: true,
+                                    itemCount: dropList.length,
+                                    itemBuilder: (context, index) {
+                                      final dropListItem = dropList[index];
+                                      return ListTile(
+                                        title: Text(dropListItem.text),
+                                      );
+                                    },
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: Text(
+                                          S.of(context).cancel,
+                                          style: const TextStyle(
+                                              color: Colors.grey),
+                                        )),
+                                    TextButton(
+                                        onPressed: () {},
+                                        child: Text(S.of(context).ok)),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                        )*/
