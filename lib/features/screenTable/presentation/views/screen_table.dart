@@ -36,10 +36,10 @@ class _ScreenTableState extends State<ScreenTable> {
     BlocProvider.of<GetTableCubit>(context).getTable(
         pageId: widget.pageData.pageId.toString(),
         employee: false,
-        isdesc: false,
+        isdesc: widget.pageData.isDesc,
         limit: 10,
         offset: 0,
-        orderby: '',
+        orderby: widget.pageData.orderBy,
         statment: "",
         selectcolumns: '',
         dropdownValueOfLimit: 10,

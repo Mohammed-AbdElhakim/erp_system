@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../core/models/menu_model/pages.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../../../../core/utils/service_locator.dart';
@@ -19,9 +20,9 @@ import 'screen_table_body.dart';
 
 class BuildAlertSearch extends StatefulWidget {
   const BuildAlertSearch(
-      {super.key, required this.columnList, required this.pageId});
+      {super.key, required this.columnList, required this.pageData});
   final List<ColumnList> columnList;
-  final String pageId;
+  final Pages pageData;
   static String statement = '';
 
   @override
@@ -99,12 +100,12 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
                       ScreenTableBody.isSearch = true;
                       BlocProvider.of<GetTableCubit>(context)
                           .getTable(
-                              pageId: widget.pageId,
+                              pageId: widget.pageData.pageId.toString(),
                               employee: false,
-                              isdesc: false,
+                              isdesc: widget.pageData.isDesc,
                               limit: 10,
                               offset: 0,
-                              orderby: '',
+                              orderby: widget.pageData.orderBy,
                               statment: statment,
                               selectcolumns: '',
                               numberOfPage: 1,

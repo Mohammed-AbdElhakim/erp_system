@@ -1,4 +1,6 @@
+import 'package:erp_system/features/screenTable/data/models/dropdown_model/dropdown_model.dart';
 import 'package:erp_system/features/screenTable/data/models/screen_model.dart';
+import 'package:erp_system/features/screenTable/presentation/manager/getDropdownList/get_dropdown_list_cubit.dart';
 import 'package:erp_system/features/screenTable/presentation/widgets/build_alert_search.dart';
 import 'package:erp_system/features/screenTable/presentation/widgets/pagination_widget.dart';
 import 'package:flutter/material.dart';
@@ -14,8 +16,10 @@ import 'custom_table.dart';
 
 class ScreenTableBody extends StatefulWidget {
   const ScreenTableBody({super.key, required this.pageData});
+
   final Pages pageData;
   static Map<String, dynamic> rowData = {};
+  static Map<String, List<ListDropdownModel>> myDropdownLists = {};
   static bool isSearch = false;
 
   @override
@@ -80,56 +84,58 @@ class _ScreenTableBodyState extends State<ScreenTableBody> {
               ? (numberOfRecords ~/ dropdownValue)
               : (numberOfRecords ~/ dropdownValue) + 1;
 
-          return CustomTable(
-            listHeader: listHeader,
-            listKey: listKey,
-            listData: listData!,
-            listColumn: listColumn,
-            paginationWidget: PaginationWidget(
-              allPages: allPages,
-              dropdownValue: dropdownValue,
-              listNumberItemInList: listNumberItemInList,
-              myPage: numberPage,
-              numberOfRecords: numberOfRecords,
-              onChangeLimit: (limit) {
-                setState(() {
-                  dropdownValue = limit;
-                  numberPage = 1;
-                  allPages = (numberOfRecords % dropdownValue) == 0
-                      ? (numberOfRecords ~/ dropdownValue)
-                      : (numberOfRecords ~/ dropdownValue) + 1;
-                });
-                getData(context);
-              },
-              onTapMin: () {
-                setState(() {
-                  numberPage--;
-                });
-                getData(context);
-              },
-              onTapAdd: () {
-                setState(() {
-                  numberPage++;
-                });
-                getData(context);
-              },
-            ),
-            onTapHeader: (String titleHeader) {
-              setState(() {
-                orderBy = titleHeader;
-                isDesc = !isDesc;
-              });
-              getData(context);
-            },
-            onTapRow: (rowData) {
-              ScreenTableBody.rowData = rowData;
-            },
-          );
-        } else if (state is GetTableFailure) {
-          return CustomErrorMassage(errorMassage: state.errorMassage);
-        } else {
-          return const CustomLoadingWidget();
-        }
+              return CustomTable(
+                listHeader: listHeader,
+                listKey: listKey,
+                listData: listData!,
+                listColumn: listColumn,
+                paginationWidget: PaginationWidget(
+                  allPages: allPages,
+                  dropdownValue: dropdownValue,
+                  listNumberItemInList: listNumberItemInList,
+                  myPage: numberPage,
+                  numberOfRecords: numberOfRecords,
+                  onChangeLimit: (limit) {
+                    setState(() {
+                      dropdownValue = limit;
+                      numberPage = 1;
+                      allPages = (numberOfRecords % dropdownValue) == 0
+                          ? (numberOfRecords ~/ dropdownValue)
+                          : (numberOfRecords ~/ dropdownValue) + 1;
+                    });
+                    getData(context);
+                  },
+                  onTapMin: () {
+                    setState(() {
+                      numberPage--;
+                    });
+                    getData(context);
+                  },
+                  onTapAdd: () {
+                    setState(() {
+                      numberPage++;
+                    });
+                    getData(context);
+                  },
+                ),
+                onTapHeader: (String titleHeader) {
+                  setState(() {
+                    orderBy = titleHeader;
+                    isDesc = !isDesc;
+                  });
+                  getData(context);
+                },
+                onTapRow: (rowData) {
+                  ScreenTableBody.rowData = rowData;
+                },
+              );
+            } else if (state is GetTableFailure) {
+              return CustomErrorMassage(errorMassage: state.errorMassage);
+            } else {
+              return const CustomLoadingWidget();
+            }
+          },
+        );
       },
     );
   }
