@@ -15,20 +15,20 @@ class ListModule {
   late final List<Pages> pages;
 
   ListModule.fromJson(Map<String, dynamic> json) {
-    moduleID = json['ModuleID'];
-    moduleKey = json['ModuleKey'];
-    moduleNameAr = json['ModuleNameAr'];
-    moduleNameEn = json['ModuleNameEn'];
-    pages = List.from(json['Pages']).map((e) => Pages.fromJson(e)).toList();
+    moduleID = json['moduleID'];
+    moduleKey = json['moduleKey'];
+    moduleNameAr = json['moduleNameAr'];
+    moduleNameEn = json['moduleNameEn'];
+    pages = List.from(json['pages']).map((e) => Pages.fromJson(e)).toList();
   }
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['ModuleID'] = moduleID;
-    data['ModuleKey'] = moduleKey;
-    data['ModuleNameAr'] = moduleNameAr;
-    data['ModuleNameEn'] = moduleNameEn;
-    data['Pages'] = pages.map((e) => e.toJson()).toList();
+    data['moduleID'] = moduleID;
+    data['moduleKey'] = moduleKey;
+    data['moduleNameAr'] = moduleNameAr;
+    data['moduleNameEn'] = moduleNameEn;
+    data['pages'] = pages.map((e) => e.toJson()).toList();
     return data;
   }
 }

@@ -12,6 +12,8 @@ class Pages {
     required this.editSrc,
     required this.controllerName,
     required this.primary,
+    required this.orderBy,
+    required this.isDesc,
   });
   late final int pageId;
   late final String nameAr;
@@ -25,36 +27,42 @@ class Pages {
   late final String editSrc;
   late final String controllerName;
   late final String primary;
+  late final String orderBy;
+  late final bool isDesc;
 
   Pages.fromJson(Map<String, dynamic> json) {
-    pageId = json['PageId'];
-    nameAr = json['NameAr'];
-    nameEn = json['NameEn'];
-    navigationKey = json['NavigationKey'];
-    icon = json['Icon'];
-    isFastScreen = json['IsFastScreen'];
-    moduleID = json['ModuleID'];
-    url = json['Url'];
-    tableSrc = json['TableSrc'];
-    editSrc = json['EditSrc'];
-    controllerName = json['ControllerName'];
-    primary = json['Primary'];
+    pageId = json['pageId'];
+    nameAr = json['nameAr'];
+    nameEn = json['nameEn'];
+    navigationKey = json['navigationKey'];
+    icon = json['icon'];
+    isFastScreen = json['isFastScreen'];
+    moduleID = json['moduleID'];
+    url = json['url'];
+    tableSrc = json['tableSrc'];
+    editSrc = json['editSrc'];
+    controllerName = json['controllerName'];
+    primary = json['primary'];
+    orderBy = json['orderBy'];
+    isDesc = json['isDesc'];
   }
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['PageId'] = pageId;
-    data['NameAr'] = nameAr;
-    data['NameEn'] = nameEn;
-    data['NavigationKey'] = navigationKey;
-    data['Icon'] = icon;
-    data['IsFastScreen'] = isFastScreen;
-    data['ModuleID'] = moduleID;
+    data['pageId'] = pageId;
+    data['nameAr'] = nameAr;
+    data['nameEn'] = nameEn;
+    data['navigationKey'] = navigationKey;
+    data['icon'] = icon;
+    data['isFastScreen'] = isFastScreen;
+    data['moduleID'] = moduleID;
     data['Url'] = url;
-    data['TableSrc'] = tableSrc;
-    data['EditSrc'] = editSrc;
-    data['ControllerName'] = controllerName;
-    data['Primary'] = primary;
+    data['tableSrc'] = tableSrc;
+    data['editSrc'] = editSrc;
+    data['controllerName'] = controllerName;
+    data['primary'] = primary;
+    data['orderBy'] = orderBy;
+    data['isDesc'] = isDesc;
     return data;
   }
 }
