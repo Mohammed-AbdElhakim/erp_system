@@ -31,38 +31,38 @@ class Pages {
   late final bool isDesc;
 
   Pages.fromJson(Map<String, dynamic> json) {
-    pageId = json['pageId'];
-    nameAr = json['nameAr'];
-    nameEn = json['nameEn'];
-    navigationKey = json['navigationKey'];
-    icon = json['icon'];
-    isFastScreen = json['isFastScreen'];
-    moduleID = json['moduleID'];
-    url = json['url'];
-    tableSrc = json['tableSrc'];
-    editSrc = json['editSrc'];
-    controllerName = json['controllerName'];
-    primary = json['primary'];
-    orderBy = json['orderBy'];
-    isDesc = json['isDesc'];
+    pageId = json['PageId'];
+    nameAr = json['NameAr'];
+    nameEn = json['NameEn'];
+    navigationKey = json['NavigationKey'];
+    icon = json['Icon'];
+    isFastScreen = json['IsFastScreen'];
+    moduleID = json['ModuleID'];
+    url = json['Url'];
+    tableSrc = json['TableSrc'];
+    editSrc = json['EditSrc'];
+    controllerName = json['ControllerName'];
+    primary = json['Primary'];
+    orderBy = json['OrderBy'];
+    isDesc = json['IsDesc'];
   }
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['pageId'] = pageId;
-    data['nameAr'] = nameAr;
-    data['nameEn'] = nameEn;
-    data['navigationKey'] = navigationKey;
-    data['icon'] = icon;
-    data['isFastScreen'] = isFastScreen;
-    data['moduleID'] = moduleID;
+    data['PageId'] = pageId;
+    data['NameAr'] = nameAr;
+    data['NameEn'] = nameEn;
+    data['NavigationKey'] = navigationKey;
+    data['Icon'] = icon;
+    data['IsFastScreen'] = isFastScreen;
+    data['ModuleID'] = moduleID;
     data['Url'] = url;
-    data['tableSrc'] = tableSrc;
-    data['editSrc'] = editSrc;
-    data['controllerName'] = controllerName;
-    data['primary'] = primary;
-    data['orderBy'] = orderBy;
-    data['isDesc'] = isDesc;
+    data['TableSrc'] = tableSrc;
+    data['EditSrc'] = editSrc;
+    data['ControllerName'] = controllerName;
+    data['Primary'] = primary;
+    data['OrderBy'] = orderBy;
+    data['IsDesc'] = isDesc;
     return data;
   }
 }
