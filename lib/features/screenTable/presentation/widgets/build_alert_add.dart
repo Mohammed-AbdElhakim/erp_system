@@ -1,6 +1,5 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:erp_system/core/utils/app_styles.dart';
-import 'package:erp_system/features/screenTable/presentation/widgets/screen_table_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -351,7 +350,6 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
           item.categoryID == categoryID &&
           item.insertDefult == show) {
         List<ListDropdownModel> dropListData = [];
-
         list.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
