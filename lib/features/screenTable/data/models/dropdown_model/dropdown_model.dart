@@ -18,22 +18,20 @@ class DropdownModel {
 }
 
 class ListDropdownModel {
-  ListDropdownModel({
-    required this.value,
-    required this.text,
-  });
-  late final int value;
-  late final String text;
+  final int value;
+  final String? text;
 
-  ListDropdownModel.fromJson(Map<String, dynamic> json) {
-    value = json['value'];
-    text = json['text'];
-  }
+  ListDropdownModel({required this.value, required this.text});
+  factory ListDropdownModel.fromJson(Map<String, dynamic> json) =>
+      ListDropdownModel(
+        text: json['text'] ?? '' as String?,
+        value: json['value'] as int,
+      );
 
   Map<String, dynamic> toJson() {
-    final data = <String, dynamic>{};
-    data['value'] = value;
-    data['text'] = text;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['value'] = this.value;
+    data['text'] = this.text;
     return data;
   }
 }
