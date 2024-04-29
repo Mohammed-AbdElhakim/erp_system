@@ -349,7 +349,9 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
           item.insertVisable == true &&
           item.categoryID == categoryID &&
           item.insertDefult == show) {
-        List<ListDropdownModel> dropListData = [];
+        List<ListDropdownModel> dropListData = [
+          ListDropdownModel(value: -1, text: '')
+        ];
         list.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -390,83 +392,28 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                         }
                       },
                       builder: (context, state) {
-                        if (state is GetDropdownListSuccess) {
-                          List<ListDropdownModel> dropList;
-                          dropList = dropListData;
-                          return CustomDropdown<String>.search(
-                            hintText: '',
-                            decoration: CustomDropdownDecoration(
-                                headerStyle: AppStyles.textStyle16
-                                    .copyWith(color: Colors.black),
-                                closedFillColor: Colors.transparent,
-                                closedBorder:
-                                    Border.all(color: AppColors.blueDark)),
-                            validator: (value) {
-                              if (value?.isEmpty ?? true) {
-                                return S.of(context).field_is_required;
-                              } else {
-                                return null;
-                              }
-                            },
-                            items: List.generate(dropList.length,
-                                (index) => dropList[index].text),
-                            onChanged: (value) {
-                              newRowData
-                                  .addAll({item.searchName!.toString(): value});
-                            },
-                          );
-                        } else {
-                          List<ListDropdownModel> dropList;
-                          dropList = dropListData;
-                          return CustomDropdown<String>.search(
-                            hintText: '',
-                            decoration: CustomDropdownDecoration(
-                                headerStyle: AppStyles.textStyle16
-                                    .copyWith(color: Colors.black),
-                                closedFillColor: Colors.transparent,
-                                closedBorder:
-                                    Border.all(color: AppColors.blueDark)),
-                            validator: (value) {
-                              if (value?.isEmpty ?? true) {
-                                return S.of(context).field_is_required;
-                              } else {
-                                return null;
-                              }
-                            },
-                            items: List.generate(
-                                dropList.isEmpty ? 1 : dropList.length,
-                                (index) => dropList.isEmpty
-                                    ? ''
-                                    : dropList[index].text),
-                            onChanged: (value) {
-                              newRowData
-                                  .addAll({item.searchName!.toString(): value});
-                            },
-                          );
-                        }
-                        // return DropdownMenu(
-                        //   enableFilter: true,
-                        //   enableSearch: false,
-                        //   searchCallback: (entries, query) {
-                        //     print("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                        //     print(query);
-                        //     print(entries);
-                        //     print("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                        //   },
-                        //   expandedInsets: EdgeInsets.zero,
-                        //   dropdownMenuEntries: List.generate(
-                        //     dropList.length,
-                        //     (index) => DropdownMenuEntry(
-                        //         value: dropList[index].value,
-                        //         label: dropList[index].text),
-                        //   ),
-                        //   onSelected: (value) {
-                        //     if (value != null) {
-                        //       newRowData
-                        //           .addAll({item.searchName!.toString(): value});
-                        //     }
-                        //   },
-                        // );
+                        return CustomDropdown<String>.search(
+                          hintText: '',
+                          decoration: CustomDropdownDecoration(
+                              headerStyle: AppStyles.textStyle16
+                                  .copyWith(color: Colors.black),
+                              closedFillColor: Colors.transparent,
+                              closedBorder:
+                                  Border.all(color: AppColors.blueDark)),
+                          validator: (value) {
+                            if (value?.isEmpty ?? true) {
+                              return S.of(context).field_is_required;
+                            } else {
+                              return null;
+                            }
+                          },
+                          items: List.generate(dropListData.length,
+                              (index) => dropListData[index].text ?? ''),
+                          onChanged: (value) {
+                            newRowData
+                                .addAll({item.searchName!.toString(): value});
+                          },
+                        );
                       },
                     ),
                   ),

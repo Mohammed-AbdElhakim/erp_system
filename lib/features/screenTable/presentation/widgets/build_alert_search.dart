@@ -347,7 +347,9 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
       }
       //dropdown
       if (item.insertType == "dropdown" && item.visible == true) {
-        List<ListDropdownModel> dropList = [];
+        List<ListDropdownModel> dropList = [
+          ListDropdownModel(value: -1, text: '')
+        ];
         List<String> selected = [];
         List<int> intSelected = [];
         String stFinial = "";
@@ -392,11 +394,8 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
                                   closedFillColor: Colors.transparent,
                                   closedBorder:
                                       Border.all(color: AppColors.blueDark)),
-                              items: List.generate(
-                                  dropList.isEmpty ? 1 : dropList.length,
-                                  (index) => dropList.isEmpty
-                                      ? ''
-                                      : dropList[index].text),
+                              items: List.generate(dropList.length,
+                                  (index) => dropList[index].text ?? ''),
                               onListChanged: (x) {
                                 dsetState(() {
                                   selected = x;

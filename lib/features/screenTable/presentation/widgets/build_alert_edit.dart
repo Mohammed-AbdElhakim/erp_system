@@ -237,6 +237,9 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
 
   getMyWidgetList(List<ColumnList> columnList, Map<String, dynamic> rowData,
       int categoryID) {
+    print("//////////////////////////////////");
+    print(rowData);
+    print("//////////////////////////////////");
     // List<Widget> listWidgets = [];
     List<ItemList> list = [];
     for (var item in columnList) {
@@ -250,7 +253,7 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
         TextEditingController controller = TextEditingController(
             text: rowData[item.columnName].toString() == "null"
                 ? ''
-                : rowData[item.columnName].toString());
+                : rowData[item.columnName]);
         list.add(ItemList(
           widget: Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -431,9 +434,9 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
       if (item.insertType == "dropdown" &&
           item.insertVisable == true &&
           item.categoryID == categoryID) {
-        String? dropValue = rowData[item.columnName];
-
-        List<ListDropdownModel> dropListData = [];
+        List<ListDropdownModel> dropListData = [
+          ListDropdownModel(value: -1, text: '')
+        ];
         list.add(ItemList(
           widget: Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -474,64 +477,49 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                         }
                       },
                       builder: (context, state) {
-                        if (state is GetDropdownListSuccess) {
-                          List<ListDropdownModel> dropList;
-                          dropList = dropListData;
-                          return CustomDropdown<String>.search(
-                            hintText: '',
-                            initialItem: dropValue,
-                            decoration: CustomDropdownDecoration(
-                                headerStyle: AppStyles.textStyle16
-                                    .copyWith(color: Colors.black),
-                                closedFillColor: Colors.transparent,
-                                closedBorder:
-                                    Border.all(color: AppColors.blueDark)),
-                            validator: (value) {
-                              if (value?.isEmpty ?? true) {
-                                return S.of(context).field_is_required;
-                              } else {
-                                return null;
-                              }
-                            },
-                            items: List.generate(
-                                dropList.isEmpty ? 1 : dropList.length,
-                                (index) => dropList.isEmpty
-                                    ? ''
-                                    : dropList[index].text),
-                            onChanged: (value) {
-                              newRowData
-                                  .addAll({item.searchName!.toString(): value});
-                            },
-                          );
-                        } else {
-                          List<ListDropdownModel> dropList;
-                          dropList = dropListData;
-                          return CustomDropdown<String>.search(
-                            hintText: '',
-                            decoration: CustomDropdownDecoration(
-                                headerStyle: AppStyles.textStyle16
-                                    .copyWith(color: Colors.black),
-                                closedFillColor: Colors.transparent,
-                                closedBorder:
-                                    Border.all(color: AppColors.blueDark)),
-                            validator: (value) {
-                              if (value?.isEmpty ?? true) {
-                                return S.of(context).field_is_required;
-                              } else {
-                                return null;
-                              }
-                            },
-                            items: List.generate(
-                                dropList.isEmpty ? 1 : dropList.length,
-                                (index) => dropList.isEmpty
-                                    ? ''
-                                    : dropList[index].text),
-                            onChanged: (value) {
-                              newRowData
-                                  .addAll({item.searchName!.toString(): value});
-                            },
-                          );
+                        String? dropValue;
+                        for (var i in dropListData) {
+                          if (i.value.toString() ==
+                              rowData[item.searchName].toString()) {
+                            dropValue = i.text ?? '';
+                          }
+                          if (i.text.toString() ==
+                              rowData[item.searchName].toString()) {
+                            dropValue = i.text ?? '';
+                          }
+                          if (i.value.toString() ==
+                              rowData[item.columnName].toString()) {
+                            dropValue = i.text ?? '';
+                          }
+                          if (i.text.toString() ==
+                              rowData[item.columnName].toString()) {
+                            dropValue = i.text ?? '';
+                          }
                         }
+
+                        return CustomDropdown<String>.search(
+                          hintText: '',
+                          initialItem: dropValue,
+                          decoration: CustomDropdownDecoration(
+                              headerStyle: AppStyles.textStyle16
+                                  .copyWith(color: Colors.black),
+                              closedFillColor: Colors.transparent,
+                              closedBorder:
+                                  Border.all(color: AppColors.blueDark)),
+                          validator: (value) {
+                            if (value?.isEmpty ?? true) {
+                              return S.of(context).field_is_required;
+                            } else {
+                              return null;
+                            }
+                          },
+                          items: List.generate(dropListData.length,
+                              (index) => dropListData[index].text ?? ''),
+                          onChanged: (value) {
+                            newRowData
+                                .addAll({item.searchName!.toString(): value});
+                          },
+                        );
                         // return DropdownMenu(
                         //   enableFilter: true,
                         //   enableSearch: false,
