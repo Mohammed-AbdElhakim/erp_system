@@ -2,17 +2,26 @@ class DropdownModel {
   DropdownModel({
     required this.list,
   });
-  late final List<ListDropdownModel> list;
+  List<ListDropdownModel>? list;
 
   DropdownModel.fromJson(Map<String, dynamic> json) {
-    list = List.from(json['list'])
-        .map((e) => ListDropdownModel.fromJson(e))
-        .toList();
+    if (json['list'] != null) {
+      list = <ListDropdownModel>[ListDropdownModel(value: -1, text: '')];
+      json['list'].forEach((v) {
+        list!.add(ListDropdownModel.fromJson(v));
+      });
+    }
+
+    // list = List.from(json['list'])
+    //     .map((e) => ListDropdownModel.fromJson(e))
+    //     .toList();
   }
 
   Map<String, dynamic> toJson() {
-    final data = <String, dynamic>{};
-    data['list'] = list.map((e) => e.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (list != null) {
+      data['list'] = list!.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 }
