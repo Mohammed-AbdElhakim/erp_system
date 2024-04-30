@@ -65,13 +65,17 @@ class CustomAlertDialog {
       title: title,
       content: content,
       style: AlertStyle(
-          titleStyle: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: AppColors.blueLight),
-          isOverlayTapDismiss: isOverlayTapDismiss,
-          isCloseButton: isCloseButton,
-          isButtonVisible: false),
+        titleStyle: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: AppColors.blueLight),
+        isOverlayTapDismiss: isOverlayTapDismiss,
+        isCloseButton: isCloseButton,
+        isButtonVisible: false,
+        alertPadding: const EdgeInsets.symmetric(vertical: 50, horizontal: 40),
+        buttonAreaPadding: const EdgeInsets.symmetric(vertical: 5),
+        titlePadding: const EdgeInsets.symmetric(vertical: 5),
+      ),
     ).show();
   }
 }
