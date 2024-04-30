@@ -86,11 +86,20 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                               columnList: widget.columnList,
                               categoryName: categoryName,
                               show: true),
-                          if (isShow == true)
-                            ...getMyWidgetList(
-                                columnList: widget.columnList,
-                                categoryName: categoryName,
-                                show: false),
+                          Visibility(
+                            visible: isShow,
+                            child: Column(
+                              children: getMyWidgetList(
+                                  columnList: widget.columnList,
+                                  categoryName: categoryName,
+                                  show: false),
+                            ),
+                          ),
+                          // if (isShow == true)
+                          //   ...getMyWidgetList(
+                          //       columnList: widget.columnList,
+                          //       categoryName: categoryName,
+                          //       show: false),
                         ],
                       );
                     }),
