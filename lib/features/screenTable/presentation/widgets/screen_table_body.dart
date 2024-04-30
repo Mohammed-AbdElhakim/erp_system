@@ -17,6 +17,7 @@ class ScreenTableBody extends StatefulWidget {
 
   final Pages pageData;
   static Map<String, dynamic> rowData = {};
+  static List<String> listCategory = [];
   // static Map<String, List<ListDropdownModel>> myDropdownLists = {};
   static bool isSearch = false;
 
@@ -49,6 +50,7 @@ class _ScreenTableBodyState extends State<ScreenTableBody> {
   @override
   void dispose() {
     ScreenTableBody.rowData = {};
+    ScreenTableBody.listCategory = [];
     ScreenTableBody.isSearch == false;
     super.dispose();
   }
@@ -69,13 +71,17 @@ class _ScreenTableBodyState extends State<ScreenTableBody> {
           List<String> listHeader = [];
           List<dynamic> listKey = [];
           List<ColumnList> listColumn = [];
+          List<String> category = [];
           for (var item in state.screenModel.columnList!) {
             listHeader.add(lang == AppStrings.enLangKey
                 ? item.enColumnLabel!
                 : item.arColumnLabel!);
             listKey.add(item.columnName);
             listColumn.add(item);
+            category.add(item.categoryName!);
           }
+          List<String> categoryList = category.toSet().toList();
+          ScreenTableBody.listCategory = categoryList;
           numberPage = state.numberPage;
           dropdownValue = state.dropdownValue;
           allPages = (numberOfRecords! % dropdownValue) == 0
@@ -152,6 +158,12 @@ class _ScreenTableBodyState extends State<ScreenTableBody> {
   }
 }
 
+class MyCategory {
+  final int id;
+  final String name;
+
+  MyCategory(this.id, this.name);
+}
 /*Expanded(
             child: MyTable(
               columnNumber: listHeader.length,
