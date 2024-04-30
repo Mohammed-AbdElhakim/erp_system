@@ -58,6 +58,7 @@ class ColumnList {
   bool? insertDefult;
   bool? isGeneral;
   int? categoryID;
+  String? categoryName;
   bool? mobileVisable;
   bool? isMobileHeader;
   bool? isDepartment;
@@ -92,6 +93,7 @@ class ColumnList {
       this.insertDefult,
       this.isGeneral,
       this.categoryID,
+      this.categoryName,
       this.mobileVisable,
       this.isMobileHeader,
       this.isDepartment,
@@ -126,6 +128,7 @@ class ColumnList {
     insertDefult = json['InsertDefult'];
     isGeneral = json['IsGeneral'];
     categoryID = json['CategoryID'];
+    categoryName = json['CategoryName'];
     mobileVisable = json['MobileVisable'];
     isMobileHeader = json['IsMobileHeader'];
     isDepartment = json['IsDepartment'];
@@ -162,6 +165,7 @@ class ColumnList {
     data['InsertDefult'] = insertDefult;
     data['IsGeneral'] = isGeneral;
     data['CategoryID'] = categoryID;
+    data['CategoryName'] = categoryName;
     data['MobileVisable'] = mobileVisable;
     data['IsMobileHeader'] = isMobileHeader;
     data['IsDepartment'] = isDepartment;
