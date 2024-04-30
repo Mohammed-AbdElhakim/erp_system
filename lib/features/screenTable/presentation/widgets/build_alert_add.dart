@@ -1,5 +1,6 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:erp_system/core/utils/app_styles.dart';
+import 'package:erp_system/features/screenTable/presentation/widgets/screen_table_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -64,38 +65,35 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    if (getMyWidgetList(widget.columnList, 10, true | false)
-                        .isNotEmpty)
-                      Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 8),
-                          decoration: BoxDecoration(
-                              color: AppColors.grey.withOpacity(.4),
-                              borderRadius: BorderRadius.circular(15)),
-                          child: Text(
-                            S.of(context).basic_data,
-                            style: AppStyles.textStyle18
-                                .copyWith(color: Colors.black),
-                          )),
-                    ...getMyWidgetList(widget.columnList, 10, true),
-                    if (isShow == true)
-                      ...getMyWidgetList(widget.columnList, 10, false),
-                    if (getMyWidgetList(widget.columnList, 11, true | false)
-                        .isNotEmpty)
-                      Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 8),
-                          decoration: BoxDecoration(
-                              color: AppColors.grey.withOpacity(.4),
-                              borderRadius: BorderRadius.circular(15)),
-                          child: Text(
-                            S.of(context).multiple_choices,
-                            style: AppStyles.textStyle18
-                                .copyWith(color: Colors.black),
-                          )),
-                    ...getMyWidgetList(widget.columnList, 11, true),
-                    if (isShow == true)
-                      ...getMyWidgetList(widget.columnList, 11, false),
+                    ...List.generate(ScreenTableBody.listCategory.length,
+                        (index) {
+                      String categoryName = ScreenTableBody.listCategory[index];
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 8),
+                              decoration: BoxDecoration(
+                                  color: AppColors.grey.withOpacity(.4),
+                                  borderRadius: BorderRadius.circular(15)),
+                              child: Text(
+                                categoryName,
+                                style: AppStyles.textStyle18
+                                    .copyWith(color: Colors.black),
+                              )),
+                          ...getMyWidgetList(
+                              columnList: widget.columnList,
+                              categoryName: categoryName,
+                              show: true),
+                          if (isShow == true)
+                            ...getMyWidgetList(
+                                columnList: widget.columnList,
+                                categoryName: categoryName,
+                                show: false),
+                        ],
+                      );
+                    }),
                     TextButton(
                       onPressed: () {
                         setState(() {
@@ -182,8 +180,11 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
     );
   }
 
-  List<Widget> getMyWidgetList(
-      List<ColumnList> columnList, int categoryID, bool show) {
+  List<Widget> getMyWidgetList({
+    required List<ColumnList> columnList,
+    required String categoryName,
+    required bool show,
+  }) {
     List<Widget> list = [];
     for (var item in columnList) {
       String title = lang == AppStrings.arLangKey
@@ -192,7 +193,7 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
       //text
       if (item.insertType == "text" &&
           item.insertVisable == true &&
-          item.categoryID == categoryID &&
+          item.categoryName == categoryName &&
           item.insertDefult == show) {
         list.add(
           Padding(
@@ -235,7 +236,7 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
       //number
       if (item.insertType == "number" &&
           item.insertVisable == true &&
-          item.categoryID == categoryID &&
+          item.categoryName == categoryName &&
           item.insertDefult == show) {
         list.add(
           Padding(
@@ -278,7 +279,7 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
       //Date
       if (item.insertType == "date" &&
           item.insertVisable == true &&
-          item.categoryID == categoryID &&
+          item.categoryName == categoryName &&
           item.insertDefult == show) {
         String date = '';
         list.add(
@@ -347,7 +348,7 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
       //dropdown
       if (item.insertType == "dropdown" &&
           item.insertVisable == true &&
-          item.categoryID == categoryID &&
+          item.categoryName == categoryName &&
           item.insertDefult == show) {
         List<ListDropdownModel> dropListData = [
           ListDropdownModel(value: -1, text: '')
@@ -388,7 +389,7 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                         GetDropdownListState>(
                       listener: (context, state) {
                         if (state is GetDropdownListSuccess) {
-                          dropListData = state.dropdownModel.list;
+                          dropListData = state.dropdownModel.list!;
                         }
                       },
                       builder: (context, state) {
@@ -407,8 +408,8 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                               return null;
                             }
                           },
-                          items: List.generate(dropListData.length,
-                              (index) => dropListData[index].text ?? ''),
+                          items: List.generate(dropListData!.length,
+                              (index) => dropListData![index].text ?? ''),
                           onChanged: (value) {
                             newRowData
                                 .addAll({item.searchName!.toString(): value});
@@ -426,7 +427,7 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
       //checkbox
       if (item.insertType == "checkbox" &&
           item.insertVisable == true &&
-          item.categoryID == categoryID &&
+          item.categoryName == categoryName &&
           item.insertDefult == show) {
         bool checkboxValue = false;
         list.add(

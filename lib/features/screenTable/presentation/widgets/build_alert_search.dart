@@ -379,7 +379,7 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
                         GetDropdownListState>(
                       listener: (context, state) {
                         if (state is GetDropdownListSuccess) {
-                          dropList = state.dropdownModel.list;
+                          dropList = state.dropdownModel.list!;
                         }
                       },
                       builder: (context, state) {
