@@ -34,7 +34,7 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
   String statment = '';
   GlobalKey<FormState> formKey = GlobalKey();
   bool checkboxValue = false;
-  bool checkboxValue2 = false;
+  // bool checkboxValue2 = false;
   late String dateFrom;
   late String dateTo;
   late String companyKey;
@@ -428,45 +428,6 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
                                 BuildAlertSearch.statement = statment;
                               },
                             );
-                            // return DropDownMultiSelect(
-                            //   onChanged: (List<String> x) {
-                            //     dsetState(() {
-                            //       selected = x;
-                            //     });
-                            //     intSelected.clear();
-                            //     for (var s in selected) {
-                            //       for (var d in dropList) {
-                            //         if (s == d.text) {
-                            //           intSelected.add(d.value);
-                            //         }
-                            //       }
-                            //     }
-                            //     if (statment.contains(stFinial)) {
-                            //       statment = statment.replaceAll(stFinial, '');
-                            //       BuildAlertSearch.statement = statment;
-                            //     }
-                            //     st += "and( ";
-                            //
-                            //     for (var element in intSelected) {
-                            //       st += "${item.searchName} = $element";
-                            //       if (element !=
-                            //           intSelected[intSelected.length - 1]) {
-                            //         st += " or ";
-                            //       }
-                            //     }
-                            //     st += " )";
-                            //     stFinial = st;
-                            //
-                            //     statment = "$statment $stFinial";
-                            //     BuildAlertSearch.statement = statment;
-                            //   },
-                            //   options: List.generate(dropList.length,
-                            //       (index) => dropList[index].text),
-                            //   selectedValues: selected,
-                            //   whenEmpty: '',
-                            //   selected_values_style: AppStyles.textStyle14
-                            //       .copyWith(color: Colors.black),
-                            // );
                           },
                         );
                       },
@@ -480,8 +441,76 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
       }
       //checkbox
       if (item.insertType == "checkbox" && item.visible == true) {
-        listWidgets.add(
-          StatefulBuilder(
+        String? valueCheckbox;
+        listWidgets.add(Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: AppStyles.textStyle14.copyWith(color: Colors.grey),
+            ),
+            StatefulBuilder(
+              builder: (context, csetState) {
+                return DropdownButtonFormField(
+                  value: valueCheckbox,
+                  elevation: 16,
+                  isExpanded: true,
+                  hint: const Text(""),
+                  decoration: InputDecoration(
+                    contentPadding:
+                        const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
+                    errorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: AppColors.red),
+                        borderRadius: BorderRadius.circular(12)),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: AppColors.blueDark),
+                        borderRadius: BorderRadius.circular(12)),
+                    enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: AppColors.blueDark),
+                        borderRadius: BorderRadius.circular(12)),
+                    border: OutlineInputBorder(
+                        borderSide: BorderSide(color: AppColors.blueDark),
+                        borderRadius: BorderRadius.circular(12)),
+                  ),
+                  // underline: const SizedBox(),
+                  onChanged: (String? newValue) {
+                    csetState(() {
+                      valueCheckbox = newValue!;
+                      if (valueCheckbox == "True") {
+                        statment = "${statment}and ${item.searchName} = 1 ";
+                        BuildAlertSearch.statement = statment;
+                      } else {
+                        if (statment.contains("and ${item.searchName} = 1 ")) {
+                          statment = statment.replaceAll(
+                              "and ${item.searchName} = 1 ", '');
+                          BuildAlertSearch.statement = statment;
+                        }
+                        if (statment.contains(
+                            "and (${item.searchName} = 0 or ${item.searchName} is null) ")) {
+                          statment = statment.replaceAll(
+                              "and (${item.searchName} = 0 or ${item.searchName} is null) ",
+                              '');
+                          BuildAlertSearch.statement = statment;
+                        }
+                        statment =
+                            "${statment}and (${item.searchName} = 0 or ${item.searchName} is null) ";
+                        BuildAlertSearch.statement = statment;
+                      }
+                    });
+                  },
+                  items: ["True", "False", "None"]
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Center(child: Text(value.toString())),
+                    );
+                  }).toList(),
+                );
+              },
+            ),
+          ],
+        )
+            /* StatefulBuilder(
             builder: (BuildContext context,
                 void Function(void Function()) csetState) {
               return CheckboxListTile(
@@ -511,8 +540,8 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
                     });
                   });
             },
-          ),
-        );
+          ),*/
+            );
       }
     }
 
