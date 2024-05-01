@@ -138,7 +138,8 @@ class _CustomFloatingActionButtonState
         ),
       );
     } else if (icon == Icons.refresh) {
-      ScreenTableBody.isSearch == false;
+      ScreenTableBody.isSearch = false;
+      BuildAlertSearch.statement = '';
       BlocProvider.of<GetTableCubit>(context).getTable(
           pageId: widget.pageData.pageId.toString(),
           employee: false,

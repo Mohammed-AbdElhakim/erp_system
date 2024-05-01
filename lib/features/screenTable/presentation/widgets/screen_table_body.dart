@@ -106,19 +106,61 @@ class _ScreenTableBodyState extends State<ScreenTableBody> {
                       ? (numberOfRecords ~/ dropdownValue)
                       : (numberOfRecords ~/ dropdownValue) + 1;
                 });
-                getData(context);
+
+                BlocProvider.of<GetTableCubit>(context).getTable(
+                  pageId: widget.pageData.pageId.toString(),
+                  employee: false,
+                  isdesc: widget.pageData.isDesc,
+                  limit: dropdownValue,
+                  offset: (numberPage * dropdownValue) - dropdownValue,
+                  orderby: widget.pageData.orderBy,
+                  statment: ScreenTableBody.isSearch == true
+                      ? BuildAlertSearch.statement
+                      : '',
+                  selectcolumns: '',
+                  numberOfPage: numberPage,
+                  dropdownValueOfLimit: dropdownValue,
+                );
               },
               onTapMin: () {
                 setState(() {
                   numberPage--;
                 });
-                getData(context);
+
+                BlocProvider.of<GetTableCubit>(context).getTable(
+                  pageId: widget.pageData.pageId.toString(),
+                  employee: false,
+                  isdesc: widget.pageData.isDesc,
+                  limit: dropdownValue,
+                  offset: (numberPage * dropdownValue) - dropdownValue,
+                  orderby: widget.pageData.orderBy,
+                  statment: ScreenTableBody.isSearch == true
+                      ? BuildAlertSearch.statement
+                      : '',
+                  selectcolumns: '',
+                  numberOfPage: numberPage,
+                  dropdownValueOfLimit: dropdownValue,
+                );
               },
               onTapAdd: () {
                 setState(() {
                   numberPage++;
                 });
-                getData(context);
+
+                BlocProvider.of<GetTableCubit>(context).getTable(
+                  pageId: widget.pageData.pageId.toString(),
+                  employee: false,
+                  isdesc: widget.pageData.isDesc,
+                  limit: dropdownValue,
+                  offset: (numberPage * dropdownValue) - dropdownValue,
+                  orderby: widget.pageData.orderBy,
+                  statment: ScreenTableBody.isSearch == true
+                      ? BuildAlertSearch.statement
+                      : '',
+                  selectcolumns: '',
+                  numberOfPage: numberPage,
+                  dropdownValueOfLimit: dropdownValue,
+                );
               },
             ),
             onTapHeader: (String titleHeader) {
@@ -126,7 +168,21 @@ class _ScreenTableBodyState extends State<ScreenTableBody> {
                 orderBy = titleHeader;
                 isDesc = !isDesc;
               });
-              getData(context);
+
+              BlocProvider.of<GetTableCubit>(context).getTable(
+                pageId: widget.pageData.pageId.toString(),
+                employee: false,
+                isdesc: isDesc,
+                limit: dropdownValue,
+                offset: (numberPage * dropdownValue) - dropdownValue,
+                orderby: orderBy,
+                statment: ScreenTableBody.isSearch == true
+                    ? BuildAlertSearch.statement
+                    : '',
+                selectcolumns: '',
+                numberOfPage: numberPage,
+                dropdownValueOfLimit: dropdownValue,
+              );
             },
             onTapRow: (rowData) {
               ScreenTableBody.rowData = rowData;
@@ -141,21 +197,21 @@ class _ScreenTableBodyState extends State<ScreenTableBody> {
     );
   }
 
-  void getData(BuildContext context) {
-    BlocProvider.of<GetTableCubit>(context).getTable(
-      pageId: widget.pageData.pageId.toString(),
-      employee: false,
-      isdesc: isDesc,
-      limit: dropdownValue,
-      offset: (numberPage * dropdownValue) - dropdownValue,
-      orderby: orderBy,
-      statment:
-          ScreenTableBody.isSearch == true ? BuildAlertSearch.statement : '',
-      selectcolumns: '',
-      numberOfPage: numberPage,
-      dropdownValueOfLimit: dropdownValue,
-    );
-  }
+  // void getData(BuildContext context) {
+  //   BlocProvider.of<GetTableCubit>(context).getTable(
+  //     pageId: widget.pageData.pageId.toString(),
+  //     employee: false,
+  //     isdesc: isDesc,
+  //     limit: dropdownValue,
+  //     offset: (numberPage * dropdownValue) - dropdownValue,
+  //     orderby: orderBy,
+  //     statment:
+  //         ScreenTableBody.isSearch == true ? BuildAlertSearch.statement : '',
+  //     selectcolumns: '',
+  //     numberOfPage: numberPage,
+  //     dropdownValueOfLimit: dropdownValue,
+  //   );
+  // }
 }
 
 class MyCategory {
