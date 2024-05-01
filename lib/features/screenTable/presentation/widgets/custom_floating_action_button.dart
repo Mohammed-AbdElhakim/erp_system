@@ -135,6 +135,7 @@ class _CustomFloatingActionButtonState
         content: BuildAlertSearch(
           columnList: columnList,
           pageData: widget.pageData,
+          oldStatement: BuildAlertSearch.statement,
         ),
       );
     } else if (icon == Icons.refresh) {

@@ -20,9 +20,13 @@ import 'screen_table_body.dart';
 
 class BuildAlertSearch extends StatefulWidget {
   const BuildAlertSearch(
-      {super.key, required this.columnList, required this.pageData});
+      {super.key,
+      required this.columnList,
+      required this.pageData,
+      required this.oldStatement});
   final List<ColumnList> columnList;
   final Pages pageData;
+  final String oldStatement;
   static String statement = '';
 
   @override
@@ -97,6 +101,7 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
                     width: 80,
                     onTap: () {
                       formKey.currentState!.save();
+                      print(statment);
                       ScreenTableBody.isSearch = true;
                       BlocProvider.of<GetTableCubit>(context)
                           .getTable(
