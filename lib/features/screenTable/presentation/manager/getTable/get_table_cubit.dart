@@ -21,6 +21,10 @@ class GetTableCubit extends Cubit<GetTableState> {
     required String orderby,
     required String statment,
     required String selectcolumns,
+    required bool isDepartment,
+    required String departmentName,
+    required int authorizationID,
+    required String viewEmployeeColumn,
     required int numberOfPage,
     required int dropdownValueOfLimit,
   }) async {
@@ -34,6 +38,10 @@ class GetTableCubit extends Cubit<GetTableState> {
       orderby: orderby,
       statment: statment,
       selectcolumns: selectcolumns,
+      isDepartment: isDepartment,
+      departmentName: departmentName,
+      authorizationID: authorizationID,
+      viewEmployeeColumn: viewEmployeeColumn,
     );
     result.fold((failure) {
       emit(GetTableFailure(failure.errorMassage));
