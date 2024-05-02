@@ -456,8 +456,10 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
                                   closedFillColor: Colors.transparent,
                                   closedBorder:
                                       Border.all(color: AppColors.blueDark)),
-                              items: List.generate(dropList.length,
-                                  (index) => dropList[index].text ?? ''),
+                              items: dropList.isEmpty
+                                  ? ['']
+                                  : List.generate(dropList.length,
+                                      (index) => dropList[index].text ?? ''),
                               onListChanged: (x) {
                                 dsetState(() {
                                   selected = x;
