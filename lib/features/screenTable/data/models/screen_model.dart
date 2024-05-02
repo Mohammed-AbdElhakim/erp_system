@@ -1,9 +1,14 @@
 class ScreenModel {
   List<ColumnList>? columnList;
   List<Map<String, dynamic>>? dataList;
+  List<Map<String, dynamic>>? summedColumns;
   int? numberOfRecords;
 
-  ScreenModel({this.columnList, this.dataList, this.numberOfRecords});
+  ScreenModel(
+      {this.columnList,
+      this.dataList,
+      this.summedColumns,
+      this.numberOfRecords});
 
   ScreenModel.fromJson(Map<String, dynamic> json) {
     if (json['columnList'] != null) {
@@ -18,6 +23,12 @@ class ScreenModel {
         dataList!.add(v);
       });
     }
+    if (json['SummedColumns'] != null) {
+      summedColumns = <Map<String, dynamic>>[];
+      json['SummedColumns'].forEach((v) {
+        summedColumns!.add(v);
+      });
+    }
     numberOfRecords = json['numberOfRecords'];
   }
 
@@ -28,6 +39,9 @@ class ScreenModel {
     }
     if (dataList != null) {
       data['dataList'] = dataList!.map((v) => v).toList();
+    }
+    if (summedColumns != null) {
+      data['SummedColumns'] = summedColumns!.map((v) => v).toList();
     }
     data['numberOfRecords'] = numberOfRecords;
     return data;
