@@ -24,6 +24,10 @@ class ScreenRepoImpl implements ScreenRepo {
     required String orderby,
     required String statment,
     required String selectcolumns,
+    required bool isDepartment,
+    required String departmentName,
+    required int authorizationID,
+    required String viewEmployeeColumn,
   }) async {
     try {
       String companyKey =
