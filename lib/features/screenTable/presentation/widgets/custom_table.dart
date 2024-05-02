@@ -36,12 +36,14 @@ class _CustomTableState extends State<CustomTable> {
   LinkedScrollControllerGroup controllerGroup = LinkedScrollControllerGroup();
   ScrollController? headerScrollController;
   ScrollController? dataScrollController;
+  ScrollController? sumScrollController;
   int? indexColorRow;
 
   @override
   void initState() {
     headerScrollController = controllerGroup.addAndGet();
     dataScrollController = controllerGroup.addAndGet();
+    sumScrollController = controllerGroup.addAndGet();
     super.initState();
   }
 
@@ -160,6 +162,42 @@ class _CustomTableState extends State<CustomTable> {
                         ),
                       ),
                     ),
+                  ),
+                ),
+                //TODO:Sum
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  controller: sumScrollController,
+                  child: DataTable(
+                    columnSpacing: 0,
+                    horizontalMargin: 0,
+                    dataRowMinHeight: 50,
+                    dataRowMaxHeight: 50,
+                    headingRowHeight: 35,
+                    headingRowColor:
+                        MaterialStateProperty.all(AppColors.blueLight),
+                    columns: List.generate(
+                      widget.listHeader.length,
+                      (index) {
+                        return DataColumn(
+                          label: InkWell(
+                            onTap: () {
+                              widget.onTapHeader(
+                                  widget.listColumn[index].columnName!);
+                            },
+                            child: SizedBox(
+                              width: 120,
+                              child: Text(
+                                widget.listHeader[index],
+                                textAlign: TextAlign.center,
+                                style: AppStyles.textStyle14,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    rows: const [],
                   ),
                 ),
                 //TODO:pages
