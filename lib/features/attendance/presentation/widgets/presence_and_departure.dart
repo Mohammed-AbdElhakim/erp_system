@@ -6,6 +6,7 @@ import 'package:erp_system/core/utils/app_styles.dart';
 import 'package:erp_system/core/widgets/custom_error_massage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:location/location.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -254,28 +255,35 @@ class _PresenceAndDepartureState extends State<PresenceAndDeparture> {
   isValidLocation(List<ListValue> list) {
     double distance;
     for (var item in list) {
-      distance = calculateDistance(
-        lat1: lat ?? 0.0,
-        lon1: long ?? 0.0,
-
-        // lat1: 31.181040,
-        // long1: 29.928099,
-
-        // lat1: 30.003233,
-        // lon1: 31.274107,
-        //
-        // lat1: 30.314473,
-        // lon1: 31.312456,
-
-        // lat1: 31.182288,
-        // long1: 30.465129,
-
-        // lat1: 30.003434,
-        // long1: 31.274180,
-
-        lat2: item.latitude,
-        lon2: item.longitude,
-      );
+      distance = (Geolocator.distanceBetween(
+            lat ?? 0.0,
+            long ?? 0.0,
+            item.latitude,
+            item.longitude,
+          )) /
+          1000;
+      // distance = calculateDistance(
+      //   lat1: lat ?? 0.0,
+      //   lon1: long ?? 0.0,
+      //
+      //   // lat1: 31.181040,
+      //   // long1: 29.928099,
+      //
+      //   // lat1: 30.003233,
+      //   // lon1: 31.274107,
+      //   //
+      //   // lat1: 30.314473,
+      //   // lon1: 31.312456,
+      //
+      //   // lat1: 31.182288,
+      //   // long1: 30.465129,
+      //
+      //   // lat1: 30.003434,
+      //   // long1: 31.274180,
+      //
+      //   lat2: item.latitude,
+      //   lon2: item.longitude,
+      // );
       radius.add(distance);
       if (distance.toInt() == item.radius ||
           distance.toInt() < item.radius ||
