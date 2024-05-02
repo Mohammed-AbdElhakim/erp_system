@@ -210,8 +210,6 @@ class _CustomTableState extends State<CustomTable> {
   buildMyWidget(String value, String insertType, int indexRow) {
     switch (insertType) {
       case "date":
-        print("!!!!!!!!!!!!!!!!!!!!!!!!1111");
-        print(value);
         String date = value.isNotEmpty
             ? DateFormat("yyyy-MM-dd", 'en').format(DateTime.parse(value))
             : '';
@@ -219,7 +217,7 @@ class _CustomTableState extends State<CustomTable> {
           textAlign: TextAlign.center,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-          date,
+          date == "0001-12-31" || date == "0000-12-31" ? '' : date,
           style: TextStyle(
               color: indexRow == indexColorRow ? Colors.white : Colors.black),
         );
