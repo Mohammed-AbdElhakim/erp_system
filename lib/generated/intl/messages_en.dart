@@ -51,6 +51,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "leave": MessageLookupByLibrary.simpleMessage("Leave"),
         "log_out": MessageLookupByLibrary.simpleMessage("Log Out"),
         "login": MessageLookupByLibrary.simpleMessage("LOG IN"),
+        "massage_delete_long_press": MessageLookupByLibrary.simpleMessage(
+            "Please long press on the item you want to delete."),
         "massage_edit_long_press": MessageLookupByLibrary.simpleMessage(
             "Please long press on the item you want to edit."),
         "massage_no_permission":

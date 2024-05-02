@@ -33,6 +33,7 @@
   "from": "From",
   "to": "TO",
   "massage_edit_long_press":"Please long press on the item you want to edit.",
+  "massage_delete_long_press":"Please long press on the item you want to delete.",
   "massage_number_zero": "Eliminate zero balances.",
   "multiple_choices": "Multiple choices",
   "basic_data": "Basic data",

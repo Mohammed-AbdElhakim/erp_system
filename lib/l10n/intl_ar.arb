@@ -33,6 +33,7 @@
   "from": "من",
   "to": "إلى",
   "massage_edit_long_press": "يرجى الضغط المطول على العنصر الذي تريد تعديله.",
+  "massage_delete_long_press": "يرجى الضغط المطول على العنصر الذي تريد حذفه.",
   "massage_number_zero": "إلغاء الأرصدة الصفرية.",
   "multiple_choices": "إختيارات متعددة",
   "basic_data": "بيانات أساسية",

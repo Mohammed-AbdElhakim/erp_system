@@ -49,6 +49,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "leave": MessageLookupByLibrary.simpleMessage("انصراف"),
         "log_out": MessageLookupByLibrary.simpleMessage("تسجيل الخروج"),
         "login": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
+        "massage_delete_long_press": MessageLookupByLibrary.simpleMessage(
+            "يرجى الضغط المطول على العنصر الذي تريد حذفه."),
         "massage_edit_long_press": MessageLookupByLibrary.simpleMessage(
             "يرجى الضغط المطول على العنصر الذي تريد تعديله."),
         "massage_no_permission":

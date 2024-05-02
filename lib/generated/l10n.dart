@@ -390,6 +390,16 @@ class S {
     );
   }
 
+  /// `Please long press on the item you want to delete.`
+  String get massage_delete_long_press {
+    return Intl.message(
+      'Please long press on the item you want to delete.',
+      name: 'massage_delete_long_press',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Eliminate zero balances.`
   String get massage_number_zero {
     return Intl.message(
