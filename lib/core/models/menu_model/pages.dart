@@ -12,6 +12,10 @@ class Pages {
     required this.editSrc,
     required this.controllerName,
     required this.primary,
+    required this.isDepartment,
+    required this.departmentName,
+    required this.authorizationID,
+    required this.viewEmployeeColumn,
     required this.orderBy,
     required this.isDesc,
   });
@@ -27,6 +31,10 @@ class Pages {
   late final String editSrc;
   late final String controllerName;
   late final String primary;
+  late final bool isDepartment;
+  late final String departmentName;
+  late final int authorizationID;
+  late final String viewEmployeeColumn;
   late final String orderBy;
   late final bool isDesc;
 
@@ -43,6 +51,10 @@ class Pages {
     editSrc = json['EditSrc'];
     controllerName = json['ControllerName'];
     primary = json['Primary'];
+    isDepartment = json['IsDepartment'];
+    departmentName = json['DepartmentName'];
+    authorizationID = json['AuthorizationID'];
+    viewEmployeeColumn = json['ViewEmployeeColumn'];
     orderBy = json['OrderBy'];
     isDesc = json['IsDesc'];
   }
@@ -61,6 +73,10 @@ class Pages {
     data['EditSrc'] = editSrc;
     data['ControllerName'] = controllerName;
     data['Primary'] = primary;
+    data['IsDepartment'] = isDepartment;
+    data['DepartmentName'] = departmentName;
+    data['AuthorizationID'] = authorizationID;
+    data['ViewEmployeeColumn'] = viewEmployeeColumn;
     data['OrderBy'] = orderBy;
     data['IsDesc'] = isDesc;
     return data;
