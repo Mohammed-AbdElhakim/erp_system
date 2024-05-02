@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import '../../../../core/models/menu_model/pages.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_strings.dart';
+import '../../../../core/utils/methods.dart';
 import '../../../../core/utils/service_locator.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_text_form_field.dart';
@@ -37,10 +38,9 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
   String? lang;
   String statment = '';
   GlobalKey<FormState> formKey = GlobalKey();
-  bool checkboxValue = false;
+
   // bool checkboxValue2 = false;
-  late String dateFrom;
-  late String dateTo;
+
   late String companyKey;
   late String token;
   late String host;
@@ -48,9 +48,6 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
   @override
   void didChangeDependencies() {
     lang = Localizations.localeOf(context).toString();
-    dateFrom = S.of(context).from;
-    dateTo = S.of(context).to;
-
     super.didChangeDependencies();
   }
 
@@ -137,6 +134,10 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
           : item.enColumnLabel!;
       //text
       if (item.insertType == "text" && item.visible == true) {
+        String oldValue = getStringText(
+            search: item.searchName!, statement: widget.oldStatement);
+        TextEditingController controller =
+            TextEditingController(text: oldValue);
         listWidgets.add(Padding(
           padding: const EdgeInsets.symmetric(vertical: 5),
           child: Column(
@@ -147,6 +148,7 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
                 style: AppStyles.textStyle14.copyWith(color: Colors.grey),
               ),
               CustomTextFormField(
+                controller: controller,
                 hintText: '',
                 keyboardType: TextInputType.text,
                 onSaved: (value) {
@@ -165,6 +167,23 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
       }
       //number
       if (item.insertType == "number" && item.visible == true) {
+        String oldValueFrom = getStringNumber(
+            search: item.searchName!,
+            statement: widget.oldStatement,
+            type: "F");
+        String oldValueTo = getStringNumber(
+            search: item.searchName!,
+            statement: widget.oldStatement,
+            type: "T");
+        String oldValueNon = getStringNumber(
+            search: item.searchName!,
+            statement: widget.oldStatement,
+            type: "N");
+        TextEditingController controllerFrom =
+            TextEditingController(text: oldValueFrom);
+        TextEditingController controllerTo =
+            TextEditingController(text: oldValueTo);
+        bool checkboxValue = oldValueNon == "0" ? true : false;
         listWidgets.add(Padding(
           padding: const EdgeInsets.symmetric(vertical: 5),
           child: Column(
@@ -179,6 +198,7 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
                   //number from
                   Expanded(
                     child: CustomTextFormField(
+                      controller: controllerFrom,
                       hintText: S.of(context).from,
                       keyboardType: TextInputType.number,
                       onSaved: (value) {
@@ -196,6 +216,7 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
                   //number to
                   Expanded(
                     child: CustomTextFormField(
+                      controller: controllerTo,
                       hintText: S.of(context).to,
                       keyboardType: TextInputType.number,
                       onSaved: (value) {
@@ -250,6 +271,17 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
       }
       //Date
       if (item.insertType == "date" && item.visible == true) {
+        String oldValueFrom = getStringDate(
+            search: item.searchName!,
+            statement: widget.oldStatement,
+            type: "F");
+        String oldValueTo = getStringDate(
+            search: item.searchName!,
+            statement: widget.oldStatement,
+            type: "T");
+        String dateFrom =
+            oldValueFrom != '' ? oldValueFrom : S.of(context).from;
+        String dateTo = oldValueTo != '' ? oldValueTo : S.of(context).to;
         listWidgets.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -352,6 +384,8 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
       }
       //dropdown
       if (item.insertType == "dropdown" && item.visible == true) {
+        String oldValue = getStringDropdown(
+            statement: widget.oldStatement, search: item.searchName!);
         List<ListDropdownModel> dropList = [
           ListDropdownModel(value: -1, text: '')
         ];
@@ -388,11 +422,34 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
                         }
                       },
                       builder: (context, state) {
+                        List<String> dropValue = [];
+                        if (oldValue.isEmpty) {
+                          dropValue = [];
+                        } else if (oldValue.contains("or")) {
+                          List<String> sList = oldValue.split(" or ");
+                          for (var s in sList) {
+                            String finalVal = s.substring(
+                                (item.searchName!.length) + 3, s.length);
+                            for (var i in dropList) {
+                              if (i.value.toString() == finalVal) {
+                                dropValue.add(i.text ?? '');
+                              }
+                            }
+                          }
+                        } else {
+                          for (var i in dropList) {
+                            if (i.value.toString() == oldValue) {
+                              dropValue.add(i.text ?? '');
+                            }
+                          }
+                        }
+
                         return StatefulBuilder(
                           builder: (context, dsetState) {
                             String st = "";
                             return CustomDropdown<String>.multiSelectSearch(
                               hintText: '',
+                              initialItems: dropValue,
                               decoration: CustomDropdownDecoration(
                                   headerStyle: AppStyles.textStyle16
                                       .copyWith(color: Colors.black),
@@ -426,7 +483,7 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
                                     st += " or ";
                                   }
                                 }
-                                st += " )";
+                                st += " ) ";
                                 stFinial = st;
 
                                 statment = "$statment $stFinial";
@@ -446,7 +503,9 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
       }
       //checkbox
       if (item.insertType == "checkbox" && item.visible == true) {
-        String? valueCheckbox;
+        String oldValue = getStringCheckbox(
+            search: item.searchName!, statement: widget.oldStatement);
+        String? valueCheckbox = oldValue.isEmpty ? null : oldValue;
         listWidgets.add(Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

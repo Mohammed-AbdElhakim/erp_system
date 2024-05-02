@@ -45,6 +45,7 @@ class _ScreenTableBodyState extends State<ScreenTableBody> {
     dataScrollController = controllerGroup.addAndGet();
     numberPage = 1;
     dropdownValue = listNumberItemInList[0];
+    BuildAlertSearch.statement = '';
   }
 
   @override
