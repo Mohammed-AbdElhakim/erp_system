@@ -69,6 +69,7 @@ class _ScreenTableBodyState extends State<ScreenTableBody> {
         if (state is GetTableSuccess) {
           int? numberOfRecords = state.screenModel.numberOfRecords;
           List<dynamic>? listData = state.screenModel.dataList;
+          List<dynamic>? listSum = state.screenModel.summedColumns;
           List<String> listHeader = [];
           List<dynamic> listKey = [];
           List<ColumnList> listColumn = [];
@@ -93,6 +94,7 @@ class _ScreenTableBodyState extends State<ScreenTableBody> {
             listKey: listKey,
             listData: listData!,
             listColumn: listColumn,
+            listSum: listSum,
             paginationWidget: PaginationWidget(
               allPages: allPages,
               dropdownValue: dropdownValue,

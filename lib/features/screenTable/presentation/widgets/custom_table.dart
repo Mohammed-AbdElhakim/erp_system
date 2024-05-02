@@ -4,6 +4,7 @@ import 'package:linked_scroll_controller/linked_scroll_controller.dart';
 
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_styles.dart';
+import '../../../../core/utils/methods.dart';
 import '../../data/models/screen_model.dart';
 
 typedef OnTapHeader<String> = void Function(String titleHeader);
@@ -19,9 +20,11 @@ class CustomTable extends StatefulWidget {
     required this.onTapHeader,
     required this.listColumn,
     required this.onTapRow,
+    this.listSum,
   });
   final List<String> listHeader;
   final List<dynamic> listData;
+  final List<dynamic>? listSum;
   final List<dynamic> listKey;
   final List<ColumnList> listColumn;
   final Widget paginationWidget;
@@ -75,7 +78,7 @@ class _CustomTableState extends State<CustomTable> {
                         return DataColumn(
                           label: Expanded(
                             child: SizedBox(
-                              width: 100,
+                              width: 130,
                               child: Text(
                                 widget.listHeader[index],
                                 textAlign: TextAlign.center,
@@ -108,37 +111,40 @@ class _CustomTableState extends State<CustomTable> {
                           widget.listHeader.length,
                           (i) => DataCell(
                             SizedBox(
-                              width: 120,
+                              width: 130,
                               child: InkWell(
-                                onTap: widget.listColumn[i].insertType! !=
-                                        "date"
-                                    ? widget.listData[index]
-                                                    ['${widget.listKey[i]}']
-                                                .toString()
-                                                .length >
-                                            12
-                                        ? () {
-                                            showDialog(
-                                              context: context,
-                                              builder: (context) => Dialog(
-                                                child: InkWell(
-                                                  child: Container(
-                                                    padding:
-                                                        const EdgeInsetsDirectional
-                                                            .symmetric(
-                                                            horizontal: 16,
-                                                            vertical: 32),
-                                                    child: Text(
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                        "${widget.listData[index][widget.listKey[i]]}"),
-                                                  ),
-                                                ),
-                                              ),
-                                            );
-                                          }
-                                        : null
-                                    : null,
+                                onTap:
+                                    widget.listColumn[i].insertType! != "date"
+                                        ? widget.listData[index]
+                                                        ['${widget.listKey[i]}']
+                                                    .toString()
+                                                    .length >
+                                                12
+                                            ? () {
+                                                buildShowDialog(context,
+                                                    text:
+                                                        "${widget.listData[index][widget.listKey[i]]}");
+                                                // showDialog(
+                                                //   context: context,
+                                                //   builder: (context) => Dialog(
+                                                //     child: InkWell(
+                                                //       child: Container(
+                                                //         padding:
+                                                //             const EdgeInsetsDirectional
+                                                //                 .symmetric(
+                                                //                 horizontal: 16,
+                                                //                 vertical: 32),
+                                                //         child: Text(
+                                                //             textAlign:
+                                                //                 TextAlign.center,
+                                                //             "${widget.listData[index][widget.listKey[i]]}"),
+                                                //       ),
+                                                //     ),
+                                                //   ),
+                                                // );
+                                              }
+                                            : null
+                                        : null,
                                 child: Container(
                                   color: index == indexColorRow
                                       ? AppColors.blueGreyDark
@@ -165,41 +171,56 @@ class _CustomTableState extends State<CustomTable> {
                   ),
                 ),
                 //TODO:Sum
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  controller: sumScrollController,
-                  child: DataTable(
-                    columnSpacing: 0,
-                    horizontalMargin: 0,
-                    dataRowMinHeight: 50,
-                    dataRowMaxHeight: 50,
-                    headingRowHeight: 35,
-                    headingRowColor:
-                        MaterialStateProperty.all(AppColors.blueLight),
-                    columns: List.generate(
-                      widget.listHeader.length,
-                      (index) {
-                        return DataColumn(
-                          label: InkWell(
-                            onTap: () {
-                              widget.onTapHeader(
-                                  widget.listColumn[index].columnName!);
-                            },
-                            child: SizedBox(
-                              width: 120,
-                              child: Text(
-                                widget.listHeader[index],
-                                textAlign: TextAlign.center,
-                                style: AppStyles.textStyle14,
+                if (widget.listSum!.isNotEmpty)
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    controller: sumScrollController,
+                    child: DataTable(
+                      columnSpacing: 0,
+                      horizontalMargin: 0,
+                      dataRowMinHeight: 50,
+                      dataRowMaxHeight: 50,
+                      headingRowHeight: 35,
+                      headingRowColor:
+                          MaterialStateProperty.all(AppColors.blueLight),
+                      columns: List.generate(
+                        widget.listHeader.length,
+                        (index) {
+                          return DataColumn(
+                            label: InkWell(
+                              onTap: () {
+                                if (widget.listSum![0][widget.listKey[index]]
+                                        .toString()
+                                        .length >
+                                    12) {
+                                  buildShowDialog(context,
+                                      text: widget.listSum![0]
+                                              [widget.listKey[index]]
+                                          .toString());
+                                }
+                              },
+                              child: SizedBox(
+                                width: 130,
+                                child: Text(
+                                  widget.listSum![0][widget.listKey[index]] ==
+                                          null
+                                      ? ""
+                                      : widget.listSum![0]
+                                              [widget.listKey[index]]
+                                          .toString(),
+                                  // widget.listHeader[index],
+                                  textAlign: TextAlign.center,
+                                  style: AppStyles.textStyle14,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
                             ),
-                          ),
-                        );
-                      },
+                          );
+                        },
+                      ),
+                      rows: const [],
                     ),
-                    rows: const [],
                   ),
-                ),
                 //TODO:pages
                 widget.paginationWidget,
               ],
@@ -226,7 +247,7 @@ class _CustomTableState extends State<CustomTable> {
                             .onTapHeader(widget.listColumn[index].columnName!);
                       },
                       child: SizedBox(
-                        width: 120,
+                        width: 130,
                         child: Text(
                           widget.listHeader[index],
                           textAlign: TextAlign.center,
