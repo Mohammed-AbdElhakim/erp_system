@@ -6,7 +6,7 @@ class DropdownModel {
 
   DropdownModel.fromJson(Map<String, dynamic> json) {
     if (json['list'] != null) {
-      list = <ListDropdownModel>[ListDropdownModel(value: -1, text: '')];
+      list = <ListDropdownModel>[];
       json['list'].forEach((v) {
         list!.add(ListDropdownModel.fromJson(v));
       });
