@@ -193,8 +193,22 @@ class _PresenceAndDepartureState extends State<PresenceAndDeparture> {
       distance = getDistanceFromLatLonInKm(
         lat1: lat ?? 0.0,
         long1: long ?? 0.0,
+
         // lat1: 31.181040,
         // long1: 29.928099,
+
+        // lat1: 30.003233,
+        // long1: 31.274107,
+
+        // lat1: 30.314473,
+        // long1: 31.312456,
+
+        // lat1: 31.182288,
+        // long1: 30.465129,
+
+        // lat1: 30.003434,
+        // long1: 31.274180,
+
         lat2: item.latitude,
         long2: item.longitude,
       );
