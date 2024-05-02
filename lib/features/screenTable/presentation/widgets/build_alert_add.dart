@@ -359,9 +359,7 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
           item.insertVisable == true &&
           item.categoryName == categoryName &&
           item.insertDefult == show) {
-        List<ListDropdownModel> dropListData = [
-          ListDropdownModel(value: -1, text: '')
-        ];
+        List<ListDropdownModel> dropListData = [];
         list.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -398,7 +396,7 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                         GetDropdownListState>(
                       listener: (context, state) {
                         if (state is GetDropdownListSuccess) {
-                          dropListData = state.dropdownModel.list!;
+                          dropListData.addAll(state.dropdownModel.list!);
                         }
                       },
                       builder: (context, state) {
@@ -417,8 +415,10 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                               return null;
                             }
                           },
-                          items: List.generate(dropListData!.length,
-                              (index) => dropListData![index].text ?? ''),
+                          items: dropListData.isEmpty
+                              ? [""]
+                              : List.generate(dropListData.length,
+                                  (index) => dropListData[index].text ?? ''),
                           onChanged: (value) {
                             newRowData
                                 .addAll({item.searchName!.toString(): value});

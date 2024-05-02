@@ -405,9 +405,7 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
           item.insertVisable == true &&
           item.categoryName == categoryName &&
           item.insertDefult == show) {
-        List<ListDropdownModel> dropListData = [
-          ListDropdownModel(value: -1, text: '')
-        ];
+        List<ListDropdownModel> dropListData = [];
         list.add(Padding(
           padding: const EdgeInsets.symmetric(vertical: 5),
           child: Column(
@@ -483,8 +481,10 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                             return null;
                           }
                         },
-                        items: List.generate(dropListData.length,
-                            (index) => dropListData[index].text ?? ''),
+                        items: dropListData.isEmpty
+                            ? ['']
+                            : List.generate(dropListData.length,
+                                (index) => dropListData[index].text ?? ''),
                         onChanged: (value) {
                           newRowData
                               .addAll({item.searchName!.toString(): value});
