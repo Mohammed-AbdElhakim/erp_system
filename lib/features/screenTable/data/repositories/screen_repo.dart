@@ -15,6 +15,10 @@ abstract class ScreenRepo {
     required String orderby,
     required String statment,
     required String selectcolumns,
+    required bool isDepartment,
+    required String departmentName,
+    required int authorizationID,
+    required String viewEmployeeColumn,
   });
   Future<Either<Failure, PermissionModel>> getPagePermissions(String pageId);
   Future<Either<Failure, Map<String, dynamic>>> getById(
