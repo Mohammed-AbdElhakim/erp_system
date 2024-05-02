@@ -149,6 +149,11 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                             orderby: widget.pageData.orderBy,
                             statment: '',
                             selectcolumns: '',
+                            departmentName: widget.pageData.departmentName,
+                            isDepartment: widget.pageData.isDepartment,
+                            authorizationID: widget.pageData.authorizationID,
+                            viewEmployeeColumn:
+                                widget.pageData.viewEmployeeColumn,
                             numberOfPage: 1,
                             dropdownValueOfLimit: 10);
                         widget.columnList.clear();

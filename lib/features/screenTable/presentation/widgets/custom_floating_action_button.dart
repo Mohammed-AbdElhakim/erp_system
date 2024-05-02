@@ -150,6 +150,10 @@ class _CustomFloatingActionButtonState
           orderby: widget.pageData.orderBy,
           statment: '',
           selectcolumns: '',
+          departmentName: widget.pageData.departmentName,
+          isDepartment: widget.pageData.isDepartment,
+          authorizationID: widget.pageData.authorizationID,
+          viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
           dropdownValueOfLimit: 10,
           numberOfPage: 1);
     } else if (icon == Icons.delete) {

@@ -42,6 +42,10 @@ class _ScreenTableState extends State<ScreenTable> {
         orderby: widget.pageData.orderBy,
         statment: "",
         selectcolumns: '',
+        departmentName: widget.pageData.departmentName,
+        isDepartment: widget.pageData.isDepartment,
+        authorizationID: widget.pageData.authorizationID,
+        viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
         dropdownValueOfLimit: 10,
         numberOfPage: 1);
     BlocProvider.of<GetPermissionsCubit>(context)

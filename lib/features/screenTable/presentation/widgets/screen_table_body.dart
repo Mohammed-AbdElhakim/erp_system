@@ -121,6 +121,10 @@ class _ScreenTableBodyState extends State<ScreenTableBody> {
                   selectcolumns: '',
                   numberOfPage: numberPage,
                   dropdownValueOfLimit: dropdownValue,
+                  departmentName: widget.pageData.departmentName,
+                  isDepartment: widget.pageData.isDepartment,
+                  authorizationID: widget.pageData.authorizationID,
+                  viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
                 );
               },
               onTapMin: () {
@@ -139,6 +143,10 @@ class _ScreenTableBodyState extends State<ScreenTableBody> {
                       ? BuildAlertSearch.statement
                       : '',
                   selectcolumns: '',
+                  departmentName: widget.pageData.departmentName,
+                  isDepartment: widget.pageData.isDepartment,
+                  authorizationID: widget.pageData.authorizationID,
+                  viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
                   numberOfPage: numberPage,
                   dropdownValueOfLimit: dropdownValue,
                 );
@@ -159,6 +167,10 @@ class _ScreenTableBodyState extends State<ScreenTableBody> {
                       ? BuildAlertSearch.statement
                       : '',
                   selectcolumns: '',
+                  departmentName: widget.pageData.departmentName,
+                  isDepartment: widget.pageData.isDepartment,
+                  authorizationID: widget.pageData.authorizationID,
+                  viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
                   numberOfPage: numberPage,
                   dropdownValueOfLimit: dropdownValue,
                 );
@@ -181,6 +193,10 @@ class _ScreenTableBodyState extends State<ScreenTableBody> {
                     ? BuildAlertSearch.statement
                     : '',
                 selectcolumns: '',
+                departmentName: widget.pageData.departmentName,
+                isDepartment: widget.pageData.isDepartment,
+                authorizationID: widget.pageData.authorizationID,
+                viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
                 numberOfPage: numberPage,
                 dropdownValueOfLimit: dropdownValue,
               );
