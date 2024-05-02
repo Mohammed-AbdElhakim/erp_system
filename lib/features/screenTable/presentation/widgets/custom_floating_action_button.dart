@@ -157,7 +157,19 @@ class _CustomFloatingActionButtonState
           dropdownValueOfLimit: 10,
           numberOfPage: 1);
     } else if (icon == Icons.delete) {
-      // print("delete");
+      if (ScreenTableBody.rowData.isNotEmpty) {
+        CustomAlertDialog.alertWithButton(
+            context: context,
+            type: AlertType.error,
+            title: "تأكيد",
+            desc: "هل تريد بتأكيد حذف العنصر المحدد؟");
+      } else {
+        CustomAlertDialog.alertWithButton(
+            context: context,
+            type: AlertType.error,
+            title: S.of(context).error,
+            desc: S.of(context).massage_delete_long_press);
+      }
     } else if (icon == Icons.edit_note) {
       if (ScreenTableBody.rowData.isNotEmpty) {
         CustomAlertDialog.alertWithCustomContent(
