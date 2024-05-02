@@ -6,6 +6,7 @@ import 'package:erp_system/core/widgets/custom_loading_widget.dart';
 import 'package:erp_system/features/screenTable/data/repositories/screen_repo_impl.dart';
 import 'package:erp_system/features/screenTable/presentation/manager/addEdit/add_edit_cubit.dart';
 import 'package:erp_system/features/screenTable/presentation/manager/getById/get_by_id_cubit.dart';
+import 'package:erp_system/features/screenTable/presentation/widgets/init_dropDown.dart';
 import 'package:erp_system/features/screenTable/presentation/widgets/screen_table_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -405,7 +406,6 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
           item.insertVisable == true &&
           item.categoryName == categoryName &&
           item.insertDefult == show) {
-        List<ListDropdownModel> dropListData = [];
         list.add(Padding(
           padding: const EdgeInsets.symmetric(vertical: 5),
           child: Column(
@@ -438,58 +438,59 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                           droCompany: item.droCompany ?? "",
                         ),
                   child:
-                      BlocConsumer<GetDropdownListCubit, GetDropdownListState>(
-                    listener: (context, state) {
-                      if (state is GetDropdownListSuccess) {
-                        dropListData = state.dropdownModel.list!;
-                      }
-                    },
+                      BlocBuilder<GetDropdownListCubit, GetDropdownListState>(
                     builder: (context, state) {
-                      String? dropValue;
-                      for (var i in dropListData) {
-                        if (i.value.toString() ==
-                            rowData[item.searchName].toString()) {
-                          dropValue = i.text ?? '';
+                      if (state is GetDropdownListSuccess) {
+                        List<ListDropdownModel> dropListData = [];
+                        dropListData = state.dropdownModel.list!;
+                        String? dropValue;
+                        for (var i in dropListData) {
+                          if (i.value.toString() ==
+                              rowData[item.searchName].toString()) {
+                            dropValue = i.text ?? '';
+                          }
+                          if (i.text.toString() ==
+                              rowData[item.searchName].toString()) {
+                            dropValue = i.text ?? '';
+                          }
+                          if (i.value.toString() ==
+                              rowData[item.columnName].toString()) {
+                            dropValue = i.text ?? '';
+                          }
+                          if (i.text.toString() ==
+                              rowData[item.columnName].toString()) {
+                            dropValue = i.text ?? '';
+                          }
                         }
-                        if (i.text.toString() ==
-                            rowData[item.searchName].toString()) {
-                          dropValue = i.text ?? '';
-                        }
-                        if (i.value.toString() ==
-                            rowData[item.columnName].toString()) {
-                          dropValue = i.text ?? '';
-                        }
-                        if (i.text.toString() ==
-                            rowData[item.columnName].toString()) {
-                          dropValue = i.text ?? '';
-                        }
+                        return CustomDropdown<String>.search(
+                          hintText: '',
+                          initialItem: dropValue,
+                          decoration: CustomDropdownDecoration(
+                              headerStyle: AppStyles.textStyle16
+                                  .copyWith(color: Colors.black),
+                              closedFillColor: Colors.transparent,
+                              closedBorder:
+                                  Border.all(color: AppColors.blueDark)),
+                          validator: (value) {
+                            if (value?.isEmpty ?? true) {
+                              return S.of(context).field_is_required;
+                            } else {
+                              return null;
+                            }
+                          },
+                          items: dropListData.isEmpty
+                              ? ['']
+                              : List.generate(dropListData.length,
+                                  (index) => dropListData[index].text ?? ''),
+                          onChanged: (value) {
+                            newRowData
+                                .addAll({item.searchName!.toString(): value});
+                          },
+                        );
+                      } else {
+                        return const InitDropdown();
                       }
 
-                      return CustomDropdown<String>.search(
-                        hintText: '',
-                        initialItem: dropValue,
-                        decoration: CustomDropdownDecoration(
-                            headerStyle: AppStyles.textStyle16
-                                .copyWith(color: Colors.black),
-                            closedFillColor: Colors.transparent,
-                            closedBorder:
-                                Border.all(color: AppColors.blueDark)),
-                        validator: (value) {
-                          if (value?.isEmpty ?? true) {
-                            return S.of(context).field_is_required;
-                          } else {
-                            return null;
-                          }
-                        },
-                        items: dropListData.isEmpty
-                            ? ['']
-                            : List.generate(dropListData.length,
-                                (index) => dropListData[index].text ?? ''),
-                        onChanged: (value) {
-                          newRowData
-                              .addAll({item.searchName!.toString(): value});
-                        },
-                      );
                       // return DropdownMenu(
                       //   enableFilter: true,
                       //   enableSearch: false,

@@ -21,6 +21,7 @@ import '../../data/repositories/screen_repo_impl.dart';
 import '../manager/addEdit/add_edit_cubit.dart';
 import '../manager/getDropdownList/get_dropdown_list_cubit.dart';
 import '../manager/getTable/get_table_cubit.dart';
+import 'init_dropDown.dart';
 
 class BuildAlertAdd extends StatefulWidget {
   const BuildAlertAdd(
@@ -359,7 +360,6 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
           item.insertVisable == true &&
           item.categoryName == categoryName &&
           item.insertDefult == show) {
-        List<ListDropdownModel> dropListData = [];
         list.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -392,38 +392,39 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                             droCondition: item.droCondition ?? "",
                             droCompany: item.droCompany ?? "",
                           ),
-                    child: BlocConsumer<GetDropdownListCubit,
-                        GetDropdownListState>(
-                      listener: (context, state) {
-                        if (state is GetDropdownListSuccess) {
-                          dropListData.addAll(state.dropdownModel.list!);
-                        }
-                      },
+                    child:
+                        BlocBuilder<GetDropdownListCubit, GetDropdownListState>(
                       builder: (context, state) {
-                        return CustomDropdown<String>.search(
-                          hintText: '',
-                          decoration: CustomDropdownDecoration(
-                              headerStyle: AppStyles.textStyle16
-                                  .copyWith(color: Colors.black),
-                              closedFillColor: Colors.transparent,
-                              closedBorder:
-                                  Border.all(color: AppColors.blueDark)),
-                          validator: (value) {
-                            if (value?.isEmpty ?? true) {
-                              return S.of(context).field_is_required;
-                            } else {
-                              return null;
-                            }
-                          },
-                          items: dropListData.isEmpty
-                              ? [""]
-                              : List.generate(dropListData.length,
-                                  (index) => dropListData[index].text ?? ''),
-                          onChanged: (value) {
-                            newRowData
-                                .addAll({item.searchName!.toString(): value});
-                          },
-                        );
+                        if (state is GetDropdownListSuccess) {
+                          List<ListDropdownModel> dropListData = [];
+                          dropListData.addAll(state.dropdownModel.list!);
+                          return CustomDropdown<String>.search(
+                            hintText: '',
+                            decoration: CustomDropdownDecoration(
+                                headerStyle: AppStyles.textStyle16
+                                    .copyWith(color: Colors.black),
+                                closedFillColor: Colors.transparent,
+                                closedBorder:
+                                    Border.all(color: AppColors.blueDark)),
+                            validator: (value) {
+                              if (value?.isEmpty ?? true) {
+                                return S.of(context).field_is_required;
+                              } else {
+                                return null;
+                              }
+                            },
+                            items: dropListData.isEmpty
+                                ? [""]
+                                : List.generate(dropListData.length,
+                                    (index) => dropListData[index].text ?? ''),
+                            onChanged: (value) {
+                              newRowData
+                                  .addAll({item.searchName!.toString(): value});
+                            },
+                          );
+                        } else {
+                          return const InitDropdown();
+                        }
                       },
                     ),
                   ),
