@@ -32,6 +32,7 @@ class PresenceAndDeparture extends StatefulWidget {
 class _PresenceAndDepartureState extends State<PresenceAndDeparture> {
   double? lat;
   double? long;
+  List<double> radius = [];
   bool isLocation = false;
   ListValue? myLocation;
   bool isAttend = false;
@@ -75,54 +76,90 @@ class _PresenceAndDepartureState extends State<PresenceAndDeparture> {
         },
         builder: (context, state) {
           if (state is GetAttendanceLocationsSuccess) {
-            return Center(
-              child: VerticalSlidableButton(
-                height: MediaQuery.of(context).size.height / 3,
-                buttonHeight: 60.0,
-                color: AppColors.blueGreyLight,
-                buttonColor: isAttend ? AppColors.green : AppColors.red,
-                dismissible: false,
-                width: 90,
-                initialPosition: isAttend == true
-                    ? SlidableButtonPosition.start
-                    : SlidableButtonPosition.end,
-                label: Center(
+            return Column(
+              children: [
+                Padding(
+                  padding:
+                      const EdgeInsetsDirectional.only(end: 15, bottom: 15),
                   child: Text(
-                    S.of(context).swipe_to,
-                    style: AppStyles.textStyle12,
+                    "User Location: ( Long => $long )  ( Lat => $lat )  ( Distance => $radius )",
+                    textDirection: TextDirection.ltr,
                   ),
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                ListView(
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 25.0),
-                      child: Text(S.of(context).attend),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 25.0),
-                      child: Text(S.of(context).leave),
+                    ...List.generate(
+                      state.locationModel.list.length,
+                      (index) => Padding(
+                        padding: const EdgeInsetsDirectional.only(
+                            bottom: 15, end: 15),
+                        child: Text(
+                          "Location in Api ( ${index + 1} ): ( Long => ${state.locationModel.list[index].longitude} )  ( Lat => ${state.locationModel.list[index].latitude} )  ( Radius => ${state.locationModel.list[index].radius} )",
+                          textDirection: TextDirection.ltr,
+                        ),
+                      ),
                     ),
                   ],
                 ),
-                onChanged: (position) {
-                  setState(() {
-                    if (position == SlidableButtonPosition.end) {
-                      BlocProvider.of<AttendanceCubit>(context).sendAttendance(
-                        time: DateTime.now().toIso8601String(),
-                        machineID: myLocation!.machineID.toString(),
-                        checkType: "CheckOut",
-                      );
-                    } else {
-                      BlocProvider.of<AttendanceCubit>(context).sendAttendance(
-                        time: DateTime.now().toIso8601String(),
-                        machineID: myLocation!.machineID.toString(),
-                        checkType: "CheckIn",
-                      );
-                    }
-                  });
-                },
-              ),
+                SizedBox(
+                  height: 15,
+                ),
+                Center(
+                  child: VerticalSlidableButton(
+                    height: 170,
+                    // height: MediaQuery.of(context).size.height / 3,
+                    // buttonHeight: 60.0,
+                    buttonHeight: 50.0,
+                    color: AppColors.blueGreyLight,
+                    buttonColor: isAttend ? AppColors.green : AppColors.red,
+                    dismissible: false,
+                    width: 90,
+                    initialPosition: isAttend == true
+                        ? SlidableButtonPosition.start
+                        : SlidableButtonPosition.end,
+                    label: Center(
+                      child: Text(
+                        S.of(context).swipe_to,
+                        style: AppStyles.textStyle12,
+                      ),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 25.0),
+                          child: Text(S.of(context).attend),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 25.0),
+                          child: Text(S.of(context).leave),
+                        ),
+                      ],
+                    ),
+                    onChanged: (position) {
+                      setState(() {
+                        if (position == SlidableButtonPosition.end) {
+                          BlocProvider.of<AttendanceCubit>(context)
+                              .sendAttendance(
+                            time: DateTime.now().toIso8601String(),
+                            machineID: myLocation!.machineID.toString(),
+                            checkType: "CheckOut",
+                          );
+                        } else {
+                          BlocProvider.of<AttendanceCubit>(context)
+                              .sendAttendance(
+                            time: DateTime.now().toIso8601String(),
+                            machineID: myLocation!.machineID.toString(),
+                            checkType: "CheckIn",
+                          );
+                        }
+                      });
+                    },
+                  ),
+                ),
+              ],
             );
           } else if (state is AttendanceFailure) {
             return CustomErrorMassage(errorMassage: state.errorMassage);
@@ -164,44 +201,71 @@ class _PresenceAndDepartureState extends State<PresenceAndDeparture> {
     });
   }
 
-  getDistanceFromLatLonInKm({
-    required double lat1,
-    required double long1,
-    required double lat2,
-    required double long2,
-  }) {
-    var R = 6371; // Radius of the earth in km
-    var dLat = deg2rad(lat2 - lat1); // deg2rad below
-    var dLon = deg2rad(long2 - long1);
-    var a = math.sin(dLat / 2) * math.sin(dLat / 2) +
-        math.cos(deg2rad(lat1)) *
-            math.cos(deg2rad(lat2)) *
-            math.sin(dLon / 2) *
-            math.sin(dLon / 2);
-    var c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a));
-    var d = R * c; // Distance in km
-    return d;
+// Function to calculate the distance between two points
+  double calculateDistance(
+      {required double lat1,
+      required double lon1,
+      required double lat2,
+      required double lon2}) {
+    const double earthRadius = 6371; // Radius of the Earth in kilometers
+
+    // Convert latitude and longitude from degrees to radians
+    double dLat = _degreesToRadians(lat2 - lat1);
+    double dLon = _degreesToRadians(lon2 - lon1);
+
+    double a = math.pow(math.sin(dLat / 2), 2) +
+        math.cos(_degreesToRadians(lat1)) *
+            math.cos(_degreesToRadians(lat2)) *
+            math.pow(math.sin(dLon / 2), 2);
+    double c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a));
+
+    // Calculate the distance
+    double distance = earthRadius * c;
+    return distance;
   }
 
-  deg2rad(double deg) {
-    return deg * (math.pi / 180);
+// Helper function to convert degrees to radians
+  double _degreesToRadians(double degrees) {
+    return degrees * math.pi / 180;
   }
+  // getDistanceFromLatLonInKm({
+  //   required double lat1,
+  //   required double long1,
+  //   required double lat2,
+  //   required double long2,
+  // }) {
+  //   var R = 6371; // Radius of the earth in km
+  //   var dLat = deg2rad(lat2 - lat1); // deg2rad below
+  //   var dLon = deg2rad(long2 - long1);
+  //   var a = math.sin(dLat / 2) * math.sin(dLat / 2) +
+  //       math.cos(deg2rad(lat1)) *
+  //           math.cos(deg2rad(lat2)) *
+  //           math.sin(dLon / 2) *
+  //           math.sin(dLon / 2);
+  //   var c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a));
+  //   var d = R * c; //// Distance in km
+  //   return d;
+  // }
+  //
+  // deg2rad(double deg) {
+  //   return deg * (math.pi / 180);
+  // }
 
   isValidLocation(List<ListValue> list) {
     double distance;
     for (var item in list) {
-      distance = getDistanceFromLatLonInKm(
+      distance = calculateDistance(
         lat1: lat ?? 0.0,
-        long1: long ?? 0.0,
+        lon1: long ?? 0.0,
 
         // lat1: 31.181040,
         // long1: 29.928099,
 
         // lat1: 30.003233,
-        // long1: 31.274107,
-
+        // lon1: 31.274107,
+        //
         // lat1: 30.314473,
-        // long1: 31.312456,
+        // lon1: 31.312456,
 
         // lat1: 31.182288,
         // long1: 30.465129,
@@ -210,9 +274,9 @@ class _PresenceAndDepartureState extends State<PresenceAndDeparture> {
         // long1: 31.274180,
 
         lat2: item.latitude,
-        long2: item.longitude,
+        lon2: item.longitude,
       );
-
+      radius.add(distance);
       if (distance.toInt() == item.radius ||
           distance.toInt() < item.radius ||
           distance.toInt() == 0) {
