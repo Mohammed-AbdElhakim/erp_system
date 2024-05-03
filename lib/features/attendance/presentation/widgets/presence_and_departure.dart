@@ -1,5 +1,3 @@
-import 'dart:math' as math;
-
 import 'package:erp_system/core/utils/app_colors.dart';
 import 'package:erp_system/core/utils/app_strings.dart';
 import 'package:erp_system/core/utils/app_styles.dart';
@@ -8,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
-import 'package:location/location.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:slidable_button/slidable_button.dart';
 
@@ -31,8 +28,8 @@ class PresenceAndDeparture extends StatefulWidget {
 }
 
 class _PresenceAndDepartureState extends State<PresenceAndDeparture> {
-  double? lat;
-  double? long;
+  double lat = 0;
+  double long = 0;
   List<double> radius = [];
   bool isLocation = false;
   ListValue? myLocation;
@@ -42,7 +39,6 @@ class _PresenceAndDepartureState extends State<PresenceAndDeparture> {
   void initState() {
     super.initState();
     getData();
-    getLocation();
   }
 
   @override
@@ -104,7 +100,7 @@ class _PresenceAndDepartureState extends State<PresenceAndDeparture> {
                     ),
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 15,
                 ),
                 Center(
@@ -172,118 +168,16 @@ class _PresenceAndDepartureState extends State<PresenceAndDeparture> {
     );
   }
 
-  getLocation() async {
-    Location location = Location();
-
-    LocationData? locationData;
-    bool serviceEnabled;
-    PermissionStatus permissionGranted;
-
-    serviceEnabled = await location.serviceEnabled();
-    if (!serviceEnabled) {
-      serviceEnabled = await location.requestService();
-      if (!serviceEnabled) {
-        return;
-      }
-    }
-
-    permissionGranted = await location.hasPermission();
-    if (permissionGranted == PermissionStatus.denied) {
-      permissionGranted = await location.requestPermission();
-      if (permissionGranted != PermissionStatus.granted) {
-        return;
-      }
-    }
-
-    locationData = await location.getLocation();
-    setState(() {
-      lat = locationData?.latitude;
-      long = locationData?.longitude;
-    });
-  }
-
-// Function to calculate the distance between two points
-  double calculateDistance(
-      {required double lat1,
-      required double lon1,
-      required double lat2,
-      required double lon2}) {
-    const double earthRadius = 6371; // Radius of the Earth in kilometers
-
-    // Convert latitude and longitude from degrees to radians
-    double dLat = _degreesToRadians(lat2 - lat1);
-    double dLon = _degreesToRadians(lon2 - lon1);
-
-    double a = math.pow(math.sin(dLat / 2), 2) +
-        math.cos(_degreesToRadians(lat1)) *
-            math.cos(_degreesToRadians(lat2)) *
-            math.pow(math.sin(dLon / 2), 2);
-    double c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a));
-
-    // Calculate the distance
-    double distance = earthRadius * c;
-    return distance;
-  }
-
-// Helper function to convert degrees to radians
-  double _degreesToRadians(double degrees) {
-    return degrees * math.pi / 180;
-  }
-  // getDistanceFromLatLonInKm({
-  //   required double lat1,
-  //   required double long1,
-  //   required double lat2,
-  //   required double long2,
-  // }) {
-  //   var R = 6371; // Radius of the earth in km
-  //   var dLat = deg2rad(lat2 - lat1); // deg2rad below
-  //   var dLon = deg2rad(long2 - long1);
-  //   var a = math.sin(dLat / 2) * math.sin(dLat / 2) +
-  //       math.cos(deg2rad(lat1)) *
-  //           math.cos(deg2rad(lat2)) *
-  //           math.sin(dLon / 2) *
-  //           math.sin(dLon / 2);
-  //   var c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a));
-  //   var d = R * c; //// Distance in km
-  //   return d;
-  // }
-  //
-  // deg2rad(double deg) {
-  //   return deg * (math.pi / 180);
-  // }
-
   isValidLocation(List<ListValue> list) {
     double distance;
     for (var item in list) {
       distance = (Geolocator.distanceBetween(
-            lat ?? 0.0,
-            long ?? 0.0,
+            lat,
+            long,
             item.latitude,
             item.longitude,
           )) /
           1000;
-      // distance = calculateDistance(
-      //   lat1: lat ?? 0.0,
-      //   lon1: long ?? 0.0,
-      //
-      //   // lat1: 31.181040,
-      //   // long1: 29.928099,
-      //
-      //   // lat1: 30.003233,
-      //   // lon1: 31.274107,
-      //   //
-      //   // lat1: 30.314473,
-      //   // lon1: 31.312456,
-      //
-      //   // lat1: 31.182288,
-      //   // long1: 30.465129,
-      //
-      //   // lat1: 30.003434,
-      //   // long1: 31.274180,
-      //
-      //   lat2: item.latitude,
-      //   lon2: item.longitude,
-      // );
       radius.add(distance);
       if (distance.toInt() == item.radius ||
           distance.toInt() < item.radius ||
@@ -304,8 +198,14 @@ class _PresenceAndDepartureState extends State<PresenceAndDeparture> {
   void getData() async {
     bool state =
         await Pref.getBoolFromPref(key: AppStrings.isAttendKey) ?? false;
+    double latPref =
+        await Pref.getDoubleFromPref(key: AppStrings.latKey) ?? 0.0;
+    double longPref =
+        await Pref.getDoubleFromPref(key: AppStrings.longKey) ?? 0.0;
     setState(() {
       isAttend = state;
+      lat = latPref;
+      long = longPref;
     });
   }
 }
