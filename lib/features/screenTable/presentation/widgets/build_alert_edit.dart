@@ -59,7 +59,7 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
     return BlocProvider(
       create: (context) => GetByIdCubit(getIt.get<ScreenRepoImpl>())
         ..getById(
-            id: ScreenTableBody.rowData[widget.pageData.primary].toString(),
+            id: ScreenTableBody.rowData[0][widget.pageData.primary].toString(),
             controllerName: widget.pageData.controllerName),
       child: BlocBuilder<GetByIdCubit, GetByIdState>(
         builder: (context, state) {

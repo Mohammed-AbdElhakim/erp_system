@@ -29,7 +29,7 @@ class CustomTable extends StatefulWidget {
   final List<ColumnList> listColumn;
   final Widget paginationWidget;
   final OnTapHeader<String> onTapHeader;
-  final OnTapRow<Map<String, dynamic>> onTapRow;
+  final OnTapRow<List<Map<String, dynamic>>> onTapRow;
 
   @override
   State<CustomTable> createState() => _CustomTableState();
@@ -40,13 +40,18 @@ class _CustomTableState extends State<CustomTable> {
   ScrollController? headerScrollController;
   ScrollController? dataScrollController;
   ScrollController? sumScrollController;
-  int? indexColorRow;
+  // int? indexColorRow;
+  List<bool> selectedRows = [];
+  List<Map<String, dynamic>> rowsData = [];
 
   @override
   void initState() {
     headerScrollController = controllerGroup.addAndGet();
     dataScrollController = controllerGroup.addAndGet();
     sumScrollController = controllerGroup.addAndGet();
+    for (int i = 0; i < widget.listData.length; i++) {
+      selectedRows.add(false); // Initialize selectedRows with false
+    }
     super.initState();
   }
 
@@ -66,7 +71,7 @@ class _CustomTableState extends State<CustomTable> {
                   controller: dataScrollController,
                   child: DataTable(
                     columnSpacing: 0,
-                    horizontalMargin: 0,
+                    horizontalMargin: 15,
                     dataRowMinHeight: 35,
                     dataRowMaxHeight: 35,
                     headingRowHeight: 35,
@@ -92,20 +97,37 @@ class _CustomTableState extends State<CustomTable> {
                     rows: List.generate(
                       widget.listData.length,
                       (index) => DataRow(
-                        onLongPress: () {
-                          if (indexColorRow == index) {
-                            setState(() {
-                              indexColorRow = -1;
-                            });
+                        // onLongPress: () {
+                        //   if (indexColorRow == index) {
+                        //     setState(() {
+                        //       indexColorRow = -1;
+                        //     });
+                        //
+                        //     widget.onTapRow({});
+                        //   } else {
+                        //     setState(() {
+                        //       indexColorRow = index;
+                        //     });
+                        //
+                        //     widget.onTapRow(widget.listData[index]);
+                        //   }
+                        // },
+                        selected: selectedRows[index],
+                        onSelectChanged: (value) {
+                          setState(() {
+                            selectedRows[index] =
+                                value ?? false; // Update selectedRows list
+                          });
+                          if (selectedRows[index] == true) {
+                            rowsData.add(widget.listData[index]);
 
-                            widget.onTapRow({});
+                            widget.onTapRow(rowsData);
                           } else {
-                            setState(() {
-                              indexColorRow = index;
-                            });
+                            rowsData.remove(widget.listData[index]);
 
-                            widget.onTapRow(widget.listData[index]);
+                            widget.onTapRow(rowsData);
                           }
+                          print(selectedRows);
                         },
                         cells: List.generate(
                           widget.listHeader.length,
@@ -124,29 +146,11 @@ class _CustomTableState extends State<CustomTable> {
                                                 buildShowDialog(context,
                                                     text:
                                                         "${widget.listData[index][widget.listKey[i]]}");
-                                                // showDialog(
-                                                //   context: context,
-                                                //   builder: (context) => Dialog(
-                                                //     child: InkWell(
-                                                //       child: Container(
-                                                //         padding:
-                                                //             const EdgeInsetsDirectional
-                                                //                 .symmetric(
-                                                //                 horizontal: 16,
-                                                //                 vertical: 32),
-                                                //         child: Text(
-                                                //             textAlign:
-                                                //                 TextAlign.center,
-                                                //             "${widget.listData[index][widget.listKey[i]]}"),
-                                                //       ),
-                                                //     ),
-                                                //   ),
-                                                // );
                                               }
                                             : null
                                         : null,
                                 child: Container(
-                                  color: index == indexColorRow
+                                  color: selectedRows[index] == true
                                       ? AppColors.blueGreyDark
                                       : Colors.transparent,
                                   width: widget.listData[index]
@@ -177,7 +181,7 @@ class _CustomTableState extends State<CustomTable> {
                     controller: sumScrollController,
                     child: DataTable(
                       columnSpacing: 0,
-                      horizontalMargin: 0,
+                      horizontalMargin: 48,
                       dataRowMinHeight: 50,
                       dataRowMaxHeight: 50,
                       headingRowHeight: 35,
@@ -232,7 +236,7 @@ class _CustomTableState extends State<CustomTable> {
             controller: headerScrollController,
             child: DataTable(
               columnSpacing: 0,
-              horizontalMargin: 0,
+              horizontalMargin: 48,
               dataRowMinHeight: 50,
               dataRowMaxHeight: 50,
               headingRowHeight: 35,
@@ -278,7 +282,8 @@ class _CustomTableState extends State<CustomTable> {
           overflow: TextOverflow.ellipsis,
           date == "0001-12-31" || date == "0000-12-31" ? '' : date,
           style: TextStyle(
-              color: indexRow == indexColorRow ? Colors.white : Colors.black),
+              color:
+                  selectedRows[indexRow] == true ? Colors.white : Colors.black),
         );
       case "checkbox":
         if (value == "true") {
@@ -302,7 +307,8 @@ class _CustomTableState extends State<CustomTable> {
           overflow: TextOverflow.ellipsis,
           value,
           style: TextStyle(
-              color: indexRow == indexColorRow ? Colors.white : Colors.black),
+              color:
+                  selectedRows[indexRow] == true ? Colors.white : Colors.black),
         );
     }
   }

@@ -16,7 +16,7 @@ class ScreenTableBody extends StatefulWidget {
   const ScreenTableBody({super.key, required this.pageData});
 
   final Pages pageData;
-  static Map<String, dynamic> rowData = {};
+  static List<Map<String, dynamic>> rowData = [];
   static List<String> listCategory = [];
   // static Map<String, List<ListDropdownModel>> myDropdownLists = {};
   static bool isSearch = false;
@@ -50,7 +50,7 @@ class _ScreenTableBodyState extends State<ScreenTableBody> {
 
   @override
   void dispose() {
-    ScreenTableBody.rowData = {};
+    ScreenTableBody.rowData = [];
     ScreenTableBody.listCategory = [];
     ScreenTableBody.isSearch == false;
     super.dispose();
@@ -205,6 +205,7 @@ class _ScreenTableBodyState extends State<ScreenTableBody> {
             },
             onTapRow: (rowData) {
               ScreenTableBody.rowData = rowData;
+              print(ScreenTableBody.rowData);
             },
           );
         } else if (state is GetTableFailure) {

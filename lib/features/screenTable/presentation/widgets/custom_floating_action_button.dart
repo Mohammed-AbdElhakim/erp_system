@@ -172,16 +172,24 @@ class _CustomFloatingActionButtonState
       }
     } else if (icon == Icons.edit_note) {
       if (ScreenTableBody.rowData.isNotEmpty) {
-        CustomAlertDialog.alertWithCustomContent(
-          context: context,
-          title: S.of(context).btn_edit,
-          isOverlayTapDismiss: false,
-          isCloseButton: false,
-          content: BuildAlertEdit(
-            columnList: columnList,
-            pageData: widget.pageData,
-          ),
-        );
+        if (ScreenTableBody.rowData.length > 1) {
+          CustomAlertDialog.alertWithButton(
+              context: context,
+              type: AlertType.error,
+              title: S.of(context).error,
+              desc: "لا يمكن تعديل اكثر من عنصر.");
+        } else if (ScreenTableBody.rowData.length == 1) {
+          CustomAlertDialog.alertWithCustomContent(
+            context: context,
+            title: S.of(context).btn_edit,
+            isOverlayTapDismiss: false,
+            isCloseButton: false,
+            content: BuildAlertEdit(
+              columnList: columnList,
+              pageData: widget.pageData,
+            ),
+          );
+        }
       } else {
         CustomAlertDialog.alertWithButton(
             context: context,
