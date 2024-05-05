@@ -53,6 +53,31 @@ class CustomAlertDialog {
     ).show();
   }
 
+  static alertDelete({
+    required BuildContext context,
+    required Widget contentButton,
+  }) {
+    return Alert(
+      context: context,
+      type: AlertType.warning,
+      title: S.of(context).sure,
+      desc: S.of(context).massage_delete,
+      content: contentButton,
+      style: AlertStyle(
+          titleStyle: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: AppColors.blueLight),
+          descStyle: const TextStyle(
+            fontSize: 18,
+          ),
+          isButtonVisible: false,
+          buttonAreaPadding: const EdgeInsets.symmetric(vertical: 5),
+          isOverlayTapDismiss: false,
+          isCloseButton: true),
+    ).show();
+  }
+
   static alertWithCustomContent({
     required BuildContext context,
     required String title,
