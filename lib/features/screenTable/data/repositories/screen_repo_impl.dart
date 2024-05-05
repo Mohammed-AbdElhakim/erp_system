@@ -266,6 +266,40 @@ class ScreenRepoImpl implements ScreenRepo {
     }
   }
 
+  @override
+  Future<Either<Failure, String>> deleteItem({
+    required String controllerName,
+    required List<String> listId,
+  }) async {
+    try {
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
+              "";
+      String token =
+          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String data = await apiService.delete(
+        endPoint: "home/GetById?controllerName=$controllerName&Id=$id",
+        headers: {
+          "Authorization": "Bearer $token",
+          "CompanyKey": companyKey,
+        },
+      );
+
+      return right(data);
+    } catch (e) {
+      if (e is DioException) {
+        return left(
+          ServerFailure.fromDioException(e),
+        );
+      }
+      return left(
+        ServerFailure(
+          e.toString(),
+        ),
+      );
+    }
+  }
+
   // void saveData(DropdownModel dropdownModel) {
   //   var box = Hive.box(AppStrings.listDropdownBox);
   //   box.addAll(dropdownModel.list);
