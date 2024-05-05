@@ -499,6 +499,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Clean`
+  String get clean {
+    return Intl.message(
+      'Clean',
+      name: 'clean',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

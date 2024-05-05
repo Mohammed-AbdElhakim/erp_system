@@ -80,7 +80,7 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
                 children: [
                   CustomButton(
                     text: S.of(context).cancel,
-                    width: 80,
+                    width: MediaQuery.of(context).size.width / 6,
                     noGradient: true,
                     color: Colors.transparent,
                     noShadow: true,
@@ -90,8 +90,20 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
                       Navigator.pop(context);
                     },
                   ),
-                  const SizedBox(
-                    width: 50,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: CustomButton(
+                      text: S.of(context).clean,
+                      width: MediaQuery.of(context).size.width / 6,
+                      noGradient: true,
+                      color: Colors.transparent,
+                      noShadow: true,
+                      textStyle:
+                          AppStyles.textStyle16.copyWith(color: Colors.grey),
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                    ),
                   ),
                   CustomButton(
                     text: S.of(context).btn_search,

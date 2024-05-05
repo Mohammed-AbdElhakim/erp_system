@@ -43,6 +43,7 @@
   "massage_no_edit": "It is not possible to modify more than one item.",
   "massage_delete": "Do you want to confirm the deletion of the selected item?",
   "show_more": "Show more",
-  "show_less":"Show less"
+  "show_less":"Show less",
+  "clean": "Clean"
 
 }

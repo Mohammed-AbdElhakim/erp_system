@@ -37,6 +37,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "change_host_description": MessageLookupByLibrary.simpleMessage(
             "بمجرد النقر فوق \"حسناً\"، سيتم حذف المضيف الحالي ومعرف الشركة نهائيًا."),
         "change_language": MessageLookupByLibrary.simpleMessage("تغير اللغة"),
+        "clean": MessageLookupByLibrary.simpleMessage("مسح"),
         "company_identifier": MessageLookupByLibrary.simpleMessage("معرف شركة"),
         "dynamic_pro": MessageLookupByLibrary.simpleMessage("Dynamic Pro"),
         "english": MessageLookupByLibrary.simpleMessage("English"),
