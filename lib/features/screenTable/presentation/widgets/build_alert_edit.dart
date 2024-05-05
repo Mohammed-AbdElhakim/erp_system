@@ -117,7 +117,9 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                                   isShow = !isShow;
                                 });
                               },
-                              child: Text(!isShow ? "عرض المزيد" : "عرض أقل"),
+                              child: Text(!isShow
+                                  ? S.of(context).show_more
+                                  : S.of(context).show_less),
                             ),
                           ],
                         ),
