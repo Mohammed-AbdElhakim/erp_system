@@ -161,14 +161,14 @@ class _CustomFloatingActionButtonState
         CustomAlertDialog.alertWithButton(
             context: context,
             type: AlertType.error,
-            title: "تأكيد",
-            desc: "هل تريد بتأكيد حذف العنصر المحدد؟");
+            title: S.of(context).sure,
+            desc: S.of(context).massage_delete);
       } else {
         CustomAlertDialog.alertWithButton(
             context: context,
             type: AlertType.error,
             title: S.of(context).error,
-            desc: S.of(context).massage_delete_long_press);
+            desc: S.of(context).massage_choose_delete);
       }
     } else if (icon == Icons.edit_note) {
       if (ScreenTableBody.rowData.isNotEmpty) {
@@ -177,7 +177,7 @@ class _CustomFloatingActionButtonState
               context: context,
               type: AlertType.error,
               title: S.of(context).error,
-              desc: "لا يمكن تعديل اكثر من عنصر.");
+              desc: S.of(context).massage_no_edit);
         } else if (ScreenTableBody.rowData.length == 1) {
           CustomAlertDialog.alertWithCustomContent(
             context: context,
@@ -195,7 +195,7 @@ class _CustomFloatingActionButtonState
             context: context,
             type: AlertType.error,
             title: S.of(context).error,
-            desc: S.of(context).massage_edit_long_press);
+            desc: S.of(context).massage_choose_edit);
       }
     } else if (icon == Icons.add) {
       CustomAlertDialog.alertWithCustomContent(
