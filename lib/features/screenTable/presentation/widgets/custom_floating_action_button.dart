@@ -142,23 +142,25 @@ class _CustomFloatingActionButtonState
         ),
       );
     } else if (icon == Icons.refresh) {
-      ScreenTableBody.isSearch = false;
-      BuildAlertSearch.statement = '';
+      // ScreenTableBody.isSearch = false;
+      // BuildAlertSearch.statement = '';
       BlocProvider.of<GetTableCubit>(context).getTable(
           pageId: widget.pageData.pageId.toString(),
           employee: false,
           isdesc: widget.pageData.isDesc,
           limit: 10,
           offset: 0,
-          orderby: widget.pageData.orderBy,
-          statment: '',
+          orderby: ScreenTableBody.orderBy,
+          statment: ScreenTableBody.isSearch == true
+              ? BuildAlertSearch.statement
+              : '',
           selectcolumns: '',
           departmentName: widget.pageData.departmentName,
           isDepartment: widget.pageData.isDepartment,
           authorizationID: widget.pageData.authorizationID,
           viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
-          dropdownValueOfLimit: 10,
-          numberOfPage: 1);
+          dropdownValueOfLimit: ScreenTableBody.dropdownValue,
+          numberOfPage: ScreenTableBody.numberPage);
     } else if (icon == Icons.delete) {
       if (ScreenTableBody.rowData.isNotEmpty) {
         List<String> listId = [];
