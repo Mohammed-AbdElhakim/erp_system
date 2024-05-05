@@ -84,4 +84,18 @@ class ApiService {
     );
     return response.data;
   }
+
+  Future<String> delete({
+    required String endPoint,
+    required Map<String, dynamic>? headers,
+  }) async {
+    String host = await Pref.getStringFromPref(key: AppStrings.hostKey) ?? "";
+    Response response = await _dio.delete(
+      "$host$_baseUrl$endPoint",
+      options: Options(
+        headers: headers,
+      ),
+    );
+    return response.data;
+  }
 }
