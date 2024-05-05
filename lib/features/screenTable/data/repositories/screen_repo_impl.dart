@@ -278,7 +278,8 @@ class ScreenRepoImpl implements ScreenRepo {
       String token =
           await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       String data = await apiService.delete(
-        endPoint: "home/GetById?controllerName=$controllerName&Id=$id",
+        endPoint:
+            "home/Delete?controllerName=$controllerName&deletedIds=${listId.join("&deletedIds=")}",
         headers: {
           "Authorization": "Bearer $token",
           "CompanyKey": companyKey,
