@@ -11,6 +11,7 @@ import 'core/utils/app_colors.dart';
 import 'core/utils/service_locator.dart';
 import 'features/screenTable/data/repositories/screen_repo_impl.dart';
 import 'features/screenTable/presentation/manager/addEdit/add_edit_cubit.dart';
+import 'features/screenTable/presentation/manager/delete/delete_cubit.dart';
 import 'features/screenTable/presentation/manager/getPermissions/get_permissions_cubit.dart';
 import 'features/screenTable/presentation/manager/getTable/get_table_cubit.dart';
 import 'generated/l10n.dart';
@@ -69,10 +70,9 @@ class _ERPSystemState extends State<ERPSystem> {
         BlocProvider(
           create: (context) => AddEditCubit(getIt.get<ScreenRepoImpl>()),
         ),
-        // BlocProvider(
-        //   create: (context) =>
-        //       GetDropdownListCubit(getIt.get<ScreenRepoImpl>()),
-        // ),
+        BlocProvider(
+          create: (context) => DeleteCubit(getIt.get<ScreenRepoImpl>()),
+        ),
       ],
       child: MaterialApp.router(
         title: AppStrings.appTitle,
