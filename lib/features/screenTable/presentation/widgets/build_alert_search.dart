@@ -101,7 +101,24 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
                       textStyle:
                           AppStyles.textStyle16.copyWith(color: Colors.grey),
                       onTap: () {
-                        Navigator.pop(context);
+                        ScreenTableBody.isSearch = false;
+                        BuildAlertSearch.statement = '';
+                        BlocProvider.of<GetTableCubit>(context).getTable(
+                            pageId: widget.pageData.pageId.toString(),
+                            employee: false,
+                            isdesc: widget.pageData.isDesc,
+                            limit: 10,
+                            offset: 0,
+                            orderby: widget.pageData.orderBy,
+                            statment: '',
+                            selectcolumns: '',
+                            departmentName: widget.pageData.departmentName,
+                            isDepartment: widget.pageData.isDepartment,
+                            authorizationID: widget.pageData.authorizationID,
+                            viewEmployeeColumn:
+                                widget.pageData.viewEmployeeColumn,
+                            dropdownValueOfLimit: 10,
+                            numberOfPage: 1);
                       },
                     ),
                   ),
