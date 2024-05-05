@@ -103,22 +103,28 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
                       onTap: () {
                         ScreenTableBody.isSearch = false;
                         BuildAlertSearch.statement = '';
-                        BlocProvider.of<GetTableCubit>(context).getTable(
-                            pageId: widget.pageData.pageId.toString(),
-                            employee: false,
-                            isdesc: widget.pageData.isDesc,
-                            limit: 10,
-                            offset: 0,
-                            orderby: widget.pageData.orderBy,
-                            statment: '',
-                            selectcolumns: '',
-                            departmentName: widget.pageData.departmentName,
-                            isDepartment: widget.pageData.isDepartment,
-                            authorizationID: widget.pageData.authorizationID,
-                            viewEmployeeColumn:
-                                widget.pageData.viewEmployeeColumn,
-                            dropdownValueOfLimit: 10,
-                            numberOfPage: 1);
+                        ScreenTableBody.isDesc = false;
+                        ScreenTableBody.orderBy = '';
+                        BlocProvider.of<GetTableCubit>(context)
+                            .getTable(
+                                pageId: widget.pageData.pageId.toString(),
+                                employee: false,
+                                isdesc: widget.pageData.isDesc,
+                                limit: 10,
+                                offset: 0,
+                                orderby: widget.pageData.orderBy,
+                                statment: '',
+                                selectcolumns: '',
+                                departmentName: widget.pageData.departmentName,
+                                isDepartment: widget.pageData.isDepartment,
+                                authorizationID:
+                                    widget.pageData.authorizationID,
+                                viewEmployeeColumn:
+                                    widget.pageData.viewEmployeeColumn,
+                                dropdownValueOfLimit: 10,
+                                numberOfPage: 1)
+                            .then((value) => widget.columnList.clear());
+                        Navigator.pop(context);
                       },
                     ),
                   ),

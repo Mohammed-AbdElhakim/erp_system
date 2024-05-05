@@ -147,7 +147,7 @@ class _CustomFloatingActionButtonState
       BlocProvider.of<GetTableCubit>(context).getTable(
           pageId: widget.pageData.pageId.toString(),
           employee: false,
-          isdesc: widget.pageData.isDesc,
+          isdesc: ScreenTableBody.isDesc,
           limit: 10,
           offset: 0,
           orderby: ScreenTableBody.orderBy,

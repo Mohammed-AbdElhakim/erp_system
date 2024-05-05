@@ -21,6 +21,7 @@ class ScreenTableBody extends StatefulWidget {
   // static Map<String, List<ListDropdownModel>> myDropdownLists = {};
   static bool isSearch = false;
   static String orderBy = '';
+  static bool isDesc = false;
   static late int numberPage;
   static late int dropdownValue;
 
@@ -39,7 +40,7 @@ class _ScreenTableBodyState extends State<ScreenTableBody> {
   // late int dropdownValue;
   List<int> listNumberItemInList = [10, 25, 50, 100];
   // String orderBy = '';
-  bool isDesc = false;
+  // bool isDesc = false;
 
   @override
   void initState() {
@@ -192,13 +193,13 @@ class _ScreenTableBodyState extends State<ScreenTableBody> {
             onTapHeader: (String titleHeader) {
               setState(() {
                 ScreenTableBody.orderBy = titleHeader;
-                isDesc = !isDesc;
+                ScreenTableBody.isDesc = !ScreenTableBody.isDesc;
               });
 
               BlocProvider.of<GetTableCubit>(context).getTable(
                 pageId: widget.pageData.pageId.toString(),
                 employee: false,
-                isdesc: isDesc,
+                isdesc: ScreenTableBody.isDesc,
                 limit: ScreenTableBody.dropdownValue,
                 offset: (ScreenTableBody.numberPage *
                         ScreenTableBody.dropdownValue) -
