@@ -49,10 +49,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "leave": MessageLookupByLibrary.simpleMessage("انصراف"),
         "log_out": MessageLookupByLibrary.simpleMessage("تسجيل الخروج"),
         "login": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
-        "massage_delete_long_press": MessageLookupByLibrary.simpleMessage(
-            "يرجى الضغط المطول على العنصر الذي تريد حذفه."),
-        "massage_edit_long_press": MessageLookupByLibrary.simpleMessage(
-            "يرجى الضغط المطول على العنصر الذي تريد تعديله."),
+        "massage_choose_delete": MessageLookupByLibrary.simpleMessage(
+            "يرجى اختيار العنصر الذي تريد حذفه."),
+        "massage_choose_edit": MessageLookupByLibrary.simpleMessage(
+            "يرجى اختيار العنصر الذي تريد تعديله."),
+        "massage_delete": MessageLookupByLibrary.simpleMessage(
+            "هل تريد بتأكيد حذف العنصر المحدد؟"),
+        "massage_no_edit":
+            MessageLookupByLibrary.simpleMessage("لا يمكن تعديل اكثر من عنصر."),
         "massage_no_permission":
             MessageLookupByLibrary.simpleMessage("ليس لديك إذن."),
         "massage_number_zero":
@@ -67,6 +71,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "password": MessageLookupByLibrary.simpleMessage("كلمة المرور"),
         "refresh": MessageLookupByLibrary.simpleMessage("تحديث"),
         "search": MessageLookupByLibrary.simpleMessage("بحث....."),
+        "show_less": MessageLookupByLibrary.simpleMessage("عرض أقل"),
+        "show_more": MessageLookupByLibrary.simpleMessage("عرض المزيد"),
+        "sure": MessageLookupByLibrary.simpleMessage("تأكيد"),
         "swipe_to": MessageLookupByLibrary.simpleMessage("اسحب الى"),
         "to": MessageLookupByLibrary.simpleMessage("إلى"),
         "username_or_email": MessageLookupByLibrary.simpleMessage(

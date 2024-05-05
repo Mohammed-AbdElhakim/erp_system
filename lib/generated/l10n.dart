@@ -380,21 +380,21 @@ class S {
     );
   }
 
-  /// `Please long press on the item you want to edit.`
-  String get massage_edit_long_press {
+  /// `Please select the item you want to edit.`
+  String get massage_choose_edit {
     return Intl.message(
-      'Please long press on the item you want to edit.',
-      name: 'massage_edit_long_press',
+      'Please select the item you want to edit.',
+      name: 'massage_choose_edit',
       desc: '',
       args: [],
     );
   }
 
-  /// `Please long press on the item you want to delete.`
-  String get massage_delete_long_press {
+  /// `Please select the item you want to delete.`
+  String get massage_choose_delete {
     return Intl.message(
-      'Please long press on the item you want to delete.',
-      name: 'massage_delete_long_press',
+      'Please select the item you want to delete.',
+      name: 'massage_choose_delete',
       desc: '',
       args: [],
     );
@@ -445,6 +445,56 @@ class S {
     return Intl.message(
       'Field is required',
       name: 'field_is_required',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `sure`
+  String get sure {
+    return Intl.message(
+      'sure',
+      name: 'sure',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `It is not possible to modify more than one item.`
+  String get massage_no_edit {
+    return Intl.message(
+      'It is not possible to modify more than one item.',
+      name: 'massage_no_edit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Do you want to confirm the deletion of the selected item?`
+  String get massage_delete {
+    return Intl.message(
+      'Do you want to confirm the deletion of the selected item?',
+      name: 'massage_delete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Show more`
+  String get show_more {
+    return Intl.message(
+      'Show more',
+      name: 'show_more',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Show less`
+  String get show_less {
+    return Intl.message(
+      'Show less',
+      name: 'show_less',
       desc: '',
       args: [],
     );

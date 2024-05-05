@@ -32,13 +32,18 @@
   "btn_delete": "حذف",
   "from": "من",
   "to": "إلى",
-  "massage_edit_long_press": "يرجى الضغط المطول على العنصر الذي تريد تعديله.",
-  "massage_delete_long_press": "يرجى الضغط المطول على العنصر الذي تريد حذفه.",
+  "massage_choose_edit": "يرجى اختيار العنصر الذي تريد تعديله.",
+  "massage_choose_delete": "يرجى اختيار العنصر الذي تريد حذفه.",
   "massage_number_zero": "إلغاء الأرصدة الصفرية.",
   "multiple_choices": "إختيارات متعددة",
   "basic_data": "بيانات أساسية",
   "Total_number_of_entries": "إجمالي عدد الإدخالات : ",
-  "field_is_required":"هذا الحقل مطلوب"
+  "field_is_required":"هذا الحقل مطلوب",
+  "sure":"تأكيد",
+  "massage_no_edit": "لا يمكن تعديل اكثر من عنصر.",
+  "massage_delete": "هل تريد بتأكيد حذف العنصر المحدد؟",
+  "show_more": "عرض المزيد",
+  "show_less": "عرض أقل"
 
 
 

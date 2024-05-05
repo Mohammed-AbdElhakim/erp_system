@@ -32,12 +32,17 @@
   "btn_delete": "Delete",
   "from": "From",
   "to": "TO",
-  "massage_edit_long_press":"Please long press on the item you want to edit.",
-  "massage_delete_long_press":"Please long press on the item you want to delete.",
+  "massage_choose_edit":"Please select the item you want to edit.",
+  "massage_choose_delete":"Please select the item you want to delete.",
   "massage_number_zero": "Eliminate zero balances.",
   "multiple_choices": "Multiple choices",
   "basic_data": "Basic data",
   "Total_number_of_entries": "Total number of entries : ",
-  "field_is_required":"Field is required"
+  "field_is_required":"Field is required",
+  "sure":"sure",
+  "massage_no_edit": "It is not possible to modify more than one item.",
+  "massage_delete": "Do you want to confirm the deletion of the selected item?",
+  "show_more": "Show more",
+  "show_less":"Show less"
 
 }

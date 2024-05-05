@@ -51,10 +51,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "leave": MessageLookupByLibrary.simpleMessage("Leave"),
         "log_out": MessageLookupByLibrary.simpleMessage("Log Out"),
         "login": MessageLookupByLibrary.simpleMessage("LOG IN"),
-        "massage_delete_long_press": MessageLookupByLibrary.simpleMessage(
-            "Please long press on the item you want to delete."),
-        "massage_edit_long_press": MessageLookupByLibrary.simpleMessage(
-            "Please long press on the item you want to edit."),
+        "massage_choose_delete": MessageLookupByLibrary.simpleMessage(
+            "Please select the item you want to delete."),
+        "massage_choose_edit": MessageLookupByLibrary.simpleMessage(
+            "Please select the item you want to edit."),
+        "massage_delete": MessageLookupByLibrary.simpleMessage(
+            "Do you want to confirm the deletion of the selected item?"),
+        "massage_no_edit": MessageLookupByLibrary.simpleMessage(
+            "It is not possible to modify more than one item."),
         "massage_no_permission":
             MessageLookupByLibrary.simpleMessage("You do not have permission."),
         "massage_number_zero":
@@ -69,6 +73,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "password": MessageLookupByLibrary.simpleMessage("Password"),
         "refresh": MessageLookupByLibrary.simpleMessage("Refresh"),
         "search": MessageLookupByLibrary.simpleMessage("Search....."),
+        "show_less": MessageLookupByLibrary.simpleMessage("Show less"),
+        "show_more": MessageLookupByLibrary.simpleMessage("Show more"),
+        "sure": MessageLookupByLibrary.simpleMessage("sure"),
         "swipe_to": MessageLookupByLibrary.simpleMessage("Swipe To"),
         "to": MessageLookupByLibrary.simpleMessage("TO"),
         "username_or_email":
