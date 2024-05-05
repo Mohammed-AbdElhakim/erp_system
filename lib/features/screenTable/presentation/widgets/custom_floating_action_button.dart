@@ -8,9 +8,12 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import '../../../../core/helper/AlertDialog/custom_alert_dialog.dart';
 import '../../../../core/models/menu_model/pages.dart';
 import '../../../../core/utils/app_colors.dart';
+import '../../../../core/widgets/custom_button.dart';
+import '../../../../core/widgets/custom_loading_widget.dart';
 import '../../../../generated/l10n.dart';
 import '../../data/models/permission_model.dart';
 import '../../data/models/screen_model.dart';
+import '../manager/delete/delete_cubit.dart';
 import '../manager/getTable/get_table_cubit.dart';
 import 'build_alert_add.dart';
 import 'build_alert_edit.dart';
@@ -158,11 +161,71 @@ class _CustomFloatingActionButtonState
           numberOfPage: 1);
     } else if (icon == Icons.delete) {
       if (ScreenTableBody.rowData.isNotEmpty) {
-        CustomAlertDialog.alertWithButton(
-            context: context,
-            type: AlertType.error,
-            title: S.of(context).sure,
-            desc: S.of(context).massage_delete);
+        List<String> listId = [];
+        for (var item in ScreenTableBody.rowData) {
+          listId.add(item[widget.pageData.primary].toString());
+        }
+        CustomAlertDialog.alertDelete(
+          context: context,
+          contentButton: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                BlocConsumer<DeleteCubit, DeleteState>(
+                  listener: (context, state) {
+                    if (state is DeleteSuccess) {
+                      BlocProvider.of<GetTableCubit>(context).getTable(
+                          pageId: widget.pageData.pageId.toString(),
+                          employee: false,
+                          isdesc: widget.pageData.isDesc,
+                          limit: 10,
+                          offset: 0,
+                          orderby: widget.pageData.orderBy,
+                          statment: '',
+                          selectcolumns: '',
+                          departmentName: widget.pageData.departmentName,
+                          isDepartment: widget.pageData.isDepartment,
+                          authorizationID: widget.pageData.authorizationID,
+                          viewEmployeeColumn:
+                              widget.pageData.viewEmployeeColumn,
+                          numberOfPage: 1,
+                          dropdownValueOfLimit: 10);
+
+                      Navigator.pop(context);
+                    } else if (state is DeleteFailure) {
+                      CustomAlertDialog.alertWithButton(
+                          context: context,
+                          type: AlertType.error,
+                          title: S.of(context).error,
+                          textButton: S.of(context).ok,
+                          desc: state.errorMassage,
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            Navigator.of(context).pop();
+                          });
+                    }
+                  },
+                  builder: (context, state) {
+                    if (state is DeleteLoading) {
+                      return const CustomLoadingWidget();
+                    } else {
+                      return CustomButton(
+                        text: S.of(context).btn_delete,
+                        width: 80,
+                        onTap: () {
+                          BlocProvider.of<DeleteCubit>(context).deleteItems(
+                              controllerName: widget.pageData.controllerName,
+                              listId: listId);
+                        },
+                      );
+                    }
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
       } else {
         CustomAlertDialog.alertWithButton(
             context: context,
