@@ -40,4 +40,9 @@ abstract class ScreenRepo {
     required String droCondition,
     required String droCompany,
   });
+
+  Future<Either<Failure,String>>deleteItem({
+   required String controllerName,required List<String> listId,
+});
+
 }
