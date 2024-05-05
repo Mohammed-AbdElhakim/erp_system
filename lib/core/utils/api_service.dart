@@ -85,7 +85,7 @@ class ApiService {
     return response.data;
   }
 
-  Future<String> delete({
+  Future<dynamic> delete({
     required String endPoint,
     required Map<String, dynamic>? headers,
   }) async {

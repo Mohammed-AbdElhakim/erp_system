@@ -277,7 +277,7 @@ class ScreenRepoImpl implements ScreenRepo {
               "";
       String token =
           await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
-      String data = await apiService.delete(
+      await apiService.delete(
         endPoint:
             "home/Delete?controllerName=$controllerName&deletedIds=${listId.join("&deletedIds=")}",
         headers: {
@@ -286,7 +286,7 @@ class ScreenRepoImpl implements ScreenRepo {
         },
       );
 
-      return right(data);
+      return right('');
     } catch (e) {
       if (e is DioException) {
         return left(
