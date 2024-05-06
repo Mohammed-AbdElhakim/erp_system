@@ -2,9 +2,22 @@ part of 'task_cubit.dart';
 
 sealed class TaskState extends Equatable {
   const TaskState();
-}
-
-final class TaskInitial extends TaskState {
   @override
   List<Object> get props => [];
+}
+
+final class TaskInitial extends TaskState {}
+
+final class TaskLoading extends TaskState {}
+
+final class TaskFailure extends TaskState {
+  final String errorMassage;
+
+  const TaskFailure(this.errorMassage);
+}
+
+final class TaskSuccess extends TaskState {
+  final TaskModel taskModel;
+
+  const TaskSuccess(this.taskModel);
 }
