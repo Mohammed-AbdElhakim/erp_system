@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_styles.dart';
+import '../../data/models/task_model.dart';
 import '../views/sub_task_view.dart';
 
 class ItemTaskGridView extends StatelessWidget {
-  const ItemTaskGridView({super.key});
+  const ItemTaskGridView({super.key, required this.taskData});
+  final TaskModel taskData;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +41,7 @@ class ItemTaskGridView extends StatelessWidget {
                       color: AppColors.white,
                     ),
                     Text(
-                      "11",
+                      taskData.children!.length.toString(),
                       style: AppStyles.textStyle18,
                     ),
                     const Spacer(),
@@ -84,7 +87,7 @@ class ItemTaskGridView extends StatelessWidget {
                     style: AppStyles.textStyle18,
                   ),
                   Text(
-                    "ggg",
+                    taskData.parent!.tName!,
                     style: AppStyles.textStyle18,
                   ),
                 ],
@@ -106,7 +109,10 @@ class ItemTaskGridView extends StatelessWidget {
                     style: AppStyles.textStyle18,
                   ),
                   Text(
-                    "12/5/2015",
+                    taskData.parent!.startDate!.isNotEmpty
+                        ? DateFormat("yyyy-MM-dd", 'en')
+                            .format(DateTime.parse(taskData.parent!.startDate!))
+                        : "",
                     style: AppStyles.textStyle18,
                   ),
                 ],
@@ -128,7 +134,10 @@ class ItemTaskGridView extends StatelessWidget {
                     style: AppStyles.textStyle18,
                   ),
                   Text(
-                    "12/5/2020",
+                    taskData.parent!.endDate!.isNotEmpty
+                        ? DateFormat("yyyy-MM-dd", 'en')
+                            .format(DateTime.parse(taskData.parent!.endDate!))
+                        : "",
                     style: AppStyles.textStyle18,
                   ),
                 ],
@@ -146,7 +155,7 @@ class ItemTaskGridView extends StatelessWidget {
                 child: Row(
                   children: [
                     Text(
-                      "50 %",
+                      "${taskData.parent!.progress} %",
                       style: AppStyles.textStyle18,
                     ),
                     const Spacer(),

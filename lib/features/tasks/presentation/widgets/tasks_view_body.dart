@@ -1,4 +1,9 @@
+import 'package:erp_system/core/widgets/custom_error_massage.dart';
+import 'package:erp_system/core/widgets/custom_loading_widget.dart';
+import 'package:erp_system/features/tasks/data/models/task_model.dart';
+import 'package:erp_system/features/tasks/presentation/manager/task/task_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/models/menu_model/pages.dart';
 import '../../../../core/utils/app_strings.dart';
@@ -52,17 +57,33 @@ class _TasksViewBodyState extends State<TasksViewBody> {
                 ),
               ),
         SliverToBoxAdapter(
-          child: GridView.count(
-            shrinkWrap: true,
-            crossAxisCount: isOrientationPortrait(context) ? 1 : 2,
-            physics: const NeverScrollableScrollPhysics(),
-            childAspectRatio: isOrientationPortrait(context)
-                ? ((MediaQuery.of(context).size.width) / 226.1)
-                : ((MediaQuery.of(context).size.width * .5) / 230.1),
-            mainAxisSpacing: 35,
-            crossAxisSpacing: 35,
-            padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
-            children: List.generate(3, (index) => const ItemTaskGridView()),
+          child: BlocBuilder<TaskCubit, TaskState>(
+            builder: (context, state) {
+              if (state is TaskSuccess) {
+                List<TaskModel> taskList = state.taskList;
+                return GridView.count(
+                  shrinkWrap: true,
+                  crossAxisCount: isOrientationPortrait(context) ? 1 : 2,
+                  physics: const NeverScrollableScrollPhysics(),
+                  childAspectRatio: isOrientationPortrait(context)
+                      ? ((MediaQuery.of(context).size.width) / 226.1)
+                      : ((MediaQuery.of(context).size.width * .5) / 230.1),
+                  mainAxisSpacing: 35,
+                  crossAxisSpacing: 35,
+                  padding:
+                      const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+                  children: List.generate(
+                      taskList.length,
+                      (index) => ItemTaskGridView(
+                            taskData: taskList[index],
+                          )),
+                );
+              } else if (state is TaskFailure) {
+                return CustomErrorMassage(errorMassage: state.errorMassage);
+              } else {
+                return const CustomLoadingWidget();
+              }
+            },
           ),
         ),
       ],

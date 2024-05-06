@@ -17,7 +17,7 @@ final class TaskFailure extends TaskState {
 }
 
 final class TaskSuccess extends TaskState {
-  final TaskModel taskModel;
+  final List<TaskModel> taskList;
 
-  const TaskSuccess(this.taskModel);
+  const TaskSuccess(this.taskList);
 }

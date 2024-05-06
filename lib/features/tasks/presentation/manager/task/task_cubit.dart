@@ -13,7 +13,7 @@ class TaskCubit extends Cubit<TaskState> {
   final TaskRepo taskRepo;
   Future<void> getTasks() async {
     emit(TaskLoading());
-    Either<Failure, TaskModel> result = await taskRepo.getTask();
+    Either<Failure, List<TaskModel>> result = await taskRepo.getTask();
     result.fold((failure) {
       emit(TaskFailure(failure.errorMassage));
     }, (tasks) {

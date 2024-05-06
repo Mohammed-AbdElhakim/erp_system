@@ -4,5 +4,5 @@ import '../../../../core/errors/failures.dart';
 import '../models/task_model.dart';
 
 abstract class TaskRepo {
-  Future<Either<Failure, TaskModel>> getTask();
+  Future<Either<Failure, List<TaskModel>>> getTask();
 }

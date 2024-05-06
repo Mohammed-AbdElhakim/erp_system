@@ -14,23 +14,26 @@ class TaskRepoImpl implements TaskRepo {
   TaskRepoImpl(this.apiService);
 
   @override
-  Future<Either<Failure, TaskModel>> getTask() async {
+  Future<Either<Failure, List<TaskModel>>> getTask() async {
     try {
       String companyKey =
           await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
               "";
       String token =
           await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
-      Map<String, dynamic> data = await apiService.get(
-        endPoint: "home/getGeneralTable",
+      List<dynamic> data = await apiService.get2(
+        endPoint: "web/EmployeeCustomTask/getEmployeeTasks",
         headers: {
           "Authorization": "Bearer $token",
           "CompanyKey": companyKey,
         },
       );
-      TaskModel taskModel = TaskModel.fromJson(data);
+      List<TaskModel> dataList = [];
+      for (var i in data) {
+        dataList.add(TaskModel.fromJson(i));
+      }
 
-      return right(taskModel);
+      return right(dataList);
     } catch (e) {
       if (e is DioException) {
         return left(

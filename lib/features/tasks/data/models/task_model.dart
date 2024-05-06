@@ -6,7 +6,7 @@ class TaskModel {
 
   TaskModel.fromJson(Map<String, dynamic> json) {
     parent =
-    json['Parent'] != null ? new Parent.fromJson(json['Parent']) : null;
+        json['Parent'] != null ? new Parent.fromJson(json['Parent']) : null;
     if (json['Children'] != null) {
       children = <Children>[];
       json['Children'].forEach((v) {
@@ -30,7 +30,7 @@ class TaskModel {
 class Parent {
   bool? isDone;
   bool? onProgress;
-  int? progress;
+  double? progress;
   String? empPremissions;
   String? empPermissionNames;
   String? conParentName;
@@ -56,30 +56,30 @@ class Parent {
 
   Parent(
       {this.isDone,
-        this.onProgress,
-        this.progress,
-        this.empPremissions,
-        this.empPermissionNames,
-        this.conParentName,
-        this.allSibling,
-        this.tID,
-        this.tName,
-        this.tDescription,
-        this.createdDate,
-        this.startDate,
-        this.endDate,
-        this.doneOrder,
-        this.startOrder,
-        this.actualStartDate,
-        this.actualEndDate,
-        this.taskIndex,
-        this.tlevel,
-        this.createdEmployeeID,
-        this.taskOrder,
-        this.typeID,
-        this.comID,
-        this.tTID,
-        this.tTName});
+      this.onProgress,
+      this.progress,
+      this.empPremissions,
+      this.empPermissionNames,
+      this.conParentName,
+      this.allSibling,
+      this.tID,
+      this.tName,
+      this.tDescription,
+      this.createdDate,
+      this.startDate,
+      this.endDate,
+      this.doneOrder,
+      this.startOrder,
+      this.actualStartDate,
+      this.actualEndDate,
+      this.taskIndex,
+      this.tlevel,
+      this.createdEmployeeID,
+      this.taskOrder,
+      this.typeID,
+      this.comID,
+      this.tTID,
+      this.tTName});
 
   Parent.fromJson(Map<String, dynamic> json) {
     isDone = json['IsDone'];
@@ -93,8 +93,8 @@ class Parent {
     tName = json['TName'];
     tDescription = json['TDescription'];
     createdDate = json['CreatedDate'];
-    startDate = json['StartDate'];
-    endDate = json['EndDate'];
+    startDate = json['StartDate'] ?? "";
+    endDate = json['EndDate'] ?? "";
     doneOrder = json['DoneOrder'];
     startOrder = json['StartOrder'];
     actualStartDate = json['ActualStartDate'];
@@ -143,7 +143,7 @@ class Parent {
 class Children {
   bool? isDone;
   bool? onProgress;
-  int? progress;
+  double? progress;
   String? empPremissions;
   String? empPermissionNames;
   String? conParentName;
@@ -166,27 +166,27 @@ class Children {
 
   Children(
       {this.isDone,
-        this.onProgress,
-        this.progress,
-        this.empPremissions,
-        this.empPermissionNames,
-        this.conParentName,
-        this.allSibling,
-        this.tID,
-        this.tName,
-        this.createdDate,
-        this.doneOrder,
-        this.startOrder,
-        this.taskIndex,
-        this.tlevel,
-        this.createdEmployeeID,
-        this.taskOrder,
-        this.typeID,
-        this.parentID,
-        this.parentName,
-        this.comID,
-        this.tTID,
-        this.tTName});
+      this.onProgress,
+      this.progress,
+      this.empPremissions,
+      this.empPermissionNames,
+      this.conParentName,
+      this.allSibling,
+      this.tID,
+      this.tName,
+      this.createdDate,
+      this.doneOrder,
+      this.startOrder,
+      this.taskIndex,
+      this.tlevel,
+      this.createdEmployeeID,
+      this.taskOrder,
+      this.typeID,
+      this.parentID,
+      this.parentName,
+      this.comID,
+      this.tTID,
+      this.tTName});
 
   Children.fromJson(Map<String, dynamic> json) {
     isDone = json['IsDone'];
