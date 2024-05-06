@@ -1,3 +1,5 @@
+import 'package:erp_system/features/tasks/data/models/task_model.dart';
+import 'package:erp_system/features/tasks/presentation/views/sub_task_view.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../features/auth/presentation/views/login_view.dart';
@@ -16,6 +18,7 @@ abstract class AppRouter {
   static const String kHomeView = "/homeView";
   static const String kBottomNavigationBarView = "/bottomNavigationBarView";
   static const String kScreenView = "/screenView";
+  static const String kSubTaskView = "/subTaskView";
   static final router = GoRouter(
     routes: [
       GoRoute(
@@ -37,6 +40,15 @@ abstract class AppRouter {
       GoRoute(
         path: kHomeView,
         builder: (context, state) => const HomeView(),
+      ),
+      GoRoute(
+        path: kSubTaskView,
+        builder: (context, state) {
+          TaskModel taskData = state.extra as TaskModel;
+          return SubTaskView(
+            taskData: taskData,
+          );
+        },
       ),
       GoRoute(
         path: kScreenView,

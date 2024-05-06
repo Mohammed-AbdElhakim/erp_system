@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/utils/app_colors.dart';
+import '../../../../core/utils/app_router.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../data/models/task_model.dart';
-import '../views/sub_task_view.dart';
 
 class ItemTaskGridView extends StatelessWidget {
   const ItemTaskGridView({super.key, required this.taskData});
@@ -14,15 +15,16 @@ class ItemTaskGridView extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => SubTaskView(),
-            ));
+        GoRouter.of(context).push(AppRouter.kSubTaskView, extra: taskData);
       },
       child: Container(
         decoration: BoxDecoration(
-            color: Colors.orange, borderRadius: BorderRadius.circular(15)),
+            color: taskData.parent!.progress == 0.0
+                ? Colors.redAccent
+                : taskData.parent!.progress == 100.0
+                    ? Colors.green
+                    : Colors.orange,
+            borderRadius: BorderRadius.circular(15)),
         child: Column(
           children: [
             Container(

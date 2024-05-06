@@ -47,4 +47,37 @@ class TaskRepoImpl implements TaskRepo {
       );
     }
   }
+
+  @override
+  Future<Either<Failure, TaskModel>> getTaskById(String id) async {
+    try {
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
+              "";
+      String token =
+          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      List<dynamic> data = await apiService.get2(
+        endPoint: "web/EmployeeCustomTask/getEmployeeTasks/$id",
+        headers: {
+          "Authorization": "Bearer $token",
+          "CompanyKey": companyKey,
+        },
+      );
+
+      TaskModel taskModel = TaskModel.fromJson(data[0]);
+
+      return right(taskModel);
+    } catch (e) {
+      if (e is DioException) {
+        return left(
+          ServerFailure.fromDioException(e),
+        );
+      }
+      return left(
+        ServerFailure(
+          e.toString(),
+        ),
+      );
+    }
+  }
 }
