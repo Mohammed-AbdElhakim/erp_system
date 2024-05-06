@@ -9,14 +9,14 @@ class ListModule {
     required this.pages,
   });
   late final int moduleID;
-  late final String moduleKey;
+  late final String? moduleKey;
   late final String moduleNameAr;
   late final String moduleNameEn;
   late final List<Pages> pages;
 
   ListModule.fromJson(Map<String, dynamic> json) {
     moduleID = json['ModuleID'];
-    moduleKey = json['ModuleKey'];
+    moduleKey = json['ModuleKey'] ?? '';
     moduleNameAr = json['ModuleNameAr'];
     moduleNameEn = json['ModuleNameEn'];
     pages = List.from(json['Pages']).map((e) => Pages.fromJson(e)).toList();
