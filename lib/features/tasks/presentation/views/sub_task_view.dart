@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 
-import '../core/utils/app_styles.dart';
-import '../core/widgets/custom_app_bar.dart';
+import '../../../../core/utils/app_styles.dart';
+import '../../../../core/widgets/custom_app_bar.dart';
 
-class TaskScreen extends StatefulWidget {
+class SubTaskView extends StatefulWidget {
+  const SubTaskView({super.key});
+
   @override
-  _TaskScreenState createState() => _TaskScreenState();
+  State<SubTaskView> createState() => _SubTaskViewState();
 }
 
-class _TaskScreenState extends State<TaskScreen> {
+class _SubTaskViewState extends State<SubTaskView> {
   List<Item> data = [];
   int? _openIndex;
   List<Stage> stages = [

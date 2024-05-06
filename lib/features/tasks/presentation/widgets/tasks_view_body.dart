@@ -1,0 +1,71 @@
+import 'package:flutter/material.dart';
+
+import '../../../../core/models/menu_model/pages.dart';
+import '../../../../core/utils/app_strings.dart';
+import '../../../../core/utils/app_styles.dart';
+import '../../../../core/utils/methods.dart';
+import '../../../../core/widgets/custom_container.dart';
+import 'item_task_grid_view.dart';
+
+class TasksViewBody extends StatefulWidget {
+  const TasksViewBody({super.key, required this.pageData});
+
+  final Pages pageData;
+
+  @override
+  State<TasksViewBody> createState() => _TasksViewBodyState();
+}
+
+class _TasksViewBodyState extends State<TasksViewBody> {
+  String? lang;
+
+  @override
+  void didChangeDependencies() {
+    lang = Localizations.localeOf(context).toString();
+    super.didChangeDependencies();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomScrollView(
+      slivers: [
+        isOrientationPortrait(context)
+            ? SliverToBoxAdapter(
+                child: CustomContainer(
+                  height: 120,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 12),
+                    child: Text(
+                      lang == AppStrings.enLangKey
+                          ? widget.pageData.nameEn
+                          : widget.pageData.nameAr,
+                      maxLines: 1,
+                      textAlign: TextAlign.center,
+                      style: AppStyles.textStyle26,
+                    ),
+                  ),
+                ),
+              )
+            : const SliverToBoxAdapter(
+                child: SizedBox(
+                  height: 25,
+                ),
+              ),
+        SliverToBoxAdapter(
+          child: GridView.count(
+            shrinkWrap: true,
+            crossAxisCount: isOrientationPortrait(context) ? 1 : 2,
+            physics: const NeverScrollableScrollPhysics(),
+            childAspectRatio: isOrientationPortrait(context)
+                ? ((MediaQuery.of(context).size.width) / 226.1)
+                : ((MediaQuery.of(context).size.width * .5) / 230.1),
+            mainAxisSpacing: 35,
+            crossAxisSpacing: 35,
+            padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+            children: List.generate(3, (index) => const ItemTaskGridView()),
+          ),
+        ),
+      ],
+    );
+  }
+}
