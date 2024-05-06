@@ -1,8 +1,9 @@
+import 'package:erp_system/features/tasks/presentation/views/tasks_view.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../core/models/menu_model/pages.dart';
-import '../../../attendance/presentation/views/attendance_view.dart';
-import '../../../screenTable/presentation/views/screen_table.dart';
+import '../../features/attendance/presentation/views/attendance_view.dart';
+import '../../features/screenTable/presentation/views/screen_table.dart';
+import '../models/menu_model/pages.dart';
 
 class ScreenView extends StatelessWidget {
   const ScreenView({super.key, required this.pageData});
@@ -18,6 +19,8 @@ class ScreenView extends StatelessWidget {
     switch (navigationKey) {
       case "mobileAttendance":
         return AttendanceView(pageData: pageData);
+      case "employeeTask":
+        return TasksView(pageData: pageData);
       case "general":
         return ScreenTable(pageData: pageData);
       // default:
