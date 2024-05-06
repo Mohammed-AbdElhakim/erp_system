@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:erp_system/features/attendance/data/repositories/attendance_repo_impl.dart';
 import 'package:erp_system/features/auth/data/repositories/login/login_repo_impl.dart';
 import 'package:erp_system/features/screenTable/data/repositories/screen_repo_impl.dart';
+import 'package:erp_system/features/tasks/data/repositories/task_repo_impl.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../features/home/data/repositories/menu/menu_repo_impl.dart';
@@ -32,6 +33,12 @@ void setupServiceLocator() {
 
   getIt.registerSingleton<AttendanceRepoImpl>(
     AttendanceRepoImpl(
+      getIt.get<ApiService>(),
+    ),
+  );
+
+  getIt.registerSingleton<TaskRepoImpl>(
+    TaskRepoImpl(
       getIt.get<ApiService>(),
     ),
   );
