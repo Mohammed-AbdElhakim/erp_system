@@ -65,9 +65,12 @@ class _TasksViewBodyState extends State<TasksViewBody> {
                   shrinkWrap: true,
                   crossAxisCount: isOrientationPortrait(context) ? 1 : 2,
                   physics: const NeverScrollableScrollPhysics(),
+                  // childAspectRatio: isOrientationPortrait(context)
+                  //     ? ((MediaQuery.of(context).size.width) / 226.1)
+                  //     : ((MediaQuery.of(context).size.width * .5) / 230.1),
                   childAspectRatio: isOrientationPortrait(context)
-                      ? ((MediaQuery.of(context).size.width) / 226.1)
-                      : ((MediaQuery.of(context).size.width * .5) / 230.1),
+                      ? ((MediaQuery.of(context).size.width) / 205)
+                      : ((MediaQuery.of(context).size.width * .5) / 209),
                   mainAxisSpacing: 35,
                   crossAxisSpacing: 35,
                   padding:

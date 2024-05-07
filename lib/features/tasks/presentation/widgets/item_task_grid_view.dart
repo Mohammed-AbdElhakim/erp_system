@@ -48,33 +48,36 @@ class ItemTaskGridView extends StatelessWidget {
                       Icons.date_range,
                       color: AppColors.white,
                     ),
+                    SizedBox(
+                      width: 5,
+                    ),
                     Text(
                       taskData.children!.length.toString(),
                       style: AppStyles.textStyle18,
                     ),
-                    const Spacer(),
-                    Container(
-                      padding: const EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(color: Colors.white)),
-                      child: const Icon(Icons.delete),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 5),
-                      padding: const EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(color: Colors.white)),
-                      child: const Icon(Icons.edit),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(color: Colors.white)),
-                      child: const Icon(Icons.group),
-                    )
+                    // const Spacer(),
+                    // Container(
+                    //   padding: const EdgeInsets.all(5),
+                    //   decoration: BoxDecoration(
+                    //       shape: BoxShape.circle,
+                    //       border: Border.all(color: Colors.white)),
+                    //   child: const Icon(Icons.delete),
+                    // ),
+                    // Container(
+                    //   margin: const EdgeInsets.symmetric(horizontal: 5),
+                    //   padding: const EdgeInsets.all(5),
+                    //   decoration: BoxDecoration(
+                    //       shape: BoxShape.circle,
+                    //       border: Border.all(color: Colors.white)),
+                    //   child: const Icon(Icons.edit),
+                    // ),
+                    // Container(
+                    //   padding: const EdgeInsets.all(5),
+                    //   decoration: BoxDecoration(
+                    //       shape: BoxShape.circle,
+                    //       border: Border.all(color: Colors.white)),
+                    //   child: const Icon(Icons.group),
+                    // )
                   ],
                 ),
               ),
@@ -166,14 +169,14 @@ class ItemTaskGridView extends StatelessWidget {
                       "${taskData.parent!.progress} %",
                       style: AppStyles.textStyle18,
                     ),
-                    const Spacer(),
-                    Container(
-                      padding: const EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(color: Colors.white)),
-                      child: const Icon(Icons.hourglass_bottom),
-                    ),
+                    // const Spacer(),
+                    // Container(
+                    //   padding: const EdgeInsets.all(5),
+                    //   decoration: BoxDecoration(
+                    //       shape: BoxShape.circle,
+                    //       border: Border.all(color: Colors.white)),
+                    //   child: const Icon(Icons.hourglass_bottom),
+                    // ),
                   ],
                 ),
               ),
