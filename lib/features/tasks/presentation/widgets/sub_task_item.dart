@@ -142,9 +142,12 @@ class SubTaskItem extends StatelessWidget {
                   "المهمة: ",
                   style: AppStyles.textStyle18.copyWith(color: color),
                 ),
-                Text(
-                  taskData.tName!,
-                  style: AppStyles.textStyle18.copyWith(color: Colors.black),
+                Expanded(
+                  child: Text(
+                    taskData.tName!,
+                    overflow: TextOverflow.ellipsis,
+                    style: AppStyles.textStyle18.copyWith(color: Colors.black),
+                  ),
                 ),
               ],
             ),
@@ -160,12 +163,15 @@ class SubTaskItem extends StatelessWidget {
                   "تاريخ النهاية: ",
                   style: AppStyles.textStyle18.copyWith(color: color),
                 ),
-                Text(
-                  taskData.endDate!.isNotEmpty
-                      ? DateFormat("yyyy-MM-dd", 'en')
-                          .format(DateTime.parse(taskData.createdDate!))
-                      : "",
-                  style: AppStyles.textStyle18.copyWith(color: Colors.black),
+                Expanded(
+                  child: Text(
+                    taskData.endDate!.isNotEmpty
+                        ? DateFormat("yyyy-MM-dd", 'en')
+                            .format(DateTime.parse(taskData.createdDate!))
+                        : "",
+                    overflow: TextOverflow.ellipsis,
+                    style: AppStyles.textStyle18.copyWith(color: Colors.black),
+                  ),
                 ),
               ],
             ),

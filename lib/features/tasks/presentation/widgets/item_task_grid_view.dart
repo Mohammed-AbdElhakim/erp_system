@@ -97,9 +97,12 @@ class ItemTaskGridView extends StatelessWidget {
                     "توصيف: ",
                     style: AppStyles.textStyle18,
                   ),
-                  Text(
-                    taskData.parent!.tName!,
-                    style: AppStyles.textStyle18,
+                  Expanded(
+                    child: Text(
+                      taskData.parent!.tName!,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppStyles.textStyle18,
+                    ),
                   ),
                 ],
               ),
@@ -119,12 +122,15 @@ class ItemTaskGridView extends StatelessWidget {
                     "تاريخ البداية: ",
                     style: AppStyles.textStyle18,
                   ),
-                  Text(
-                    taskData.parent!.startDate!.isNotEmpty
-                        ? DateFormat("yyyy-MM-dd", 'en')
-                            .format(DateTime.parse(taskData.parent!.startDate!))
-                        : "",
-                    style: AppStyles.textStyle18,
+                  Expanded(
+                    child: Text(
+                      taskData.parent!.startDate!.isNotEmpty
+                          ? DateFormat("yyyy-MM-dd", 'en').format(
+                              DateTime.parse(taskData.parent!.startDate!))
+                          : "",
+                      overflow: TextOverflow.ellipsis,
+                      style: AppStyles.textStyle18,
+                    ),
                   ),
                 ],
               ),
@@ -144,12 +150,15 @@ class ItemTaskGridView extends StatelessWidget {
                     "تاريخ النهاية: ",
                     style: AppStyles.textStyle18,
                   ),
-                  Text(
-                    taskData.parent!.endDate!.isNotEmpty
-                        ? DateFormat("yyyy-MM-dd", 'en')
-                            .format(DateTime.parse(taskData.parent!.endDate!))
-                        : "",
-                    style: AppStyles.textStyle18,
+                  Expanded(
+                    child: Text(
+                      taskData.parent!.endDate!.isNotEmpty
+                          ? DateFormat("yyyy-MM-dd", 'en')
+                              .format(DateTime.parse(taskData.parent!.endDate!))
+                          : "",
+                      overflow: TextOverflow.ellipsis,
+                      style: AppStyles.textStyle18,
+                    ),
                   ),
                 ],
               ),
