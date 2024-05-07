@@ -7,7 +7,7 @@ class ApiService {
   final Dio _dio;
 
   ApiService(this._dio);
-  Future<Map<String, dynamic>> get({
+  Future<dynamic> get({
     required String endPoint,
     required Map<String, dynamic>? headers,
   }) async {
@@ -21,19 +21,19 @@ class ApiService {
     return response.data;
   }
 
-  Future<List<dynamic>> get2({
-    required String endPoint,
-    required Map<String, dynamic>? headers,
-  }) async {
-    String host = await Pref.getStringFromPref(key: AppStrings.hostKey) ?? "";
-    Response response = await _dio.get(
-      "$host$_baseUrl$endPoint",
-      options: Options(
-        headers: headers,
-      ),
-    );
-    return response.data;
-  }
+  // Future<List<dynamic>> get2({
+  //   required String endPoint,
+  //   required Map<String, dynamic>? headers,
+  // }) async {
+  //   String host = await Pref.getStringFromPref(key: AppStrings.hostKey) ?? "";
+  //   Response response = await _dio.get(
+  //     "$host$_baseUrl$endPoint",
+  //     options: Options(
+  //       headers: headers,
+  //     ),
+  //   );
+  //   return response.data;
+  // }
 
   Future<Map<String, dynamic>> post({
     required String endPoint,

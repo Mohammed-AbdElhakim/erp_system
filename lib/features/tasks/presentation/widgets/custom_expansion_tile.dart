@@ -10,11 +10,13 @@ class CustomExpansionTile extends StatelessWidget {
       required this.color,
       required this.title,
       required this.children,
-      required this.stepIndex});
+      required this.stepIndex,
+      required this.idMainTask});
   final Color color;
   final String title;
   final List<Parent> children;
   final int stepIndex;
+  final String idMainTask;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -47,6 +49,7 @@ class CustomExpansionTile extends StatelessWidget {
                   taskData: children[index],
                   color: color,
                   stepIndex: stepIndex,
+                  idMainTask: idMainTask,
                 )),
       ),
     );

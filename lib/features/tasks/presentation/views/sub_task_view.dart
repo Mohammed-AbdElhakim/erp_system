@@ -2,6 +2,7 @@ import 'package:erp_system/core/widgets/change_status_bar_color.dart';
 import 'package:erp_system/core/widgets/custom_error_massage.dart';
 import 'package:erp_system/core/widgets/custom_loading_widget.dart';
 import 'package:erp_system/features/tasks/presentation/manager/get_task_by_id/get_task_by_id_cubit.dart';
+import 'package:erp_system/features/tasks/presentation/manager/move_task/move_task_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -23,10 +24,19 @@ class SubTaskView extends StatefulWidget {
 class _SubTaskViewState extends State<SubTaskView> {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => GetTaskByIdCubit(
-        getIt.get<TaskRepoImpl>(),
-      )..getTaskById(widget.taskData.parent!.tID!.toString()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => GetTaskByIdCubit(
+            getIt.get<TaskRepoImpl>(),
+          )..getTaskById(widget.taskData.parent!.tID!.toString()),
+        ),
+        BlocProvider(
+          create: (context) => MoveTaskCubit(
+            getIt.get<TaskRepoImpl>(),
+          ),
+        ),
+      ],
       child: ChangeStatusBarColor(
         child: Scaffold(
           appBar: const CustomAppBar(
@@ -42,13 +52,15 @@ class _SubTaskViewState extends State<SubTaskView> {
                 List<Parent> underRevisionList = [];
                 List<Parent> revisionList = [];
                 for (var i in taskModel.children!) {
-                  if (i.onProgress == false && i.isDone == false) {
+                  if (i.onProgress == false &&
+                      i.isDone == false &&
+                      i.isMConfirmed == false) {
                     noDoList.add(i);
                   } else if (i.onProgress == true) {
                     doList.add(i);
                   } else if (i.isDone == true) {
                     underRevisionList.add(i);
-                  } else {
+                  } else if (i.isMConfirmed == true) {
                     revisionList.add(i);
                   }
                 }
@@ -59,24 +71,28 @@ class _SubTaskViewState extends State<SubTaskView> {
                       title: 'لم تبدأ',
                       children: noDoList,
                       stepIndex: 1,
+                      idMainTask: widget.taskData.parent!.tID!.toString(),
                     ),
                     CustomExpansionTile(
                       color: Colors.orange,
                       title: 'تم بدأالعمل عليها',
                       children: doList,
                       stepIndex: 2,
+                      idMainTask: widget.taskData.parent!.tID!.toString(),
                     ),
                     CustomExpansionTile(
                       color: Colors.green,
                       title: 'تحت المراجعة',
                       children: underRevisionList,
                       stepIndex: 3,
+                      idMainTask: widget.taskData.parent!.tID!.toString(),
                     ),
                     CustomExpansionTile(
                       color: Colors.teal,
                       title: 'تم المراجعة',
                       children: revisionList,
                       stepIndex: 4,
+                      idMainTask: widget.taskData.parent!.tID!.toString(),
                     ),
                   ],
                 );

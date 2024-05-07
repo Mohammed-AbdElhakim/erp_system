@@ -30,6 +30,7 @@ class TaskModel {
 class Parent {
   bool? isDone;
   bool? onProgress;
+  bool? isMConfirmed;
   double? progress;
   String? empPremissions;
   String? empPermissionNames;
@@ -57,6 +58,7 @@ class Parent {
   Parent(
       {this.isDone,
       this.onProgress,
+      this.isMConfirmed,
       this.progress,
       this.empPremissions,
       this.empPermissionNames,
@@ -82,8 +84,9 @@ class Parent {
       this.tTName});
 
   Parent.fromJson(Map<String, dynamic> json) {
-    isDone = json['IsDone'];
-    onProgress = json['OnProgress'];
+    isDone = json['IsDone'] ?? false;
+    onProgress = json['OnProgress'] ?? false;
+    isMConfirmed = json['IsMConfirmed'] ?? false;
     progress = json['progress'];
     empPremissions = json['EmpPremissions'];
     empPermissionNames = json['EmpPermissionNames'];
@@ -113,6 +116,7 @@ class Parent {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['IsDone'] = this.isDone;
     data['OnProgress'] = this.onProgress;
+    data['IsMConfirmed'] = this.isMConfirmed;
     data['progress'] = this.progress;
     data['EmpPremissions'] = this.empPremissions;
     data['EmpPermissionNames'] = this.empPermissionNames;

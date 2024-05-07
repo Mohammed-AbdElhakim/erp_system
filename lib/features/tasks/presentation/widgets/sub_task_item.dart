@@ -1,8 +1,14 @@
 import 'package:erp_system/features/tasks/data/models/task_model.dart';
+import 'package:erp_system/features/tasks/presentation/manager/get_task_by_id/get_task_by_id_cubit.dart';
+import 'package:erp_system/features/tasks/presentation/manager/move_task/move_task_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
+import '../../../../core/helper/AlertDialog/custom_alert_dialog.dart';
 import '../../../../core/utils/app_styles.dart';
+import '../../../../generated/l10n.dart';
 import 'button_move.dart';
 
 class SubTaskItem extends StatelessWidget {
@@ -10,11 +16,13 @@ class SubTaskItem extends StatelessWidget {
       {super.key,
       required this.color,
       required this.taskData,
-      required this.stepIndex});
+      required this.stepIndex,
+      required this.idMainTask});
 
   final Parent taskData;
   final Color color;
   final int stepIndex;
+  final String idMainTask;
 
   @override
   Widget build(BuildContext context) {
@@ -44,21 +52,81 @@ class SubTaskItem extends StatelessWidget {
               // ),
               const Spacer(),
               if (stepIndex == 2 || stepIndex == 3 || stepIndex == 4)
-                ButtonMove(
-                  icon: Icons.arrow_upward,
-                  onTap: () {
-                    if (stepIndex == 2) {
-                    } else if (stepIndex == 3) {
-                    } else if (stepIndex == 4) {}
+                BlocConsumer<MoveTaskCubit, MoveTaskState>(
+                  listener: (context, state) {
+                    if (state is MoveTaskToToDo ||
+                        state is MoveTaskToProgress ||
+                        state is MoveTaskToUnderRevision) {
+                      BlocProvider.of<GetTaskByIdCubit>(context)
+                          .getTaskById(idMainTask);
+                    } else if (state is MoveTaskFailure) {
+                      CustomAlertDialog.alertWithButton(
+                          context: context,
+                          type: AlertType.error,
+                          title: S.of(context).error,
+                          textButton: S.of(context).ok,
+                          desc: state.errorMassage,
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          });
+                    }
+                  },
+                  builder: (context, state) {
+                    return ButtonMove(
+                      icon: Icons.arrow_upward,
+                      onTap: () {
+                        if (stepIndex == 2) {
+                          BlocProvider.of<MoveTaskCubit>(context)
+                              .moveTaskToToDo(taskData.tID!.toString());
+                        } else if (stepIndex == 3) {
+                          BlocProvider.of<MoveTaskCubit>(context)
+                              .moveTaskToProgress(taskData.tID!.toString());
+                        } else if (stepIndex == 4) {
+                          BlocProvider.of<MoveTaskCubit>(context)
+                              .moveTaskToUnderRevision(
+                                  taskData.tID!.toString());
+                        }
+                      },
+                    );
                   },
                 ),
               if (stepIndex == 1 || stepIndex == 2 || stepIndex == 3)
-                ButtonMove(
-                  icon: Icons.arrow_downward,
-                  onTap: () {
-                    if (stepIndex == 1) {
-                    } else if (stepIndex == 2) {
-                    } else if (stepIndex == 3) {}
+                BlocConsumer<MoveTaskCubit, MoveTaskState>(
+                  listener: (context, state) {
+                    if (state is MoveTaskToProgress ||
+                        state is MoveTaskToUnderRevision ||
+                        state is MoveTaskToDone) {
+                      BlocProvider.of<GetTaskByIdCubit>(context)
+                          .getTaskById(idMainTask);
+                    } else if (state is MoveTaskFailure) {
+                      CustomAlertDialog.alertWithButton(
+                          context: context,
+                          type: AlertType.error,
+                          title: S.of(context).error,
+                          textButton: S.of(context).ok,
+                          desc: state.errorMassage,
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          });
+                    }
+                  },
+                  builder: (context, state) {
+                    return ButtonMove(
+                      icon: Icons.arrow_downward,
+                      onTap: () {
+                        if (stepIndex == 1) {
+                          BlocProvider.of<MoveTaskCubit>(context)
+                              .moveTaskToProgress(taskData.tID!.toString());
+                        } else if (stepIndex == 2) {
+                          BlocProvider.of<MoveTaskCubit>(context)
+                              .moveTaskToUnderRevision(
+                                  taskData.tID!.toString());
+                        } else if (stepIndex == 3) {
+                          BlocProvider.of<MoveTaskCubit>(context)
+                              .moveTaskToDone(taskData.tID!.toString());
+                        }
+                      },
+                    );
                   },
                 ),
             ],

@@ -21,7 +21,7 @@ class TaskRepoImpl implements TaskRepo {
               "";
       String token =
           await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
-      List<dynamic> data = await apiService.get2(
+      List<dynamic> data = await apiService.get(
         endPoint: "web/EmployeeCustomTask/getEmployeeTasks",
         headers: {
           "Authorization": "Bearer $token",
@@ -56,7 +56,7 @@ class TaskRepoImpl implements TaskRepo {
               "";
       String token =
           await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
-      List<dynamic> data = await apiService.get2(
+      List<dynamic> data = await apiService.get(
         endPoint: "web/EmployeeCustomTask/getEmployeeTasks/$id",
         headers: {
           "Authorization": "Bearer $token",
@@ -89,7 +89,7 @@ class TaskRepoImpl implements TaskRepo {
               "";
       String token =
           await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
-      await apiService.delete(
+      await apiService.get(
         endPoint: "web/EmployeeCustomTask/changeIsDone/$id/toDo",
         headers: {
           "Authorization": "Bearer $token",
@@ -120,7 +120,7 @@ class TaskRepoImpl implements TaskRepo {
               "";
       String token =
           await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
-      await apiService.delete(
+      await apiService.get(
         endPoint: "web/EmployeeCustomTask/changeIsDone/$id/progress",
         headers: {
           "Authorization": "Bearer $token",
@@ -151,7 +151,7 @@ class TaskRepoImpl implements TaskRepo {
               "";
       String token =
           await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
-      await apiService.delete(
+      await apiService.get(
         endPoint: "web/EmployeeCustomTask/changeIsDone/$id/underRevision",
         headers: {
           "Authorization": "Bearer $token",
@@ -182,7 +182,7 @@ class TaskRepoImpl implements TaskRepo {
               "";
       String token =
           await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
-      await apiService.delete(
+      await apiService.get(
         endPoint: "web/EmployeeCustomTask/changeIsDone/$id/underRevision",
         headers: {
           "Authorization": "Bearer $token",

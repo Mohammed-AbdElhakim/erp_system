@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
@@ -6,6 +7,7 @@ import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_router.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../data/models/task_model.dart';
+import '../manager/task/task_cubit.dart';
 
 class ItemTaskGridView extends StatelessWidget {
   const ItemTaskGridView({super.key, required this.taskData});
@@ -15,7 +17,11 @@ class ItemTaskGridView extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        GoRouter.of(context).push(AppRouter.kSubTaskView, extra: taskData);
+        GoRouter.of(context)
+            .push(AppRouter.kSubTaskView, extra: taskData)
+            .then((value) {
+          BlocProvider.of<TaskCubit>(context).getTasks();
+        });
       },
       child: Container(
         decoration: BoxDecoration(
