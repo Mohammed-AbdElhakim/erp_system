@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:linked_scroll_controller/linked_scroll_controller.dart';
 
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/methods.dart';
+import '../../../../core/utils/service_locator.dart';
+import '../../data/models/dropdown_model/dropdown_model.dart';
 import '../../data/models/screen_model.dart';
+import '../../data/repositories/screen_repo_impl.dart';
+import '../manager/getDropdownList/get_dropdown_list_cubit.dart';
 
 typedef OnTapHeader<String> = void Function(String titleHeader);
 typedef OnTapRow<T> = void Function(T rowData);
@@ -163,7 +168,7 @@ class _CustomTableState extends State<CustomTable> {
                                   alignment: Alignment.center,
                                   child: buildMyWidget(
                                       "${widget.listData[index][widget.listKey[i]]}",
-                                      widget.listColumn[i].insertType!,
+                                      widget.listColumn[i],
                                       index),
                                 ),
                               ),
@@ -245,11 +250,7 @@ class _CustomTableState extends State<CustomTable> {
                 widget.listHeader.length,
                 (index) {
                   return DataColumn(
-                    label: InkWell(
-                      onTap: () {
-                        widget
-                            .onTapHeader(widget.listColumn[index].columnName!);
-                      },
+                    label: Expanded(
                       child: SizedBox(
                         width: 130,
                         child: Text(
@@ -270,8 +271,8 @@ class _CustomTableState extends State<CustomTable> {
     );
   }
 
-  buildMyWidget(String value, String insertType, int indexRow) {
-    switch (insertType) {
+  buildMyWidget(String value, ColumnList columnList, int indexRow) {
+    switch (columnList.insertType) {
       case "date":
         String date = value.isNotEmpty
             ? DateFormat("yyyy-MM-dd", 'en').format(DateTime.parse(value))
@@ -299,7 +300,53 @@ class _CustomTableState extends State<CustomTable> {
             color: Colors.red,
           );
         }
+      case "dropdown":
+        String val = '';
 
+        return BlocProvider(
+          create: (context) => GetDropdownListCubit(getIt.get<ScreenRepoImpl>())
+            ..getDropdownList(
+              droModel: columnList.droModel ?? "",
+              droValue: columnList.droValue ?? "",
+              droText: columnList.droText ?? "",
+              droCondition: columnList.droCondition ?? "",
+              droCompany: columnList.droCompany ?? "",
+            ),
+          child: BlocBuilder<GetDropdownListCubit, GetDropdownListState>(
+            builder: (context, state) {
+              if (state is GetDropdownListSuccess) {
+                List<ListDropdownModel> dropListData = [];
+                dropListData.addAll(state.dropdownModel.list!);
+                for (var item in dropListData) {
+                  if (item.value.toString() == value) {
+                    val = item.text ?? "";
+                  }
+                }
+                return Text(
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  val,
+                  style: TextStyle(
+                      color: selectedRows[indexRow] == true
+                          ? Colors.white
+                          : Colors.black),
+                );
+              } else {
+                return Text(
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  '',
+                  style: TextStyle(
+                      color: selectedRows[indexRow] == true
+                          ? Colors.white
+                          : Colors.black),
+                );
+              }
+            },
+          ),
+        );
       default:
         return Text(
           textAlign: TextAlign.center,
