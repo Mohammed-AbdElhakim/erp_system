@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/utils/service_locator.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
+import '../../../../generated/l10n.dart';
 import '../../data/models/task_model.dart';
 import '../../data/repositories/task_repo_impl.dart';
 import '../widgets/custom_expansion_tile.dart';
@@ -68,28 +69,28 @@ class _SubTaskViewState extends State<SubTaskView> {
                   children: [
                     CustomExpansionTile(
                       color: Colors.redAccent,
-                      title: 'لم تبدأ',
+                      title: S.of(context).to_do,
                       children: noDoList,
                       stepIndex: 1,
                       idMainTask: widget.taskData.parent!.tID!.toString(),
                     ),
                     CustomExpansionTile(
                       color: Colors.orange,
-                      title: 'تم بدأالعمل عليها',
+                      title: S.of(context).on_progress,
                       children: doList,
                       stepIndex: 2,
                       idMainTask: widget.taskData.parent!.tID!.toString(),
                     ),
                     CustomExpansionTile(
                       color: Colors.green,
-                      title: 'تحت المراجعة',
+                      title: S.of(context).under_revision,
                       children: underRevisionList,
                       stepIndex: 3,
                       idMainTask: widget.taskData.parent!.tID!.toString(),
                     ),
                     CustomExpansionTile(
                       color: Colors.teal,
-                      title: 'تم المراجعة',
+                      title: S.of(context).revision,
                       children: revisionList,
                       stepIndex: 4,
                       idMainTask: widget.taskData.parent!.tID!.toString(),

@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_router.dart';
 import '../../../../core/utils/app_styles.dart';
+import '../../../../generated/l10n.dart';
 import '../../data/models/task_model.dart';
 import '../manager/task/task_cubit.dart';
 
@@ -94,7 +95,7 @@ class ItemTaskGridView extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    "توصيف: ",
+                    S.of(context).description_task,
                     style: AppStyles.textStyle18,
                   ),
                   Expanded(
@@ -119,7 +120,7 @@ class ItemTaskGridView extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    "تاريخ البداية: ",
+                    S.of(context).start_date,
                     style: AppStyles.textStyle18,
                   ),
                   Expanded(
@@ -147,7 +148,7 @@ class ItemTaskGridView extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    "تاريخ النهاية: ",
+                    S.of(context).end_date,
                     style: AppStyles.textStyle18,
                   ),
                   Expanded(

@@ -509,6 +509,86 @@ class S {
       args: [],
     );
   }
+
+  /// `Didn't start`
+  String get to_do {
+    return Intl.message(
+      'Didn\'t start',
+      name: 'to_do',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Work has begun on it`
+  String get on_progress {
+    return Intl.message(
+      'Work has begun on it',
+      name: 'on_progress',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Under revision`
+  String get under_revision {
+    return Intl.message(
+      'Under revision',
+      name: 'under_revision',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reviewed`
+  String get revision {
+    return Intl.message(
+      'Reviewed',
+      name: 'revision',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Description: `
+  String get description_task {
+    return Intl.message(
+      'Description: ',
+      name: 'description_task',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Task: `
+  String get task {
+    return Intl.message(
+      'Task: ',
+      name: 'task',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Start Date: `
+  String get start_date {
+    return Intl.message(
+      'Start Date: ',
+      name: 'start_date',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `End Date: `
+  String get end_date {
+    return Intl.message(
+      'End Date: ',
+      name: 'end_date',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

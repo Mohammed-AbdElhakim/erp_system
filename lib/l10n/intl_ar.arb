@@ -44,7 +44,16 @@
   "massage_delete": "هل تريد بتأكيد حذف العنصر المحدد؟",
   "show_more": "عرض المزيد",
   "show_less": "عرض أقل",
-  "clean": "مسح"
+  "clean": "مسح",
+  "to_do": "لم تبدأ",
+  "on_progress": "تم بدأالعمل عليها",
+  "under_revision": "تحت المراجعة",
+  "revision": "تم المراجعة",
+  "description_task": "توصيف: ",
+  "task": "المهمة: ",
+  "start_date": "تاريخ البداية: ",
+  "end_date": "تاريخ النهاية: "
+
 
 
 

@@ -41,7 +41,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "clean": MessageLookupByLibrary.simpleMessage("Clean"),
         "company_identifier":
             MessageLookupByLibrary.simpleMessage("Company Identifier"),
+        "description_task":
+            MessageLookupByLibrary.simpleMessage("Description: "),
         "dynamic_pro": MessageLookupByLibrary.simpleMessage("Dynamic Pro"),
+        "end_date": MessageLookupByLibrary.simpleMessage("End Date: "),
         "english": MessageLookupByLibrary.simpleMessage("English"),
         "error": MessageLookupByLibrary.simpleMessage("Error"),
         "field_is_required":
@@ -71,14 +74,22 @@ class MessageLookup extends MessageLookupByLibrary {
         "no_location": MessageLookupByLibrary.simpleMessage(
             "Not available at this location."),
         "ok": MessageLookupByLibrary.simpleMessage("Ok"),
+        "on_progress":
+            MessageLookupByLibrary.simpleMessage("Work has begun on it"),
         "password": MessageLookupByLibrary.simpleMessage("Password"),
         "refresh": MessageLookupByLibrary.simpleMessage("Refresh"),
+        "revision": MessageLookupByLibrary.simpleMessage("Reviewed"),
         "search": MessageLookupByLibrary.simpleMessage("Search....."),
         "show_less": MessageLookupByLibrary.simpleMessage("Show less"),
         "show_more": MessageLookupByLibrary.simpleMessage("Show more"),
+        "start_date": MessageLookupByLibrary.simpleMessage("Start Date: "),
         "sure": MessageLookupByLibrary.simpleMessage("sure"),
         "swipe_to": MessageLookupByLibrary.simpleMessage("Swipe To"),
+        "task": MessageLookupByLibrary.simpleMessage("Task: "),
         "to": MessageLookupByLibrary.simpleMessage("TO"),
+        "to_do": MessageLookupByLibrary.simpleMessage("Didn\'t start"),
+        "under_revision":
+            MessageLookupByLibrary.simpleMessage("Under revision"),
         "username_or_email":
             MessageLookupByLibrary.simpleMessage("Username or Email"),
         "welcome": MessageLookupByLibrary.simpleMessage("WELCOME !"),

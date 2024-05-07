@@ -44,6 +44,20 @@
   "massage_delete": "Do you want to confirm the deletion of the selected item?",
   "show_more": "Show more",
   "show_less":"Show less",
-  "clean": "Clean"
+  "clean": "Clean",
+  "to_do": "Didn't start",
+  "on_progress": "Work has begun on it",
+  "under_revision": "Under revision",
+  "revision": "Reviewed",
+  "description_task": "Description: " ,
+  "task": "Task: " ,
+  "start_date": "Start Date: ",
+  "end_date": "End Date: "
+
+
+
+
+
+
 
 }

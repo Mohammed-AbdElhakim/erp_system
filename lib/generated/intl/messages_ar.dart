@@ -39,7 +39,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "change_language": MessageLookupByLibrary.simpleMessage("تغير اللغة"),
         "clean": MessageLookupByLibrary.simpleMessage("مسح"),
         "company_identifier": MessageLookupByLibrary.simpleMessage("معرف شركة"),
+        "description_task": MessageLookupByLibrary.simpleMessage("توصيف: "),
         "dynamic_pro": MessageLookupByLibrary.simpleMessage("Dynamic Pro"),
+        "end_date": MessageLookupByLibrary.simpleMessage("تاريخ النهاية: "),
         "english": MessageLookupByLibrary.simpleMessage("English"),
         "error": MessageLookupByLibrary.simpleMessage("خطأ"),
         "field_is_required":
@@ -69,14 +71,21 @@ class MessageLookup extends MessageLookupByLibrary {
         "no_location":
             MessageLookupByLibrary.simpleMessage("غير متاح فى هذا المكان."),
         "ok": MessageLookupByLibrary.simpleMessage("حسناً"),
+        "on_progress":
+            MessageLookupByLibrary.simpleMessage("تم بدأالعمل عليها"),
         "password": MessageLookupByLibrary.simpleMessage("كلمة المرور"),
         "refresh": MessageLookupByLibrary.simpleMessage("تحديث"),
+        "revision": MessageLookupByLibrary.simpleMessage("تم المراجعة"),
         "search": MessageLookupByLibrary.simpleMessage("بحث....."),
         "show_less": MessageLookupByLibrary.simpleMessage("عرض أقل"),
         "show_more": MessageLookupByLibrary.simpleMessage("عرض المزيد"),
+        "start_date": MessageLookupByLibrary.simpleMessage("تاريخ البداية: "),
         "sure": MessageLookupByLibrary.simpleMessage("تأكيد"),
         "swipe_to": MessageLookupByLibrary.simpleMessage("اسحب الى"),
+        "task": MessageLookupByLibrary.simpleMessage("المهمة: "),
         "to": MessageLookupByLibrary.simpleMessage("إلى"),
+        "to_do": MessageLookupByLibrary.simpleMessage("لم تبدأ"),
+        "under_revision": MessageLookupByLibrary.simpleMessage("تحت المراجعة"),
         "username_or_email": MessageLookupByLibrary.simpleMessage(
             "اسم المستخدم او البريد الإلكتروني"),
         "welcome": MessageLookupByLibrary.simpleMessage("مرحباً !"),

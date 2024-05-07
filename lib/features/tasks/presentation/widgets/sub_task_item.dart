@@ -139,7 +139,7 @@ class SubTaskItem extends StatelessWidget {
                   width: 30,
                 ),
                 Text(
-                  "المهمة: ",
+                  S.of(context).task,
                   style: AppStyles.textStyle18.copyWith(color: color),
                 ),
                 Expanded(
@@ -160,7 +160,7 @@ class SubTaskItem extends StatelessWidget {
                   width: 30,
                 ),
                 Text(
-                  "تاريخ النهاية: ",
+                  S.of(context).end_date,
                   style: AppStyles.textStyle18.copyWith(color: color),
                 ),
                 Expanded(
