@@ -132,7 +132,6 @@ class _CustomTableState extends State<CustomTable> {
 
                             widget.onTapRow(rowsData);
                           }
-                          print(selectedRows);
                         },
                         cells: List.generate(
                           widget.listHeader.length,

@@ -49,7 +49,7 @@ class ItemTaskGridView extends StatelessWidget {
                       Icons.date_range,
                       color: AppColors.white,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 5,
                     ),
                     Text(

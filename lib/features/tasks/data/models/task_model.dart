@@ -5,23 +5,22 @@ class TaskModel {
   TaskModel({this.parent, this.children});
 
   TaskModel.fromJson(Map<String, dynamic> json) {
-    parent =
-        json['Parent'] != null ? new Parent.fromJson(json['Parent']) : null;
+    parent = json['Parent'] != null ? Parent.fromJson(json['Parent']) : null;
     if (json['Children'] != null) {
       children = <Parent>[];
       json['Children'].forEach((v) {
-        children!.add(new Parent.fromJson(v));
+        children!.add(Parent.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.parent != null) {
-      data['Parent'] = this.parent!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (parent != null) {
+      data['Parent'] = parent!.toJson();
     }
-    if (this.children != null) {
-      data['Children'] = this.children!.map((v) => v.toJson()).toList();
+    if (children != null) {
+      data['Children'] = children!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -113,33 +112,33 @@ class Parent {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['IsDone'] = this.isDone;
-    data['OnProgress'] = this.onProgress;
-    data['IsMConfirmed'] = this.isMConfirmed;
-    data['progress'] = this.progress;
-    data['EmpPremissions'] = this.empPremissions;
-    data['EmpPermissionNames'] = this.empPermissionNames;
-    data['ConParentName'] = this.conParentName;
-    data['allSibling'] = this.allSibling;
-    data['TID'] = this.tID;
-    data['TName'] = this.tName;
-    data['TDescription'] = this.tDescription;
-    data['CreatedDate'] = this.createdDate;
-    data['StartDate'] = this.startDate;
-    data['EndDate'] = this.endDate;
-    data['DoneOrder'] = this.doneOrder;
-    data['StartOrder'] = this.startOrder;
-    data['ActualStartDate'] = this.actualStartDate;
-    data['ActualEndDate'] = this.actualEndDate;
-    data['TaskIndex'] = this.taskIndex;
-    data['Tlevel'] = this.tlevel;
-    data['CreatedEmployeeID'] = this.createdEmployeeID;
-    data['TaskOrder'] = this.taskOrder;
-    data['TypeID'] = this.typeID;
-    data['ComID'] = this.comID;
-    data['TTID'] = this.tTID;
-    data['TTName'] = this.tTName;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['IsDone'] = isDone;
+    data['OnProgress'] = onProgress;
+    data['IsMConfirmed'] = isMConfirmed;
+    data['progress'] = progress;
+    data['EmpPremissions'] = empPremissions;
+    data['EmpPermissionNames'] = empPermissionNames;
+    data['ConParentName'] = conParentName;
+    data['allSibling'] = allSibling;
+    data['TID'] = tID;
+    data['TName'] = tName;
+    data['TDescription'] = tDescription;
+    data['CreatedDate'] = createdDate;
+    data['StartDate'] = startDate;
+    data['EndDate'] = endDate;
+    data['DoneOrder'] = doneOrder;
+    data['StartOrder'] = startOrder;
+    data['ActualStartDate'] = actualStartDate;
+    data['ActualEndDate'] = actualEndDate;
+    data['TaskIndex'] = taskIndex;
+    data['Tlevel'] = tlevel;
+    data['CreatedEmployeeID'] = createdEmployeeID;
+    data['TaskOrder'] = taskOrder;
+    data['TypeID'] = typeID;
+    data['ComID'] = comID;
+    data['TTID'] = tTID;
+    data['TTName'] = tTName;
     return data;
   }
 }

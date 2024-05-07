@@ -219,7 +219,6 @@ class _ScreenTableBodyState extends State<ScreenTableBody> {
             },
             onTapRow: (rowData) {
               ScreenTableBody.rowData = rowData;
-              print(ScreenTableBody.rowData);
             },
           );
         } else if (state is GetTableFailure) {

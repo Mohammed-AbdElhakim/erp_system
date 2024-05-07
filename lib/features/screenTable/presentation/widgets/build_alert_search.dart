@@ -133,7 +133,6 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
                     width: 80,
                     onTap: () {
                       formKey.currentState!.save();
-                      print(statment);
                       ScreenTableBody.isSearch = true;
                       BlocProvider.of<GetTableCubit>(context)
                           .getTable(

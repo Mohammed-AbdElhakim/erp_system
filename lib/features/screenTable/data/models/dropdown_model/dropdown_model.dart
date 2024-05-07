@@ -38,9 +38,9 @@ class ListDropdownModel {
       );
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['value'] = this.value;
-    data['text'] = this.text;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['value'] = value;
+    data['text'] = text;
     return data;
   }
 }

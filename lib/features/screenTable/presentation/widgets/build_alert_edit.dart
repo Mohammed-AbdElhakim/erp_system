@@ -6,7 +6,7 @@ import 'package:erp_system/core/widgets/custom_loading_widget.dart';
 import 'package:erp_system/features/screenTable/data/repositories/screen_repo_impl.dart';
 import 'package:erp_system/features/screenTable/presentation/manager/addEdit/add_edit_cubit.dart';
 import 'package:erp_system/features/screenTable/presentation/manager/getById/get_by_id_cubit.dart';
-import 'package:erp_system/features/screenTable/presentation/widgets/init_dropDown.dart';
+import 'package:erp_system/features/screenTable/presentation/widgets/initdropdown.dart';
 import 'package:erp_system/features/screenTable/presentation/widgets/screen_table_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -224,9 +224,6 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
     required String categoryName,
     required bool show,
   }) {
-    print("//////////////////////////////////");
-    print(rowData);
-    print("//////////////////////////////////");
     // List<Widget> listWidgets = [];
     List<Widget> list = [];
     for (var item in columnList) {

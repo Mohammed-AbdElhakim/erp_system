@@ -16,7 +16,6 @@ String getStringNumber({
   if (statement.contains("$search >=") &&
       statement.contains("$search <=") &&
       statement.contains("$search <>")) {
-    print(1);
     if (type == "F") {
       s1 = statement.substring(
           statement.indexOf("$search >=") + (search.length) + 4,
@@ -38,7 +37,6 @@ String getStringNumber({
     }
   } else if (statement.contains("$search >=") &&
       statement.contains("$search <=")) {
-    print("2");
     if (type == "F") {
       s1 = statement.substring(
           statement.indexOf("$search >=") + (search.length) + 4,
@@ -54,7 +52,6 @@ String getStringNumber({
     }
   } else if (statement.contains("$search <=") &&
       statement.contains("$search <>")) {
-    print("3");
     if (type == "T") {
       s1 = statement.substring(
           statement.indexOf("$search <=") + (search.length) + 4,
@@ -70,7 +67,6 @@ String getStringNumber({
     }
   } else if (statement.contains("$search >=") &&
       statement.contains("$search <>")) {
-    print("4");
     if (type == "F") {
       s1 = statement.substring(
           statement.indexOf("$search >=") + (search.length) + 4,
@@ -85,7 +81,6 @@ String getStringNumber({
       return s2;
     }
   } else if (statement.contains("$search >=")) {
-    print(5);
     if (type == "F") {
       s1 = statement.substring(
           statement.indexOf("$search >=") + (search.length) + 4,
@@ -94,7 +89,6 @@ String getStringNumber({
       return s2;
     }
   } else if (statement.contains("$search <=")) {
-    print(6);
     if (type == "T") {
       s1 = statement.substring(
           statement.indexOf("$search <=") + (search.length) + 4,
@@ -103,7 +97,6 @@ String getStringNumber({
       return s2;
     }
   } else if (statement.contains("$search <>")) {
-    print(7);
     if (type == "N") {
       s1 = statement.substring(
           statement.indexOf("$search <>") + (search.length) + 4,
@@ -140,7 +133,6 @@ String getStringDate({
 
   if (statement.contains("$search )>= Convert(date, '") &&
       statement.contains("$search) <= Convert(date, '")) {
-    print(1);
     if (type == "F") {
       s1 = statement.substring(
           statement.indexOf("$search )>= Convert(date, '") +
@@ -159,7 +151,6 @@ String getStringDate({
       return s2;
     }
   } else if (statement.contains("$search )>= Convert(date, '")) {
-    print(2);
     if (type == "F") {
       s1 = statement.substring(
           statement.indexOf("$search )>= Convert(date, '") +
@@ -170,7 +161,6 @@ String getStringDate({
       return s2;
     }
   } else if (statement.contains("$search) <= Convert(date, '")) {
-    print(3);
     if (type == "T") {
       s1 = statement.substring(
           statement.indexOf("$search) <= Convert(date, '") +
@@ -193,14 +183,12 @@ String getStringDropdown({
 
   if (statement.contains("$search =")) {
     if (statement.contains("or $search =")) {
-      print(1);
       s1 =
           statement.substring(statement.indexOf("$search ="), statement.length);
       s2 = s1.substring(0, s1.indexOf(" )"));
 
       return s2;
     } else if (statement.contains("$search =")) {
-      print(2);
       s1 = statement.substring(
           statement.indexOf("$search =") + (search.length) + 3,
           statement.length);

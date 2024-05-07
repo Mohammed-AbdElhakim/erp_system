@@ -21,7 +21,7 @@ import '../../data/repositories/screen_repo_impl.dart';
 import '../manager/addEdit/add_edit_cubit.dart';
 import '../manager/getDropdownList/get_dropdown_list_cubit.dart';
 import '../manager/getTable/get_table_cubit.dart';
-import 'init_dropDown.dart';
+import 'initdropdown.dart';
 
 class BuildAlertAdd extends StatefulWidget {
   const BuildAlertAdd(

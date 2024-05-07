@@ -84,7 +84,7 @@ class _PresenceAndDepartureState extends State<PresenceAndDeparture> {
                   ),
                 ),
                 ListView(
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   children: [
                     ...List.generate(
