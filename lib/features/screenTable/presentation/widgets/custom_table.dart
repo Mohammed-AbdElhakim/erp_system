@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:linked_scroll_controller/linked_scroll_controller.dart';
 
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/methods.dart';
-import '../../../../core/utils/service_locator.dart';
-import '../../data/models/dropdown_model/dropdown_model.dart';
 import '../../data/models/screen_model.dart';
-import '../../data/repositories/screen_repo_impl.dart';
-import '../manager/getDropdownList/get_dropdown_list_cubit.dart';
 
 typedef OnTapHeader<String> = void Function(String titleHeader);
 typedef OnTapRow<T> = void Function(T rowData);
@@ -166,7 +161,7 @@ class _CustomTableState extends State<CustomTable> {
                                       : null,
                                   alignment: Alignment.center,
                                   child: buildMyWidget(
-                                      "${widget.listData[index][widget.listKey[i]]}",
+                                      "${widget.listData[index][widget.listKey[i]] ?? ""}",
                                       widget.listColumn[i],
                                       index),
                                 ),
@@ -300,51 +295,22 @@ class _CustomTableState extends State<CustomTable> {
           );
         }
       case "dropdown":
-        String val = '';
-
-        return BlocProvider(
-          create: (context) => GetDropdownListCubit(getIt.get<ScreenRepoImpl>())
-            ..getDropdownList(
-              droModel: columnList.droModel ?? "",
-              droValue: columnList.droValue ?? "",
-              droText: columnList.droText ?? "",
-              droCondition: columnList.droCondition ?? "",
-              droCompany: columnList.droCompany ?? "",
-            ),
-          child: BlocBuilder<GetDropdownListCubit, GetDropdownListState>(
-            builder: (context, state) {
-              if (state is GetDropdownListSuccess) {
-                List<ListDropdownModel> dropListData = [];
-                dropListData.addAll(state.dropdownModel.list!);
-                for (var item in dropListData) {
-                  if (item.value.toString() == value) {
-                    val = item.text ?? "";
-                  }
-                }
-                return Text(
-                  textAlign: TextAlign.center,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  val,
-                  style: TextStyle(
-                      color: selectedRows[indexRow] == true
-                          ? Colors.white
-                          : Colors.black),
-                );
-              } else {
-                return Text(
-                  textAlign: TextAlign.center,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  '',
-                  style: TextStyle(
-                      color: selectedRows[indexRow] == true
-                          ? Colors.white
-                          : Colors.black),
-                );
-              }
-            },
-          ),
+        // print("@@@@@@@@@@@@@@@@@@@@@@2");
+        // print(ScreenTableBody.myDropdownLists);
+        // String val = '';
+        // for (var item in dropListData) {
+        //   if (item.value.toString() == value) {
+        //     val = item.text ?? "";
+        //   }
+        // }
+        return Text(
+          textAlign: TextAlign.center,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          value,
+          style: TextStyle(
+              color:
+                  selectedRows[indexRow] == true ? Colors.white : Colors.black),
         );
       default:
         return Text(

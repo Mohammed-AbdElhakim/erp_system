@@ -229,29 +229,6 @@ class ScreenRepoImpl implements ScreenRepo {
       DropdownModel dropdownModel = DropdownModel.fromJson(data);
 
       return right(dropdownModel);
-      // var list = getData();
-      // if (list.isNotEmpty) {
-      //   return right(list);
-      // } else {
-      //   String companyKey = await Pref.getStringFromPref(
-      //           key: AppStrings.companyIdentifierKey) ??
-      //       "";
-      //   String token =
-      //       await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
-      //   Map<String, dynamic> data = await apiService.get(
-      //     endPoint:
-      //         "home/getDropDown?DroModel=$droModel&DroValue=$droValue&DroText=$droText&DroCondition=$droCondition&DroCompany=$droCompany",
-      //     headers: {
-      //       "Authorization": "Bearer $token",
-      //       "CompanyKey": companyKey,
-      //     },
-      //   );
-      //   DropdownModel dropdownModel = DropdownModel.fromJson(data);
-      //
-      //   saveData(dropdownModel);
-      //
-      //   return right(dropdownModel.list.cast<ListDropdownModel>());
-      // }
     } catch (e) {
       if (e is DioException) {
         return left(
