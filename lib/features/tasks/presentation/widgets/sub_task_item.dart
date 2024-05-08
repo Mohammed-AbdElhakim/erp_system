@@ -12,12 +12,13 @@ import '../../../../generated/l10n.dart';
 import 'button_move.dart';
 
 class SubTaskItem extends StatelessWidget {
-  const SubTaskItem(
-      {super.key,
-      required this.color,
-      required this.taskData,
-      required this.stepIndex,
-      required this.idMainTask});
+  const SubTaskItem({
+    super.key,
+    required this.color,
+    required this.taskData,
+    required this.stepIndex,
+    required this.idMainTask,
+  });
 
   final Parent taskData;
   final Color color;
@@ -51,7 +52,7 @@ class SubTaskItem extends StatelessWidget {
               //   ),
               // ),
               const Spacer(),
-              if (stepIndex == 2 || stepIndex == 3 || stepIndex == 4)
+              if (stepIndex == 2 || stepIndex == 3)
                 BlocConsumer<MoveTaskCubit, MoveTaskState>(
                   listener: (context, state) {
                     if (state is MoveTaskToToDo ||
@@ -81,16 +82,12 @@ class SubTaskItem extends StatelessWidget {
                         } else if (stepIndex == 3) {
                           BlocProvider.of<MoveTaskCubit>(context)
                               .moveTaskToProgress(taskData.tID!.toString());
-                        } else if (stepIndex == 4) {
-                          BlocProvider.of<MoveTaskCubit>(context)
-                              .moveTaskToUnderRevision(
-                                  taskData.tID!.toString());
                         }
                       },
                     );
                   },
                 ),
-              if (stepIndex == 1 || stepIndex == 2 || stepIndex == 3)
+              if (stepIndex == 1 || stepIndex == 2)
                 BlocConsumer<MoveTaskCubit, MoveTaskState>(
                   listener: (context, state) {
                     if (state is MoveTaskToProgress ||
@@ -121,9 +118,6 @@ class SubTaskItem extends StatelessWidget {
                           BlocProvider.of<MoveTaskCubit>(context)
                               .moveTaskToUnderRevision(
                                   taskData.tID!.toString());
-                        } else if (stepIndex == 3) {
-                          BlocProvider.of<MoveTaskCubit>(context)
-                              .moveTaskToDone(taskData.tID!.toString());
                         }
                       },
                     );
