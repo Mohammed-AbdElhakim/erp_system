@@ -16,7 +16,7 @@ class ScreenRepoImpl implements ScreenRepo {
   ScreenRepoImpl(this.apiService);
   @override
   Future<Either<Failure, ScreenModel>> getTable({
-    required String pageId,
+    required int pageId,
     required bool employee,
     required bool isdesc,
     required int limit,
@@ -45,7 +45,11 @@ class ScreenRepoImpl implements ScreenRepo {
           "offset": offset,
           "orderby": orderby,
           "statment": statment,
-          "selectcolumns": selectcolumns
+          "selectcolumns": selectcolumns,
+          "IsDepartment": isDepartment,
+          "DepartmentName": departmentName,
+          "AuthorizationID": authorizationID,
+          "ViewEmployeeColumn": viewEmployeeColumn
         },
         headers: {
           "Authorization": "Bearer $token",

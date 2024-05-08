@@ -145,7 +145,7 @@ class _CustomFloatingActionButtonState
       // ScreenTableBody.isSearch = false;
       // BuildAlertSearch.statement = '';
       BlocProvider.of<GetTableCubit>(context).getTable(
-          pageId: widget.pageData.pageId.toString(),
+          pageId: widget.pageData.pageId,
           employee: false,
           isdesc: ScreenTableBody.isDesc,
           limit: 10,
@@ -178,7 +178,7 @@ class _CustomFloatingActionButtonState
                   listener: (context, state) {
                     if (state is DeleteSuccess) {
                       BlocProvider.of<GetTableCubit>(context).getTable(
-                          pageId: widget.pageData.pageId.toString(),
+                          pageId: widget.pageData.pageId,
                           employee: false,
                           isdesc: widget.pageData.isDesc,
                           limit: 10,

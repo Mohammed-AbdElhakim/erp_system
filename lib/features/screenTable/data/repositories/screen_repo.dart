@@ -7,7 +7,7 @@ import '../models/screen_model.dart';
 
 abstract class ScreenRepo {
   Future<Either<Failure, ScreenModel>> getTable({
-    required String pageId,
+    required int pageId,
     required bool employee,
     required bool isdesc,
     required int limit,
@@ -41,8 +41,8 @@ abstract class ScreenRepo {
     required String droCompany,
   });
 
-  Future<Either<Failure,String>>deleteItem({
-   required String controllerName,required List<String> listId,
-});
-
+  Future<Either<Failure, String>> deleteItem({
+    required String controllerName,
+    required List<String> listId,
+  });
 }

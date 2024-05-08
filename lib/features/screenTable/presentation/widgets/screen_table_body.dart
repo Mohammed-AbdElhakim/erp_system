@@ -117,7 +117,7 @@ class _ScreenTableBodyState extends State<ScreenTableBody> {
                 });
 
                 BlocProvider.of<GetTableCubit>(context).getTable(
-                  pageId: widget.pageData.pageId.toString(),
+                  pageId: widget.pageData.pageId,
                   employee: false,
                   isdesc: widget.pageData.isDesc,
                   limit: ScreenTableBody.dropdownValue,
@@ -143,7 +143,7 @@ class _ScreenTableBodyState extends State<ScreenTableBody> {
                 });
 
                 BlocProvider.of<GetTableCubit>(context).getTable(
-                  pageId: widget.pageData.pageId.toString(),
+                  pageId: widget.pageData.pageId,
                   employee: false,
                   isdesc: widget.pageData.isDesc,
                   limit: ScreenTableBody.dropdownValue,
@@ -169,7 +169,7 @@ class _ScreenTableBodyState extends State<ScreenTableBody> {
                 });
 
                 BlocProvider.of<GetTableCubit>(context).getTable(
-                  pageId: widget.pageData.pageId.toString(),
+                  pageId: widget.pageData.pageId,
                   employee: false,
                   isdesc: widget.pageData.isDesc,
                   limit: ScreenTableBody.dropdownValue,
@@ -197,7 +197,7 @@ class _ScreenTableBodyState extends State<ScreenTableBody> {
               });
 
               BlocProvider.of<GetTableCubit>(context).getTable(
-                pageId: widget.pageData.pageId.toString(),
+                pageId: widget.pageData.pageId,
                 employee: false,
                 isdesc: ScreenTableBody.isDesc,
                 limit: ScreenTableBody.dropdownValue,

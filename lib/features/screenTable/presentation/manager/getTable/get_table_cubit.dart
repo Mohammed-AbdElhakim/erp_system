@@ -13,7 +13,7 @@ class GetTableCubit extends Cubit<GetTableState> {
   final ScreenRepo screenRepo;
 
   Future<void> getTable({
-    required String pageId,
+    required int pageId,
     required bool employee,
     required bool isdesc,
     required int limit,

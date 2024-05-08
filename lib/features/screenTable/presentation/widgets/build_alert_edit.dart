@@ -151,8 +151,7 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                               if (state is AddEditSuccess) {
                                 BlocProvider.of<GetTableCubit>(context)
                                     .getTable(
-                                        pageId:
-                                            widget.pageData.pageId.toString(),
+                                        pageId: widget.pageData.pageId,
                                         employee: false,
                                         isdesc: widget.pageData.isDesc,
                                         limit: 10,

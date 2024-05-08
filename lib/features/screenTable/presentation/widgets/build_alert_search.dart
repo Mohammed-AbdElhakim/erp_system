@@ -107,7 +107,7 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
                         ScreenTableBody.orderBy = '';
                         BlocProvider.of<GetTableCubit>(context)
                             .getTable(
-                                pageId: widget.pageData.pageId.toString(),
+                                pageId: widget.pageData.pageId,
                                 employee: false,
                                 isdesc: widget.pageData.isDesc,
                                 limit: 10,
@@ -136,7 +136,7 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
                       ScreenTableBody.isSearch = true;
                       BlocProvider.of<GetTableCubit>(context)
                           .getTable(
-                              pageId: widget.pageData.pageId.toString(),
+                              pageId: widget.pageData.pageId,
                               employee: false,
                               isdesc: widget.pageData.isDesc,
                               limit: 10,
