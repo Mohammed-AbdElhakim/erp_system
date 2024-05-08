@@ -40,6 +40,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "clean": MessageLookupByLibrary.simpleMessage("مسح"),
         "company_identifier": MessageLookupByLibrary.simpleMessage("معرف شركة"),
         "description_task": MessageLookupByLibrary.simpleMessage("توصيف: "),
+        "distance": MessageLookupByLibrary.simpleMessage("المسافة: "),
         "dynamic_pro": MessageLookupByLibrary.simpleMessage("Dynamic Pro"),
         "end_date": MessageLookupByLibrary.simpleMessage("تاريخ النهاية: "),
         "english": MessageLookupByLibrary.simpleMessage("English"),

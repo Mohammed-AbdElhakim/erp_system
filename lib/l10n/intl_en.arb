@@ -23,6 +23,7 @@
   "refresh": "Refresh",
   "back": "Back",
   "no_location": "Not available at this location.",
+  "distance": "Distance: ",
   "swipe_to": "Swipe To",
   "attend": "Attend",
   "leave": "Leave",

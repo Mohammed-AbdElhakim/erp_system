@@ -290,6 +290,16 @@ class S {
     );
   }
 
+  /// `Distance: `
+  String get distance {
+    return Intl.message(
+      'Distance: ',
+      name: 'distance',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Swipe To`
   String get swipe_to {
     return Intl.message(

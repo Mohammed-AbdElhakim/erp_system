@@ -43,6 +43,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Company Identifier"),
         "description_task":
             MessageLookupByLibrary.simpleMessage("Description: "),
+        "distance": MessageLookupByLibrary.simpleMessage("Distance: "),
         "dynamic_pro": MessageLookupByLibrary.simpleMessage("Dynamic Pro"),
         "end_date": MessageLookupByLibrary.simpleMessage("End Date: "),
         "english": MessageLookupByLibrary.simpleMessage("English"),

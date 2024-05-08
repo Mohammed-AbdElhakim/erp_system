@@ -77,7 +77,8 @@ class _PresenceAndDepartureState extends State<PresenceAndDeparture> {
                   isCloseButton: false,
                   isOverlayTapDismiss: false,
                   title: S.of(context).error,
-                  desc: S.of(context).no_location,
+                  desc:
+                      "${S.of(context).distance} ${radius.last}\n${S.of(context).no_location}",
                   onPressed: () {
                     GoRouter.of(context).pop();
                     GoRouter.of(context).pop();
@@ -92,90 +93,54 @@ class _PresenceAndDepartureState extends State<PresenceAndDeparture> {
         },
         builder: (context, state) {
           if (state is GetAttendanceLocationsSuccess) {
-            return Column(
-              children: [
-                Padding(
-                  padding:
-                      const EdgeInsetsDirectional.only(end: 15, bottom: 15),
+            return Center(
+              child: VerticalSlidableButton(
+                height: MediaQuery.of(context).size.height / 3,
+                buttonHeight: 60.0,
+                color: AppColors.blueGreyLight,
+                buttonColor: isAttend ? AppColors.green : AppColors.red,
+                dismissible: false,
+                width: 90,
+                initialPosition: isAttend == true
+                    ? SlidableButtonPosition.start
+                    : SlidableButtonPosition.end,
+                label: Center(
                   child: Text(
-                    "User Location: ( Long => $long )  ( Lat => $lat )  ( Distance => $radius )",
-                    textDirection: TextDirection.ltr,
+                    S.of(context).swipe_to,
+                    style: AppStyles.textStyle12,
                   ),
                 ),
-                ListView(
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    ...List.generate(
-                      state.locationModel.list.length,
-                      (index) => Padding(
-                        padding: const EdgeInsetsDirectional.only(
-                            bottom: 15, end: 15),
-                        child: Text(
-                          "Location in Api ( ${index + 1} ): ( Long => ${state.locationModel.list[index].longitude} )  ( Lat => ${state.locationModel.list[index].latitude} )  ( Radius => ${state.locationModel.list[index].radius} )",
-                          textDirection: TextDirection.ltr,
-                        ),
-                      ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 25.0),
+                      child: Text(S.of(context).attend),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 25.0),
+                      child: Text(S.of(context).leave),
                     ),
                   ],
                 ),
-                const SizedBox(
-                  height: 15,
-                ),
-                Center(
-                  child: VerticalSlidableButton(
-                    height: 170,
-                    // height: MediaQuery.of(context).size.height / 3,
-                    // buttonHeight: 60.0,
-                    buttonHeight: 50.0,
-                    color: AppColors.blueGreyLight,
-                    buttonColor: isAttend ? AppColors.green : AppColors.red,
-                    dismissible: false,
-                    width: 90,
-                    initialPosition: isAttend == true
-                        ? SlidableButtonPosition.start
-                        : SlidableButtonPosition.end,
-                    label: Center(
-                      child: Text(
-                        S.of(context).swipe_to,
-                        style: AppStyles.textStyle12,
-                      ),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 25.0),
-                          child: Text(S.of(context).attend),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 25.0),
-                          child: Text(S.of(context).leave),
-                        ),
-                      ],
-                    ),
-                    onChanged: (position) {
-                      setState(() {
-                        if (position == SlidableButtonPosition.end) {
-                          BlocProvider.of<AttendanceCubit>(context)
-                              .sendAttendance(
-                            time: DateTime.now().toIso8601String(),
-                            machineID: myLocation!.machineID.toString(),
-                            checkType: "CheckOut",
-                          );
-                        } else {
-                          BlocProvider.of<AttendanceCubit>(context)
-                              .sendAttendance(
-                            time: DateTime.now().toIso8601String(),
-                            machineID: myLocation!.machineID.toString(),
-                            checkType: "CheckIn",
-                          );
-                        }
-                      });
-                    },
-                  ),
-                ),
-              ],
+                onChanged: (position) {
+                  setState(() {
+                    if (position == SlidableButtonPosition.end) {
+                      BlocProvider.of<AttendanceCubit>(context).sendAttendance(
+                        time: DateTime.now().toIso8601String(),
+                        machineID: myLocation!.machineID.toString(),
+                        checkType: "CheckOut",
+                      );
+                    } else {
+                      BlocProvider.of<AttendanceCubit>(context).sendAttendance(
+                        time: DateTime.now().toIso8601String(),
+                        machineID: myLocation!.machineID.toString(),
+                        checkType: "CheckIn",
+                      );
+                    }
+                  });
+                },
+              ),
             );
           } else if (state is AttendanceFailure) {
             return CustomErrorMassage(errorMassage: state.errorMassage);
