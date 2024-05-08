@@ -50,7 +50,7 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
   @override
   Widget build(BuildContext context) {
     if (!_initialized) {
-      return SizedBox();
+      return const SizedBox();
     }
 
     return Padding(

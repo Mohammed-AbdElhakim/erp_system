@@ -60,7 +60,7 @@ class _PresenceAndDepartureState extends State<PresenceAndDeparture> {
   @override
   Widget build(BuildContext context) {
     if (!_initialized) {
-      return CustomLoadingWidget();
+      return const CustomLoadingWidget();
     }
     return BlocProvider(
       create: (context) => AttendanceCubit(
