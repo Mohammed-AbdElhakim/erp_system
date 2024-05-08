@@ -34,15 +34,34 @@ class _PresenceAndDepartureState extends State<PresenceAndDeparture> {
   bool isLocation = false;
   ListValue? myLocation;
   bool isAttend = false;
+  bool _initialized = false;
 
   @override
   void initState() {
     super.initState();
     getData();
+    // Schedule function call after the widget is ready to display
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _initialize();
+    });
+  }
+
+  void _initialize() {
+    Future<void>.delayed(const Duration(milliseconds: 800), () {
+      if (mounted) {
+        // Check that the widget is still mounted
+        setState(() {
+          _initialized = true;
+        });
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    if (!_initialized) {
+      return CustomLoadingWidget();
+    }
     return BlocProvider(
       create: (context) => AttendanceCubit(
         getIt.get<AttendanceRepoImpl>(),
