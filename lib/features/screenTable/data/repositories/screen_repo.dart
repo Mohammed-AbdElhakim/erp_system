@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../../../core/errors/failures.dart';
+import '../models/dropdown_model/all_dropdown_model.dart';
 import '../models/dropdown_model/dropdown_model.dart';
 import '../models/permission_model.dart';
 import '../models/screen_model.dart';
@@ -39,6 +40,10 @@ abstract class ScreenRepo {
     required String droText,
     required String droCondition,
     required String droCompany,
+  });
+
+  Future<Either<Failure, AllDropdownModel>> getAllDropdownList({
+    required int pageID,
   });
 
   Future<Either<Failure, String>> deleteItem({

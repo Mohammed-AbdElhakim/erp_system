@@ -1,13 +1,13 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:erp_system/core/errors/failures.dart';
-import 'package:erp_system/features/screenTable/data/models/dropdown_model/all_dropdown_model.dart';
 import 'package:erp_system/features/screenTable/data/models/permission_model.dart';
 import 'package:erp_system/features/screenTable/data/repositories/screen_repo.dart';
 
 import '../../../../core/helper/SharedPreferences/pref.dart';
 import '../../../../core/utils/api_service.dart';
 import '../../../../core/utils/app_strings.dart';
+import '../models/dropdown_model/all_dropdown_model.dart';
 import '../models/dropdown_model/dropdown_model.dart';
 import '../models/screen_model.dart';
 
@@ -289,13 +289,4 @@ class ScreenRepoImpl implements ScreenRepo {
     throw UnimplementedError();
   }
 
-  // void saveData(DropdownModel dropdownModel) {
-  //   var box = Hive.box(AppStrings.listDropdownBox);
-  //   box.addAll(dropdownModel.list);
-  // }
-  //
-  // List<ListDropdownModel> getData() {
-  //   var box = Hive.box<ListDropdownModel>(AppStrings.listDropdownBox);
-  //   return box.values.toList();
-  // }
 }
