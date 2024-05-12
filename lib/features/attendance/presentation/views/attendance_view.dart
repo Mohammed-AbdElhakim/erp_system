@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:location/location.dart';
 
-import '../../../../core/helper/SharedPreferences/pref.dart';
 import '../../../../core/models/menu_model/pages.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../../../../core/utils/app_styles.dart';
@@ -18,6 +17,7 @@ import '../../../../core/widgets/custom_container.dart';
 class AttendanceView extends StatefulWidget {
   const AttendanceView({super.key, required this.pageData});
   final Pages pageData;
+  static LocationData? myLocationData;
 
   @override
   State<AttendanceView> createState() => _AttendanceViewState();
@@ -29,7 +29,6 @@ class _AttendanceViewState extends State<AttendanceView> {
   @override
   void didChangeDependencies() {
     lang = Localizations.localeOf(context).toString();
-    getLocation();
     super.didChangeDependencies();
   }
 
@@ -73,35 +72,5 @@ class _AttendanceViewState extends State<AttendanceView> {
         ),
       ),
     );
-  }
-
-  Future<void> getLocation() async {
-    Location location = Location();
-
-    LocationData? locationData;
-    bool serviceEnabled;
-    PermissionStatus permissionGranted;
-
-    serviceEnabled = await location.serviceEnabled();
-    if (!serviceEnabled) {
-      serviceEnabled = await location.requestService();
-      if (!serviceEnabled) {
-        return;
-      }
-    }
-
-    permissionGranted = await location.hasPermission();
-    if (permissionGranted == PermissionStatus.denied) {
-      permissionGranted = await location.requestPermission();
-      if (permissionGranted != PermissionStatus.granted) {
-        return;
-      }
-    }
-
-    locationData = await location.getLocation();
-    Pref.saveDoubleToPref(
-        key: AppStrings.latKey, value: locationData.latitude!);
-    Pref.saveDoubleToPref(
-        key: AppStrings.longKey, value: locationData.longitude!);
   }
 }
