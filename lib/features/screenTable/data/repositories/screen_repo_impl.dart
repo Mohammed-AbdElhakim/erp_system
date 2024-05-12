@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:erp_system/core/errors/failures.dart';
+import 'package:erp_system/features/screenTable/data/models/dropdown_model/all_dropdown_model.dart';
 import 'package:erp_system/features/screenTable/data/models/permission_model.dart';
 import 'package:erp_system/features/screenTable/data/repositories/screen_repo.dart';
 
@@ -280,6 +281,12 @@ class ScreenRepoImpl implements ScreenRepo {
         ),
       );
     }
+  }
+
+  @override
+  Future<Either<Failure, AllDropdownModel>> getAllDropdownList({required int pageID}) {
+    // TODO: implement getAllDropdownList
+    throw UnimplementedError();
   }
 
   // void saveData(DropdownModel dropdownModel) {
