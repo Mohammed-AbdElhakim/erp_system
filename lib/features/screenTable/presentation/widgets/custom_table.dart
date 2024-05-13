@@ -321,7 +321,11 @@ class _CustomTableState extends State<CustomTable> {
                 widget.listHeader.length,
                 (index) {
                   return DataColumn(
-                    label: Expanded(
+                    label: InkWell(
+                      onTap: () {
+                        widget
+                            .onTapHeader(widget.listColumn[index].columnName!);
+                      },
                       child: SizedBox(
                         width: 130,
                         child: Text(
