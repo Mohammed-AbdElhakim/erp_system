@@ -1,15 +1,15 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
-import 'package:erp_system/core/errors/failures.dart';
-import 'package:erp_system/features/screenTable/data/models/permission_model.dart';
-import 'package:erp_system/features/screenTable/data/repositories/screen_repo.dart';
 
+import '../../../../core/errors/failures.dart';
 import '../../../../core/helper/SharedPreferences/pref.dart';
 import '../../../../core/utils/api_service.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../models/dropdown_model/all_dropdown_model.dart';
 import '../models/dropdown_model/dropdown_model.dart';
+import '../models/permission_model.dart';
 import '../models/screen_model.dart';
+import 'screen_repo.dart';
 
 class ScreenRepoImpl implements ScreenRepo {
   final ApiService apiService;
@@ -151,7 +151,7 @@ class ScreenRepoImpl implements ScreenRepo {
       String token =
           await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
 
-      int data = await apiService.post3(
+      int data = await apiService.post(
         endPoint: "home/AddEdit?controllerName=$controllerName",
         data: body,
         headers: {

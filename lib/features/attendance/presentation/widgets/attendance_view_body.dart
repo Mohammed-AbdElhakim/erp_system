@@ -1,12 +1,12 @@
-import 'package:erp_system/core/widgets/custom_error_massage.dart';
-import 'package:erp_system/core/widgets/custom_loading_widget.dart';
-import 'package:erp_system/features/attendance/presentation/manager/attendanceCubit/attendance_cubit.dart';
-import 'package:erp_system/features/attendance/presentation/widgets/pending_admin_or_in_valid.dart';
-import 'package:erp_system/features/attendance/presentation/widgets/presence_and_departure.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/widgets/custom_error_massage.dart';
+import '../../../../core/widgets/custom_loading_widget.dart';
 import '../../../../generated/l10n.dart';
+import '../manager/attendanceCubit/attendance_cubit.dart';
+import 'pending_admin_or_in_valid.dart';
+import 'presence_and_departure.dart';
 
 class AttendanceViewBody extends StatelessWidget {
   const AttendanceViewBody({super.key});

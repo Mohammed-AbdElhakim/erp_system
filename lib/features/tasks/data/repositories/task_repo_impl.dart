@@ -1,11 +1,11 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
-import 'package:erp_system/core/errors/failures.dart';
-import 'package:erp_system/features/tasks/data/models/task_model.dart';
 
+import '../../../../core/errors/failures.dart';
 import '../../../../core/helper/SharedPreferences/pref.dart';
 import '../../../../core/utils/api_service.dart';
 import '../../../../core/utils/app_strings.dart';
+import '../models/task_model.dart';
 import 'task_repo.dart';
 
 class TaskRepoImpl implements TaskRepo {

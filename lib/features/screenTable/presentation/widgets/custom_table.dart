@@ -129,7 +129,7 @@ class _CustomTableState extends State<CustomTable> {
                     rows: const [],
                   ),
                 ),
-              //TODO:pages
+              ********************* pages************************
               widget.paginationWidget,
             ],
           ),
@@ -153,11 +153,11 @@ class _CustomTableState extends State<CustomTable> {
       child: Stack(
         alignment: Alignment.topCenter,
         children: [
-          //TODO:data
+          //*********************** data **************************
           SingleChildScrollView(
             child: Column(
               children: [
-                //TODO:data rows
+                //********************** data rows ********************
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   controller: dataScrollController,
@@ -250,7 +250,7 @@ class _CustomTableState extends State<CustomTable> {
                     ),
                   ),
                 ),
-                //TODO:Sum
+                //********************* Sum ***********************
                 if (widget.listSum!.isNotEmpty)
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
@@ -301,12 +301,12 @@ class _CustomTableState extends State<CustomTable> {
                       rows: const [],
                     ),
                   ),
-                //TODO:pages
+                //********************* pages *********************
                 widget.paginationWidget,
               ],
             ),
           ),
-          //TODO:header
+          //********************* header **********************
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             controller: headerScrollController,
@@ -376,8 +376,6 @@ class _CustomTableState extends State<CustomTable> {
           );
         }
       case "dropdown":
-        // print("@@@@@@@@@@@@@@@@@@@@@@2");
-        // print(ScreenTableBody.myDropdownLists);
         String val = '';
         if (columnList.columnName == columnList.searchName) {
           List<ListDrop>? myListDrop = [];

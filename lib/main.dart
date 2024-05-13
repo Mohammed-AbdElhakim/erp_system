@@ -1,17 +1,17 @@
-import 'package:erp_system/core/helper/SharedPreferences/pref.dart';
-import 'package:erp_system/core/utils/app_router.dart';
-import 'package:erp_system/core/utils/app_strings.dart';
-import 'package:erp_system/features/screenTable/presentation/manager/getAllDropdownList/get_all_dropdown_list_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import 'core/helper/SharedPreferences/pref.dart';
 import 'core/utils/app_colors.dart';
+import 'core/utils/app_router.dart';
+import 'core/utils/app_strings.dart';
 import 'core/utils/service_locator.dart';
 import 'features/screenTable/data/repositories/screen_repo_impl.dart';
 import 'features/screenTable/presentation/manager/addEdit/add_edit_cubit.dart';
 import 'features/screenTable/presentation/manager/delete/delete_cubit.dart';
+import 'features/screenTable/presentation/manager/getAllDropdownList/get_all_dropdown_list_cubit.dart';
 import 'features/screenTable/presentation/manager/getPermissions/get_permissions_cubit.dart';
 import 'features/screenTable/presentation/manager/getTable/get_table_cubit.dart';
 import 'generated/l10n.dart';

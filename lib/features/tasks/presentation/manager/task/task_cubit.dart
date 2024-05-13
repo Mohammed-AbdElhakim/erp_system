@@ -1,10 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:erp_system/features/tasks/data/models/task_model.dart';
-import 'package:erp_system/features/tasks/data/repositories/task_repo.dart';
 
 import '../../../../../core/errors/failures.dart';
+import '../../../data/models/task_model.dart';
+import '../../../data/repositories/task_repo.dart';
 
 part 'task_state.dart';
 

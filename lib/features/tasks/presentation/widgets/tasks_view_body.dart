@@ -1,7 +1,4 @@
-import 'package:erp_system/core/widgets/custom_error_massage.dart';
-import 'package:erp_system/core/widgets/custom_loading_widget.dart';
-import 'package:erp_system/features/tasks/data/models/task_model.dart';
-import 'package:erp_system/features/tasks/presentation/manager/task/task_cubit.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -10,6 +7,10 @@ import '../../../../core/utils/app_strings.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/methods.dart';
 import '../../../../core/widgets/custom_container.dart';
+import '../../../../core/widgets/custom_error_massage.dart';
+import '../../../../core/widgets/custom_loading_widget.dart';
+import '../../data/models/task_model.dart';
+import '../manager/task/task_cubit.dart';
 import 'item_task_grid_view.dart';
 
 class TasksViewBody extends StatefulWidget {

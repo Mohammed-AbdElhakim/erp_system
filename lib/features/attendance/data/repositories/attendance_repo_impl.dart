@@ -2,13 +2,13 @@ import 'dart:convert';
 
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
-import 'package:erp_system/core/errors/failures.dart';
-import 'package:erp_system/features/attendance/data/models/location_model.dart';
-import 'package:erp_system/features/attendance/data/models/valid_device_model.dart';
 
+import '../../../../core/errors/failures.dart';
 import '../../../../core/helper/SharedPreferences/pref.dart';
 import '../../../../core/utils/api_service.dart';
 import '../../../../core/utils/app_strings.dart';
+import '../models/location_model.dart';
+import '../models/valid_device_model.dart';
 import 'attendance_repo.dart';
 
 class AttendanceRepoImpl implements AttendanceRepo {
@@ -95,7 +95,7 @@ class AttendanceRepoImpl implements AttendanceRepo {
       String token =
           await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
 
-      String data = await apiService.post2(
+      String data = await apiService.post(
         endPoint: "Attendance/SendAttendance",
         data: {
           "MachineID": machineID,

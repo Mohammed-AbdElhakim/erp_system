@@ -1,7 +1,7 @@
-import 'package:erp_system/core/utils/app_assets.dart';
-import 'package:erp_system/core/widgets/custom_container.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../core/utils/app_assets.dart';
+import '../../../../core/widgets/custom_container.dart';
 import '../../../../generated/l10n.dart';
 
 class CustomDrawerHeader extends StatelessWidget {
@@ -37,8 +37,6 @@ class CustomDrawerHeader extends StatelessWidget {
               color: Colors.white,
             ),
           ),
-
-          // Text(userData[0]['userName']),
         ],
       ),
     );

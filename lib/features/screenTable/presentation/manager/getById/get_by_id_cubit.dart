@@ -1,10 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:erp_system/features/screenTable/data/repositories/screen_repo.dart';
 import 'package:meta/meta.dart';
 
 import '../../../../../core/errors/failures.dart';
+import '../../../data/repositories/screen_repo.dart';
 
 part 'get_by_id_state.dart';
 

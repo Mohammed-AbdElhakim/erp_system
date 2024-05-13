@@ -1,6 +1,7 @@
-import 'package:erp_system/core/utils/app_colors.dart';
-import 'package:erp_system/core/utils/app_styles.dart';
 import 'package:flutter/material.dart';
+
+import '../utils/app_colors.dart';
+import '../utils/app_styles.dart';
 
 class CustomTextFormFieldSearch extends StatelessWidget {
   const CustomTextFormFieldSearch(

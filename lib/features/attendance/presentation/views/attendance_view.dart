@@ -1,8 +1,3 @@
-import 'package:erp_system/core/utils/methods.dart';
-import 'package:erp_system/core/utils/service_locator.dart';
-import 'package:erp_system/features/attendance/data/repositories/attendance_repo_impl.dart';
-import 'package:erp_system/features/attendance/presentation/manager/attendanceCubit/attendance_cubit.dart';
-import 'package:erp_system/features/attendance/presentation/widgets/attendance_view_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:location/location.dart';
@@ -10,9 +5,14 @@ import 'package:location/location.dart';
 import '../../../../core/models/menu_model/pages.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../../../../core/utils/app_styles.dart';
+import '../../../../core/utils/methods.dart';
+import '../../../../core/utils/service_locator.dart';
 import '../../../../core/widgets/change_status_bar_color.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
 import '../../../../core/widgets/custom_container.dart';
+import '../../data/repositories/attendance_repo_impl.dart';
+import '../manager/attendanceCubit/attendance_cubit.dart';
+import '../widgets/attendance_view_body.dart';
 
 class AttendanceView extends StatefulWidget {
   const AttendanceView({super.key, required this.pageData});

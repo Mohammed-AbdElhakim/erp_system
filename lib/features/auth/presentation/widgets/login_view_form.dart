@@ -1,4 +1,3 @@
-import 'package:erp_system/features/auth/presentation/manager/loginCubit/login_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -12,6 +11,7 @@ import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_loading_widget.dart';
 import '../../../../core/widgets/custom_text_form_field.dart';
 import '../../../../generated/l10n.dart';
+import '../manager/loginCubit/login_cubit.dart';
 
 class LoginViewForm extends StatefulWidget {
   const LoginViewForm({super.key});

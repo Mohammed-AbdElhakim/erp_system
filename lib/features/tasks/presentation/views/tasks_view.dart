@@ -1,6 +1,3 @@
-import 'package:erp_system/features/tasks/data/repositories/task_repo_impl.dart';
-import 'package:erp_system/features/tasks/presentation/manager/task/task_cubit.dart';
-import 'package:erp_system/features/tasks/presentation/widgets/tasks_view_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -10,6 +7,9 @@ import '../../../../core/utils/methods.dart';
 import '../../../../core/utils/service_locator.dart';
 import '../../../../core/widgets/change_status_bar_color.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
+import '../../data/repositories/task_repo_impl.dart';
+import '../manager/task/task_cubit.dart';
+import '../widgets/tasks_view_body.dart';
 
 class TasksView extends StatefulWidget {
   const TasksView({super.key, required this.pageData});

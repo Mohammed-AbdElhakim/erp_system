@@ -1,13 +1,13 @@
-import 'package:erp_system/core/utils/app_assets.dart';
-import 'package:erp_system/core/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../../core/helper/SharedPreferences/pref.dart';
+import '../../../../core/utils/app_assets.dart';
 import '../../../../core/utils/app_router.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../../../../core/utils/app_styles.dart';
+import '../../../../core/utils/constants.dart';
 import '../../../../generated/l10n.dart';
 
 class SplashViewBody extends StatefulWidget {

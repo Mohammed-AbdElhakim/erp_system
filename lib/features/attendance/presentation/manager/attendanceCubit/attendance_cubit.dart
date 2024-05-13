@@ -1,11 +1,11 @@
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:erp_system/features/attendance/data/models/location_model.dart';
-import 'package:erp_system/features/attendance/data/repositories/attendance_repo.dart';
 
 import '../../../../../core/errors/failures.dart';
+import '../../../data/models/location_model.dart';
 import '../../../data/models/valid_device_model.dart';
+import '../../../data/repositories/attendance_repo.dart';
 
 part 'attendance_state.dart';
 

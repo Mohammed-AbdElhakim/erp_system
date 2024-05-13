@@ -8,7 +8,6 @@ class ChangeStatusBarColor extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // color: AppColors.blueDark,
       decoration: BoxDecoration(
         gradient: gradientContainer,
       ),

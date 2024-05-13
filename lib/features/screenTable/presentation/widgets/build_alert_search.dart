@@ -1,6 +1,4 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
-import 'package:erp_system/core/utils/app_styles.dart';
-import 'package:erp_system/features/screenTable/presentation/manager/getTable/get_table_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -8,6 +6,7 @@ import 'package:intl/intl.dart';
 import '../../../../core/models/menu_model/pages.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_strings.dart';
+import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/methods.dart';
 import '../../../../core/utils/service_locator.dart';
 import '../../../../core/widgets/custom_button.dart';
@@ -17,6 +16,7 @@ import '../../data/models/dropdown_model/dropdown_model.dart';
 import '../../data/models/screen_model.dart';
 import '../../data/repositories/screen_repo_impl.dart';
 import '../manager/getDropdownList/get_dropdown_list_cubit.dart';
+import '../manager/getTable/get_table_cubit.dart';
 import 'screen_table_body.dart';
 
 class BuildAlertSearch extends StatefulWidget {
@@ -38,8 +38,6 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
   String? lang;
   String statment = '';
   GlobalKey<FormState> formKey = GlobalKey();
-
-  // bool checkboxValue2 = false;
 
   late String companyKey;
   late String token;
@@ -614,38 +612,7 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
               },
             ),
           ],
-        )
-            /* StatefulBuilder(
-            builder: (BuildContext context,
-                void Function(void Function()) csetState) {
-              return CheckboxListTile(
-                  contentPadding: EdgeInsets.zero,
-                  value: checkboxValue2,
-                  controlAffinity: ListTileControlAffinity.leading,
-                  title: Text(
-                    title,
-                    style: AppStyles.textStyle14.copyWith(color: Colors.black),
-                  ),
-                  onChanged: (newValue) {
-                    csetState(() {
-                      checkboxValue2 = !checkboxValue2;
-                      if (checkboxValue2 == true) {
-                        statment = "${statment}and ${item.searchName} = 1 ";
-                        BuildAlertSearch.statement = statment;
-                      } else {
-                        if (statment.contains("and ${item.searchName} = 1 ")) {
-                          statment = statment.replaceAll(
-                              "and ${item.searchName} = 1 ", '');
-                          BuildAlertSearch.statement = statment;
-                        }
-                        statment =
-                            "${statment}and (${item.searchName} = 0 or ${item.searchName} is null) ";
-                        BuildAlertSearch.statement = statment;
-                      }
-                    });
-                  });
-            },
-          ),*/
+        ),
             );
       }
     }

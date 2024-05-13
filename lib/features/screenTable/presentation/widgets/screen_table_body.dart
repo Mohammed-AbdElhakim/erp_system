@@ -1,7 +1,3 @@
-import 'package:erp_system/features/screenTable/data/models/dropdown_model/all_dropdown_model.dart';
-import 'package:erp_system/features/screenTable/data/models/screen_model.dart';
-import 'package:erp_system/features/screenTable/presentation/widgets/build_alert_search.dart';
-import 'package:erp_system/features/screenTable/presentation/widgets/pagination_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:linked_scroll_controller/linked_scroll_controller.dart';
@@ -10,9 +6,13 @@ import '../../../../core/models/menu_model/pages.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../../../../core/widgets/custom_error_massage.dart';
 import '../../../../core/widgets/custom_loading_widget.dart';
+import '../../data/models/dropdown_model/all_dropdown_model.dart';
+import '../../data/models/screen_model.dart';
 import '../manager/getAllDropdownList/get_all_dropdown_list_cubit.dart';
 import '../manager/getTable/get_table_cubit.dart';
+import 'build_alert_search.dart';
 import 'custom_table.dart';
+import 'pagination_widget.dart';
 
 class ScreenTableBody extends StatefulWidget {
   const ScreenTableBody({super.key, required this.pageData});
@@ -21,7 +21,6 @@ class ScreenTableBody extends StatefulWidget {
   static List<Map<String, dynamic>> rowData = [];
   static List<String> listCategory = [];
 
-  // static Map<String, List<ListDropdownModel>> myDropdownLists = {};
   static bool isSearch = false;
   static late String orderBy;
   static late bool isDesc;
@@ -39,13 +38,7 @@ class _ScreenTableBodyState extends State<ScreenTableBody> {
   ScrollController? dataScrollController;
 
   late int allPages;
-
-  // late int numberPage;
-  // late int dropdownValue;
   List<int> listNumberItemInList = [10, 25, 50, 100];
-
-  // String orderBy = '';
-  // bool isDesc = false;
 
   @override
   void initState() {
@@ -252,85 +245,4 @@ class _ScreenTableBodyState extends State<ScreenTableBody> {
       },
     );
   }
-
-// void getData(BuildContext context) {
-//   BlocProvider.of<GetTableCubit>(context).getTable(
-//     pageId: widget.pageData.pageId.toString(),
-//     employee: false,
-//     isdesc: isDesc,
-//     limit: dropdownValue,
-//     offset: (numberPage * dropdownValue) - dropdownValue,
-//     orderby: orderBy,
-//     statment:
-//         ScreenTableBody.isSearch == true ? BuildAlertSearch.statement : '',
-//     selectcolumns: '',
-//     numberOfPage: numberPage,
-//     dropdownValueOfLimit: dropdownValue,
-//   );
-// }
 }
-
-class MyCategory {
-  final int id;
-  final String name;
-
-  MyCategory(this.id, this.name);
-}
-/*Expanded(
-            child: MyTable(
-              columnNumber: listHeader.length,
-              numberItemInList: 2,
-              // numberItemInList: state.screenModel.dataList.numberofrecords,
-              listHeader: listHeader,
-              list: state.screenModel.dataList.dynamicList,
-              listData: listData,
-              widthOtherColumn: MediaQuery.of(context).size.width * .3,
-              widthFirstColumn: MediaQuery.of(context).size.width * .3,
-              onTap: (value) {},
-              // heightHeader: 60,
-            ),
-          )*/
-
-/*Table(
-                  border: TableBorder.all(color: Colors.white),
-                  defaultVerticalAlignment:
-                      TableCellVerticalAlignment.intrinsicHeight,
-                  children: [
-                    TableRow(
-                      decoration: const BoxDecoration(color: Colors.blue),
-                      children: [
-                        ...List.generate(
-                          listHeader.length,
-                          (index) => TableCell(
-                            verticalAlignment:
-                                TableCellVerticalAlignment.middle,
-                            child: Container(
-                                // height: 35,
-                                alignment: Alignment.center,
-                                padding: const EdgeInsetsDirectional.symmetric(
-                                    horizontal: 8),
-                                child: Text(
-                                  listHeader[index],
-                                  textAlign: TextAlign.center,
-                                  style: AppStyles.textStyle14,
-                                )),
-                          ),
-                        )
-                      ],
-                    ),
-                    ...List.generate(
-                      30,
-                      (index) => TableRow(
-                        decoration: BoxDecoration(
-                            color:
-                                index.isEven ? Colors.blue[50] : Colors.white),
-                        children: List<TableCell>.generate(
-                          listHeader.length,
-                          (i) => TableCell(
-                            child: Text(listData[i]),
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                ),*/

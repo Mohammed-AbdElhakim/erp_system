@@ -1,12 +1,12 @@
-import 'package:erp_system/core/utils/methods.dart';
-import 'package:erp_system/core/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/helper/SharedPreferences/pref.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../../../../core/utils/app_styles.dart';
+import '../../../../core/utils/methods.dart';
 import '../../../../core/widgets/change_status_bar_color.dart';
+import '../../../../core/widgets/custom_app_bar.dart';
 import '../../../../generated/l10n.dart';
 import '../../../bottomNavigationBar/presentation/widgets/my_drawer.dart';
 import '../widgets/home_view_body.dart';

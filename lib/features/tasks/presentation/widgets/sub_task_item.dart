@@ -1,6 +1,3 @@
-import 'package:erp_system/features/tasks/data/models/task_model.dart';
-import 'package:erp_system/features/tasks/presentation/manager/get_task_by_id/get_task_by_id_cubit.dart';
-import 'package:erp_system/features/tasks/presentation/manager/move_task/move_task_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -9,6 +6,9 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import '../../../../core/helper/AlertDialog/custom_alert_dialog.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../generated/l10n.dart';
+import '../../data/models/task_model.dart';
+import '../manager/get_task_by_id/get_task_by_id_cubit.dart';
+import '../manager/move_task/move_task_cubit.dart';
 import 'button_move.dart';
 
 class SubTaskItem extends StatelessWidget {

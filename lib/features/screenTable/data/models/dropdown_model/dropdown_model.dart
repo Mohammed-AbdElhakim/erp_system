@@ -11,10 +11,6 @@ class DropdownModel {
         list!.add(ListDropdownModel.fromJson(v));
       });
     }
-
-    // list = List.from(json['list'])
-    //     .map((e) => ListDropdownModel.fromJson(e))
-    //     .toList();
   }
 
   Map<String, dynamic> toJson() {

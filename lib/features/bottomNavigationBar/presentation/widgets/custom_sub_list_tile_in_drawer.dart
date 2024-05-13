@@ -44,7 +44,6 @@ class _CustomSubListTileInDrawerState extends State<CustomSubListTileInDrawer> {
         leading: CachedNetworkImage(
           width: 30,
           height: 30,
-          // fit: BoxFit.fill,
           imageUrl: "http://${widget.page.icon}",
           placeholder: (context, url) => const CustomLoadingWidget(),
           errorWidget: (context, url, error) => const Icon(

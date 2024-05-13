@@ -1,6 +1,6 @@
-import 'package:erp_system/core/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 
+import '../utils/app_colors.dart';
 import '../utils/constants.dart';
 
 class CustomButton extends StatefulWidget {

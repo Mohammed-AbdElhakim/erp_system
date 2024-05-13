@@ -1,12 +1,12 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
-import 'package:erp_system/core/errors/failures.dart';
-import 'package:erp_system/features/auth/data/repositories/login/login_repo.dart';
 
+import '../../../../../core/errors/failures.dart';
 import '../../../../../core/helper/SharedPreferences/pref.dart';
 import '../../../../../core/utils/api_service.dart';
 import '../../../../../core/utils/app_strings.dart';
 import '../../models/login_model.dart';
+import 'login_repo.dart';
 
 class LoginRepoImpl implements LoginRepo {
   final ApiService apiService;
@@ -25,15 +25,6 @@ class LoginRepoImpl implements LoginRepo {
         "UserName": username,
         "Password": password,
       }, headers: {
-        // "Cache-Control": "no-cache",
-        // "Postman-Token": "<calculated when request is sent>",
-        // "Content-Type": "application/json",
-        // "Content-Length": "<calculated when request is sent>",
-        // "Host": "<calculated when request is sent>",
-        // "User-Agent": "PostmanRuntime/7.36.3",
-        // "Accept": "*/*",
-        // "Accept-Encoding": "gzip, deflate, br",
-        // "Connection": "keep-alive",
         "CompanyKey": companyKey,
       });
       LoginModel loginModel = LoginModel.fromJson(data);

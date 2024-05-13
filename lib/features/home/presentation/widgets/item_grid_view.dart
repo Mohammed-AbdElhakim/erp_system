@@ -1,11 +1,11 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:erp_system/core/utils/app_colors.dart';
-import 'package:erp_system/core/utils/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/models/menu_model/pages.dart';
+import '../../../../core/utils/app_colors.dart';
+import '../../../../core/utils/app_router.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../../../../core/widgets/custom_loading_widget.dart';
 

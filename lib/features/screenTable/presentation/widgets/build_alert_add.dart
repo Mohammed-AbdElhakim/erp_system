@@ -1,6 +1,4 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
-import 'package:erp_system/core/utils/app_styles.dart';
-import 'package:erp_system/features/screenTable/presentation/widgets/screen_table_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -10,6 +8,7 @@ import '../../../../core/helper/AlertDialog/custom_alert_dialog.dart';
 import '../../../../core/models/menu_model/pages.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_strings.dart';
+import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/service_locator.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_loading_widget.dart';
@@ -22,6 +21,7 @@ import '../manager/addEdit/add_edit_cubit.dart';
 import '../manager/getDropdownList/get_dropdown_list_cubit.dart';
 import '../manager/getTable/get_table_cubit.dart';
 import 'initdropdown.dart';
+import 'screen_table_body.dart';
 
 class BuildAlertAdd extends StatefulWidget {
   const BuildAlertAdd(
@@ -96,11 +96,6 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                                   show: false),
                             ),
                           ),
-                          // if (isShow == true)
-                          //   ...getMyWidgetList(
-                          //       columnList: widget.columnList,
-                          //       categoryName: categoryName,
-                          //       show: false),
                         ],
                       );
                     }),
@@ -120,7 +115,6 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
             ),
             Positioned(
               bottom: 0,
-              // bottom: -25,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -486,91 +480,3 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
     return list;
   }
 }
-
-/*InkWell(
-                          child: Container(
-                            height: 65,
-                            padding: const EdgeInsets.symmetric(horizontal: 12),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(color: AppColors.blueDark),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Select",
-                                  style: AppStyles.textStyle16
-                                      .copyWith(color: Colors.black),
-                                ),
-                                const Icon(Icons.arrow_drop_down),
-                              ],
-                            ),
-                          ),
-                          onTap: () {
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  icon: Row(
-                                    children: [
-                                      InkWell(
-                                        child: const Icon(Icons.refresh),
-                                        onTap: () {
-                                          BlocProvider.of<GetDropdownListCubit>(
-                                                  context)
-                                              .getDropdownList(
-                                            droModel: item.droModel ?? "",
-                                            droValue: item.droValue ?? "",
-                                            droText: item.droText ?? "",
-                                            droCondition:
-                                                item.droCondition ?? "",
-                                            droCompany: item.droCompany ?? "",
-                                          );
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                  title: CustomTextFormField(
-                                    hintText: "search",
-                                    onChanged: (query) {
-                                      final suggestions =
-                                          dropList.where((element) {
-                                        final text = element.text.toLowerCase();
-                                        final inPut = query.toLowerCase();
-                                        return text.contains(inPut);
-                                      });
-                                      setState(() {
-                                        dropList = suggestions.toList();
-                                      });
-                                    },
-                                  ),
-                                  content: ListView.builder(
-                                    shrinkWrap: true,
-                                    itemCount: dropList.length,
-                                    itemBuilder: (context, index) {
-                                      final dropListItem = dropList[index];
-                                      return ListTile(
-                                        title: Text(dropListItem.text),
-                                      );
-                                    },
-                                  ),
-                                  actions: [
-                                    TextButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child: Text(
-                                          S.of(context).cancel,
-                                          style: const TextStyle(
-                                              color: Colors.grey),
-                                        )),
-                                    TextButton(
-                                        onPressed: () {},
-                                        child: Text(S.of(context).ok)),
-                                  ],
-                                );
-                              },
-                            );
-                          },
-                        )*/

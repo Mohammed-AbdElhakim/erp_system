@@ -125,31 +125,6 @@ class _PaginationWidgetState extends State<PaginationWidget> {
                       );
                     }).toList(),
                   )),
-              // SizedBox(
-              //   height: 45.0,
-              //   width: 110.0,
-              //   child: DropdownMenu(
-              //     expandedInsets:
-              //         EdgeInsets.zero,
-              //     textStyle:
-              //         AppStyles.textStyle14.copyWith(color: Colors.black),
-              //     initialSelection: widget.dropdownValue,
-              //     dropdownMenuEntries: List.generate(
-              //       widget.listNumberItemInList.length,
-              //       (index) => DropdownMenuEntry(
-              //           value: widget.listNumberItemInList[index],
-              //           label: "${widget.listNumberItemInList[index]}"),
-              //     ),
-              //     onSelected: (newValue) {
-              //       if (newValue != null) {
-              //         widget.onChangeLimit(newValue);
-              //         // setState(() {
-              //         //   dropdownMenuValue = newValue;
-              //         // });
-              //       }
-              //     },
-              //   ),
-              // ),
             ],
           )
         ],

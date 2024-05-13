@@ -1,6 +1,6 @@
-import 'package:erp_system/core/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_styles.dart';
 
 class CustomMainListTileInDrawer extends StatefulWidget {
@@ -8,11 +8,9 @@ class CustomMainListTileInDrawer extends StatefulWidget {
     Key? key,
     required this.title,
     required this.bodyList,
-    // required this.isOpen,
   }) : super(key: key);
   final String title;
   final List<Widget> bodyList;
-  // final isOpened isOpen;
 
   @override
   State<CustomMainListTileInDrawer> createState() =>
@@ -43,8 +41,6 @@ class _CustomMainListTileInDrawerState
         ),
       ),
       trailing: val ? const Icon(Icons.arrow_drop_up) : const SizedBox(),
-      // leading: const SizedBox(),
-      // backgroundColor: Colors.red,
       children: widget.bodyList,
     );
   }

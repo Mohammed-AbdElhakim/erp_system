@@ -1,8 +1,8 @@
-import 'package:erp_system/core/utils/app_colors.dart';
-import 'package:erp_system/core/utils/app_styles.dart';
+
 import 'package:flutter/material.dart';
-// import 'package:sweetalert/sweetalert./dart';
-// import 'package:animated_text_kit/animated_text_kit.dart';
+
+import '../utils/app_colors.dart';
+import '../utils/app_styles.dart';
 
 typedef ValueChanged<Map> = void Function(Map? value);
 

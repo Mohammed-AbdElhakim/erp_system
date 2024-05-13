@@ -1,5 +1,3 @@
-import 'package:erp_system/features/tasks/data/models/task_model.dart';
-import 'package:erp_system/features/tasks/presentation/views/sub_task_view.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../features/auth/presentation/views/login_view.dart';
@@ -7,6 +5,8 @@ import '../../features/bottomNavigationBar/presentation/views/bottom_navigatiaon
 import '../../features/home/presentation/views/home_view.dart';
 import '../../features/host/presentation/views/host_view.dart';
 import '../../features/splash/presentation/views/splash_view.dart';
+import '../../features/tasks/data/models/task_model.dart';
+import '../../features/tasks/presentation/views/sub_task_view.dart';
 import '../models/menu_model/pages.dart';
 import '../views/screen_view.dart';
 

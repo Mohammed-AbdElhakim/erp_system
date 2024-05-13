@@ -1,5 +1,3 @@
-import 'package:erp_system/features/screenTable/presentation/manager/getPermissions/get_permissions_cubit.dart';
-import 'package:erp_system/features/screenTable/presentation/widgets/screen_table_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -14,10 +12,12 @@ import '../../../../generated/l10n.dart';
 import '../../data/models/permission_model.dart';
 import '../../data/models/screen_model.dart';
 import '../manager/delete/delete_cubit.dart';
+import '../manager/getPermissions/get_permissions_cubit.dart';
 import '../manager/getTable/get_table_cubit.dart';
 import 'build_alert_add.dart';
 import 'build_alert_edit.dart';
 import 'build_alert_search.dart';
+import 'screen_table_body.dart';
 
 class CustomFloatingActionButton extends StatefulWidget {
   const CustomFloatingActionButton({super.key, required this.pageData});

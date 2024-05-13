@@ -1,10 +1,10 @@
-import 'package:erp_system/core/utils/app_styles.dart';
-import 'package:erp_system/core/widgets/custom_container.dart';
-import 'package:erp_system/features/host/presentation/widgets/host_view_form.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../core/utils/app_styles.dart';
+import '../../../../core/widgets/custom_container.dart';
 import '../../../../generated/l10n.dart';
+import 'host_view_form.dart';
 
 class HostViewBody extends StatelessWidget {
   const HostViewBody({super.key, required this.isPortrait});

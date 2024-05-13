@@ -1,8 +1,8 @@
-import 'package:erp_system/core/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 import '../../../generated/l10n.dart';
+import '../../utils/app_colors.dart';
 import '../../utils/constants.dart';
 
 class CustomAlertDialog {

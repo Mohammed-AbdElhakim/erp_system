@@ -1,13 +1,4 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
-import 'package:erp_system/core/utils/app_styles.dart';
-import 'package:erp_system/core/utils/service_locator.dart';
-import 'package:erp_system/core/widgets/custom_error_massage.dart';
-import 'package:erp_system/core/widgets/custom_loading_widget.dart';
-import 'package:erp_system/features/screenTable/data/repositories/screen_repo_impl.dart';
-import 'package:erp_system/features/screenTable/presentation/manager/addEdit/add_edit_cubit.dart';
-import 'package:erp_system/features/screenTable/presentation/manager/getById/get_by_id_cubit.dart';
-import 'package:erp_system/features/screenTable/presentation/widgets/initdropdown.dart';
-import 'package:erp_system/features/screenTable/presentation/widgets/screen_table_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -17,13 +8,22 @@ import '../../../../core/helper/AlertDialog/custom_alert_dialog.dart';
 import '../../../../core/models/menu_model/pages.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_strings.dart';
+import '../../../../core/utils/app_styles.dart';
+import '../../../../core/utils/service_locator.dart';
 import '../../../../core/widgets/custom_button.dart';
+import '../../../../core/widgets/custom_error_massage.dart';
+import '../../../../core/widgets/custom_loading_widget.dart';
 import '../../../../core/widgets/custom_text_form_field.dart';
 import '../../../../generated/l10n.dart';
 import '../../data/models/dropdown_model/dropdown_model.dart';
 import '../../data/models/screen_model.dart';
+import '../../data/repositories/screen_repo_impl.dart';
+import '../manager/addEdit/add_edit_cubit.dart';
+import '../manager/getById/get_by_id_cubit.dart';
 import '../manager/getDropdownList/get_dropdown_list_cubit.dart';
 import '../manager/getTable/get_table_cubit.dart';
+import 'initdropdown.dart';
+import 'screen_table_body.dart';
 
 class BuildAlertEdit extends StatefulWidget {
   const BuildAlertEdit(
@@ -47,12 +47,6 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
 
     super.didChangeDependencies();
   }
-
-  // @override
-  // void dispose() {
-  //   ScreenTableBody.rowData = {};
-  //   super.dispose();
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -314,8 +308,6 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                 controller: controller,
                 onSaved: (newValue) {
                   if (newValue!.isNotEmpty) {
-                    // newRowData[item.columnName!] = newValue;
-
                     setState(() {
                       rowData.updateAll((key, value) =>
                           key == item.columnName!.toString()
@@ -496,30 +488,6 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                       } else {
                         return const InitDropdown();
                       }
-
-                      // return DropdownMenu(
-                      //   enableFilter: true,
-                      //   enableSearch: false,
-                      //   searchCallback: (entries, query) {
-                      //     print("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                      //     print(query);
-                      //     print(entries);
-                      //     print("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                      //   },
-                      //   expandedInsets: EdgeInsets.zero,
-                      //   dropdownMenuEntries: List.generate(
-                      //     dropList.length,
-                      //     (index) => DropdownMenuEntry(
-                      //         value: dropList[index].value,
-                      //         label: dropList[index].text),
-                      //   ),
-                      //   onSelected: (value) {
-                      //     if (value != null) {
-                      //       newRowData
-                      //           .addAll({item.searchName!.toString(): value});
-                      //     }
-                      //   },
-                      // );
                     },
                   ),
                 ),

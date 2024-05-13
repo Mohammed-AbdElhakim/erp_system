@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
-import 'package:erp_system/features/auth/data/models/login_model.dart';
 
 import '../../../../../core/errors/failures.dart';
+import '../../models/login_model.dart';
 
 abstract class LoginRepo {
   Future<Either<Failure, LoginModel>> loginUser(

@@ -1,18 +1,18 @@
-import 'package:erp_system/core/utils/methods.dart';
-import 'package:erp_system/features/screenTable/presentation/manager/getPermissions/get_permissions_cubit.dart';
-import 'package:erp_system/features/screenTable/presentation/widgets/screen_table_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/models/menu_model/pages.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../../../../core/utils/app_styles.dart';
+import '../../../../core/utils/methods.dart';
 import '../../../../core/widgets/change_status_bar_color.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
 import '../../../../core/widgets/custom_container.dart';
 import '../manager/getAllDropdownList/get_all_dropdown_list_cubit.dart';
+import '../manager/getPermissions/get_permissions_cubit.dart';
 import '../manager/getTable/get_table_cubit.dart';
 import '../widgets/custom_floating_action_button.dart';
+import '../widgets/screen_table_body.dart';
 
 class ScreenTable extends StatefulWidget {
   const ScreenTable({super.key, required this.pageData});

@@ -1,8 +1,8 @@
-import 'package:erp_system/features/tasks/presentation/views/tasks_view.dart';
 import 'package:flutter/material.dart';
 
 import '../../features/attendance/presentation/views/attendance_view.dart';
 import '../../features/screenTable/presentation/views/screen_table.dart';
+import '../../features/tasks/presentation/views/tasks_view.dart';
 import '../models/menu_model/pages.dart';
 
 class ScreenView extends StatelessWidget {
@@ -23,8 +23,6 @@ class ScreenView extends StatelessWidget {
         return TasksView(pageData: pageData);
       case "general":
         return ScreenTable(pageData: pageData);
-      // default:
-      //   return ScreenTable(pageData: pageData);
     }
   }
 }
