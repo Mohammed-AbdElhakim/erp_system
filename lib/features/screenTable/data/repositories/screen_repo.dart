@@ -42,7 +42,7 @@ abstract class ScreenRepo {
     required String droCompany,
   });
 
-  Future<Either<Failure, AllDropdownModel>> getAllDropdownList({
+  Future<Either<Failure, List<AllDropdownModel>>> getAllDropdownList({
     required int pageID,
   });
 

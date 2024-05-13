@@ -67,6 +67,8 @@ dependencies:
 #  hive: ^2.2.3
 #  hive_flutter: ^1.1.0
 
+  syncfusion_flutter_datagrid: ^25.2.3
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -10,6 +10,7 @@ import '../../../../core/utils/app_styles.dart';
 import '../../../../core/widgets/change_status_bar_color.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
 import '../../../../core/widgets/custom_container.dart';
+import '../manager/getAllDropdownList/get_all_dropdown_list_cubit.dart';
 import '../manager/getTable/get_table_cubit.dart';
 import '../widgets/custom_floating_action_button.dart';
 
@@ -50,6 +51,8 @@ class _ScreenTableState extends State<ScreenTable> {
         numberOfPage: 1);
     BlocProvider.of<GetPermissionsCubit>(context)
         .getPagePermissions(widget.pageData.pageId.toString());
+    BlocProvider.of<GetAllDropdownListCubit>(context)
+        .getAllDropdownList(pageId: widget.pageData.pageId);
     super.initState();
   }
 

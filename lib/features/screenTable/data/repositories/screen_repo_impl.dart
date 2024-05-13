@@ -284,9 +284,39 @@ class ScreenRepoImpl implements ScreenRepo {
   }
 
   @override
-  Future<Either<Failure, AllDropdownModel>> getAllDropdownList({required int pageID}) {
-    // TODO: implement getAllDropdownList
-    throw UnimplementedError();
-  }
+  Future<Either<Failure, List<AllDropdownModel>>> getAllDropdownList(
+      {required int pageID}) async {
+    try {
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
+              "";
+      String token =
+          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      List<dynamic> data = await apiService.get(
+        endPoint: "home/GetPageDropDown?pageId=$pageID",
+        headers: {
+          "Authorization": "Bearer $token",
+          "CompanyKey": companyKey,
+        },
+      );
 
+      List<AllDropdownModel> dataList = [];
+      for (var i in data) {
+        dataList.add(AllDropdownModel.fromJson(i));
+      }
+
+      return right(dataList);
+    } catch (e) {
+      if (e is DioException) {
+        return left(
+          ServerFailure.fromDioException(e),
+        );
+      }
+      return left(
+        ServerFailure(
+          e.toString(),
+        ),
+      );
+    }
+  }
 }

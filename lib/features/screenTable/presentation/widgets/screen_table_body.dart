@@ -1,3 +1,4 @@
+import 'package:erp_system/features/screenTable/data/models/dropdown_model/all_dropdown_model.dart';
 import 'package:erp_system/features/screenTable/data/models/screen_model.dart';
 import 'package:erp_system/features/screenTable/presentation/widgets/build_alert_search.dart';
 import 'package:erp_system/features/screenTable/presentation/widgets/pagination_widget.dart';
@@ -9,6 +10,7 @@ import '../../../../core/models/menu_model/pages.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../../../../core/widgets/custom_error_massage.dart';
 import '../../../../core/widgets/custom_loading_widget.dart';
+import '../manager/getAllDropdownList/get_all_dropdown_list_cubit.dart';
 import '../manager/getTable/get_table_cubit.dart';
 import 'custom_table.dart';
 
@@ -18,6 +20,7 @@ class ScreenTableBody extends StatefulWidget {
   final Pages pageData;
   static List<Map<String, dynamic>> rowData = [];
   static List<String> listCategory = [];
+
   // static Map<String, List<ListDropdownModel>> myDropdownLists = {};
   static bool isSearch = false;
   static String orderBy = '';
@@ -36,9 +39,11 @@ class _ScreenTableBodyState extends State<ScreenTableBody> {
   ScrollController? dataScrollController;
 
   late int allPages;
+
   // late int numberPage;
   // late int dropdownValue;
   List<int> listNumberItemInList = [10, 25, 50, 100];
+
   // String orderBy = '';
   // bool isDesc = false;
 
@@ -68,183 +73,200 @@ class _ScreenTableBodyState extends State<ScreenTableBody> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<GetTableCubit, GetTableState>(
+    return BlocBuilder<GetAllDropdownListCubit, GetAllDropdownListState>(
       builder: (context, state) {
-        if (state is GetTableSuccess) {
-          int? numberOfRecords = state.screenModel.numberOfRecords;
-          List<dynamic>? listData = state.screenModel.dataList;
-          List<dynamic>? listSum = state.screenModel.summedColumns;
-          List<String> listHeader = [];
-          List<dynamic> listKey = [];
-          List<ColumnList> listColumn = [];
-          List<String> category = [];
-          for (var item in state.screenModel.columnList!) {
-            listHeader.add(lang == AppStrings.enLangKey
-                ? item.enColumnLabel!
-                : item.arColumnLabel!);
-            listKey.add(item.columnName);
-            listColumn.add(item);
-            category.add(item.categoryName!);
-          }
-          List<String> categoryList = category.toSet().toList();
-          ScreenTableBody.listCategory = categoryList;
-          ScreenTableBody.numberPage = state.numberPage;
-          ScreenTableBody.dropdownValue = state.dropdownValue;
-          allPages = (numberOfRecords! % ScreenTableBody.dropdownValue) == 0
-              ? (numberOfRecords ~/ ScreenTableBody.dropdownValue)
-              : (numberOfRecords ~/ ScreenTableBody.dropdownValue) + 1;
-          return CustomTable(
-            listHeader: listHeader,
-            listKey: listKey,
-            listData: listData!,
-            listColumn: listColumn,
-            listSum: listSum,
-            paginationWidget: PaginationWidget(
-              allPages: allPages,
-              dropdownValue: ScreenTableBody.dropdownValue,
-              listNumberItemInList: listNumberItemInList,
-              myPage: ScreenTableBody.numberPage,
-              numberOfRecords: numberOfRecords,
-              onChangeLimit: (limit) {
-                setState(() {
-                  ScreenTableBody.dropdownValue = limit;
-                  ScreenTableBody.numberPage = 1;
-                  allPages =
-                      (numberOfRecords % ScreenTableBody.dropdownValue) == 0
-                          ? (numberOfRecords ~/ ScreenTableBody.dropdownValue)
-                          : (numberOfRecords ~/ ScreenTableBody.dropdownValue) +
-                              1;
-                });
+        if (state is GetAllDropdownListSuccess) {
+          List<AllDropdownModel> allDropdownModelList =
+              state.allDropdownModelList;
+          return BlocBuilder<GetTableCubit, GetTableState>(
+            builder: (context, state) {
+              if (state is GetTableSuccess) {
+                int? numberOfRecords = state.screenModel.numberOfRecords;
+                List<dynamic>? listData = state.screenModel.dataList;
+                List<dynamic>? listSum = state.screenModel.summedColumns;
+                List<String> listHeader = [];
+                List<dynamic> listKey = [];
+                List<ColumnList> listColumn = [];
+                List<String> category = [];
+                for (var item in state.screenModel.columnList!) {
+                  listHeader.add(lang == AppStrings.enLangKey
+                      ? item.enColumnLabel!
+                      : item.arColumnLabel!);
+                  listKey.add(item.columnName);
+                  listColumn.add(item);
+                  category.add(item.categoryName!);
+                }
+                List<String> categoryList = category.toSet().toList();
+                ScreenTableBody.listCategory = categoryList;
+                ScreenTableBody.numberPage = state.numberPage;
+                ScreenTableBody.dropdownValue = state.dropdownValue;
+                allPages = (numberOfRecords! % ScreenTableBody.dropdownValue) ==
+                        0
+                    ? (numberOfRecords ~/ ScreenTableBody.dropdownValue)
+                    : (numberOfRecords ~/ ScreenTableBody.dropdownValue) + 1;
+                return CustomTable(
+                  listHeader: listHeader,
+                  listKey: listKey,
+                  listData: listData!,
+                  listColumn: listColumn,
+                  listSum: listSum,
+                  allDropdownModelList: allDropdownModelList,
+                  paginationWidget: PaginationWidget(
+                    allPages: allPages,
+                    dropdownValue: ScreenTableBody.dropdownValue,
+                    listNumberItemInList: listNumberItemInList,
+                    myPage: ScreenTableBody.numberPage,
+                    numberOfRecords: numberOfRecords,
+                    onChangeLimit: (limit) {
+                      setState(() {
+                        ScreenTableBody.dropdownValue = limit;
+                        ScreenTableBody.numberPage = 1;
+                        allPages = (numberOfRecords %
+                                    ScreenTableBody.dropdownValue) ==
+                                0
+                            ? (numberOfRecords ~/ ScreenTableBody.dropdownValue)
+                            : (numberOfRecords ~/
+                                    ScreenTableBody.dropdownValue) +
+                                1;
+                      });
 
-                BlocProvider.of<GetTableCubit>(context).getTable(
-                  pageId: widget.pageData.pageId,
-                  employee: false,
-                  isdesc: widget.pageData.isDesc,
-                  limit: ScreenTableBody.dropdownValue,
-                  offset: (ScreenTableBody.numberPage *
-                          ScreenTableBody.dropdownValue) -
-                      ScreenTableBody.dropdownValue,
-                  orderby: widget.pageData.orderBy,
-                  statment: ScreenTableBody.isSearch == true
-                      ? BuildAlertSearch.statement
-                      : '',
-                  selectcolumns: '',
-                  numberOfPage: ScreenTableBody.numberPage,
-                  dropdownValueOfLimit: ScreenTableBody.dropdownValue,
-                  departmentName: widget.pageData.departmentName,
-                  isDepartment: widget.pageData.isDepartment,
-                  authorizationID: widget.pageData.authorizationID,
-                  viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
+                      BlocProvider.of<GetTableCubit>(context).getTable(
+                        pageId: widget.pageData.pageId,
+                        employee: false,
+                        isdesc: widget.pageData.isDesc,
+                        limit: ScreenTableBody.dropdownValue,
+                        offset: (ScreenTableBody.numberPage *
+                                ScreenTableBody.dropdownValue) -
+                            ScreenTableBody.dropdownValue,
+                        orderby: widget.pageData.orderBy,
+                        statment: ScreenTableBody.isSearch == true
+                            ? BuildAlertSearch.statement
+                            : '',
+                        selectcolumns: '',
+                        numberOfPage: ScreenTableBody.numberPage,
+                        dropdownValueOfLimit: ScreenTableBody.dropdownValue,
+                        departmentName: widget.pageData.departmentName,
+                        isDepartment: widget.pageData.isDepartment,
+                        authorizationID: widget.pageData.authorizationID,
+                        viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
+                      );
+                    },
+                    onTapMin: () {
+                      setState(() {
+                        ScreenTableBody.numberPage--;
+                      });
+
+                      BlocProvider.of<GetTableCubit>(context).getTable(
+                        pageId: widget.pageData.pageId,
+                        employee: false,
+                        isdesc: widget.pageData.isDesc,
+                        limit: ScreenTableBody.dropdownValue,
+                        offset: (ScreenTableBody.numberPage *
+                                ScreenTableBody.dropdownValue) -
+                            ScreenTableBody.dropdownValue,
+                        orderby: widget.pageData.orderBy,
+                        statment: ScreenTableBody.isSearch == true
+                            ? BuildAlertSearch.statement
+                            : '',
+                        selectcolumns: '',
+                        departmentName: widget.pageData.departmentName,
+                        isDepartment: widget.pageData.isDepartment,
+                        authorizationID: widget.pageData.authorizationID,
+                        viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
+                        numberOfPage: ScreenTableBody.numberPage,
+                        dropdownValueOfLimit: ScreenTableBody.dropdownValue,
+                      );
+                    },
+                    onTapAdd: () {
+                      setState(() {
+                        ScreenTableBody.numberPage++;
+                      });
+
+                      BlocProvider.of<GetTableCubit>(context).getTable(
+                        pageId: widget.pageData.pageId,
+                        employee: false,
+                        isdesc: widget.pageData.isDesc,
+                        limit: ScreenTableBody.dropdownValue,
+                        offset: (ScreenTableBody.numberPage *
+                                ScreenTableBody.dropdownValue) -
+                            ScreenTableBody.dropdownValue,
+                        orderby: widget.pageData.orderBy,
+                        statment: ScreenTableBody.isSearch == true
+                            ? BuildAlertSearch.statement
+                            : '',
+                        selectcolumns: '',
+                        departmentName: widget.pageData.departmentName,
+                        isDepartment: widget.pageData.isDepartment,
+                        authorizationID: widget.pageData.authorizationID,
+                        viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
+                        numberOfPage: ScreenTableBody.numberPage,
+                        dropdownValueOfLimit: ScreenTableBody.dropdownValue,
+                      );
+                    },
+                  ),
+                  onTapHeader: (String titleHeader) {
+                    setState(() {
+                      ScreenTableBody.orderBy = titleHeader;
+                      ScreenTableBody.isDesc = !ScreenTableBody.isDesc;
+                    });
+
+                    BlocProvider.of<GetTableCubit>(context).getTable(
+                      pageId: widget.pageData.pageId,
+                      employee: false,
+                      isdesc: ScreenTableBody.isDesc,
+                      limit: ScreenTableBody.dropdownValue,
+                      offset: (ScreenTableBody.numberPage *
+                              ScreenTableBody.dropdownValue) -
+                          ScreenTableBody.dropdownValue,
+                      orderby: ScreenTableBody.orderBy,
+                      statment: ScreenTableBody.isSearch == true
+                          ? BuildAlertSearch.statement
+                          : '',
+                      selectcolumns: '',
+                      departmentName: widget.pageData.departmentName,
+                      isDepartment: widget.pageData.isDepartment,
+                      authorizationID: widget.pageData.authorizationID,
+                      viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
+                      numberOfPage: ScreenTableBody.numberPage,
+                      dropdownValueOfLimit: ScreenTableBody.dropdownValue,
+                    );
+                  },
+                  onTapRow: (rowData) {
+                    ScreenTableBody.rowData = rowData;
+                  },
                 );
-              },
-              onTapMin: () {
-                setState(() {
-                  ScreenTableBody.numberPage--;
-                });
-
-                BlocProvider.of<GetTableCubit>(context).getTable(
-                  pageId: widget.pageData.pageId,
-                  employee: false,
-                  isdesc: widget.pageData.isDesc,
-                  limit: ScreenTableBody.dropdownValue,
-                  offset: (ScreenTableBody.numberPage *
-                          ScreenTableBody.dropdownValue) -
-                      ScreenTableBody.dropdownValue,
-                  orderby: widget.pageData.orderBy,
-                  statment: ScreenTableBody.isSearch == true
-                      ? BuildAlertSearch.statement
-                      : '',
-                  selectcolumns: '',
-                  departmentName: widget.pageData.departmentName,
-                  isDepartment: widget.pageData.isDepartment,
-                  authorizationID: widget.pageData.authorizationID,
-                  viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
-                  numberOfPage: ScreenTableBody.numberPage,
-                  dropdownValueOfLimit: ScreenTableBody.dropdownValue,
-                );
-              },
-              onTapAdd: () {
-                setState(() {
-                  ScreenTableBody.numberPage++;
-                });
-
-                BlocProvider.of<GetTableCubit>(context).getTable(
-                  pageId: widget.pageData.pageId,
-                  employee: false,
-                  isdesc: widget.pageData.isDesc,
-                  limit: ScreenTableBody.dropdownValue,
-                  offset: (ScreenTableBody.numberPage *
-                          ScreenTableBody.dropdownValue) -
-                      ScreenTableBody.dropdownValue,
-                  orderby: widget.pageData.orderBy,
-                  statment: ScreenTableBody.isSearch == true
-                      ? BuildAlertSearch.statement
-                      : '',
-                  selectcolumns: '',
-                  departmentName: widget.pageData.departmentName,
-                  isDepartment: widget.pageData.isDepartment,
-                  authorizationID: widget.pageData.authorizationID,
-                  viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
-                  numberOfPage: ScreenTableBody.numberPage,
-                  dropdownValueOfLimit: ScreenTableBody.dropdownValue,
-                );
-              },
-            ),
-            onTapHeader: (String titleHeader) {
-              setState(() {
-                ScreenTableBody.orderBy = titleHeader;
-                ScreenTableBody.isDesc = !ScreenTableBody.isDesc;
-              });
-
-              BlocProvider.of<GetTableCubit>(context).getTable(
-                pageId: widget.pageData.pageId,
-                employee: false,
-                isdesc: ScreenTableBody.isDesc,
-                limit: ScreenTableBody.dropdownValue,
-                offset: (ScreenTableBody.numberPage *
-                        ScreenTableBody.dropdownValue) -
-                    ScreenTableBody.dropdownValue,
-                orderby: ScreenTableBody.orderBy,
-                statment: ScreenTableBody.isSearch == true
-                    ? BuildAlertSearch.statement
-                    : '',
-                selectcolumns: '',
-                departmentName: widget.pageData.departmentName,
-                isDepartment: widget.pageData.isDepartment,
-                authorizationID: widget.pageData.authorizationID,
-                viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
-                numberOfPage: ScreenTableBody.numberPage,
-                dropdownValueOfLimit: ScreenTableBody.dropdownValue,
-              );
-            },
-            onTapRow: (rowData) {
-              ScreenTableBody.rowData = rowData;
+              } else if (state is GetTableFailure) {
+                return CustomErrorMassage(errorMassage: state.errorMassage);
+              } else {
+                return const CustomLoadingWidget();
+              }
             },
           );
-        } else if (state is GetTableFailure) {
+        } else if (state is GetAllDropdownListFailure) {
           return CustomErrorMassage(errorMassage: state.errorMassage);
         } else {
+          print("s");
           return const CustomLoadingWidget();
         }
       },
     );
   }
 
-  // void getData(BuildContext context) {
-  //   BlocProvider.of<GetTableCubit>(context).getTable(
-  //     pageId: widget.pageData.pageId.toString(),
-  //     employee: false,
-  //     isdesc: isDesc,
-  //     limit: dropdownValue,
-  //     offset: (numberPage * dropdownValue) - dropdownValue,
-  //     orderby: orderBy,
-  //     statment:
-  //         ScreenTableBody.isSearch == true ? BuildAlertSearch.statement : '',
-  //     selectcolumns: '',
-  //     numberOfPage: numberPage,
-  //     dropdownValueOfLimit: dropdownValue,
-  //   );
-  // }
+// void getData(BuildContext context) {
+//   BlocProvider.of<GetTableCubit>(context).getTable(
+//     pageId: widget.pageData.pageId.toString(),
+//     employee: false,
+//     isdesc: isDesc,
+//     limit: dropdownValue,
+//     offset: (numberPage * dropdownValue) - dropdownValue,
+//     orderby: orderBy,
+//     statment:
+//         ScreenTableBody.isSearch == true ? BuildAlertSearch.statement : '',
+//     selectcolumns: '',
+//     numberOfPage: numberPage,
+//     dropdownValueOfLimit: dropdownValue,
+//   );
+// }
 }
 
 class MyCategory {

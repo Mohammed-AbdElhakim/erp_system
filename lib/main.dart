@@ -1,6 +1,7 @@
 import 'package:erp_system/core/helper/SharedPreferences/pref.dart';
 import 'package:erp_system/core/utils/app_router.dart';
 import 'package:erp_system/core/utils/app_strings.dart';
+import 'package:erp_system/features/screenTable/presentation/manager/getAllDropdownList/get_all_dropdown_list_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -70,6 +71,10 @@ class _ERPSystemState extends State<ERPSystem> {
         ),
         BlocProvider(
           create: (context) => DeleteCubit(getIt.get<ScreenRepoImpl>()),
+        ),
+        BlocProvider(
+          create: (context) =>
+              GetAllDropdownListCubit(getIt.get<ScreenRepoImpl>()),
         ),
       ],
       child: MaterialApp.router(

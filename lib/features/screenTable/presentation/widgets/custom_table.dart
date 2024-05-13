@@ -5,6 +5,7 @@ import 'package:linked_scroll_controller/linked_scroll_controller.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/methods.dart';
+import '../../data/models/dropdown_model/all_dropdown_model.dart';
 import '../../data/models/screen_model.dart';
 
 typedef OnTapHeader<String> = void Function(String titleHeader);
@@ -21,12 +22,14 @@ class CustomTable extends StatefulWidget {
     required this.listColumn,
     required this.onTapRow,
     this.listSum,
+    required this.allDropdownModelList,
   });
   final List<String> listHeader;
   final List<dynamic> listData;
   final List<dynamic>? listSum;
   final List<dynamic> listKey;
   final List<ColumnList> listColumn;
+  final List<AllDropdownModel> allDropdownModelList;
   final Widget paginationWidget;
   final OnTapHeader<String> onTapHeader;
   final OnTapRow<List<Map<String, dynamic>>> onTapRow;
@@ -57,6 +60,95 @@ class _CustomTableState extends State<CustomTable> {
 
   @override
   Widget build(BuildContext context) {
+    /* return Expanded(
+      child: SfDataGridTheme(
+        data: SfDataGridThemeData(
+          headerColor: AppColors.blueLight,
+        ),
+        child: SfDataGrid(
+          source: TableDataSource(
+            listColumn: widget.listColumn,
+            listData: widget.listData,
+            listKey: widget.listKey,
+          ),
+          columnWidthMode: ColumnWidthMode.auto,
+          rowHeight: 35,
+          headerRowHeight: 35,
+          footerHeight: 195,
+          showCheckboxColumn: true,
+          checkboxColumnSettings:
+              DataGridCheckboxColumnSettings(showCheckboxOnHeader: false),
+          footer: Column(
+            children: [
+              if (widget.listSum!.isNotEmpty)
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  controller: sumScrollController,
+                  child: DataTable(
+                    columnSpacing: 0,
+                    horizontalMargin: 48,
+                    dataRowMinHeight: 50,
+                    dataRowMaxHeight: 50,
+                    headingRowHeight: 35,
+                    headingRowColor:
+                        MaterialStateProperty.all(AppColors.blueLight),
+                    columns: List.generate(
+                      widget.listHeader.length,
+                      (index) {
+                        return DataColumn(
+                          label: InkWell(
+                            onTap: () {
+                              if (widget.listSum![0][widget.listKey[index]]
+                                      .toString()
+                                      .length >
+                                  12) {
+                                buildShowDialog(context,
+                                    text: widget.listSum![0]
+                                            [widget.listKey[index]]
+                                        .toString());
+                              }
+                            },
+                            child: SizedBox(
+                              width: 130,
+                              child: Text(
+                                widget.listSum![0][widget.listKey[index]] ==
+                                        null
+                                    ? ""
+                                    : widget.listSum![0][widget.listKey[index]]
+                                        .toString(),
+                                // widget.listHeader[index],
+                                textAlign: TextAlign.center,
+                                style: AppStyles.textStyle14,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    rows: const [],
+                  ),
+                ),
+              //TODO:pages
+              widget.paginationWidget,
+            ],
+          ),
+          columns: List.generate(
+            widget.listHeader.length,
+            (index) => GridColumn(
+                columnName: widget.listKey[index],
+                label: Container(
+                    padding: EdgeInsets.all(8.0),
+                    alignment: Alignment.center,
+                    child: Text(
+                      widget.listHeader[index],
+                      textAlign: TextAlign.center,
+                      style: AppStyles.textStyle14,
+                    ))),
+          ),
+        ),
+      ),
+    );*/
     return Expanded(
       child: Stack(
         alignment: Alignment.topCenter,
@@ -97,21 +189,6 @@ class _CustomTableState extends State<CustomTable> {
                     rows: List.generate(
                       widget.listData.length,
                       (index) => DataRow(
-                        // onLongPress: () {
-                        //   if (indexColorRow == index) {
-                        //     setState(() {
-                        //       indexColorRow = -1;
-                        //     });
-                        //
-                        //     widget.onTapRow({});
-                        //   } else {
-                        //     setState(() {
-                        //       indexColorRow = index;
-                        //     });
-                        //
-                        //     widget.onTapRow(widget.listData[index]);
-                        //   }
-                        // },
                         selected: selectedRows[index],
                         onSelectChanged: (value) {
                           setState(() {
@@ -297,17 +374,27 @@ class _CustomTableState extends State<CustomTable> {
       case "dropdown":
         // print("@@@@@@@@@@@@@@@@@@@@@@2");
         // print(ScreenTableBody.myDropdownLists);
-        // String val = '';
-        // for (var item in dropListData) {
-        //   if (item.value.toString() == value) {
-        //     val = item.text ?? "";
-        //   }
-        // }
+        String val = '';
+        if (columnList.columnName == columnList.searchName) {
+          List<ListDrop>? myListDrop = [];
+          for (var item in widget.allDropdownModelList) {
+            if (item.columnName == columnList.columnName) {
+              myListDrop = item.list;
+            }
+          }
+          for (var item in myListDrop!) {
+            if (item.id.toString() == value) {
+              val = item.text ?? "";
+            }
+          }
+        } else {
+          val = value;
+        }
         return Text(
           textAlign: TextAlign.center,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-          value,
+          val,
           style: TextStyle(
               color:
                   selectedRows[indexRow] == true ? Colors.white : Colors.black),
@@ -325,3 +412,36 @@ class _CustomTableState extends State<CustomTable> {
     }
   }
 }
+
+/*class TableDataSource extends DataGridSource {
+  final List<dynamic> listData;
+  final List<dynamic> listKey;
+  final List<ColumnList> listColumn;
+
+  TableDataSource(
+      {required this.listData,
+      required this.listKey,
+      required this.listColumn});
+
+  @override
+  List<DataGridRow> get rows => listData
+      .map((e) => DataGridRow(
+          cells: List.generate(
+              listKey.length,
+              (index) => DataGridCell<dynamic>(
+                  columnName: listKey[index],
+                  value: "${e[listKey[index]] ?? ""}"))))
+      .toList();
+
+  @override
+  DataGridRowAdapter buildRow(DataGridRow row) {
+    return DataGridRowAdapter(
+        cells: row.getCells().map<Widget>((e) {
+      return Container(
+        alignment: Alignment.center,
+        padding: EdgeInsets.all(8.0),
+        child: Text(e.value),
+      );
+    }).toList());
+  }
+}*/

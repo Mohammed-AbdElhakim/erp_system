@@ -17,7 +17,7 @@ final class GetAllDropdownListFailure extends GetAllDropdownListState {
 }
 
 final class GetAllDropdownListSuccess extends GetAllDropdownListState {
-  final DropdownModel dropdownModel;
+  final List<AllDropdownModel> allDropdownModelList;
 
-  const GetAllDropdownListSuccess(this.dropdownModel);
+  const GetAllDropdownListSuccess(this.allDropdownModelList);
 }
