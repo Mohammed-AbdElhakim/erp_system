@@ -23,8 +23,8 @@ class ScreenTableBody extends StatefulWidget {
 
   // static Map<String, List<ListDropdownModel>> myDropdownLists = {};
   static bool isSearch = false;
-  static String orderBy = '';
-  static bool isDesc = false;
+  static late String orderBy;
+  static late bool isDesc;
   static late int numberPage;
   static late int dropdownValue;
 
@@ -53,6 +53,8 @@ class _ScreenTableBodyState extends State<ScreenTableBody> {
     headerScrollController = controllerGroup.addAndGet();
     dataScrollController = controllerGroup.addAndGet();
     ScreenTableBody.numberPage = 1;
+    ScreenTableBody.isDesc = widget.pageData.isDesc;
+    ScreenTableBody.orderBy = widget.pageData.orderBy;
     ScreenTableBody.dropdownValue = listNumberItemInList[0];
     BuildAlertSearch.statement = '';
   }
