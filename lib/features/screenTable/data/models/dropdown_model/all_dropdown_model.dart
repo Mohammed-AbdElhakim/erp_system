@@ -9,16 +9,16 @@ class AllDropdownModel {
     if (json['List'] != null) {
       list = <ListDrop>[];
       json['List'].forEach((v) {
-        list!.add(new ListDrop.fromJson(v));
+        list!.add(ListDrop.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['ColumnName'] = this.columnName;
-    if (this.list != null) {
-      data['List'] = this.list!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['ColumnName'] = columnName;
+    if (list != null) {
+      data['List'] = list!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -36,9 +36,9 @@ class ListDrop {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['Id'] = this.id;
-    data['Text'] = this.text;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['Id'] = id;
+    data['Text'] = text;
     return data;
   }
 }

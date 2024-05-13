@@ -208,10 +208,6 @@ class _PresenceAndDepartureState extends State<PresenceAndDeparture> {
     setState(() {
       lat = locationData.latitude;
       long = locationData.longitude;
-
-      print("**********************************");
-      print("lat $lat");
-      print("long $long");
     });
   }
 }

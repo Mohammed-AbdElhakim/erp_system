@@ -245,7 +245,6 @@ class _ScreenTableBodyState extends State<ScreenTableBody> {
         } else if (state is GetAllDropdownListFailure) {
           return CustomErrorMassage(errorMassage: state.errorMassage);
         } else {
-          print("s");
           return const CustomLoadingWidget();
         }
       },
