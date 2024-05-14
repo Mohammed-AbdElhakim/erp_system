@@ -330,8 +330,9 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                           });
 
                           dsetState(() {
-                            newRowData.addAll(
-                                {item.columnName!.toString(): dateTime});
+                            newRowData.addAll({
+                              item.columnName!.toString(): dateTime.toString()
+                            });
                           });
                         }
                       },

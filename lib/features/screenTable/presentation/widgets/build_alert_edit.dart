@@ -332,7 +332,8 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
           date = DateFormat("yyyy-MM-dd", 'en')
               .format(DateTime.parse(rowData[item.columnName].toString()));
         } else {
-          date = DateFormat("yyyy-MM-dd", 'en').format(DateTime.now());
+          // date = DateFormat("yyyy-MM-dd", 'en').format(DateTime.now());
+          date = '';
         }
 
         list.add(Padding(
@@ -374,7 +375,7 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                         dsetState(() {
                           rowData.updateAll((key, value) =>
                               key == item.columnName!.toString()
-                                  ? value = dateTime
+                                  ? value = dateTime.toString()
                                   : value);
                           newRowData = rowData;
                         });
