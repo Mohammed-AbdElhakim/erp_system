@@ -329,8 +329,8 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
           item.insertDefult == show) {
         String date;
         if (rowData[item.columnName] != null) {
-          date = DateFormat("yyyy-MM-dd", 'en')
-              .format(DateTime.parse(rowData[item.columnName].toString()));
+          date = DateFormat("yyyy-MM-dd", 'en').format(
+              DateTime.parse(rowData[item.columnName].toString()).toLocal());
         } else {
           // date = DateFormat("yyyy-MM-dd", 'en').format(DateTime.now());
           date = '';

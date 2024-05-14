@@ -350,7 +350,8 @@ class _CustomTableState extends State<CustomTable> {
     switch (columnList.insertType) {
       case "date":
         String date = value.isNotEmpty
-            ? DateFormat("yyyy-MM-dd", 'en').format(DateTime.parse(value))
+            ? DateFormat("yyyy-MM-dd", "en")
+                .format(DateTime.parse(value).toLocal())
             : '';
         return Text(
           textAlign: TextAlign.center,
