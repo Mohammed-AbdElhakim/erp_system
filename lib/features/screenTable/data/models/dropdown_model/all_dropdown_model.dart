@@ -25,7 +25,7 @@ class AllDropdownModel {
 }
 
 class ListDrop {
-  int? id;
+  String? id;
   String? text;
 
   ListDrop({this.id, this.text});
