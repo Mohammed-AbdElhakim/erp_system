@@ -1,6 +1,5 @@
 part of 'get_by_id_cubit.dart';
 
-@immutable
 sealed class GetByIdState extends Equatable {
   const GetByIdState();
   @override
