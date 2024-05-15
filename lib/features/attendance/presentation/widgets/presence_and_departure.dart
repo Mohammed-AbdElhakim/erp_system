@@ -167,9 +167,9 @@ class _PresenceAndDepartureState extends State<PresenceAndDeparture> {
           )) /
           1000;
       radius.add(distance);
-      if (distance.toInt() == item.radius ||
-          distance.toInt() < item.radius ||
-          distance.toInt() == 0) {
+      if (distance == item.radius ||
+          distance < item.radius ||
+          distance == 0.0) {
         setState(() {
           isLocation = true;
           myLocation = item;
