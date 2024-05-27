@@ -100,6 +100,7 @@ class _ScreenTableBodyState extends State<ScreenTableBody> {
                     ? (numberOfRecords ~/ ScreenTableBody.dropdownValue)
                     : (numberOfRecords ~/ ScreenTableBody.dropdownValue) + 1;
                 return CustomTable(
+                  pageData: widget.pageData,
                   listHeader: listHeader,
                   listKey: listKey,
                   listData: listData!,

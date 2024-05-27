@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:linked_scroll_controller/linked_scroll_controller.dart';
 
+import '../../../../core/models/menu_model/pages.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/methods.dart';
@@ -23,7 +24,9 @@ class CustomTable extends StatefulWidget {
     required this.onTapRow,
     this.listSum,
     required this.allDropdownModelList,
+    required this.pageData,
   });
+  final Pages pageData;
   final List<String> listHeader;
   final List<dynamic> listData;
   final List<dynamic>? listSum;
@@ -80,23 +83,38 @@ class _CustomTableState extends State<CustomTable> {
                     headingRowHeight: 35,
                     headingRowColor:
                         MaterialStateProperty.all(AppColors.blueLight),
-                    columns: List.generate(
-                      widget.listHeader.length,
-                      (index) {
-                        return DataColumn(
+                    columns: [
+                      if (widget.pageData.editSrc == "addOrEditExcel")
+                        DataColumn(
                           label: Expanded(
                             child: SizedBox(
-                              width: 130,
+                              width: 30,
                               child: Text(
-                                widget.listHeader[index],
+                                '',
                                 textAlign: TextAlign.center,
                                 style: AppStyles.textStyle14,
                               ),
                             ),
                           ),
-                        );
-                      },
-                    ),
+                        ),
+                      ...List.generate(
+                        widget.listHeader.length,
+                        (index) {
+                          return DataColumn(
+                            label: Expanded(
+                              child: SizedBox(
+                                width: 130,
+                                child: Text(
+                                  widget.listHeader[index],
+                                  textAlign: TextAlign.center,
+                                  style: AppStyles.textStyle14,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      )
+                    ],
                     rows: List.generate(
                       widget.listData.length,
                       (index) => DataRow(
@@ -116,47 +134,67 @@ class _CustomTableState extends State<CustomTable> {
                             widget.onTapRow(rowsData);
                           }
                         },
-                        cells: List.generate(
-                          widget.listHeader.length,
-                          (i) => DataCell(
-                            SizedBox(
-                              width: 130,
-                              child: InkWell(
-                                onTap:
-                                    widget.listColumn[i].insertType! != "date"
-                                        ? widget.listData[index]
-                                                        ['${widget.listKey[i]}']
-                                                    .toString()
-                                                    .length >
-                                                12
-                                            ? () {
-                                                buildShowDialog(context,
-                                                    text:
-                                                        "${widget.listData[index][widget.listKey[i]]}");
-                                              }
-                                            : null
-                                        : null,
-                                child: Container(
-                                  color: selectedRows[index] == true
-                                      ? AppColors.blueGreyDark
-                                      : Colors.transparent,
-                                  width: widget.listData[index]
-                                                  ['${widget.listKey[i]}']
-                                              .toString()
-                                              .length >
-                                          12
-                                      ? 100
-                                      : null,
-                                  alignment: Alignment.center,
-                                  child: buildMyWidget(
-                                      "${widget.listData[index][widget.listKey[i]] ?? ""}",
-                                      widget.listColumn[i],
-                                      index),
+                        cells: [
+                          if (widget.pageData.editSrc == "addOrEditExcel")
+                            DataCell(
+                              SizedBox(
+                                width: 30,
+                                child: InkWell(
+                                  onTap: () {
+                                    print("++++++++++++++++++++++++++++");
+                                  },
+                                  child: Container(
+                                    color: selectedRows[index] == true
+                                        ? AppColors.blueGreyDark
+                                        : Colors.transparent,
+                                    alignment: Alignment.center,
+                                    child: Icon(Icons.add),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ),
+                          ...List.generate(
+                            widget.listHeader.length,
+                            (i) => DataCell(
+                              SizedBox(
+                                width: 130,
+                                child: InkWell(
+                                  onTap: widget.listColumn[i].insertType! !=
+                                          "date"
+                                      ? widget.listData[index]
+                                                      ['${widget.listKey[i]}']
+                                                  .toString()
+                                                  .length >
+                                              12
+                                          ? () {
+                                              buildShowDialog(context,
+                                                  text:
+                                                      "${widget.listData[index][widget.listKey[i]]}");
+                                            }
+                                          : null
+                                      : null,
+                                  child: Container(
+                                    color: selectedRows[index] == true
+                                        ? AppColors.blueGreyDark
+                                        : Colors.transparent,
+                                    width: widget.listData[index]
+                                                    ['${widget.listKey[i]}']
+                                                .toString()
+                                                .length >
+                                            12
+                                        ? 100
+                                        : null,
+                                    alignment: Alignment.center,
+                                    child: buildMyWidget(
+                                        "${widget.listData[index][widget.listKey[i]] ?? ""}",
+                                        widget.listColumn[i],
+                                        index),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
                       ),
                     ),
                   ),
@@ -228,27 +266,42 @@ class _CustomTableState extends State<CustomTable> {
               dataRowMaxHeight: 50,
               headingRowHeight: 35,
               headingRowColor: MaterialStateProperty.all(AppColors.blueLight),
-              columns: List.generate(
-                widget.listHeader.length,
-                (index) {
-                  return DataColumn(
-                    label: InkWell(
-                      onTap: () {
-                        widget
-                            .onTapHeader(widget.listColumn[index].columnName!);
-                      },
+              columns: [
+                if (widget.pageData.editSrc == "addOrEditExcel")
+                  DataColumn(
+                    label: Expanded(
                       child: SizedBox(
-                        width: 130,
+                        width: 30,
                         child: Text(
-                          widget.listHeader[index],
+                          '',
                           textAlign: TextAlign.center,
                           style: AppStyles.textStyle14,
                         ),
                       ),
                     ),
-                  );
-                },
-              ),
+                  ),
+                ...List.generate(
+                  widget.listHeader.length,
+                  (index) {
+                    return DataColumn(
+                      label: InkWell(
+                        onTap: () {
+                          widget.onTapHeader(
+                              widget.listColumn[index].columnName!);
+                        },
+                        child: SizedBox(
+                          width: 130,
+                          child: Text(
+                            widget.listHeader[index],
+                            textAlign: TextAlign.center,
+                            style: AppStyles.textStyle14,
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                )
+              ],
               rows: const [],
             ),
           )
