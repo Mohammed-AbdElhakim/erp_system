@@ -4,6 +4,7 @@ import '../../features/auth/presentation/views/login_view.dart';
 import '../../features/bottomNavigationBar/presentation/views/bottom_navigatiaon_bar_view.dart';
 import '../../features/home/presentation/views/home_view.dart';
 import '../../features/host/presentation/views/host_view.dart';
+import '../../features/screenTable/presentation/views/details_row_view.dart';
 import '../../features/splash/presentation/views/splash_view.dart';
 import '../../features/tasks/data/models/task_model.dart';
 import '../../features/tasks/presentation/views/sub_task_view.dart';
@@ -19,6 +20,7 @@ abstract class AppRouter {
   static const String kBottomNavigationBarView = "/bottomNavigationBarView";
   static const String kScreenView = "/screenView";
   static const String kSubTaskView = "/subTaskView";
+  static const String kDetailsRowView = "/detailsRowView";
   static final router = GoRouter(
     routes: [
       GoRoute(
@@ -58,6 +60,10 @@ abstract class AppRouter {
             pageData: page,
           );
         },
+      ),
+      GoRoute(
+        path: kDetailsRowView,
+        builder: (context, state) => const DetailsRowView(),
       ),
     ],
   );

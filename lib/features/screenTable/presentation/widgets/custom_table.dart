@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:linked_scroll_controller/linked_scroll_controller.dart';
 
 import '../../../../core/models/menu_model/pages.dart';
 import '../../../../core/utils/app_colors.dart';
+import '../../../../core/utils/app_router.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/methods.dart';
 import '../../data/models/dropdown_model/all_dropdown_model.dart';
@@ -141,7 +143,8 @@ class _CustomTableState extends State<CustomTable> {
                                 width: 30,
                                 child: InkWell(
                                   onTap: () {
-                                    print("++++++++++++++++++++++++++++");
+                                    GoRouter.of(context)
+                                        .push(AppRouter.kDetailsRowView);
                                   },
                                   child: Container(
                                     color: selectedRows[index] == true
