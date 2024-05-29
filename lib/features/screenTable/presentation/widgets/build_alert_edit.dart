@@ -23,7 +23,7 @@ import '../manager/getById/get_by_id_cubit.dart';
 import '../manager/getDropdownList/get_dropdown_list_cubit.dart';
 import '../manager/getTable/get_table_cubit.dart';
 import 'initdropdown.dart';
-import 'screen_table_body.dart';
+import 'table_general.dart';
 
 class BuildAlertEdit extends StatefulWidget {
   const BuildAlertEdit(
@@ -53,7 +53,7 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
     return BlocProvider(
       create: (context) => GetByIdCubit(getIt.get<ScreenRepoImpl>())
         ..getById(
-            id: ScreenTableBody.rowData[0][widget.pageData.primary].toString(),
+            id: TableGeneral.rowData[0][widget.pageData.primary].toString(),
             controllerName: widget.pageData.controllerName),
       child: BlocBuilder<GetByIdCubit, GetByIdState>(
         builder: (context, state) {
@@ -72,10 +72,10 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            ...List.generate(
-                                ScreenTableBody.listCategory.length, (index) {
+                            ...List.generate(TableGeneral.listCategory.length,
+                                (index) {
                               String categoryName =
-                                  ScreenTableBody.listCategory[index];
+                                  TableGeneral.listCategory[index];
                               return Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [

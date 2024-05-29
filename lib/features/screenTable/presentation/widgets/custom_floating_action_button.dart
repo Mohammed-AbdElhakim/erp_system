@@ -17,7 +17,7 @@ import '../manager/getTable/get_table_cubit.dart';
 import 'build_alert_add.dart';
 import 'build_alert_edit.dart';
 import 'build_alert_search.dart';
-import 'screen_table_body.dart';
+import 'table_general.dart';
 
 class CustomFloatingActionButton extends StatefulWidget {
   const CustomFloatingActionButton({super.key, required this.pageData});
@@ -147,24 +147,23 @@ class _CustomFloatingActionButtonState
       BlocProvider.of<GetTableCubit>(context).getTable(
           pageId: widget.pageData.pageId,
           employee: false,
-          isdesc: ScreenTableBody.isDesc,
+          isdesc: TableGeneral.isDesc,
           limit: 10,
           offset: 0,
-          orderby: ScreenTableBody.orderBy,
-          statment: ScreenTableBody.isSearch == true
-              ? BuildAlertSearch.statement
-              : '',
+          orderby: TableGeneral.orderBy,
+          statment:
+              TableGeneral.isSearch == true ? BuildAlertSearch.statement : '',
           selectcolumns: '',
           departmentName: widget.pageData.departmentName,
           isDepartment: widget.pageData.isDepartment,
           authorizationID: widget.pageData.authorizationID,
           viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
-          dropdownValueOfLimit: ScreenTableBody.dropdownValue,
-          numberOfPage: ScreenTableBody.numberPage);
+          dropdownValueOfLimit: TableGeneral.dropdownValue,
+          numberOfPage: TableGeneral.numberPage);
     } else if (icon == Icons.delete) {
-      if (ScreenTableBody.rowData.isNotEmpty) {
+      if (TableGeneral.rowData.isNotEmpty) {
         List<String> listId = [];
-        for (var item in ScreenTableBody.rowData) {
+        for (var item in TableGeneral.rowData) {
           listId.add(item[widget.pageData.primary].toString());
         }
         CustomAlertDialog.alertDelete(
@@ -236,14 +235,14 @@ class _CustomFloatingActionButtonState
             desc: S.of(context).massage_choose_delete);
       }
     } else if (icon == Icons.edit_note) {
-      if (ScreenTableBody.rowData.isNotEmpty) {
-        if (ScreenTableBody.rowData.length > 1) {
+      if (TableGeneral.rowData.isNotEmpty) {
+        if (TableGeneral.rowData.length > 1) {
           CustomAlertDialog.alertWithButton(
               context: context,
               type: AlertType.error,
               title: S.of(context).error,
               desc: S.of(context).massage_no_edit);
-        } else if (ScreenTableBody.rowData.length == 1) {
+        } else if (TableGeneral.rowData.length == 1) {
           CustomAlertDialog.alertWithCustomContent(
             context: context,
             title: S.of(context).btn_edit,

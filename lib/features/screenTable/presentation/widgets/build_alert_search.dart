@@ -17,7 +17,7 @@ import '../../data/models/screen_model.dart';
 import '../../data/repositories/screen_repo_impl.dart';
 import '../manager/getDropdownList/get_dropdown_list_cubit.dart';
 import '../manager/getTable/get_table_cubit.dart';
-import 'screen_table_body.dart';
+import 'table_general.dart';
 
 class BuildAlertSearch extends StatefulWidget {
   const BuildAlertSearch(
@@ -99,10 +99,10 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
                       textStyle:
                           AppStyles.textStyle16.copyWith(color: Colors.grey),
                       onTap: () {
-                        ScreenTableBody.isSearch = false;
+                        TableGeneral.isSearch = false;
                         BuildAlertSearch.statement = '';
-                        ScreenTableBody.isDesc = false;
-                        ScreenTableBody.orderBy = '';
+                        TableGeneral.isDesc = false;
+                        TableGeneral.orderBy = '';
                         BlocProvider.of<GetTableCubit>(context)
                             .getTable(
                                 pageId: widget.pageData.pageId,
@@ -131,7 +131,7 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
                     width: 80,
                     onTap: () {
                       formKey.currentState!.save();
-                      ScreenTableBody.isSearch = true;
+                      TableGeneral.isSearch = true;
                       BlocProvider.of<GetTableCubit>(context)
                           .getTable(
                               pageId: widget.pageData.pageId,
@@ -545,75 +545,77 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
         String oldValue = getStringCheckbox(
             search: item.searchName!, statement: widget.oldStatement);
         String? valueCheckbox = oldValue.isEmpty ? null : oldValue;
-        listWidgets.add(Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              style: AppStyles.textStyle14.copyWith(color: Colors.grey),
-            ),
-            StatefulBuilder(
-              builder: (context, csetState) {
-                return DropdownButtonFormField(
-                  value: valueCheckbox,
-                  elevation: 16,
-                  isExpanded: true,
-                  hint: const Text(""),
-                  decoration: InputDecoration(
-                    contentPadding:
-                        const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
-                    errorBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: AppColors.red),
-                        borderRadius: BorderRadius.circular(12)),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: AppColors.blueDark),
-                        borderRadius: BorderRadius.circular(12)),
-                    enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: AppColors.blueDark),
-                        borderRadius: BorderRadius.circular(12)),
-                    border: OutlineInputBorder(
-                        borderSide: BorderSide(color: AppColors.blueDark),
-                        borderRadius: BorderRadius.circular(12)),
-                  ),
-                  // underline: const SizedBox(),
-                  onChanged: (String? newValue) {
-                    csetState(() {
-                      valueCheckbox = newValue!;
-                      if (valueCheckbox == "True") {
-                        statment = "${statment}and ${item.searchName} = 1 ";
-                        BuildAlertSearch.statement = statment;
-                      } else {
-                        if (statment.contains("and ${item.searchName} = 1 ")) {
-                          statment = statment.replaceAll(
-                              "and ${item.searchName} = 1 ", '');
+        listWidgets.add(
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: AppStyles.textStyle14.copyWith(color: Colors.grey),
+              ),
+              StatefulBuilder(
+                builder: (context, csetState) {
+                  return DropdownButtonFormField(
+                    value: valueCheckbox,
+                    elevation: 16,
+                    isExpanded: true,
+                    hint: const Text(""),
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.symmetric(
+                          vertical: 0, horizontal: 12),
+                      errorBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: AppColors.red),
+                          borderRadius: BorderRadius.circular(12)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: AppColors.blueDark),
+                          borderRadius: BorderRadius.circular(12)),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: AppColors.blueDark),
+                          borderRadius: BorderRadius.circular(12)),
+                      border: OutlineInputBorder(
+                          borderSide: BorderSide(color: AppColors.blueDark),
+                          borderRadius: BorderRadius.circular(12)),
+                    ),
+                    // underline: const SizedBox(),
+                    onChanged: (String? newValue) {
+                      csetState(() {
+                        valueCheckbox = newValue!;
+                        if (valueCheckbox == "True") {
+                          statment = "${statment}and ${item.searchName} = 1 ";
+                          BuildAlertSearch.statement = statment;
+                        } else {
+                          if (statment
+                              .contains("and ${item.searchName} = 1 ")) {
+                            statment = statment.replaceAll(
+                                "and ${item.searchName} = 1 ", '');
+                            BuildAlertSearch.statement = statment;
+                          }
+                          if (statment.contains(
+                              "and (${item.searchName} = 0 or ${item.searchName} is null) ")) {
+                            statment = statment.replaceAll(
+                                "and (${item.searchName} = 0 or ${item.searchName} is null) ",
+                                '');
+                            BuildAlertSearch.statement = statment;
+                          }
+                          statment =
+                              "${statment}and (${item.searchName} = 0 or ${item.searchName} is null) ";
                           BuildAlertSearch.statement = statment;
                         }
-                        if (statment.contains(
-                            "and (${item.searchName} = 0 or ${item.searchName} is null) ")) {
-                          statment = statment.replaceAll(
-                              "and (${item.searchName} = 0 or ${item.searchName} is null) ",
-                              '');
-                          BuildAlertSearch.statement = statment;
-                        }
-                        statment =
-                            "${statment}and (${item.searchName} = 0 or ${item.searchName} is null) ";
-                        BuildAlertSearch.statement = statment;
-                      }
-                    });
-                  },
-                  items: ["True", "False", "None"]
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Center(child: Text(value.toString())),
-                    );
-                  }).toList(),
-                );
-              },
-            ),
-          ],
-        ),
-            );
+                      });
+                    },
+                    items: ["True", "False", "None"]
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Center(child: Text(value.toString())),
+                      );
+                    }).toList(),
+                  );
+                },
+              ),
+            ],
+          ),
+        );
       }
     }
 

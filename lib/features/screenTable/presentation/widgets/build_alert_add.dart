@@ -21,7 +21,7 @@ import '../manager/addEdit/add_edit_cubit.dart';
 import '../manager/getDropdownList/get_dropdown_list_cubit.dart';
 import '../manager/getTable/get_table_cubit.dart';
 import 'initdropdown.dart';
-import 'screen_table_body.dart';
+import 'table_general.dart';
 
 class BuildAlertAdd extends StatefulWidget {
   const BuildAlertAdd(
@@ -66,9 +66,8 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ...List.generate(ScreenTableBody.listCategory.length,
-                        (index) {
-                      String categoryName = ScreenTableBody.listCategory[index];
+                    ...List.generate(TableGeneral.listCategory.length, (index) {
+                      String categoryName = TableGeneral.listCategory[index];
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
