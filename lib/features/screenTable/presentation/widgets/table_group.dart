@@ -1,3 +1,4 @@
+import 'package:erp_system/features/screenTable/presentation/widgets/custom_table_group.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:linked_scroll_controller/linked_scroll_controller.dart';
@@ -11,7 +12,6 @@ import '../../data/models/screen_model.dart';
 import '../manager/getAllDropdownList/get_all_dropdown_list_cubit.dart';
 import '../manager/getTable/get_table_cubit.dart';
 import 'build_alert_search.dart';
-import 'custom_table.dart';
 import 'pagination_widget.dart';
 
 class TableGroup extends StatefulWidget {
@@ -98,7 +98,7 @@ class _TableGroupState extends State<TableGroup> {
                 allPages = (numberOfRecords! % TableGroup.dropdownValue) == 0
                     ? (numberOfRecords ~/ TableGroup.dropdownValue)
                     : (numberOfRecords ~/ TableGroup.dropdownValue) + 1;
-                return CustomTable(
+                return CustomTableGroup(
                   pageData: widget.pageData,
                   listHeader: listHeader,
                   listKey: listKey,
