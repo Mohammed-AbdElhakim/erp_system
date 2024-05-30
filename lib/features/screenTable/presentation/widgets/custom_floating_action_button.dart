@@ -1,3 +1,4 @@
+import 'package:erp_system/core/utils/app_strings.dart';
 import 'package:erp_system/features/screenTable/presentation/widgets/table_group.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -163,7 +164,7 @@ class _CustomFloatingActionButtonState
           numberOfPage: TableGeneral.numberPage);
     } else if (icon == Icons.delete) {
       List<Map<String, dynamic>> myRowData =
-          widget.pageData.tableSrc == "accountingParmentTable"
+          widget.pageData.tableSrc == AppStrings.tableGroup
               ? TableGroup.rowData
               : TableGeneral.rowData;
       if (myRowData.isNotEmpty) {
@@ -241,7 +242,7 @@ class _CustomFloatingActionButtonState
       }
     } else if (icon == Icons.edit_note) {
       List<Map<String, dynamic>> myRowData =
-          widget.pageData.tableSrc == "accountingParmentTable"
+          widget.pageData.tableSrc == AppStrings.tableGroup
               ? TableGroup.rowData
               : TableGeneral.rowData;
       if (myRowData.isNotEmpty) {

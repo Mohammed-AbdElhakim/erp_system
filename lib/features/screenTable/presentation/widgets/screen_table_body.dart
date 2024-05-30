@@ -1,3 +1,4 @@
+import 'package:erp_system/core/utils/app_strings.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/models/menu_model/pages.dart';
@@ -9,7 +10,7 @@ class ScreenTableBody extends StatelessWidget {
   final Pages pageData;
   @override
   Widget build(BuildContext context) {
-    if (pageData.tableSrc == "accountingParmentTable") {
+    if (pageData.tableSrc == AppStrings.tableGroup) {
       return TableGroup(
         pageData: pageData,
       );

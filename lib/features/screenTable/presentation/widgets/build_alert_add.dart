@@ -1,4 +1,5 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
+import 'package:erp_system/features/screenTable/presentation/widgets/table_group.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -38,6 +39,7 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
   GlobalKey<FormState> formKey = GlobalKey();
   Map<String, dynamic> newRowData = {};
   bool isShow = false;
+  late List<String> myListCategory;
 
   @override
   void didChangeDependencies() {
@@ -47,6 +49,9 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
 
   @override
   void initState() {
+    myListCategory = widget.pageData.tableSrc == AppStrings.tableGroup
+        ? TableGroup.listCategory
+        : TableGeneral.listCategory;
     super.initState();
   }
 
@@ -66,8 +71,8 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ...List.generate(TableGeneral.listCategory.length, (index) {
-                      String categoryName = TableGeneral.listCategory[index];
+                    ...List.generate(myListCategory.length, (index) {
+                      String categoryName = myListCategory[index];
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [

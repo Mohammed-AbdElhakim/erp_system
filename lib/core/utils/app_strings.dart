@@ -17,4 +17,5 @@ class AppStrings {
   static String listDropdownBox = "ListDropdownBox";
   static String latKey = "latKey";
   static String longKey = "longKey";
+  static String tableGroup = "accountingParmentTable";
 }
