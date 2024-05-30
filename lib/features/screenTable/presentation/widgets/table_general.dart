@@ -20,7 +20,7 @@ class TableGeneral extends StatefulWidget {
   final Pages pageData;
   static List<Map<String, dynamic>> rowData = [];
   static List<String> listCategory = [];
-
+  static List<AllDropdownModel> myAllDropdownModelList = [];
   static bool isSearch = false;
   static late String orderBy;
   static late bool isDesc;
@@ -56,6 +56,7 @@ class _TableGeneralState extends State<TableGeneral> {
   void dispose() {
     TableGeneral.rowData = [];
     TableGeneral.listCategory = [];
+    TableGeneral.myAllDropdownModelList = [];
     TableGeneral.isSearch == false;
     super.dispose();
   }
@@ -73,6 +74,7 @@ class _TableGeneralState extends State<TableGeneral> {
         if (state is GetAllDropdownListSuccess) {
           List<AllDropdownModel> allDropdownModelList =
               state.allDropdownModelList;
+          TableGeneral.myAllDropdownModelList = allDropdownModelList;
           return BlocBuilder<GetTableCubit, GetTableState>(
             builder: (context, state) {
               if (state is GetTableSuccess) {

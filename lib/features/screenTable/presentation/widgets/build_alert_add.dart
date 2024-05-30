@@ -10,18 +10,14 @@ import '../../../../core/models/menu_model/pages.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../../../../core/utils/app_styles.dart';
-import '../../../../core/utils/service_locator.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_loading_widget.dart';
 import '../../../../core/widgets/custom_text_form_field.dart';
 import '../../../../generated/l10n.dart';
-import '../../data/models/dropdown_model/dropdown_model.dart';
+import '../../data/models/dropdown_model/all_dropdown_model.dart';
 import '../../data/models/screen_model.dart';
-import '../../data/repositories/screen_repo_impl.dart';
 import '../manager/addEdit/add_edit_cubit.dart';
-import '../manager/getDropdownList/get_dropdown_list_cubit.dart';
 import '../manager/getTable/get_table_cubit.dart';
-import 'initdropdown.dart';
 import 'table_general.dart';
 
 class BuildAlertAdd extends StatefulWidget {
@@ -40,6 +36,7 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
   Map<String, dynamic> newRowData = {};
   bool isShow = false;
   late List<String> myListCategory;
+  late List<AllDropdownModel> myAllDropdownModelList;
 
   @override
   void didChangeDependencies() {
@@ -52,6 +49,9 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
     myListCategory = widget.pageData.tableSrc == AppStrings.tableGroup
         ? TableGroup.listCategory
         : TableGeneral.listCategory;
+    myAllDropdownModelList = widget.pageData.tableSrc == AppStrings.tableGroup
+        ? TableGroup.myAllDropdownModelList
+        : TableGeneral.myAllDropdownModelList;
     super.initState();
   }
 
@@ -366,6 +366,13 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
           item.insertVisable == true &&
           item.categoryName == categoryName &&
           item.insertDefult == show) {
+        List<ListDrop>? myListDrop = [];
+
+        for (var ii in myAllDropdownModelList) {
+          if (ii.columnName == item.columnName) {
+            myListDrop = ii.list;
+          }
+        }
         list.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -386,7 +393,29 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                       )
                   ],
                 ),
-                SizedBox(
+                CustomDropdown<String>.search(
+                  hintText: '',
+                  decoration: CustomDropdownDecoration(
+                      headerStyle:
+                          AppStyles.textStyle16.copyWith(color: Colors.black),
+                      closedFillColor: Colors.transparent,
+                      closedBorder: Border.all(color: AppColors.blueDark)),
+                  validator: (value) {
+                    if (value?.isEmpty ?? true) {
+                      return S.of(context).field_is_required;
+                    } else {
+                      return null;
+                    }
+                  },
+                  items: myListDrop!.isEmpty
+                      ? [""]
+                      : List.generate(myListDrop.length,
+                          (index) => myListDrop![index].text ?? ''),
+                  onChanged: (value) {
+                    newRowData.addAll({item.searchName!.toString(): value});
+                  },
+                ),
+                /*SizedBox(
                   // height: 40,
                   child: BlocProvider(
                     create: (context) =>
@@ -434,7 +463,7 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                       },
                     ),
                   ),
-                ),
+                ),*/
               ],
             ),
           ),
