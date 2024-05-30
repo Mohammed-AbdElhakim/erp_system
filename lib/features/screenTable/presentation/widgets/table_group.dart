@@ -226,6 +226,8 @@ class _TableGroupState extends State<TableGroup> {
                   },
                   onTapRow: (rowData) {
                     TableGroup.rowData = rowData;
+                    print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2");
+                    print(TableGroup.rowData);
                   },
                 );
               } else if (state is GetTableFailure) {

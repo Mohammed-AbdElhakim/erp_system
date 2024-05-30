@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:linked_scroll_controller/linked_scroll_controller.dart';
+import 'package:syncfusion_flutter_core/theme.dart';
+import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../../../core/models/menu_model/pages.dart';
 import '../../../../core/utils/app_colors.dart';
-import '../../../../core/utils/app_router.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/methods.dart';
 import '../../data/models/dropdown_model/all_dropdown_model.dart';
@@ -52,6 +52,9 @@ class _CustomTableGroupState extends State<CustomTableGroup> {
   List<bool> selectedRows = [];
   List<Map<String, dynamic>> rowsData = [];
 
+  late TableDataSource tableDataSource;
+  final DataGridController dataGridController = DataGridController();
+
   @override
   void initState() {
     headerScrollController = controllerGroup.addAndGet();
@@ -60,162 +63,120 @@ class _CustomTableGroupState extends State<CustomTableGroup> {
     for (int i = 0; i < widget.listData.length; i++) {
       selectedRows.add(false); // Initialize selectedRows with false
     }
+
+    tableDataSource = TableDataSource(
+      data: widget.listData,
+      keys: widget.listKey,
+      pageData: widget.pageData,
+      context: context,
+      listColumn: widget.listColumn,
+      allDropdownModelList: widget.allDropdownModelList,
+    );
+    tableDataSource.addColumnGroup(
+        ColumnGroup(name: 'PaymentAccount', sortGroupRows: false));
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: Stack(
-        alignment: Alignment.topCenter,
-        children: [
-          //*********************** data **************************
-          SingleChildScrollView(
-            child: Column(
-              children: [
-                //********************** data rows ********************
+      child: SfDataGridTheme(
+        data: SfDataGridThemeData(
+            headerColor: AppColors.blueLight,
+            selectionColor: AppColors.blueGreyDark,
+            indentColumnWidth: 0,
+            gridLineColor: Colors.transparent),
+        child: SfDataGrid(
+          source: tableDataSource,
+          // allowExpandCollapseGroup: true,
+          headerRowHeight: 35,
+          controller: dataGridController,
+          rowHeight: 35,
+          horizontalScrollController: dataScrollController,
+          showHorizontalScrollbar: false,
+          showVerticalScrollbar: false,
+          selectionMode: SelectionMode.multiple,
+          showCheckboxColumn: true,
+          checkboxColumnSettings: const DataGridCheckboxColumnSettings(
+            showCheckboxOnHeader: false,
+          ),
+          onSelectionChanged: (addedRows, removedRows) {
+            rowsData.clear();
+            var selectedRows = dataGridController.selectedRows;
+
+            for (var row in selectedRows) {
+              Map<String, dynamic> mapData = {};
+              row.getCells().forEach((element) {
+                if (element.value != "Icon(Icons.add)") {
+                  setState(() {
+                    mapData[element.columnName] = element.value;
+                  });
+                }
+              });
+
+              rowsData.add(mapData);
+            }
+            widget.onTapRow(rowsData);
+          },
+
+          // autoExpandGroups: false,
+          columns: [
+            if (widget.pageData.editSrc == "addOrEditExcel")
+              GridColumn(
+                width: 45,
+                columnName: '',
+                label: Container(
+                  padding: const EdgeInsets.all(8),
+                  alignment: Alignment.center,
+                  child: const Text(""),
+                ),
+              ),
+            ...List.generate(
+              widget.listHeader.length,
+              (index) => GridColumn(
+                width: 130,
+                columnName: widget.listKey[index],
+                label: InkWell(
+                  onTap: () {
+                    widget.onTapHeader(widget.listColumn[index].columnName!);
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    alignment: Alignment.center,
+                    child: Text(
+                      widget.listHeader[index],
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+              ),
+            )
+          ],
+          footerHeight: 230,
+          footer: Column(
+            children: [
+              //********************* Sum ***********************
+              if (widget.listSum!.isNotEmpty)
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
-                  controller: dataScrollController,
+                  controller: sumScrollController,
                   child: DataTable(
                     columnSpacing: 0,
-                    horizontalMargin: 15,
-                    dataRowMinHeight: 35,
-                    dataRowMaxHeight: 35,
+                    horizontalMargin: 48,
+                    dataRowMinHeight: 50,
+                    dataRowMaxHeight: 50,
                     headingRowHeight: 35,
                     headingRowColor:
                         MaterialStateProperty.all(AppColors.blueLight),
                     columns: [
                       if (widget.pageData.editSrc == "addOrEditExcel")
-                        DataColumn(
-                          label: Expanded(
-                            child: SizedBox(
-                              width: 30,
-                              child: Text(
-                                '',
-                                textAlign: TextAlign.center,
-                                style: AppStyles.textStyle14,
-                              ),
-                            ),
+                        const DataColumn(
+                          label: SizedBox(
+                            width: 47,
                           ),
                         ),
                       ...List.generate(
-                        widget.listHeader.length,
-                        (index) {
-                          return DataColumn(
-                            label: Expanded(
-                              child: SizedBox(
-                                width: 130,
-                                child: Text(
-                                  widget.listHeader[index],
-                                  textAlign: TextAlign.center,
-                                  style: AppStyles.textStyle14,
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      )
-                    ],
-                    rows: List.generate(
-                      widget.listData.length,
-                      (index) => DataRow(
-                        selected: selectedRows[index],
-                        onSelectChanged: (value) {
-                          setState(() {
-                            selectedRows[index] =
-                                value ?? false; // Update selectedRows list
-                          });
-                          if (selectedRows[index] == true) {
-                            rowsData.add(widget.listData[index]);
-
-                            widget.onTapRow(rowsData);
-                          } else {
-                            rowsData.remove(widget.listData[index]);
-
-                            widget.onTapRow(rowsData);
-                          }
-                        },
-                        cells: [
-                          if (widget.pageData.editSrc == "addOrEditExcel")
-                            DataCell(
-                              SizedBox(
-                                width: 30,
-                                child: InkWell(
-                                  onTap: () {
-                                    GoRouter.of(context)
-                                        .push(AppRouter.kDetailsRowView);
-                                  },
-                                  child: Container(
-                                    color: selectedRows[index] == true
-                                        ? AppColors.blueGreyDark
-                                        : Colors.transparent,
-                                    alignment: Alignment.center,
-                                    child: Icon(Icons.add),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ...List.generate(
-                            widget.listHeader.length,
-                            (i) => DataCell(
-                              SizedBox(
-                                width: 130,
-                                child: InkWell(
-                                  onTap: widget.listColumn[i].insertType! !=
-                                          "date"
-                                      ? widget.listData[index]
-                                                      ['${widget.listKey[i]}']
-                                                  .toString()
-                                                  .length >
-                                              12
-                                          ? () {
-                                              buildShowDialog(context,
-                                                  text:
-                                                      "${widget.listData[index][widget.listKey[i]]}");
-                                            }
-                                          : null
-                                      : null,
-                                  child: Container(
-                                    color: selectedRows[index] == true
-                                        ? AppColors.blueGreyDark
-                                        : Colors.transparent,
-                                    width: widget.listData[index]
-                                                    ['${widget.listKey[i]}']
-                                                .toString()
-                                                .length >
-                                            12
-                                        ? 100
-                                        : null,
-                                    alignment: Alignment.center,
-                                    child: buildMyWidget(
-                                        "${widget.listData[index][widget.listKey[i]] ?? ""}",
-                                        widget.listColumn[i],
-                                        index),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                //********************* Sum ***********************
-                if (widget.listSum!.isNotEmpty)
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    controller: sumScrollController,
-                    child: DataTable(
-                      columnSpacing: 0,
-                      horizontalMargin: 48,
-                      dataRowMinHeight: 50,
-                      dataRowMaxHeight: 50,
-                      headingRowHeight: 35,
-                      headingRowColor:
-                          MaterialStateProperty.all(AppColors.blueLight),
-                      columns: List.generate(
                         widget.listHeader.length,
                         (index) {
                           return DataColumn(
@@ -249,71 +210,104 @@ class _CustomTableGroupState extends State<CustomTableGroup> {
                             ),
                           );
                         },
-                      ),
-                      rows: const [],
-                    ),
+                      )
+                    ],
+                    rows: const [],
                   ),
-                //********************* pages *********************
-                widget.paginationWidget,
-              ],
-            ),
+                ),
+              //********************* pages *********************
+              widget.paginationWidget,
+            ],
           ),
-          //********************* header **********************
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            controller: headerScrollController,
-            child: DataTable(
-              columnSpacing: 0,
-              horizontalMargin: 48,
-              dataRowMinHeight: 50,
-              dataRowMaxHeight: 50,
-              headingRowHeight: 35,
-              headingRowColor: MaterialStateProperty.all(AppColors.blueLight),
-              columns: [
-                if (widget.pageData.editSrc == "addOrEditExcel")
-                  DataColumn(
-                    label: Expanded(
-                      child: SizedBox(
-                        width: 30,
-                        child: Text(
-                          '',
-                          textAlign: TextAlign.center,
-                          style: AppStyles.textStyle14,
-                        ),
-                      ),
-                    ),
-                  ),
-                ...List.generate(
-                  widget.listHeader.length,
-                  (index) {
-                    return DataColumn(
-                      label: InkWell(
-                        onTap: () {
-                          widget.onTapHeader(
-                              widget.listColumn[index].columnName!);
-                        },
-                        child: SizedBox(
-                          width: 130,
-                          child: Text(
-                            widget.listHeader[index],
-                            textAlign: TextAlign.center,
-                            style: AppStyles.textStyle14,
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                )
-              ],
-              rows: const [],
-            ),
-          )
-        ],
+        ),
       ),
     );
   }
+}
 
-  buildMyWidget(String value, ColumnList columnList, int indexRow) {
+class TableDataSource extends DataGridSource {
+  final List<ColumnList> listColumn;
+  final BuildContext context;
+  final List<dynamic> data;
+  final List<dynamic> keys;
+  final Pages pageData;
+  final List<AllDropdownModel> allDropdownModelList;
+  TableDataSource({
+    required this.listColumn,
+    required this.context,
+    required this.data,
+    required this.keys,
+    required this.pageData,
+    required this.allDropdownModelList,
+  }) {
+    dataGridRows = data
+        .map<DataGridRow>((e) => DataGridRow(cells: [
+              if (pageData.editSrc == "addOrEditExcel")
+                const DataGridCell(columnName: '', value: "Icon(Icons.add)"),
+              ...List.generate(
+                keys.length,
+                (index) => DataGridCell(
+                    columnName: keys[index], value: "${e[keys[index]] ?? ""}"),
+              )
+            ]))
+        .toList();
+  }
+
+  List<DataGridRow> dataGridRows = [];
+
+  @override
+  List<DataGridRow> get rows => dataGridRows;
+
+  @override
+  DataGridRowAdapter buildRow(DataGridRow row) {
+    return DataGridRowAdapter(
+        cells: row.getCells().map<Widget>((e) {
+      ColumnList columnList;
+      if (e.value.toString() != "Icon(Icons.add)") {
+        columnList = listColumn
+            .firstWhere((element) => element.columnName == e.columnName);
+      } else {
+        columnList = listColumn[0];
+      }
+
+      return InkWell(
+        onTap: columnList.insertType! != "date"
+            ? e.value.toString().length > 12
+                ? () {
+                    buildShowDialog(context, text: e.value.toString());
+                  }
+                : null
+            : null,
+        child: Container(
+          alignment: Alignment.center,
+          padding: const EdgeInsets.all(8),
+          child: e.value.toString() == "Icon(Icons.add)"
+              ? const Icon(Icons.add)
+              : buildMyWidget(
+                  value: e.value.toString(),
+                  columnList: columnList,
+                  // indexRow: ,
+                ),
+        ),
+      );
+    }).toList());
+  }
+
+  @override
+  Widget? buildGroupCaptionCellWidget(
+      RowColumnIndex rowColumnIndex, String summaryValue) {
+    return Container(
+        color: Colors.blue.shade100,
+        alignment: AlignmentDirectional.centerStart,
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        child: Text(summaryValue.split(":")[1].trim().split('-')[0].trim()));
+  }
+
+  buildMyWidget({
+    required String value,
+    required ColumnList columnList,
+    /* required int indexRow*/
+  }) {
     switch (columnList.insertType) {
       case "date":
         String date = value.isNotEmpty
@@ -325,9 +319,9 @@ class _CustomTableGroupState extends State<CustomTableGroup> {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           date == "0001-12-31" || date == "0000-12-31" ? '' : date,
-          style: TextStyle(
-              color:
-                  selectedRows[indexRow] == true ? Colors.white : Colors.black),
+          // style: TextStyle(
+          //     color:
+          //         selectedRows[indexRow] == true ? Colors.white : Colors.black),
         );
       case "checkbox":
         if (value == "true") {
@@ -347,7 +341,7 @@ class _CustomTableGroupState extends State<CustomTableGroup> {
         String val = '';
         if (columnList.columnName == columnList.searchName) {
           List<ListDrop>? myListDrop = [];
-          for (var item in widget.allDropdownModelList) {
+          for (var item in allDropdownModelList) {
             if (item.columnName == columnList.columnName) {
               myListDrop = item.list;
             }
@@ -365,9 +359,9 @@ class _CustomTableGroupState extends State<CustomTableGroup> {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           val,
-          style: TextStyle(
-              color:
-                  selectedRows[indexRow] == true ? Colors.white : Colors.black),
+          // style: TextStyle(
+          //     color:
+          //         selectedRows[indexRow] == true ? Colors.white : Colors.black),
         );
       default:
         return Text(
@@ -375,9 +369,9 @@ class _CustomTableGroupState extends State<CustomTableGroup> {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           value,
-          style: TextStyle(
-              color:
-                  selectedRows[indexRow] == true ? Colors.white : Colors.black),
+          // style: TextStyle(
+          //     color:
+          //         selectedRows[indexRow] == true ? Colors.white : Colors.black),
         );
     }
   }

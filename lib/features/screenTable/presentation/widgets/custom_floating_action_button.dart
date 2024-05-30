@@ -1,3 +1,4 @@
+import 'package:erp_system/features/screenTable/presentation/widgets/table_group.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -161,7 +162,11 @@ class _CustomFloatingActionButtonState
           dropdownValueOfLimit: TableGeneral.dropdownValue,
           numberOfPage: TableGeneral.numberPage);
     } else if (icon == Icons.delete) {
-      if (TableGeneral.rowData.isNotEmpty) {
+      List<Map<String, dynamic>> myRowData =
+          widget.pageData.tableSrc == "accountingParmentTable"
+              ? TableGroup.rowData
+              : TableGeneral.rowData;
+      if (myRowData.isNotEmpty) {
         List<String> listId = [];
         for (var item in TableGeneral.rowData) {
           listId.add(item[widget.pageData.primary].toString());
@@ -235,14 +240,18 @@ class _CustomFloatingActionButtonState
             desc: S.of(context).massage_choose_delete);
       }
     } else if (icon == Icons.edit_note) {
-      if (TableGeneral.rowData.isNotEmpty) {
-        if (TableGeneral.rowData.length > 1) {
+      List<Map<String, dynamic>> myRowData =
+          widget.pageData.tableSrc == "accountingParmentTable"
+              ? TableGroup.rowData
+              : TableGeneral.rowData;
+      if (myRowData.isNotEmpty) {
+        if (myRowData.length > 1) {
           CustomAlertDialog.alertWithButton(
               context: context,
               type: AlertType.error,
               title: S.of(context).error,
               desc: S.of(context).massage_no_edit);
-        } else if (TableGeneral.rowData.length == 1) {
+        } else if (myRowData.length == 1) {
           CustomAlertDialog.alertWithCustomContent(
             context: context,
             title: S.of(context).btn_edit,
