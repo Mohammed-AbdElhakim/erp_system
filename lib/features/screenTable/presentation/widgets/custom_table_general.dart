@@ -14,8 +14,8 @@ import '../../data/models/screen_model.dart';
 typedef OnTapHeader<String> = void Function(String titleHeader);
 typedef OnTapRow<T> = void Function(T rowData);
 
-class CustomTable extends StatefulWidget {
-  const CustomTable({
+class CustomTableGeneral extends StatefulWidget {
+  const CustomTableGeneral({
     super.key,
     required this.listHeader,
     required this.listData,
@@ -40,10 +40,10 @@ class CustomTable extends StatefulWidget {
   final OnTapRow<List<Map<String, dynamic>>> onTapRow;
 
   @override
-  State<CustomTable> createState() => _CustomTableState();
+  State<CustomTableGeneral> createState() => _CustomTableGeneralState();
 }
 
-class _CustomTableState extends State<CustomTable> {
+class _CustomTableGeneralState extends State<CustomTableGeneral> {
   LinkedScrollControllerGroup controllerGroup = LinkedScrollControllerGroup();
   ScrollController? headerScrollController;
   ScrollController? dataScrollController;

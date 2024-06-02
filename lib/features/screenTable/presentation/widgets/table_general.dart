@@ -11,7 +11,7 @@ import '../../data/models/screen_model.dart';
 import '../manager/getAllDropdownList/get_all_dropdown_list_cubit.dart';
 import '../manager/getTable/get_table_cubit.dart';
 import 'build_alert_search.dart';
-import 'custom_table.dart';
+import 'custom_table_general.dart';
 import 'pagination_widget.dart';
 
 class TableGeneral extends StatefulWidget {
@@ -100,7 +100,7 @@ class _TableGeneralState extends State<TableGeneral> {
                 allPages = (numberOfRecords! % TableGeneral.dropdownValue) == 0
                     ? (numberOfRecords ~/ TableGeneral.dropdownValue)
                     : (numberOfRecords ~/ TableGeneral.dropdownValue) + 1;
-                return CustomTable(
+                return CustomTableGeneral(
                   pageData: widget.pageData,
                   listHeader: listHeader,
                   listKey: listKey,
