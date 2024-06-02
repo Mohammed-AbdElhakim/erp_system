@@ -3,11 +3,13 @@ import 'package:erp_system/features/screenTable/presentation/widgets/table_group
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:go_router/go_router.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 import '../../../../core/helper/AlertDialog/custom_alert_dialog.dart';
 import '../../../../core/models/menu_model/pages.dart';
 import '../../../../core/utils/app_colors.dart';
+import '../../../../core/utils/app_router.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_loading_widget.dart';
 import '../../../../generated/l10n.dart';
@@ -253,16 +255,20 @@ class _CustomFloatingActionButtonState
               title: S.of(context).error,
               desc: S.of(context).massage_no_edit);
         } else if (myRowData.length == 1) {
-          CustomAlertDialog.alertWithCustomContent(
-            context: context,
-            title: S.of(context).btn_edit,
-            isOverlayTapDismiss: false,
-            isCloseButton: false,
-            content: BuildAlertEdit(
-              columnList: columnList,
-              pageData: widget.pageData,
-            ),
-          );
+          if (widget.pageData.tableSrc == AppStrings.tableGroup) {
+            GoRouter.of(context).push(AppRouter.kTableGroupEditView);
+          } else {
+            CustomAlertDialog.alertWithCustomContent(
+              context: context,
+              title: S.of(context).btn_edit,
+              isOverlayTapDismiss: false,
+              isCloseButton: false,
+              content: BuildAlertEdit(
+                columnList: columnList,
+                pageData: widget.pageData,
+              ),
+            );
+          }
         }
       } else {
         CustomAlertDialog.alertWithButton(
@@ -272,16 +278,20 @@ class _CustomFloatingActionButtonState
             desc: S.of(context).massage_choose_edit);
       }
     } else if (icon == Icons.add) {
-      CustomAlertDialog.alertWithCustomContent(
-        context: context,
-        title: S.of(context).btn_add,
-        isOverlayTapDismiss: false,
-        isCloseButton: false,
-        content: BuildAlertAdd(
-          columnList: columnList,
-          pageData: widget.pageData,
-        ),
-      );
+      if (widget.pageData.tableSrc == AppStrings.tableGroup) {
+        GoRouter.of(context).push(AppRouter.kTableGroupAddView);
+      } else {
+        CustomAlertDialog.alertWithCustomContent(
+          context: context,
+          title: S.of(context).btn_add,
+          isOverlayTapDismiss: false,
+          isCloseButton: false,
+          content: BuildAlertAdd(
+            columnList: columnList,
+            pageData: widget.pageData,
+          ),
+        );
+      }
     }
   }
 }
