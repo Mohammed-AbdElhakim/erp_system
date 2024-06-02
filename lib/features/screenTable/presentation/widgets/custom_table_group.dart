@@ -109,12 +109,13 @@ class _CustomTableGroupState extends State<CustomTableGroup> {
               Map<String, dynamic> mapData = {};
               row.getCells().forEach((element) {
                 if (element.value != "Icon(Icons.add)") {
-                  setState(() {
-                    mapData[element.columnName] = element.value;
-                  });
+                  if (element.value != "") {
+                    setState(() {
+                      mapData[element.columnName] = element.value;
+                    });
+                  }
                 }
               });
-
               rowsData.add(mapData);
             }
             widget.onTapRow(rowsData);
@@ -132,6 +133,15 @@ class _CustomTableGroupState extends State<CustomTableGroup> {
                   child: const Text(""),
                 ),
               ),
+            GridColumn(
+              width: 0,
+              columnName: widget.pageData.primary,
+              label: Container(
+                padding: const EdgeInsets.all(8),
+                alignment: Alignment.center,
+                child: const Text("id"),
+              ),
+            ),
             ...List.generate(
               widget.listHeader.length,
               (index) => GridColumn(
@@ -223,6 +233,15 @@ class _CustomTableGroupState extends State<CustomTableGroup> {
       ),
     );
   }
+
+  bool containsAllKeyValuePairs(
+      Map<String, dynamic> map1, Map<String, dynamic> map2) {
+    return map2.entries.every((entry) {
+      final key = entry.key;
+      final value = entry.value;
+      return map1.containsKey(key) && map1[key] == value;
+    });
+  }
 }
 
 class TableDataSource extends DataGridSource {
@@ -240,17 +259,18 @@ class TableDataSource extends DataGridSource {
     required this.pageData,
     required this.allDropdownModelList,
   }) {
-    dataGridRows = data
-        .map<DataGridRow>((e) => DataGridRow(cells: [
-              if (pageData.editSrc == "addOrEditExcel")
-                const DataGridCell(columnName: '', value: "Icon(Icons.add)"),
-              ...List.generate(
-                keys.length,
-                (index) => DataGridCell(
-                    columnName: keys[index], value: "${e[keys[index]] ?? ""}"),
-              )
-            ]))
-        .toList();
+    dataGridRows = data.map<DataGridRow>((e) {
+      return DataGridRow(cells: [
+        if (pageData.editSrc == "addOrEditExcel")
+          const DataGridCell(columnName: '', value: "Icon(Icons.add)"),
+        DataGridCell(columnName: pageData.primary, value: e[pageData.primary]),
+        ...List.generate(
+          keys.length,
+          (index) => DataGridCell(
+              columnName: keys[index], value: "${e[keys[index]] ?? ""}"),
+        )
+      ]);
+    }).toList();
   }
 
   List<DataGridRow> dataGridRows = [];
@@ -263,11 +283,13 @@ class TableDataSource extends DataGridSource {
     return DataGridRowAdapter(
         cells: row.getCells().map<Widget>((e) {
       ColumnList columnList;
-      if (e.value.toString() != "Icon(Icons.add)") {
+      if (e.value.toString() == "Icon(Icons.add)") {
+        columnList = listColumn[0];
+      } else if (e.columnName.toString() == pageData.primary) {
+        columnList = listColumn[0];
+      } else {
         columnList = listColumn
             .firstWhere((element) => element.columnName == e.columnName);
-      } else {
-        columnList = listColumn[0];
       }
 
       return InkWell(
@@ -283,11 +305,13 @@ class TableDataSource extends DataGridSource {
           padding: const EdgeInsets.all(8),
           child: e.value.toString() == "Icon(Icons.add)"
               ? const Icon(Icons.add)
-              : buildMyWidget(
-                  value: e.value.toString(),
-                  columnList: columnList,
-                  // indexRow: ,
-                ),
+              : e.columnName.toString() == pageData.primary
+                  ? Text(e.value.toString())
+                  : buildMyWidget(
+                      value: e.value.toString(),
+                      columnList: columnList,
+                      // indexRow: ,
+                    ),
         ),
       );
     }).toList());

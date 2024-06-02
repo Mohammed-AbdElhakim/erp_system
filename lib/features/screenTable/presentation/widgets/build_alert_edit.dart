@@ -15,15 +15,14 @@ import '../../../../core/widgets/custom_error_massage.dart';
 import '../../../../core/widgets/custom_loading_widget.dart';
 import '../../../../core/widgets/custom_text_form_field.dart';
 import '../../../../generated/l10n.dart';
-import '../../data/models/dropdown_model/dropdown_model.dart';
+import '../../data/models/dropdown_model/all_dropdown_model.dart';
 import '../../data/models/screen_model.dart';
 import '../../data/repositories/screen_repo_impl.dart';
 import '../manager/addEdit/add_edit_cubit.dart';
 import '../manager/getById/get_by_id_cubit.dart';
-import '../manager/getDropdownList/get_dropdown_list_cubit.dart';
 import '../manager/getTable/get_table_cubit.dart';
-import 'initdropdown.dart';
 import 'table_general.dart';
+import 'table_group.dart';
 
 class BuildAlertEdit extends StatefulWidget {
   const BuildAlertEdit(
@@ -40,6 +39,9 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
   GlobalKey<FormState> formKey = GlobalKey();
   Map<String, dynamic> newRowData = {};
   bool isShow = false;
+  late List<String> myListCategory;
+  late List<AllDropdownModel> myAllDropdownModelList;
+  late String id;
 
   @override
   void didChangeDependencies() {
@@ -49,12 +51,24 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
   }
 
   @override
+  void initState() {
+    myListCategory = widget.pageData.tableSrc == AppStrings.tableGroup
+        ? TableGroup.listCategory
+        : TableGeneral.listCategory;
+    myAllDropdownModelList = widget.pageData.tableSrc == AppStrings.tableGroup
+        ? TableGroup.myAllDropdownModelList
+        : TableGeneral.myAllDropdownModelList;
+    id = widget.pageData.tableSrc == AppStrings.tableGroup
+        ? TableGroup.rowData[0][widget.pageData.primary].toString()
+        : TableGeneral.rowData[0][widget.pageData.primary].toString();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => GetByIdCubit(getIt.get<ScreenRepoImpl>())
-        ..getById(
-            id: TableGeneral.rowData[0][widget.pageData.primary].toString(),
-            controllerName: widget.pageData.controllerName),
+        ..getById(id: id, controllerName: widget.pageData.controllerName),
       child: BlocBuilder<GetByIdCubit, GetByIdState>(
         builder: (context, state) {
           if (state is GetByIdSuccess) {
@@ -72,10 +86,8 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            ...List.generate(TableGeneral.listCategory.length,
-                                (index) {
-                              String categoryName =
-                                  TableGeneral.listCategory[index];
+                            ...List.generate(myListCategory.length, (index) {
+                              String categoryName = myListCategory[index];
                               return Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -405,6 +417,28 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
           item.insertVisable == true &&
           item.categoryName == categoryName &&
           item.insertDefult == show) {
+        List<ListDrop>? myListDrop = [];
+
+        for (var ii in myAllDropdownModelList) {
+          if (ii.columnName == item.columnName) {
+            myListDrop = ii.list;
+          }
+        }
+        String? dropValue;
+        for (var i in myListDrop!) {
+          if (i.text.toString() == rowData[item.searchName].toString()) {
+            dropValue = i.text ?? '';
+          }
+          if (i.text.toString() == rowData[item.searchName].toString()) {
+            dropValue = i.text ?? '';
+          }
+          if (i.text.toString() == rowData[item.columnName].toString()) {
+            dropValue = i.text ?? '';
+          }
+          if (i.text.toString() == rowData[item.columnName].toString()) {
+            dropValue = i.text ?? '';
+          }
+        }
         list.add(Padding(
           padding: const EdgeInsets.symmetric(vertical: 5),
           child: Column(
@@ -424,7 +458,30 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                     )
                 ],
               ),
-              SizedBox(
+              CustomDropdown<String>.search(
+                hintText: '',
+                initialItem: dropValue,
+                decoration: CustomDropdownDecoration(
+                    headerStyle:
+                        AppStyles.textStyle16.copyWith(color: Colors.black),
+                    closedFillColor: Colors.transparent,
+                    closedBorder: Border.all(color: AppColors.blueDark)),
+                validator: (value) {
+                  if (value?.isEmpty ?? true) {
+                    return S.of(context).field_is_required;
+                  } else {
+                    return null;
+                  }
+                },
+                items: myListDrop.isEmpty
+                    ? ['']
+                    : List.generate(myListDrop.length,
+                        (index) => myListDrop![index].text ?? ''),
+                onChanged: (value) {
+                  newRowData.addAll({item.searchName!.toString(): value});
+                },
+              ),
+              /*SizedBox(
                 // height: 40,
                 child: BlocProvider(
                   create: (context) =>
@@ -492,7 +549,7 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                     },
                   ),
                 ),
-              ),
+              ),*/
             ],
           ),
         ));
