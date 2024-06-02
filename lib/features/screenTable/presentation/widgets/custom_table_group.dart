@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:linked_scroll_controller/linked_scroll_controller.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
@@ -6,6 +7,7 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../../../core/models/menu_model/pages.dart';
 import '../../../../core/utils/app_colors.dart';
+import '../../../../core/utils/app_router.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/methods.dart';
 import '../../data/models/dropdown_model/all_dropdown_model.dart';
@@ -304,7 +306,12 @@ class TableDataSource extends DataGridSource {
           alignment: Alignment.center,
           padding: const EdgeInsets.all(8),
           child: e.value.toString() == "Icon(Icons.add)"
-              ? const Icon(Icons.add)
+              ? InkWell(
+                  child: const Icon(Icons.add),
+                  onTap: () {
+                    GoRouter.of(context).push(AppRouter.kDetailsRowView);
+                  },
+                )
               : e.columnName.toString() == pageData.primary
                   ? Text(e.value.toString())
                   : buildMyWidget(
