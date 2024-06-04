@@ -165,7 +165,7 @@ class _CustomFloatingActionButtonState
           dropdownValueOfLimit: TableGeneral.dropdownValue,
           numberOfPage: TableGeneral.numberPage);
     } else if (icon == Icons.delete) {
-      List<Map<String, dynamic>> myRowData =
+      List<dynamic> myRowData =
           widget.pageData.tableSrc == AppStrings.tableGroup
               ? TableGroup.rowData
               : TableGeneral.rowData;
@@ -243,7 +243,7 @@ class _CustomFloatingActionButtonState
             desc: S.of(context).massage_choose_delete);
       }
     } else if (icon == Icons.edit_note) {
-      List<Map<String, dynamic>> myRowData =
+      List<dynamic> myRowData =
           widget.pageData.tableSrc == AppStrings.tableGroup
               ? TableGroup.rowData
               : TableGeneral.rowData;

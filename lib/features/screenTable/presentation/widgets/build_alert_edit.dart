@@ -59,7 +59,7 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
         ? TableGroup.myAllDropdownModelList
         : TableGeneral.myAllDropdownModelList;
     id = widget.pageData.tableSrc == AppStrings.tableGroup
-        ? TableGroup.rowData[0][widget.pageData.primary].toString()
+        ? TableGroup.rowData[0].toString()
         : TableGeneral.rowData[0][widget.pageData.primary].toString();
     super.initState();
   }

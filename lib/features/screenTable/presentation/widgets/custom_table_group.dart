@@ -39,7 +39,8 @@ class CustomTableGroup extends StatefulWidget {
   final List<AllDropdownModel> allDropdownModelList;
   final Widget paginationWidget;
   final OnTapHeader<String> onTapHeader;
-  final OnTapRow<List<Map<String, dynamic>>> onTapRow;
+  // final OnTapRow<List<Map<String, dynamic>>> onTapRow;
+  final OnTapRow<List<int>> onTapRow;
 
   @override
   State<CustomTableGroup> createState() => _CustomTableGroupState();
@@ -52,7 +53,8 @@ class _CustomTableGroupState extends State<CustomTableGroup> {
   ScrollController? sumScrollController;
   // int? indexColorRow;
   List<bool> selectedRows = [];
-  List<Map<String, dynamic>> rowsData = [];
+  // List<Map<String, dynamic>> rowsData = [];
+  List<int> rowsData = [];
 
   late TableDataSource tableDataSource;
   final DataGridController dataGridController = DataGridController();
@@ -73,9 +75,25 @@ class _CustomTableGroupState extends State<CustomTableGroup> {
       context: context,
       listColumn: widget.listColumn,
       allDropdownModelList: widget.allDropdownModelList,
+      onTapRowGroup: (rowId) {
+        if (rowsData.contains(rowId)) {
+          rowsData.remove(rowId);
+          widget.onTapRow(rowsData);
+        } else {
+          rowsData.add(rowId);
+          widget.onTapRow(rowsData);
+        }
+        // if (rowsData.any((element) => mapEquals(element, idItemRow))) {
+        //   rowsData.removeWhere((element) => mapEquals(element, idItemRow));
+        //   widget.onTapRow(rowsData);
+        // } else {
+        //   rowsData.add(idItemRow);
+        //   widget.onTapRow(rowsData);
+        // }
+      },
     );
     tableDataSource.addColumnGroup(
-        ColumnGroup(name: 'PaymentAccount', sortGroupRows: false));
+        ColumnGroup(name: 'PaymentAutoNumber', sortGroupRows: false));
 
     super.initState();
   }
@@ -98,30 +116,30 @@ class _CustomTableGroupState extends State<CustomTableGroup> {
           horizontalScrollController: dataScrollController,
           showHorizontalScrollbar: false,
           showVerticalScrollbar: false,
-          selectionMode: SelectionMode.multiple,
-          showCheckboxColumn: true,
-          checkboxColumnSettings: const DataGridCheckboxColumnSettings(
-            showCheckboxOnHeader: false,
-          ),
-          onSelectionChanged: (addedRows, removedRows) {
-            rowsData.clear();
-            var selectedRows = dataGridController.selectedRows;
-
-            for (var row in selectedRows) {
-              Map<String, dynamic> mapData = {};
-              row.getCells().forEach((element) {
-                if (element.value != "Icon(Icons.add)") {
-                  if (element.value != "") {
-                    setState(() {
-                      mapData[element.columnName] = element.value;
-                    });
-                  }
-                }
-              });
-              rowsData.add(mapData);
-            }
-            widget.onTapRow(rowsData);
-          },
+          // selectionMode: SelectionMode.multiple,
+          // showCheckboxColumn: true,
+          // checkboxColumnSettings: const DataGridCheckboxColumnSettings(
+          //   showCheckboxOnHeader: false,
+          // ),
+          // onSelectionChanged: (addedRows, removedRows) {
+          //   rowsData.clear();
+          //   var selectedRows = dataGridController.selectedRows;
+          //
+          //   for (var row in selectedRows) {
+          //     Map<String, dynamic> mapData = {};
+          //     row.getCells().forEach((element) {
+          //       if (element.value != "Icon(Icons.add)") {
+          //         if (element.value != "") {
+          //           setState(() {
+          //             mapData[element.columnName] = element.value;
+          //           });
+          //         }
+          //       }
+          //     });
+          //     rowsData.add(mapData);
+          //   }
+          //   widget.onTapRow(rowsData);
+          // },
 
           // autoExpandGroups: false,
           columns: [
@@ -253,6 +271,7 @@ class TableDataSource extends DataGridSource {
   final List<dynamic> keys;
   final Pages pageData;
   final List<AllDropdownModel> allDropdownModelList;
+  final OnTapRow<int> onTapRowGroup;
   TableDataSource({
     required this.listColumn,
     required this.context,
@@ -260,6 +279,7 @@ class TableDataSource extends DataGridSource {
     required this.keys,
     required this.pageData,
     required this.allDropdownModelList,
+    required this.onTapRowGroup,
   }) {
     dataGridRows = data.map<DataGridRow>((e) {
       return DataGridRow(cells: [
@@ -327,11 +347,43 @@ class TableDataSource extends DataGridSource {
   @override
   Widget? buildGroupCaptionCellWidget(
       RowColumnIndex rowColumnIndex, String summaryValue) {
-    return Container(
-        color: Colors.blue.shade100,
-        alignment: AlignmentDirectional.centerStart,
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        child: Text(summaryValue.split(":")[1].trim().split('-')[0].trim()));
+    String titleGroup = summaryValue.split(":")[1].trim().split('-')[0].trim();
+    Map<String, dynamic> item = data.firstWhere(
+        (element) => element['PaymentAutoNumber'] == int.parse(titleGroup));
+    bool select = false;
+    return StatefulBuilder(
+      builder: (context, ssetState) {
+        return InkWell(
+          onTap: () {
+            ssetState(() {
+              select = !select;
+            });
+            onTapRowGroup(item['PaymentID']);
+          },
+          child: Container(
+            color:
+                select == true ? AppColors.blueGreyDark : Colors.blue.shade100,
+            alignment: AlignmentDirectional.centerStart,
+            child: Row(
+              children: [
+                Checkbox(
+                    value: select,
+                    onChanged: (value) {
+                      ssetState(() {
+                        select = !select;
+                      });
+                      onTapRowGroup(item['PaymentID']);
+                    }),
+                Text(
+                  titleGroup,
+                  style: TextStyle(color: select == true ? Colors.white : null),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   buildMyWidget({

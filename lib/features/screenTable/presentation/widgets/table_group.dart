@@ -18,7 +18,8 @@ class TableGroup extends StatefulWidget {
   const TableGroup({super.key, required this.pageData});
 
   final Pages pageData;
-  static List<Map<String, dynamic>> rowData = [];
+  static List<int> rowData = [];
+  // static List<Map<String, dynamic>> rowData = [];
   static List<String> listCategory = [];
   static List<AllDropdownModel> myAllDropdownModelList = [];
 
