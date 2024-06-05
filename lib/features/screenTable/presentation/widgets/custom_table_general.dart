@@ -86,7 +86,7 @@ class _CustomTableGeneralState extends State<CustomTableGeneral> {
                     headingRowColor:
                         MaterialStateProperty.all(AppColors.blueLight),
                     columns: [
-                      if (widget.pageData.editSrc == "addOrEditExcel")
+                      if (widget.pageData.master == true)
                         DataColumn(
                           label: Expanded(
                             child: SizedBox(
@@ -137,7 +137,7 @@ class _CustomTableGeneralState extends State<CustomTableGeneral> {
                           }
                         },
                         cells: [
-                          if (widget.pageData.editSrc == "addOrEditExcel")
+                          if (widget.pageData.master == true)
                             DataCell(
                               SizedBox(
                                 width: 30,
@@ -270,7 +270,7 @@ class _CustomTableGeneralState extends State<CustomTableGeneral> {
               headingRowHeight: 35,
               headingRowColor: MaterialStateProperty.all(AppColors.blueLight),
               columns: [
-                if (widget.pageData.editSrc == "addOrEditExcel")
+                if (widget.pageData.master == true)
                   DataColumn(
                     label: Expanded(
                       child: SizedBox(

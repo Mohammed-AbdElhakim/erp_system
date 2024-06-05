@@ -143,7 +143,7 @@ class _CustomTableGroupState extends State<CustomTableGroup> {
 
           // autoExpandGroups: false,
           columns: [
-            if (widget.pageData.editSrc == "addOrEditExcel")
+            if (widget.pageData.master == true)
               GridColumn(
                 width: 45,
                 columnName: '',
@@ -200,7 +200,7 @@ class _CustomTableGroupState extends State<CustomTableGroup> {
                     headingRowColor:
                         MaterialStateProperty.all(AppColors.blueLight),
                     columns: [
-                      if (widget.pageData.editSrc == "addOrEditExcel")
+                      if (widget.pageData.master == true)
                         const DataColumn(
                           label: SizedBox(
                             width: 47,
@@ -283,7 +283,7 @@ class TableDataSource extends DataGridSource {
   }) {
     dataGridRows = data.map<DataGridRow>((e) {
       return DataGridRow(cells: [
-        if (pageData.editSrc == "addOrEditExcel")
+        if (pageData.master == true)
           const DataGridCell(columnName: '', value: "Icon(Icons.add)"),
         DataGridCell(columnName: pageData.primary, value: e[pageData.primary]),
         ...List.generate(
