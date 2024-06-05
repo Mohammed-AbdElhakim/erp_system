@@ -2,9 +2,25 @@ part of 'get_page_details_table_cubit.dart';
 
 sealed class GetPageDetailsTableState extends Equatable {
   const GetPageDetailsTableState();
-}
-
-final class GetPageDetailsTableInitial extends GetPageDetailsTableState {
   @override
   List<Object> get props => [];
+}
+
+final class GetPageDetailsTableInitial extends GetPageDetailsTableState {}
+
+final class GetPageDetailsTableLoading extends GetPageDetailsTableState {}
+
+final class GetPageDetailsTableFailure extends GetPageDetailsTableState {
+  final String errorMassage;
+
+  const GetPageDetailsTableFailure(this.errorMassage);
+}
+
+final class GetPageDetailsTableSuccess extends GetPageDetailsTableState {
+  final ScreenModel screenModel;
+  final int numberPage;
+  final int dropdownValue;
+
+  const GetPageDetailsTableSuccess(
+      this.screenModel, this.numberPage, this.dropdownValue);
 }
