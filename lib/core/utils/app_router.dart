@@ -67,7 +67,12 @@ abstract class AppRouter {
       ),
       GoRoute(
         path: kDetailsRowView,
-        builder: (context, state) => const DetailsRowView(),
+        builder: (context, state) {
+          Pages page = state.extra as Pages;
+          return DetailsRowView(
+            pageData: page,
+          );
+        },
       ),
       GoRoute(
         path: kTableGroupAddView,

@@ -143,15 +143,16 @@ class _CustomTableGeneralState extends State<CustomTableGeneral> {
                                 width: 30,
                                 child: InkWell(
                                   onTap: () {
-                                    GoRouter.of(context)
-                                        .push(AppRouter.kDetailsRowView);
+                                    GoRouter.of(context).push(
+                                        AppRouter.kDetailsRowView,
+                                        extra: widget.pageData);
                                   },
                                   child: Container(
                                     color: selectedRows[index] == true
                                         ? AppColors.blueGreyDark
                                         : Colors.transparent,
                                     alignment: Alignment.center,
-                                    child: Icon(Icons.add),
+                                    child: const Icon(Icons.add),
                                   ),
                                 ),
                               ),

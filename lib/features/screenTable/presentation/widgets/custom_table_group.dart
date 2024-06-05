@@ -329,7 +329,8 @@ class TableDataSource extends DataGridSource {
               ? InkWell(
                   child: const Icon(Icons.add),
                   onTap: () {
-                    GoRouter.of(context).push(AppRouter.kDetailsRowView);
+                    GoRouter.of(context)
+                        .push(AppRouter.kDetailsRowView, extra: pageData);
                   },
                 )
               : e.columnName.toString() == pageData.primary
