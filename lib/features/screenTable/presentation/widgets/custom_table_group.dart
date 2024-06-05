@@ -112,7 +112,7 @@ class _CustomTableGroupState extends State<CustomTableGroup> {
           // allowExpandCollapseGroup: true,
           headerRowHeight: 35,
           controller: dataGridController,
-          rowHeight: 35,
+          rowHeight: 40,
           horizontalScrollController: dataScrollController,
           showHorizontalScrollbar: false,
           showVerticalScrollbar: false,
@@ -203,7 +203,7 @@ class _CustomTableGroupState extends State<CustomTableGroup> {
                       if (widget.pageData.master == true)
                         const DataColumn(
                           label: SizedBox(
-                            width: 47,
+                            width: 0,
                           ),
                         ),
                       ...List.generate(

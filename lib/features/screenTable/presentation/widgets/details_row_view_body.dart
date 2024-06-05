@@ -79,7 +79,7 @@ class DetailsRowViewBody extends StatelessWidget {
                                           child: InkWell(
                                             child: Container(
                                               alignment: Alignment.center,
-                                              child: Text("text"),
+                                              child: const Text("text"),
                                             ),
                                           ),
                                         ),
