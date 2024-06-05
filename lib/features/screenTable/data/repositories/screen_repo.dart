@@ -55,4 +55,8 @@ abstract class ScreenRepo {
   Future<Either<Failure, TapModel>> getPageDetails({
     required int pageID,
   });
+
+  Future<Either<Failure, ScreenModel>> getPageDetailsTable({
+    required ListTaps tapData,
+  });
 }
