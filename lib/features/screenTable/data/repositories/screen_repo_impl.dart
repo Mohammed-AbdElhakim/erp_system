@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:erp_system/features/screenTable/data/models/tap_model.dart';
 
 import '../../../../core/errors/failures.dart';
 import '../../../../core/helper/SharedPreferences/pref.dart';
@@ -306,6 +307,39 @@ class ScreenRepoImpl implements ScreenRepo {
       }
 
       return right(dataList);
+    } catch (e) {
+      if (e is DioException) {
+        return left(
+          ServerFailure.fromDioException(e),
+        );
+      }
+      return left(
+        ServerFailure(
+          e.toString(),
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<Failure, TapModel>> getPageDetails(
+      {required int pageID}) async {
+    try {
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
+              "";
+      String token =
+          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      Map<String, dynamic> data = await apiService.get(
+        endPoint: "home/GetPageDetails?pageid=$pageID",
+        headers: {
+          "Authorization": "Bearer $token",
+          "CompanyKey": companyKey,
+        },
+      );
+      TapModel tapModel = TapModel.fromJson(data);
+
+      return right(tapModel);
     } catch (e) {
       if (e is DioException) {
         return left(
