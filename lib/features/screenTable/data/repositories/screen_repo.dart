@@ -5,6 +5,7 @@ import '../models/dropdown_model/all_dropdown_model.dart';
 import '../models/dropdown_model/dropdown_model.dart';
 import '../models/permission_model.dart';
 import '../models/screen_model.dart';
+import '../models/tap_model.dart';
 
 abstract class ScreenRepo {
   Future<Either<Failure, ScreenModel>> getTable({
@@ -49,5 +50,9 @@ abstract class ScreenRepo {
   Future<Either<Failure, String>> deleteItem({
     required String controllerName,
     required List<String> listId,
+  });
+
+  Future<Either<Failure, TapModel>> getPageDetails({
+    required int pageID,
   });
 }
