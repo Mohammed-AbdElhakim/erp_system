@@ -353,4 +353,39 @@ class ScreenRepoImpl implements ScreenRepo {
       );
     }
   }
+
+  @override
+  Future<Either<Failure, ScreenModel>> getPageDetailsTable(
+      {required ListTaps tapData}) async {
+    try {
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
+              "";
+      String token =
+          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      Map<String, dynamic> dataSend = tapData.toJson();
+      Map<String, dynamic> data = await apiService.post(
+        endPoint: "home/GetPageDetailTable",
+        data: dataSend,
+        headers: {
+          "Authorization": "Bearer $token",
+          "CompanyKey": companyKey,
+        },
+      );
+      ScreenModel screenModel = ScreenModel.fromJson(data);
+
+      return right(screenModel);
+    } catch (e) {
+      if (e is DioException) {
+        return left(
+          ServerFailure.fromDioException(e),
+        );
+      }
+      return left(
+        ServerFailure(
+          e.toString(),
+        ),
+      );
+    }
+  }
 }
