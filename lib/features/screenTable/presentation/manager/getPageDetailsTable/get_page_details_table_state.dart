@@ -18,9 +18,8 @@ final class GetPageDetailsTableFailure extends GetPageDetailsTableState {
 
 final class GetPageDetailsTableSuccess extends GetPageDetailsTableState {
   final ScreenModel screenModel;
-  final int numberPage;
-  final int dropdownValue;
 
   const GetPageDetailsTableSuccess(
-      this.screenModel, this.numberPage, this.dropdownValue);
+    this.screenModel,
+  );
 }

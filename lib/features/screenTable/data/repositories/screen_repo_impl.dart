@@ -355,8 +355,9 @@ class ScreenRepoImpl implements ScreenRepo {
   }
 
   @override
-  Future<Either<Failure, ScreenModel>> getPageDetailsTable(
-      {required ListTaps tapData}) async {
+  Future<Either<Failure, ScreenModel>> getPageDetailsTable({
+    required ListTaps tapData,
+  }) async {
     try {
       String companyKey =
           await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
