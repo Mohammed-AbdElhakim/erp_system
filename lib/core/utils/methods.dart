@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../features/screenTable/data/models/dropdown_model/all_dropdown_model.dart';
+import '../../features/screenTable/data/models/screen_model.dart';
+
 bool isOrientationPortrait(BuildContext context) {
   Orientation orientation = MediaQuery.of(context).orientation;
   bool isPortrait = orientation == Orientation.portrait;
@@ -223,17 +226,75 @@ String getStringCheckbox({
 buildShowDialog(
   BuildContext context, {
   required String text,
+  required String listName,
+  ColumnList? columnList,
+  required List<AllDropdownModel> allDropdownModelList,
 }) {
-  return showDialog(
-    context: context,
-    builder: (context) => Dialog(
-      child: InkWell(
-        child: Container(
-          padding: const EdgeInsetsDirectional.symmetric(
-              horizontal: 16, vertical: 32),
-          child: Text(textAlign: TextAlign.center, text),
+  // String value = '';
+  if (columnList?.insertType == "dropdown") {
+    if (columnList?.columnName == columnList?.searchName) {
+      List<ListDrop>? listDrop = [];
+      List<ItemDrop>? myListDrop = [];
+      for (var item in allDropdownModelList) {
+        if (item.listName == listName) {
+          listDrop = item.list;
+        }
+      }
+
+      for (var item in listDrop!) {
+        if (item.columnName == columnList?.columnName) {
+          myListDrop = item.list;
+        }
+      }
+      for (var item in myListDrop!) {
+        if (item.id.toString() == text) {
+          // value = item.text ?? "";
+          if (item.text!.length > 12) {
+            return showDialog(
+              context: context,
+              builder: (context) => Dialog(
+                child: InkWell(
+                  child: Container(
+                    padding: const EdgeInsetsDirectional.symmetric(
+                        horizontal: 16, vertical: 32),
+                    child: Text(textAlign: TextAlign.center, item.text!),
+                  ),
+                ),
+              ),
+            );
+          }
+        }
+      }
+    } else {
+      if (text.length > 12) {
+        return showDialog(
+          context: context,
+          builder: (context) => Dialog(
+            child: InkWell(
+              child: Container(
+                padding: const EdgeInsetsDirectional.symmetric(
+                    horizontal: 16, vertical: 32),
+                child: Text(textAlign: TextAlign.center, text),
+              ),
+            ),
+          ),
+        );
+      }
+    }
+  } else {
+    if (text.length > 12) {
+      return showDialog(
+        context: context,
+        builder: (context) => Dialog(
+          child: InkWell(
+            child: Container(
+              padding: const EdgeInsetsDirectional.symmetric(
+                  horizontal: 16, vertical: 32),
+              child: Text(textAlign: TextAlign.center, text),
+            ),
+          ),
         ),
-      ),
-    ),
-  );
+      );
+    }
+  }
 }

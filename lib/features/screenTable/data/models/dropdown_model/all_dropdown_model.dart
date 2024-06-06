@@ -1,15 +1,41 @@
 class AllDropdownModel {
-  String? columnName;
+  String? listName;
   List<ListDrop>? list;
 
-  AllDropdownModel({this.columnName, this.list});
+  AllDropdownModel({this.listName, this.list});
 
   AllDropdownModel.fromJson(Map<String, dynamic> json) {
-    columnName = json['ColumnName'];
+    listName = json['ListName'];
     if (json['List'] != null) {
       list = <ListDrop>[];
       json['List'].forEach((v) {
         list!.add(ListDrop.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['ListName'] = listName;
+    if (list != null) {
+      data['List'] = list!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class ListDrop {
+  String? columnName;
+  List<ItemDrop>? list;
+
+  ListDrop({this.columnName, this.list});
+
+  ListDrop.fromJson(Map<String, dynamic> json) {
+    columnName = json['ColumnName'];
+    if (json['List'] != null) {
+      list = <ItemDrop>[];
+      json['List'].forEach((v) {
+        list!.add(ItemDrop.fromJson(v));
       });
     }
   }
@@ -24,13 +50,13 @@ class AllDropdownModel {
   }
 }
 
-class ListDrop {
+class ItemDrop {
   String? id;
   String? text;
 
-  ListDrop({this.id, this.text});
+  ItemDrop({this.id, this.text});
 
-  ListDrop.fromJson(Map<String, dynamic> json) {
+  ItemDrop.fromJson(Map<String, dynamic> json) {
     id = json['Id'];
     text = json['Text'] ?? "";
   }

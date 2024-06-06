@@ -366,9 +366,15 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
           item.insertVisable == true &&
           item.categoryName == categoryName &&
           item.insertDefult == show) {
-        List<ListDrop>? myListDrop = [];
+        List<ListDrop>? listDrop = [];
+        List<ItemDrop>? myListDrop = [];
 
         for (var ii in myAllDropdownModelList) {
+          if (ii.listName == widget.pageData.listName) {
+            listDrop = ii.list;
+          }
+        }
+        for (var ii in listDrop!) {
           if (ii.columnName == item.columnName) {
             myListDrop = ii.list;
           }

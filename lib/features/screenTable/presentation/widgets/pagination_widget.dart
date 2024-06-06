@@ -15,7 +15,8 @@ class PaginationWidget extends StatefulWidget {
       required this.myPage,
       required this.allPages,
       required this.onTapMin,
-      required this.onTapAdd});
+      required this.onTapAdd,
+      this.paddingBottom});
 
   final int numberOfRecords;
   final OnChangeLimit<int> onChangeLimit;
@@ -23,6 +24,7 @@ class PaginationWidget extends StatefulWidget {
   final int dropdownValue;
   final int myPage;
   final int allPages;
+  final double? paddingBottom;
   final void Function() onTapMin;
   final void Function() onTapAdd;
 
@@ -34,7 +36,8 @@ class _PaginationWidgetState extends State<PaginationWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 85, left: 8, right: 8),
+      padding: EdgeInsets.only(
+          bottom: widget.paddingBottom ?? 85, left: 8, right: 8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [

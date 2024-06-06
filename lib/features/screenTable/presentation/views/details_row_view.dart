@@ -19,13 +19,15 @@ class DetailsRowView extends StatelessWidget {
       create: (context) => GetPageDetailsCubit(
         getIt.get<ScreenRepoImpl>(),
       )..getPageDetails(pageData.pageId),
-      child: const ChangeStatusBarColor(
+      child: ChangeStatusBarColor(
         child: Scaffold(
           appBar: CustomAppBar(
             isPortrait: true,
             title: "",
           ),
-          body: DetailsRowViewBody(),
+          body: DetailsRowViewBody(
+            pageData: pageData,
+          ),
         ),
       ),
     );

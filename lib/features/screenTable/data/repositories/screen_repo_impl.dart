@@ -364,10 +364,9 @@ class ScreenRepoImpl implements ScreenRepo {
               "";
       String token =
           await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
-      Map<String, dynamic> dataSend = tapData.toJson();
       Map<String, dynamic> data = await apiService.post(
         endPoint: "home/GetPageDetailTable",
-        data: dataSend,
+        data: tapData.toJson(),
         headers: {
           "Authorization": "Bearer $token",
           "CompanyKey": companyKey,

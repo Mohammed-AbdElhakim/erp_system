@@ -212,15 +212,13 @@ class _CustomTableGroupState extends State<CustomTableGroup> {
                           return DataColumn(
                             label: InkWell(
                               onTap: () {
-                                if (widget.listSum![0][widget.listKey[index]]
-                                        .toString()
-                                        .length >
-                                    12) {
-                                  buildShowDialog(context,
-                                      text: widget.listSum![0]
-                                              [widget.listKey[index]]
-                                          .toString());
-                                }
+                                buildShowDialog(context,
+                                    text: widget.listSum![0]
+                                            [widget.listKey[index]]
+                                        .toString(),
+                                    allDropdownModelList:
+                                        widget.allDropdownModelList,
+                                    listName: widget.pageData.listName);
                               },
                               child: SizedBox(
                                 width: 130,
@@ -316,23 +314,27 @@ class TableDataSource extends DataGridSource {
 
       return InkWell(
         onTap: columnList.insertType! != "date"
-            ? e.value.toString().length > 12
-                ? () {
-                    buildShowDialog(context, text: e.value.toString());
-                  }
-                : null
+            ? () {
+                buildShowDialog(context,
+                    text: e.value.toString(),
+                    listName: pageData.listName,
+                    allDropdownModelList: allDropdownModelList,
+                    columnList: columnList);
+              }
             : null,
         child: Container(
           alignment: Alignment.center,
-          padding: const EdgeInsets.all(8),
+          padding: e.value.toString() == "Icon(Icons.add)"
+              ? EdgeInsets.zero
+              : const EdgeInsets.all(8),
           child: e.value.toString() == "Icon(Icons.add)"
-              ? InkWell(
-                  child: const Icon(Icons.add),
-                  onTap: () {
+              ? IconButton(
+                  padding: EdgeInsets.zero,
+                  onPressed: () {
                     GoRouter.of(context)
                         .push(AppRouter.kDetailsRowView, extra: pageData);
                   },
-                )
+                  icon: Icon(Icons.add))
               : e.columnName.toString() == pageData.primary
                   ? Text(e.value.toString())
                   : buildMyWidget(
@@ -424,8 +426,15 @@ class TableDataSource extends DataGridSource {
       case "dropdown":
         String val = '';
         if (columnList.columnName == columnList.searchName) {
-          List<ListDrop>? myListDrop = [];
+          List<ListDrop>? listDrop = [];
+          List<ItemDrop>? myListDrop = [];
           for (var item in allDropdownModelList) {
+            if (item.listName == pageData.listName) {
+              listDrop = item.list;
+            }
+          }
+
+          for (var item in listDrop!) {
             if (item.columnName == columnList.columnName) {
               myListDrop = item.list;
             }

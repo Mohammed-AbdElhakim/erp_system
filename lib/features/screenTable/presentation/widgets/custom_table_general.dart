@@ -165,17 +165,16 @@ class _CustomTableGeneralState extends State<CustomTableGeneral> {
                                 child: InkWell(
                                   onTap: widget.listColumn[i].insertType! !=
                                           "date"
-                                      ? widget.listData[index]
-                                                      ['${widget.listKey[i]}']
-                                                  .toString()
-                                                  .length >
-                                              12
-                                          ? () {
-                                              buildShowDialog(context,
-                                                  text:
-                                                      "${widget.listData[index][widget.listKey[i]]}");
-                                            }
-                                          : null
+                                      ? () {
+                                          buildShowDialog(context,
+                                              text:
+                                                  "${widget.listData[index][widget.listKey[i]]}",
+                                              allDropdownModelList:
+                                                  widget.allDropdownModelList,
+                                              listName:
+                                                  widget.pageData.listName,
+                                              columnList: widget.listColumn[i]);
+                                        }
                                       : null,
                                   child: Container(
                                     color: selectedRows[index] == true
@@ -222,15 +221,15 @@ class _CustomTableGeneralState extends State<CustomTableGeneral> {
                           return DataColumn(
                             label: InkWell(
                               onTap: () {
-                                if (widget.listSum![0][widget.listKey[index]]
-                                        .toString()
-                                        .length >
-                                    12) {
-                                  buildShowDialog(context,
-                                      text: widget.listSum![0]
-                                              [widget.listKey[index]]
-                                          .toString());
-                                }
+                                buildShowDialog(
+                                  context,
+                                  text: widget.listSum![0]
+                                          [widget.listKey[index]]
+                                      .toString(),
+                                  listName: widget.pageData.listName,
+                                  allDropdownModelList:
+                                      widget.allDropdownModelList,
+                                );
                               },
                               child: SizedBox(
                                 width: 130,
@@ -347,8 +346,15 @@ class _CustomTableGeneralState extends State<CustomTableGeneral> {
       case "dropdown":
         String val = '';
         if (columnList.columnName == columnList.searchName) {
-          List<ListDrop>? myListDrop = [];
+          List<ListDrop>? listDrop = [];
+          List<ItemDrop>? myListDrop = [];
           for (var item in widget.allDropdownModelList) {
+            if (item.listName == widget.pageData.listName) {
+              listDrop = item.list;
+            }
+          }
+
+          for (var item in listDrop!) {
             if (item.columnName == columnList.columnName) {
               myListDrop = item.list;
             }

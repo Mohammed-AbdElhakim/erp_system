@@ -15,6 +15,8 @@ class GetPageDetailsTableCubit extends Cubit<GetPageDetailsTableState> {
   final ScreenRepo screenRepo;
   Future<void> getPageDetailsTable({
     required ListTaps tapData,
+    required int numberOfPage,
+    required int dropdownValueOfLimit,
   }) async {
     emit(GetPageDetailsTableLoading());
     Either<Failure, ScreenModel> result = await screenRepo.getPageDetailsTable(
@@ -24,8 +26,7 @@ class GetPageDetailsTableCubit extends Cubit<GetPageDetailsTableState> {
       emit(GetPageDetailsTableFailure(failure.errorMassage));
     }, (tableData) {
       emit(GetPageDetailsTableSuccess(
-        tableData,
-      ));
+          tableData, numberOfPage, dropdownValueOfLimit));
     });
   }
 }

@@ -5,11 +5,12 @@ import 'package:erp_system/features/screenTable/presentation/manager/getPageDeta
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/utils/app_colors.dart';
-import '../../../../core/utils/app_styles.dart';
+import '../../../../core/models/menu_model/pages.dart';
+import 'tap_details_widget.dart';
 
 class DetailsRowViewBody extends StatelessWidget {
-  const DetailsRowViewBody({super.key});
+  const DetailsRowViewBody({super.key, required this.pageData});
+  final Pages pageData;
 
   @override
   Widget build(BuildContext context) {
@@ -25,73 +26,9 @@ class DetailsRowViewBody extends StatelessWidget {
                   tapsList.length,
                   (index) => Card(
                     elevation: 2,
-                    child: ExpansionTile(
-                      collapsedShape: const ContinuousRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(20))),
-                      shape: const ContinuousRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(20))),
-                      title: Text(
-                        tapsList[index].displayArabic,
-                        style:
-                            AppStyles.textStyle18.copyWith(color: Colors.black),
-                      ),
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 12),
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: DataTable(
-                              columnSpacing: 0,
-                              horizontalMargin: 15,
-                              dataRowMinHeight: 35,
-                              dataRowMaxHeight: 35,
-                              headingRowHeight: 35,
-                              headingRowColor: MaterialStateProperty.all(
-                                  AppColors.blueLight),
-                              columns: [
-                                ...List.generate(
-                                  12,
-                                  (index) {
-                                    return DataColumn(
-                                      label: Expanded(
-                                        child: SizedBox(
-                                          width: 130,
-                                          child: Text(
-                                            "column $index",
-                                            textAlign: TextAlign.center,
-                                            style: AppStyles.textStyle14,
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                )
-                              ],
-                              rows: List.generate(
-                                5,
-                                (index) => DataRow(
-                                  cells: [
-                                    ...List.generate(
-                                      12,
-                                      (i) => DataCell(
-                                        SizedBox(
-                                          width: 130,
-                                          child: InkWell(
-                                            child: Container(
-                                              alignment: Alignment.center,
-                                              child: const Text("text"),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
+                    child: TapDetailsWidget(
+                      tap: tapsList[index],
+                      pageData: pageData,
                     ),
                   ),
                 ),
