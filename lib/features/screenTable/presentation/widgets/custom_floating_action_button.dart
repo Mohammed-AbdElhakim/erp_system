@@ -148,22 +148,41 @@ class _CustomFloatingActionButtonState
     } else if (icon == Icons.refresh) {
       // ScreenTableBody.isSearch = false;
       // BuildAlertSearch.statement = '';
-      BlocProvider.of<GetTableCubit>(context).getTable(
-          pageId: widget.pageData.pageId,
-          employee: false,
-          isdesc: TableGeneral.isDesc,
-          limit: 10,
-          offset: 0,
-          orderby: TableGeneral.orderBy,
-          statment:
-              TableGeneral.isSearch == true ? BuildAlertSearch.statement : '',
-          selectcolumns: '',
-          departmentName: widget.pageData.departmentName,
-          isDepartment: widget.pageData.isDepartment,
-          authorizationID: widget.pageData.authorizationID,
-          viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
-          dropdownValueOfLimit: TableGeneral.dropdownValue,
-          numberOfPage: TableGeneral.numberPage);
+      if (widget.pageData.tableSrc == AppStrings.tableGroup) {
+        BlocProvider.of<GetTableCubit>(context).getTable(
+            pageId: widget.pageData.pageId,
+            employee: false,
+            isdesc: TableGroup.isDesc,
+            limit: 10,
+            offset: 0,
+            orderby: TableGroup.orderBy,
+            statment:
+                TableGroup.isSearch == true ? BuildAlertSearch.statement : '',
+            selectcolumns: '',
+            departmentName: widget.pageData.departmentName,
+            isDepartment: widget.pageData.isDepartment,
+            authorizationID: widget.pageData.authorizationID,
+            viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
+            dropdownValueOfLimit: TableGroup.dropdownValue,
+            numberOfPage: TableGroup.numberPage);
+      } else {
+        BlocProvider.of<GetTableCubit>(context).getTable(
+            pageId: widget.pageData.pageId,
+            employee: false,
+            isdesc: TableGeneral.isDesc,
+            limit: 10,
+            offset: 0,
+            orderby: TableGeneral.orderBy,
+            statment:
+                TableGeneral.isSearch == true ? BuildAlertSearch.statement : '',
+            selectcolumns: '',
+            departmentName: widget.pageData.departmentName,
+            isDepartment: widget.pageData.isDepartment,
+            authorizationID: widget.pageData.authorizationID,
+            viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
+            dropdownValueOfLimit: TableGeneral.dropdownValue,
+            numberOfPage: TableGeneral.numberPage);
+      }
     } else if (icon == Icons.delete) {
       List<dynamic> myRowData =
           widget.pageData.tableSrc == AppStrings.tableGroup

@@ -250,7 +250,7 @@ class _TablePageDetailsWidgetState extends State<TablePageDetailsWidget> {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           date == "0001-12-31" || date == "0000-12-31" ? '' : date,
-          style: TextStyle(color: Colors.black),
+          style: const TextStyle(color: Colors.black),
         );
       case "checkbox":
         if (value == "true") {
@@ -295,7 +295,7 @@ class _TablePageDetailsWidgetState extends State<TablePageDetailsWidget> {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           val,
-          style: TextStyle(color: Colors.black),
+          style: const TextStyle(color: Colors.black),
         );
       default:
         return Text(
@@ -303,7 +303,7 @@ class _TablePageDetailsWidgetState extends State<TablePageDetailsWidget> {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           value,
-          style: TextStyle(color: Colors.black),
+          style: const TextStyle(color: Colors.black),
         );
     }
   }

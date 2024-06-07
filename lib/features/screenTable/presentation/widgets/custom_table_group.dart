@@ -334,7 +334,7 @@ class TableDataSource extends DataGridSource {
                     GoRouter.of(context)
                         .push(AppRouter.kDetailsRowView, extra: pageData);
                   },
-                  icon: Icon(Icons.add))
+                  icon: const Icon(Icons.add))
               : e.columnName.toString() == pageData.primary
                   ? Text(e.value.toString())
                   : buildMyWidget(

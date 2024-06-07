@@ -21,7 +21,7 @@ class DetailsRowView extends StatelessWidget {
       )..getPageDetails(pageData.pageId),
       child: ChangeStatusBarColor(
         child: Scaffold(
-          appBar: CustomAppBar(
+          appBar: const CustomAppBar(
             isPortrait: true,
             title: "",
           ),
