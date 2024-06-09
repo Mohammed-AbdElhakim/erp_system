@@ -3,6 +3,7 @@ import 'package:dartz/dartz.dart';
 import '../../../../../core/errors/failures.dart';
 import '../models/dropdown_model/all_dropdown_model.dart';
 import '../models/dropdown_model/dropdown_model.dart';
+import '../models/item_list_setup_model.dart';
 import '../models/permission_model.dart';
 import '../models/screen_model.dart';
 import '../models/tap_model.dart';
@@ -58,5 +59,9 @@ abstract class ScreenRepo {
 
   Future<Either<Failure, ScreenModel>> getPageDetailsTable({
     required ListTaps tapData,
+  });
+
+  Future<Either<Failure, List<ItemListSetupModel>>> getListSetups({
+    required String pageListName,
   });
 }
