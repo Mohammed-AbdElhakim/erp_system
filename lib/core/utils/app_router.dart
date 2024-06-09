@@ -4,6 +4,7 @@ import '../../features/auth/presentation/views/login_view.dart';
 import '../../features/bottomNavigationBar/presentation/views/bottom_navigatiaon_bar_view.dart';
 import '../../features/home/presentation/views/home_view.dart';
 import '../../features/host/presentation/views/host_view.dart';
+import '../../features/screenTable/data/models/add_pass_data_model.dart';
 import '../../features/screenTable/presentation/views/details_row_view.dart';
 import '../../features/screenTable/presentation/views/table_group_add_view.dart';
 import '../../features/screenTable/presentation/views/table_group_edit_view.dart';
@@ -76,7 +77,14 @@ abstract class AppRouter {
       ),
       GoRoute(
         path: kTableGroupAddView,
-        builder: (context, state) => const TableGroupAddView(),
+        builder: (context, state) {
+          AddPassDataModel data = state.extra as AddPassDataModel;
+          return TableGroupAddView(
+            columnList: data.columnList,
+            pageData: data.pageData,
+            listKey: data.listKey,
+          );
+        },
       ),
       GoRoute(
         path: kTableGroupEditView,

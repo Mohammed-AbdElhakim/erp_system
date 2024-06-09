@@ -13,6 +13,7 @@ import '../../../../core/utils/app_router.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_loading_widget.dart';
 import '../../../../generated/l10n.dart';
+import '../../data/models/add_pass_data_model.dart';
 import '../../data/models/permission_model.dart';
 import '../../data/models/screen_model.dart';
 import '../manager/delete/delete_cubit.dart';
@@ -298,7 +299,12 @@ class _CustomFloatingActionButtonState
       }
     } else if (icon == Icons.add) {
       if (widget.pageData.tableSrc == AppStrings.tableGroup) {
-        GoRouter.of(context).push(AppRouter.kTableGroupAddView);
+        GoRouter.of(context).push(AppRouter.kTableGroupAddView,
+            extra: AddPassDataModel(
+              pageData: widget.pageData,
+              columnList: columnList,
+              listKey: listKey,
+            ));
       } else {
         CustomAlertDialog.alertWithCustomContent(
           context: context,
