@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:erp_system/features/screenTable/data/models/item_list_setup_model.dart';
 import 'package:erp_system/features/screenTable/data/models/tap_model.dart';
 
 import '../../../../core/errors/failures.dart';
@@ -375,6 +376,43 @@ class ScreenRepoImpl implements ScreenRepo {
       ScreenModel screenModel = ScreenModel.fromJson(data);
 
       return right(screenModel);
+    } catch (e) {
+      if (e is DioException) {
+        return left(
+          ServerFailure.fromDioException(e),
+        );
+      }
+      return left(
+        ServerFailure(
+          e.toString(),
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<ItemListSetupModel>>> getListSetups({
+    required String pageListName,
+  }) async {
+    try {
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
+              "";
+      String token =
+          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      List<dynamic> data = await apiService.get(
+        endPoint: "web/Structure/getListSetups/$pageListName",
+        headers: {
+          "Authorization": "Bearer $token",
+          "CompanyKey": companyKey,
+        },
+      );
+      List<ItemListSetupModel> dataList = [];
+      for (var i in data) {
+        dataList.add(ItemListSetupModel.fromJson(i));
+      }
+
+      return right(dataList);
     } catch (e) {
       if (e is DioException) {
         return left(
