@@ -299,7 +299,7 @@ class _CustomFloatingActionButtonState
       }
     } else if (icon == Icons.add) {
       if (widget.pageData.tableSrc == AppStrings.tableGroup) {
-        GoRouter.of(context).push(AppRouter.kTableGroupAddView,
+        GoRouter.of(context).push(AppRouter.kAddView,
             extra: AddPassDataModel(
               pageData: widget.pageData,
               columnList: columnList,

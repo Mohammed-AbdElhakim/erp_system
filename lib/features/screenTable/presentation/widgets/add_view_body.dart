@@ -1,5 +1,10 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
+import 'package:erp_system/core/widgets/custom_error_massage.dart';
+import 'package:erp_system/core/widgets/custom_loading_widget.dart';
+import 'package:erp_system/features/screenTable/data/models/item_list_setup_model.dart';
+import 'package:erp_system/features/screenTable/presentation/manager/getListSetups/get_list_setups_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/models/menu_model/pages.dart';
@@ -10,29 +15,23 @@ import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_text_form_field.dart';
 import '../../../../generated/l10n.dart';
 import '../../data/models/dropdown_model/all_dropdown_model.dart';
-import '../../data/models/screen_model.dart';
+import 'custom_table_add.dart';
 import 'table_group.dart';
 
-class TableGroupAddViewBody extends StatefulWidget {
-  const TableGroupAddViewBody(
-      {super.key,
-      required this.columnList,
-      required this.pageData,
-      required this.listKey});
-  final List<ColumnList> columnList;
+class AddViewBody extends StatefulWidget {
+  const AddViewBody({super.key, required this.pageData, required this.listKey});
   final Pages pageData;
   final List<dynamic> listKey;
 
   @override
-  State<TableGroupAddViewBody> createState() => _TableGroupAddViewBodyState();
+  State<AddViewBody> createState() => _AddViewBodyState();
 }
 
-class _TableGroupAddViewBodyState extends State<TableGroupAddViewBody> {
+class _AddViewBodyState extends State<AddViewBody> {
   String? lang;
   GlobalKey<FormState> formKey = GlobalKey();
   Map<String, dynamic> newRowData = {};
   bool isShow = false;
-  late List<String> myListCategory;
   late List<AllDropdownModel> myAllDropdownModelList;
 
   @override
@@ -43,95 +42,115 @@ class _TableGroupAddViewBodyState extends State<TableGroupAddViewBody> {
 
   @override
   void initState() {
-    myListCategory = TableGroup.listCategory;
     myAllDropdownModelList = TableGroup.myAllDropdownModelList;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(12.0),
-      child: Form(
-        key: formKey,
-        child: Stack(
-          alignment: Alignment.center,
-          clipBehavior: Clip.none,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(bottom: 60),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ...List.generate(myListCategory.length, (index) {
-                      String categoryName = myListCategory[index];
-                      return Column(
+    return BlocBuilder<GetListSetupsCubit, GetListSetupsState>(
+      builder: (context, state) {
+        if (state is GetListSetupsSuccess) {
+          List<ItemListSetupModel> listSetup = state.listSetupModel;
+          List<ItemListSetupModel> listColumn = [];
+          List<dynamic> listKey = [];
+          List<String> category = [];
+          List<String> listHeader = [];
+          for (var item in state.listSetupModel) {
+            category.add(item.categoryTitle!);
+            if (item.insertVisable == true &&
+                item.cvisable == true &&
+                item.visible == true &&
+                item.isGeneral != true) {
+              listColumn.add(item);
+              listKey.add(item.columnName);
+              listHeader.add(lang == AppStrings.enLangKey
+                  ? item.enColumnLabel!
+                  : item.arColumnLabel!);
+            }
+          }
+          List<String> categoryList = category.toSet().toList();
+          return Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Form(
+              key: formKey,
+              child: Stack(
+                alignment: Alignment.center,
+                clipBehavior: Clip.none,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 60),
+                    child: SingleChildScrollView(
+                      child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 12, vertical: 8),
-                              decoration: BoxDecoration(
-                                  color: AppColors.grey.withOpacity(.4),
-                                  borderRadius: BorderRadius.circular(15)),
-                              child: Text(
-                                categoryName,
-                                style: AppStyles.textStyle18
-                                    .copyWith(color: Colors.black),
-                              )),
-                          ...getMyWidgetList(
-                            columnList: widget.columnList,
-                            categoryName: categoryName,
-                            // show: true
-                          ),
-                          /*Visibility(
-                            visible: isShow,
-                            child: Column(
-                              children: getMyWidgetList(
-                                  columnList: widget.columnList,
+                          ...List.generate(categoryList.length, (index) {
+                            String categoryName = categoryList[index];
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 12, vertical: 8),
+                                    decoration: BoxDecoration(
+                                        color: AppColors.grey.withOpacity(.4),
+                                        borderRadius:
+                                            BorderRadius.circular(15)),
+                                    child: Text(
+                                      categoryName,
+                                      style: AppStyles.textStyle18
+                                          .copyWith(color: Colors.black),
+                                    )),
+                                ...getMyWidgetList(
+                                  listData: listSetup,
                                   categoryName: categoryName,
-                                  show: false),
-                            ),
-                          ),*/
+                                  // show: true
+                                ),
+                              ],
+                            );
+                          }),
+                          CustomTableAdd(
+                            listKey: listKey,
+                            listHeader: listHeader,
+                            listColumn: listColumn,
+                            allDropdownModelList:
+                                TableGroup.myAllDropdownModelList,
+                          ),
+                          // TextButton(
+                          //   onPressed: () {
+                          //     setState(() {
+                          //       isShow = !isShow;
+                          //     });
+                          //   },
+                          //   child: Text(!isShow
+                          //       ? S.of(context).show_more
+                          //       : S.of(context).show_less),
+                          // ),
                         ],
-                      );
-                    }),
-                    // TextButton(
-                    //   onPressed: () {
-                    //     setState(() {
-                    //       isShow = !isShow;
-                    //     });
-                    //   },
-                    //   child: Text(!isShow
-                    //       ? S.of(context).show_more
-                    //       : S.of(context).show_less),
-                    // ),
-                  ],
-                ),
-              ),
-            ),
-            Positioned(
-              bottom: 0,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  CustomButton(
-                    text: S.of(context).cancel,
-                    width: 80,
-                    noGradient: true,
-                    color: Colors.transparent,
-                    noShadow: true,
-                    textStyle:
-                        AppStyles.textStyle16.copyWith(color: Colors.grey),
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
+                      ),
+                    ),
                   ),
-                  const SizedBox(
-                    width: 50,
-                  ),
-                  /* BlocConsumer<AddEditCubit, AddEditState>(
+                  Positioned(
+                    bottom: 0,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        CustomButton(
+                          text: S.of(context).cancel,
+                          width: 80,
+                          noGradient: true,
+                          color: Colors.transparent,
+                          noShadow: true,
+                          textStyle: AppStyles.textStyle16
+                              .copyWith(color: Colors.grey),
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                        const SizedBox(
+                          width: 50,
+                        ),
+                        /* BlocConsumer<AddEditCubit, AddEditState>(
                     listener: (context, state) {
                       if (state is AddEditSuccess) {
                         BlocProvider.of<GetTableCubit>(context).getTable(
@@ -180,41 +199,54 @@ class _TableGroupAddViewBodyState extends State<TableGroupAddViewBody> {
                       }
                     },
                   ),*/
-                  CustomButton(
-                    text: S.of(context).btn_add,
-                    width: 80,
-                    onTap: () {
-                      if (formKey.currentState!.validate()) {
-                        formKey.currentState!.save();
-                      }
-                    },
+                        CustomButton(
+                          text: S.of(context).btn_add,
+                          width: 80,
+                          onTap: () {
+                            if (formKey.currentState!.validate()) {
+                              formKey.currentState!.save();
+                            }
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
             ),
-          ],
-        ),
-      ),
+          );
+        } else if (state is GetListSetupsFailure) {
+          return CustomErrorMassage(errorMassage: state.errorMassage);
+        } else {
+          return const CustomLoadingWidget();
+        }
+      },
     );
   }
 
   List<Widget> getMyWidgetList({
-    required List<ColumnList> columnList,
+    required List<ItemListSetupModel> listData,
     required String categoryName,
     // required bool show,
   }) {
     List<Widget> list = [];
-    for (var item in columnList) {
+
+    for (var item in listData) {
       String title = lang == AppStrings.arLangKey
           ? item.arColumnLabel!
           : item.enColumnLabel!;
+      bool condition = widget.pageData.editSrc == AppStrings.addOrEditExcel
+          ? item.insertVisable == true &&
+              item.cvisable == true &&
+              item.visible == true &&
+              item.isGeneral == true
+          : item.insertVisable == true &&
+              item.cvisable == true &&
+              item.visible == true;
       //text
       if (item.insertType == "text" &&
-              item.insertVisable == true &&
-              item.categoryName == categoryName
-          /*&&
-          item.insertDefult == show*/
-          ) {
+          item.categoryTitle == categoryName &&
+          condition) {
         list.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -255,11 +287,8 @@ class _TableGroupAddViewBodyState extends State<TableGroupAddViewBody> {
       }
       //number
       if (item.insertType == "number" &&
-              item.insertVisable == true &&
-              item.categoryName ==
-                  categoryName /*&&
-          item.insertDefult == show*/
-          ) {
+          item.categoryTitle == categoryName &&
+          condition) {
         list.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -300,11 +329,8 @@ class _TableGroupAddViewBodyState extends State<TableGroupAddViewBody> {
       }
       //Date
       if (item.insertType == "date" &&
-              item.insertVisable == true &&
-              item.categoryName ==
-                  categoryName /*&&
-          item.insertDefult == show*/
-          ) {
+          item.categoryTitle == categoryName &&
+          condition) {
         String date = '';
         list.add(
           Padding(
@@ -372,11 +398,8 @@ class _TableGroupAddViewBodyState extends State<TableGroupAddViewBody> {
 
       //dropdown
       if (item.insertType == "dropdown" &&
-              item.insertVisable == true &&
-              item.categoryName ==
-                  categoryName /*&&
-          item.insertDefult == show*/
-          ) {
+          item.categoryTitle == categoryName &&
+          condition) {
         List<ListDrop>? listDrop = [];
         List<ItemDrop>? myListDrop = [];
 
@@ -432,55 +455,6 @@ class _TableGroupAddViewBodyState extends State<TableGroupAddViewBody> {
                     newRowData.addAll({item.searchName!.toString(): value});
                   },
                 ),
-                /*SizedBox(
-                  // height: 40,
-                  child: BlocProvider(
-                    create: (context) =>
-                        GetDropdownListCubit(getIt.get<ScreenRepoImpl>())
-                          ..getDropdownList(
-                            droModel: item.droModel ?? "",
-                            droValue: item.droValue ?? "",
-                            droText: item.droText ?? "",
-                            droCondition: item.droCondition ?? "",
-                            droCompany: item.droCompany ?? "",
-                          ),
-                    child:
-                        BlocBuilder<GetDropdownListCubit, GetDropdownListState>(
-                      builder: (context, state) {
-                        if (state is GetDropdownListSuccess) {
-                          List<ListDropdownModel> dropListData = [];
-                          dropListData.addAll(state.dropdownModel.list!);
-                          return CustomDropdown<String>.search(
-                            hintText: '',
-                            decoration: CustomDropdownDecoration(
-                                headerStyle: AppStyles.textStyle16
-                                    .copyWith(color: Colors.black),
-                                closedFillColor: Colors.transparent,
-                                closedBorder:
-                                    Border.all(color: AppColors.blueDark)),
-                            validator: (value) {
-                              if (value?.isEmpty ?? true) {
-                                return S.of(context).field_is_required;
-                              } else {
-                                return null;
-                              }
-                            },
-                            items: dropListData.isEmpty
-                                ? [""]
-                                : List.generate(dropListData.length,
-                                    (index) => dropListData[index].text ?? ''),
-                            onChanged: (value) {
-                              newRowData
-                                  .addAll({item.searchName!.toString(): value});
-                            },
-                          );
-                        } else {
-                          return const InitDropdown();
-                        }
-                      },
-                    ),
-                  ),
-                ),*/
               ],
             ),
           ),
@@ -488,11 +462,8 @@ class _TableGroupAddViewBodyState extends State<TableGroupAddViewBody> {
       }
       //checkbox
       if (item.insertType == "checkbox" &&
-              item.insertVisable == true &&
-              item.categoryName ==
-                  categoryName /*&&
-          item.insertDefult == show*/
-          ) {
+          item.categoryTitle == categoryName &&
+          condition) {
         bool checkboxValue = false;
         list.add(
           StatefulBuilder(

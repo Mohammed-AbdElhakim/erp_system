@@ -10,6 +10,9 @@ class ItemListSetupModel {
   int? listID;
   int? sort;
   bool? visible;
+  String? droModel;
+  String? droValue;
+  String? droText;
   bool? cvisable;
   String? validation;
   bool? isKey;
@@ -18,11 +21,13 @@ class ItemListSetupModel {
   bool? insertDefult;
   bool? visableDefult;
   int? width;
+  bool? isGeneral;
   String? categoryTitle;
   int? categorySort;
   int? categoryID;
   bool? isExcel;
-  bool? mobileVisable;
+  int? pageId;
+  String? orderby;
   int? comID;
   bool? masterInsertVisible;
 
@@ -38,6 +43,9 @@ class ItemListSetupModel {
       this.listID,
       this.sort,
       this.visible,
+      this.droModel,
+      this.droValue,
+      this.droText,
       this.cvisable,
       this.validation,
       this.isKey,
@@ -46,11 +54,13 @@ class ItemListSetupModel {
       this.insertDefult,
       this.visableDefult,
       this.width,
+      this.isGeneral,
       this.categoryTitle,
       this.categorySort,
       this.categoryID,
       this.isExcel,
-      this.mobileVisable,
+      this.pageId,
+      this.orderby,
       this.comID,
       this.masterInsertVisible});
 
@@ -66,6 +76,9 @@ class ItemListSetupModel {
     listID = json['ListID'];
     sort = json['sort'];
     visible = json['visible'];
+    droModel = json['DroModel'];
+    droValue = json['DroValue'];
+    droText = json['DroText'];
     cvisable = json['Cvisable'];
     validation = json['validation'];
     isKey = json['isKey'];
@@ -74,11 +87,13 @@ class ItemListSetupModel {
     insertDefult = json['InsertDefult'];
     visableDefult = json['VisableDefult'];
     width = json['Width'];
+    isGeneral = json['IsGeneral'];
     categoryTitle = json['CategoryTitle'];
     categorySort = json['CategorySort'];
     categoryID = json['CategoryID'];
     isExcel = json['IsExcel'];
-    mobileVisable = json['MobileVisable'];
+    pageId = json['PageId'];
+    orderby = json['orderby'];
     comID = json['ComID'];
     masterInsertVisible = json['MasterInsertVisible'];
   }
@@ -96,6 +111,9 @@ class ItemListSetupModel {
     data['ListID'] = listID;
     data['sort'] = sort;
     data['visible'] = visible;
+    data['DroModel'] = droModel;
+    data['DroValue'] = droValue;
+    data['DroText'] = droText;
     data['Cvisable'] = cvisable;
     data['validation'] = validation;
     data['isKey'] = isKey;
@@ -104,11 +122,13 @@ class ItemListSetupModel {
     data['InsertDefult'] = insertDefult;
     data['VisableDefult'] = visableDefult;
     data['Width'] = width;
+    data['IsGeneral'] = isGeneral;
     data['CategoryTitle'] = categoryTitle;
     data['CategorySort'] = categorySort;
     data['CategoryID'] = categoryID;
     data['IsExcel'] = isExcel;
-    data['MobileVisable'] = mobileVisable;
+    data['PageId'] = pageId;
+    data['orderby'] = orderby;
     data['ComID'] = comID;
     data['MasterInsertVisible'] = masterInsertVisible;
     return data;

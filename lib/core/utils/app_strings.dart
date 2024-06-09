@@ -18,4 +18,6 @@ class AppStrings {
   static String latKey = "latKey";
   static String longKey = "longKey";
   static String tableGroup = "accountingParmentTable";
+  static String addOrEditDefault = "addOrEditDefault";
+  static String addOrEditExcel = "addOrEditExcel";
 }
