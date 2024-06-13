@@ -191,8 +191,12 @@ class _CustomFloatingActionButtonState
               : TableGeneral.rowData;
       if (myRowData.isNotEmpty) {
         List<String> listId = [];
-        for (var item in TableGeneral.rowData) {
-          listId.add(item[widget.pageData.primary].toString());
+        for (var item in myRowData) {
+          if (widget.pageData.tableSrc == AppStrings.tableGroup) {
+            listId.add(item.toString());
+          } else {
+            listId.add(item[widget.pageData.primary].toString());
+          }
         }
         CustomAlertDialog.alertDelete(
           context: context,
