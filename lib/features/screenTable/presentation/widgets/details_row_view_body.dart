@@ -9,8 +9,10 @@ import '../../../../core/models/menu_model/pages.dart';
 import 'tap_details_widget.dart';
 
 class DetailsRowViewBody extends StatelessWidget {
-  const DetailsRowViewBody({super.key, required this.pageData});
+  const DetailsRowViewBody(
+      {super.key, required this.pageData, required this.rowData});
   final Pages pageData;
+  final Map<String, dynamic> rowData;
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +31,7 @@ class DetailsRowViewBody extends StatelessWidget {
                     child: TapDetailsWidget(
                       tap: tapsList[index],
                       pageData: pageData,
+                      id: rowData[pageData.primary].toString(),
                     ),
                   ),
                 ),

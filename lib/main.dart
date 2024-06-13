@@ -12,6 +12,7 @@ import 'features/screenTable/data/repositories/screen_repo_impl.dart';
 import 'features/screenTable/presentation/manager/addEdit/add_edit_cubit.dart';
 import 'features/screenTable/presentation/manager/delete/delete_cubit.dart';
 import 'features/screenTable/presentation/manager/getAllDropdownList/get_all_dropdown_list_cubit.dart';
+import 'features/screenTable/presentation/manager/getPageDetailsTable/get_page_details_table_cubit.dart';
 import 'features/screenTable/presentation/manager/getPermissions/get_permissions_cubit.dart';
 import 'features/screenTable/presentation/manager/getTable/get_table_cubit.dart';
 import 'generated/l10n.dart';
@@ -75,6 +76,10 @@ class _ERPSystemState extends State<ERPSystem> {
         BlocProvider(
           create: (context) =>
               GetAllDropdownListCubit(getIt.get<ScreenRepoImpl>()),
+        ),
+        BlocProvider(
+          create: (context) =>
+              GetPageDetailsTableCubit(getIt.get<ScreenRepoImpl>()),
         ),
       ],
       child: MaterialApp.router(

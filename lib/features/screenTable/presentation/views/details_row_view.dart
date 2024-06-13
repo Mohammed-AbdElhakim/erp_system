@@ -10,8 +10,10 @@ import '../../../../core/widgets/custom_app_bar.dart';
 import '../../data/repositories/screen_repo_impl.dart';
 
 class DetailsRowView extends StatelessWidget {
-  const DetailsRowView({super.key, required this.pageData});
+  const DetailsRowView(
+      {super.key, required this.pageData, required this.rowData});
   final Pages pageData;
+  final Map<String, dynamic> rowData;
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +29,7 @@ class DetailsRowView extends StatelessWidget {
           ),
           body: DetailsRowViewBody(
             pageData: pageData,
+            rowData: rowData,
           ),
         ),
       ),

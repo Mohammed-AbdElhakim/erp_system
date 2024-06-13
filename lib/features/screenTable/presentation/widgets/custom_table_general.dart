@@ -9,6 +9,7 @@ import '../../../../core/utils/app_router.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/methods.dart';
 import '../../data/models/dropdown_model/all_dropdown_model.dart';
+import '../../data/models/passData/pass_data_details_row.dart';
 import '../../data/models/screen_model.dart';
 
 typedef OnTapHeader<String> = void Function(String titleHeader);
@@ -143,9 +144,12 @@ class _CustomTableGeneralState extends State<CustomTableGeneral> {
                                 width: 30,
                                 child: InkWell(
                                   onTap: () {
-                                    GoRouter.of(context).push(
-                                        AppRouter.kDetailsRowView,
-                                        extra: widget.pageData);
+                                    GoRouter.of(context)
+                                        .push(AppRouter.kDetailsRowView,
+                                            extra: PassDataDetailsRow(
+                                              pageData: widget.pageData,
+                                              rowData: widget.listData[index],
+                                            ));
                                   },
                                   child: Container(
                                     color: selectedRows[index] == true

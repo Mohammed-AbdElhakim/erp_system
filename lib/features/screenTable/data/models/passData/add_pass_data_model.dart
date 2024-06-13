@@ -1,5 +1,5 @@
-import '../../../../core/models/menu_model/pages.dart';
-import 'screen_model.dart';
+import '../../../../../core/models/menu_model/pages.dart';
+import '../screen_model.dart';
 
 class AddPassDataModel {
   final List<ColumnList> columnList;

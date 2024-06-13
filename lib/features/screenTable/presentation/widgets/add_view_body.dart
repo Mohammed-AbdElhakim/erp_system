@@ -86,35 +86,42 @@ class _AddViewBodyState extends State<AddViewBody> {
                         children: [
                           ...List.generate(categoryList.length, (index) {
                             String categoryName = categoryList[index];
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 12, vertical: 8),
-                                    decoration: BoxDecoration(
-                                        color: AppColors.grey.withOpacity(.4),
-                                        borderRadius:
-                                            BorderRadius.circular(15)),
-                                    child: Text(
-                                      categoryName,
-                                      style: AppStyles.textStyle18
-                                          .copyWith(color: Colors.black),
-                                    )),
-                                ...getMyWidgetList(
-                                  listData: listSetup,
-                                  categoryName: categoryName,
-                                  // show: true
-                                ),
-                              ],
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 16),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 12, vertical: 8),
+                                      decoration: BoxDecoration(
+                                          color: AppColors.grey.withOpacity(.4),
+                                          borderRadius:
+                                              BorderRadius.circular(15)),
+                                      child: Text(
+                                        categoryName,
+                                        style: AppStyles.textStyle18
+                                            .copyWith(color: Colors.black),
+                                      )),
+                                  ...getMyWidgetList(
+                                    listData: listSetup,
+                                    categoryName: categoryName,
+                                    // show: true
+                                  ),
+                                ],
+                              ),
                             );
                           }),
-                          CustomTableAdd(
-                            listKey: listKey,
-                            listHeader: listHeader,
-                            listColumn: listColumn,
-                            allDropdownModelList:
-                                TableGroup.myAllDropdownModelList,
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 16),
+                            child: CustomTableAdd(
+                              pageData: widget.pageData,
+                              listKey: listKey,
+                              listHeader: listHeader,
+                              listColumn: listColumn,
+                              allDropdownModelList:
+                                  TableGroup.myAllDropdownModelList,
+                            ),
                           ),
                           // TextButton(
                           //   onPressed: () {
@@ -237,8 +244,8 @@ class _AddViewBodyState extends State<AddViewBody> {
           : item.enColumnLabel!;
       bool condition = widget.pageData.editSrc == AppStrings.addOrEditExcel
           ? item.insertVisable == true &&
-              item.cvisable == true &&
-              item.visible == true &&
+              item.cvisable == false &&
+              item.visible == false &&
               item.isGeneral == true
           : item.insertVisable == true &&
               item.cvisable == true &&

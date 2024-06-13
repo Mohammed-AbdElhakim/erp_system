@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:linked_scroll_controller/linked_scroll_controller.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
@@ -7,7 +6,6 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../../../core/models/menu_model/pages.dart';
 import '../../../../core/utils/app_colors.dart';
-import '../../../../core/utils/app_router.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/methods.dart';
 import '../../data/models/dropdown_model/all_dropdown_model.dart';
@@ -143,16 +141,6 @@ class _CustomTableGroupState extends State<CustomTableGroup> {
 
           // autoExpandGroups: false,
           columns: [
-            if (widget.pageData.master == true)
-              GridColumn(
-                width: 45,
-                columnName: '',
-                label: Container(
-                  padding: const EdgeInsets.all(8),
-                  alignment: Alignment.center,
-                  child: const Text(""),
-                ),
-              ),
             GridColumn(
               width: 0,
               columnName: widget.pageData.primary,
@@ -193,19 +181,13 @@ class _CustomTableGroupState extends State<CustomTableGroup> {
                   controller: sumScrollController,
                   child: DataTable(
                     columnSpacing: 0,
-                    horizontalMargin: 48,
+                    horizontalMargin: 0,
                     dataRowMinHeight: 50,
                     dataRowMaxHeight: 50,
                     headingRowHeight: 35,
                     headingRowColor:
                         MaterialStateProperty.all(AppColors.blueLight),
                     columns: [
-                      if (widget.pageData.master == true)
-                        const DataColumn(
-                          label: SizedBox(
-                            width: 0,
-                          ),
-                        ),
                       ...List.generate(
                         widget.listHeader.length,
                         (index) {
@@ -281,8 +263,6 @@ class TableDataSource extends DataGridSource {
   }) {
     dataGridRows = data.map<DataGridRow>((e) {
       return DataGridRow(cells: [
-        if (pageData.master == true)
-          const DataGridCell(columnName: '', value: "Icon(Icons.add)"),
         DataGridCell(columnName: pageData.primary, value: e[pageData.primary]),
         ...List.generate(
           keys.length,
@@ -303,9 +283,7 @@ class TableDataSource extends DataGridSource {
     return DataGridRowAdapter(
         cells: row.getCells().map<Widget>((e) {
       ColumnList columnList;
-      if (e.value.toString() == "Icon(Icons.add)") {
-        columnList = listColumn[0];
-      } else if (e.columnName.toString() == pageData.primary) {
+      if (e.columnName.toString() == pageData.primary) {
         columnList = listColumn[0];
       } else {
         columnList = listColumn
@@ -324,24 +302,14 @@ class TableDataSource extends DataGridSource {
             : null,
         child: Container(
           alignment: Alignment.center,
-          padding: e.value.toString() == "Icon(Icons.add)"
-              ? EdgeInsets.zero
-              : const EdgeInsets.all(8),
-          child: e.value.toString() == "Icon(Icons.add)"
-              ? IconButton(
-                  padding: EdgeInsets.zero,
-                  onPressed: () {
-                    GoRouter.of(context)
-                        .push(AppRouter.kDetailsRowView, extra: pageData);
-                  },
-                  icon: const Icon(Icons.add))
-              : e.columnName.toString() == pageData.primary
-                  ? Text(e.value.toString())
-                  : buildMyWidget(
-                      value: e.value.toString(),
-                      columnList: columnList,
-                      // indexRow: ,
-                    ),
+          padding: const EdgeInsets.all(8),
+          child: e.columnName.toString() == pageData.primary
+              ? Text(e.value.toString())
+              : buildMyWidget(
+                  value: e.value.toString(),
+                  columnList: columnList,
+                  // indexRow: ,
+                ),
         ),
       );
     }).toList());

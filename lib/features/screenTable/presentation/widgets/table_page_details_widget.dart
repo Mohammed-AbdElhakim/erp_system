@@ -11,7 +11,8 @@ import '../../data/models/tap_model.dart';
 
 typedef OnTapHeader<String> = void Function(String titleHeader);
 
-// typedef OnTapRow<T> = void Function(T rowData);
+typedef OnTapRow<T> = void Function(T rowData);
+
 class TablePageDetailsWidget extends StatefulWidget {
   const TablePageDetailsWidget({
     super.key,
@@ -24,6 +25,7 @@ class TablePageDetailsWidget extends StatefulWidget {
     required this.tap,
     required this.paginationWidget,
     required this.onTapHeader,
+    required this.onTapRow,
   });
   final Widget paginationWidget;
   final ListTaps tap;
@@ -34,7 +36,7 @@ class TablePageDetailsWidget extends StatefulWidget {
   final List<ColumnList> listColumn;
   final List<AllDropdownModel> allDropdownModelList;
   final OnTapHeader<String> onTapHeader;
-  // final OnTapRow<List<Map<String, dynamic>>> onTapRow;
+  final OnTapRow<List<Map<String, dynamic>>> onTapRow;
 
   @override
   State<TablePageDetailsWidget> createState() => _TablePageDetailsWidgetState();
@@ -45,13 +47,17 @@ class _TablePageDetailsWidgetState extends State<TablePageDetailsWidget> {
   ScrollController? headerScrollController;
   ScrollController? dataScrollController;
   ScrollController? sumScrollController;
+  List<bool> selectedRows = [];
+  List<Map<String, dynamic>> rowsData = [];
 
   @override
   void initState() {
     headerScrollController = controllerGroup.addAndGet();
     dataScrollController = controllerGroup.addAndGet();
     sumScrollController = controllerGroup.addAndGet();
-
+    for (int i = 0; i < widget.listData.length; i++) {
+      selectedRows.add(false); // Initialize selectedRows with false
+    }
     super.initState();
   }
 
@@ -98,6 +104,22 @@ class _TablePageDetailsWidgetState extends State<TablePageDetailsWidget> {
                   rows: List.generate(
                     widget.listData.length,
                     (index) => DataRow(
+                      selected: selectedRows[index],
+                      onSelectChanged: (value) {
+                        setState(() {
+                          selectedRows[index] =
+                              value ?? false; // Update selectedRows list
+                        });
+                        if (selectedRows[index] == true) {
+                          rowsData.add(widget.listData[index]);
+
+                          widget.onTapRow(rowsData);
+                        } else {
+                          rowsData.remove(widget.listData[index]);
+
+                          widget.onTapRow(rowsData);
+                        }
+                      },
                       cells: [
                         ...List.generate(
                           widget.listHeader.length,
@@ -120,7 +142,9 @@ class _TablePageDetailsWidgetState extends State<TablePageDetailsWidget> {
                                           }
                                         : null,
                                 child: Container(
-                                  color: Colors.transparent,
+                                  color: selectedRows[index] == true
+                                      ? AppColors.blueGreyDark
+                                      : Colors.transparent,
                                   width: widget.listData[index]
                                                   ['${widget.listKey[i]}']
                                               .toString()
@@ -250,7 +274,9 @@ class _TablePageDetailsWidgetState extends State<TablePageDetailsWidget> {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           date == "0001-12-31" || date == "0000-12-31" ? '' : date,
-          style: const TextStyle(color: Colors.black),
+          style: TextStyle(
+              color:
+                  selectedRows[indexRow] == true ? Colors.white : Colors.black),
         );
       case "checkbox":
         if (value == "true") {
@@ -295,7 +321,9 @@ class _TablePageDetailsWidgetState extends State<TablePageDetailsWidget> {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           val,
-          style: const TextStyle(color: Colors.black),
+          style: TextStyle(
+              color:
+                  selectedRows[indexRow] == true ? Colors.white : Colors.black),
         );
       default:
         return Text(
@@ -303,7 +331,9 @@ class _TablePageDetailsWidgetState extends State<TablePageDetailsWidget> {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           value,
-          style: const TextStyle(color: Colors.black),
+          style: TextStyle(
+              color:
+                  selectedRows[indexRow] == true ? Colors.white : Colors.black),
         );
     }
   }

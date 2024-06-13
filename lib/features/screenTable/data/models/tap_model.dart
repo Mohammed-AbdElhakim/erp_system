@@ -75,6 +75,7 @@ class ListTaps {
     required this.unaryColumn,
     required this.numberOfEmptyRow,
     required this.offset,
+    required this.statment,
   });
   late final int pageID;
   late final String pageDisplay;
@@ -134,6 +135,7 @@ class ListTaps {
   late final String unaryColumn;
   late final int? numberOfEmptyRow;
   late final int? offset;
+  late final String? statment;
 
   ListTaps.fromJson(Map<String, dynamic> json) {
     pageID = json['PageID'];
@@ -194,6 +196,7 @@ class ListTaps {
     unaryColumn = json['unaryColumn'] ?? "";
     numberOfEmptyRow = json['NumberOfEmptyRow'];
     offset = json['offset'];
+    statment = json['statment'];
   }
 
   Map<String, dynamic> toJson() {
@@ -256,6 +259,7 @@ class ListTaps {
     data['unaryColumn'] = unaryColumn;
     data['NumberOfEmptyRow'] = numberOfEmptyRow;
     data['offset'] = offset;
+    data['statment'] = statment;
     return data;
   }
 }

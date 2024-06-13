@@ -4,17 +4,19 @@ import '../../generated/l10n.dart';
 import '../utils/app_colors.dart';
 
 class CustomTextFormField extends StatelessWidget {
-  const CustomTextFormField(
-      {super.key,
-      this.controller,
-      this.validatorMassage,
-      required this.hintText,
-      this.onChanged,
-      this.onSaved,
-      this.isValidator = true,
-      this.keyboardType,
-      this.obscureText = false,
-      this.prefixIcon});
+  const CustomTextFormField({
+    super.key,
+    this.controller,
+    this.validatorMassage,
+    required this.hintText,
+    this.onChanged,
+    this.onSaved,
+    this.isValidator = true,
+    this.keyboardType,
+    this.obscureText = false,
+    this.prefixIcon,
+    this.isBorder,
+  });
   final TextEditingController? controller;
   final String? validatorMassage;
   final String hintText;
@@ -23,6 +25,7 @@ class CustomTextFormField extends StatelessWidget {
   final void Function(String?)? onSaved;
   final bool? isValidator;
   final bool obscureText;
+  final bool? isBorder;
   final Widget? prefixIcon;
 
   @override
@@ -47,19 +50,26 @@ class CustomTextFormField extends StatelessWidget {
         hintText: hintText,
         hintStyle: TextStyle(color: AppColors.grey),
         contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
-        border: buildBorder(),
-        enabledBorder: buildBorder(color: AppColors.blueDark),
-        focusedBorder: buildBorder(color: AppColors.blueDark),
+        border: buildBorder(isBorder: isBorder),
+        enabledBorder:
+            buildBorder(color: AppColors.blueDark, isBorder: isBorder),
+        focusedBorder:
+            buildBorder(color: AppColors.blueDark, isBorder: isBorder),
         prefixIcon: prefixIcon,
       ),
     );
   }
 
-  OutlineInputBorder buildBorder({Color? color}) {
+  OutlineInputBorder buildBorder({
+    Color? color,
+    required bool? isBorder,
+  }) {
     return OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide(
-          color: color ?? Colors.grey,
-        ));
+        borderRadius: BorderRadius.circular(isBorder != false ? 12 : 0),
+        borderSide: isBorder != false
+            ? BorderSide(
+                color: color ?? Colors.grey,
+              )
+            : BorderSide.none);
   }
 }
