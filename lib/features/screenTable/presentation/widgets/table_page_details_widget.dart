@@ -233,6 +233,18 @@ class _TablePageDetailsWidgetState extends State<TablePageDetailsWidget> {
             headingRowHeight: 35,
             headingRowColor: MaterialStateProperty.all(AppColors.blueLight),
             columns: [
+              DataColumn(
+                label: Expanded(
+                  child: SizedBox(
+                    width: 30,
+                    child: Text(
+                      '',
+                      textAlign: TextAlign.center,
+                      style: AppStyles.textStyle14,
+                    ),
+                  ),
+                ),
+              ),
               ...List.generate(
                 widget.listHeader.length,
                 (index) {

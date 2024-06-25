@@ -155,7 +155,7 @@ class ScreenRepoImpl implements ScreenRepo {
       String token =
           await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       var rrr = jsonEncode(body);
-      int data = await apiService.post(
+      var data = await apiService.post(
         endPoint: "home/AddEdit?controllerName=$controllerName",
         data: body,
         headers: {
@@ -190,7 +190,7 @@ class ScreenRepoImpl implements ScreenRepo {
       String token =
           await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
 
-      int data = await apiService.put(
+      var data = await apiService.put(
         endPoint: "home/AddEdit?controllerName=$controllerName",
         data: body,
         headers: {

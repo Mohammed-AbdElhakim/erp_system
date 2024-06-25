@@ -15,6 +15,7 @@ import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_text_form_field.dart';
 import '../../../../generated/l10n.dart';
 import '../../data/models/dropdown_model/all_dropdown_model.dart';
+import 'alert_dialog_add_widget.dart';
 import 'custom_table_add.dart';
 import 'table_group.dart';
 
@@ -22,6 +23,7 @@ class AddViewBody extends StatefulWidget {
   const AddViewBody({super.key, required this.pageData, required this.listKey});
   final Pages pageData;
   final List<dynamic> listKey;
+  static List<Map<String, dynamic>> tableList = [];
 
   @override
   State<AddViewBody> createState() => _AddViewBodyState();
@@ -30,7 +32,7 @@ class AddViewBody extends StatefulWidget {
 class _AddViewBodyState extends State<AddViewBody> {
   String? lang;
   GlobalKey<FormState> formKey = GlobalKey();
-  Map<String, dynamic> newRowData = {};
+  Map<String, dynamic> singleObject = {};
   bool isShow = false;
   late List<AllDropdownModel> myAllDropdownModelList;
 
@@ -112,6 +114,27 @@ class _AddViewBodyState extends State<AddViewBody> {
                               ),
                             );
                           }),
+                          IconButton(
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      content: AlertDialogAddWidget(
+                                        listKey: listKey,
+                                        listHeader: listHeader,
+                                        listColumn: listColumn,
+                                        allDropdownModelList:
+                                            TableGroup.myAllDropdownModelList,
+                                        pageData: widget.pageData,
+                                      ),
+                                    );
+                                  },
+                                ).then((value) {
+                                  setState(() {});
+                                });
+                              },
+                              icon: Icon(Icons.add)),
                           Padding(
                             padding: const EdgeInsets.only(bottom: 16),
                             child: CustomTableAdd(
@@ -121,18 +144,9 @@ class _AddViewBodyState extends State<AddViewBody> {
                               listColumn: listColumn,
                               allDropdownModelList:
                                   TableGroup.myAllDropdownModelList,
+                              tableList: AddViewBody.tableList,
                             ),
                           ),
-                          // TextButton(
-                          //   onPressed: () {
-                          //     setState(() {
-                          //       isShow = !isShow;
-                          //     });
-                          //   },
-                          //   child: Text(!isShow
-                          //       ? S.of(context).show_more
-                          //       : S.of(context).show_less),
-                          // ),
                         ],
                       ),
                     ),
@@ -157,61 +171,15 @@ class _AddViewBodyState extends State<AddViewBody> {
                         const SizedBox(
                           width: 50,
                         ),
-                        /* BlocConsumer<AddEditCubit, AddEditState>(
-                    listener: (context, state) {
-                      if (state is AddEditSuccess) {
-                        BlocProvider.of<GetTableCubit>(context).getTable(
-                            pageId: widget.pageData.pageId,
-                            employee: false,
-                            isdesc: widget.pageData.isDesc,
-                            limit: 10,
-                            offset: 0,
-                            orderby: widget.pageData.orderBy,
-                            statment: '',
-                            selectcolumns: '',
-                            departmentName: widget.pageData.departmentName,
-                            isDepartment: widget.pageData.isDepartment,
-                            authorizationID: widget.pageData.authorizationID,
-                            viewEmployeeColumn:
-                            widget.pageData.viewEmployeeColumn,
-                            numberOfPage: 1,
-                            dropdownValueOfLimit: 10);
-                        widget.columnList.clear();
-                        Navigator.pop(context);
-                      } else if (state is AddEditFailure) {
-                        CustomAlertDialog.alertWithButton(
-                            context: context,
-                            type: AlertType.error,
-                            title: S.of(context).error,
-                            desc: state.errorMassage);
-                      }
-                    },
-                    builder: (context, state) {
-                      if (state is AddEditLoading) {
-                        return const CustomLoadingWidget();
-                      } else {
-                        return CustomButton(
-                          text: S.of(context).btn_add,
-                          width: 80,
-                          onTap: () {
-                            if (formKey.currentState!.validate()) {
-                              formKey.currentState!.save();
-                              BlocProvider.of<AddEditCubit>(context).add(
-                                  controllerName:
-                                  widget.pageData.controllerName,
-                                  body: newRowData);
-                            }
-                          },
-                        );
-                      }
-                    },
-                  ),*/
                         CustomButton(
                           text: S.of(context).btn_add,
                           width: 80,
                           onTap: () {
                             if (formKey.currentState!.validate()) {
                               formKey.currentState!.save();
+                              print("=======================");
+                              print(singleObject);
+                              print(AddViewBody.tableList);
                             }
                           },
                         ),
@@ -281,7 +249,7 @@ class _AddViewBodyState extends State<AddViewBody> {
                   onSaved: (newValue) {
                     if (newValue!.isNotEmpty) {
                       setState(() {
-                        newRowData
+                        singleObject
                             .addAll({item.columnName!.toString(): newValue});
                       });
                     }
@@ -323,7 +291,7 @@ class _AddViewBodyState extends State<AddViewBody> {
                   onSaved: (newValue) {
                     if (newValue!.isNotEmpty) {
                       setState(() {
-                        newRowData
+                        singleObject
                             .addAll({item.columnName!.toString(): newValue});
                       });
                     }
@@ -376,7 +344,7 @@ class _AddViewBodyState extends State<AddViewBody> {
                           });
 
                           dsetState(() {
-                            newRowData.addAll({
+                            singleObject.addAll({
                               item.columnName!.toString(): dateTime.toString()
                             });
                           });
@@ -447,19 +415,19 @@ class _AddViewBodyState extends State<AddViewBody> {
                           AppStyles.textStyle16.copyWith(color: Colors.black),
                       closedFillColor: Colors.transparent,
                       closedBorder: Border.all(color: AppColors.blueDark)),
-                  validator: (value) {
-                    if (value?.isEmpty ?? true) {
-                      return S.of(context).field_is_required;
-                    } else {
-                      return null;
-                    }
-                  },
+                  // validator: (value) {
+                  //   if (value?.isEmpty ?? true) {
+                  //     return S.of(context).field_is_required;
+                  //   } else {
+                  //     return null;
+                  //   }
+                  // },
                   items: myListDrop!.isEmpty
                       ? [""]
                       : List.generate(myListDrop.length,
                           (index) => myListDrop![index].text ?? ''),
                   onChanged: (value) {
-                    newRowData.addAll({item.searchName!.toString(): value});
+                    singleObject.addAll({item.searchName!.toString(): value});
                   },
                 ),
               ],
@@ -499,7 +467,7 @@ class _AddViewBodyState extends State<AddViewBody> {
                       checkboxValue = !checkboxValue;
                     });
                     csetState(() {
-                      newRowData
+                      singleObject
                           .addAll({item.columnName!.toString(): checkboxValue});
                     });
                   });

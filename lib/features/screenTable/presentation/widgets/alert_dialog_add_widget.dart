@@ -1,71 +1,45 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
-import 'package:erp_system/features/screenTable/presentation/widgets/table_group.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
 
-import '../../../../core/helper/AlertDialog/custom_alert_dialog.dart';
 import '../../../../core/models/menu_model/pages.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/widgets/custom_button.dart';
-import '../../../../core/widgets/custom_loading_widget.dart';
 import '../../../../core/widgets/custom_text_form_field.dart';
 import '../../../../generated/l10n.dart';
 import '../../data/models/dropdown_model/all_dropdown_model.dart';
-import '../../data/models/screen_model.dart';
-import '../../data/models/tap_model.dart';
-import '../manager/addEdit/add_edit_cubit.dart';
-import '../manager/getPageDetailsTable/get_page_details_table_cubit.dart';
-import 'table_general.dart';
+import '../../data/models/item_list_setup_model.dart';
+import 'add_view_body.dart';
 
-typedef OnTapAdd<T> = void Function(T newRowData);
-
-class BuildAlertAddDetails extends StatefulWidget {
-  const BuildAlertAddDetails(
+class AlertDialogAddWidget extends StatefulWidget {
+  const AlertDialogAddWidget(
       {super.key,
-      required this.columnList,
-      required this.pageData,
-      required this.tap,
-      required this.mainId,
-      required this.onTapAdd});
-  final List<ColumnList> columnList;
+      required this.listHeader,
+      required this.listKey,
+      required this.listColumn,
+      required this.allDropdownModelList,
+      required this.pageData});
+  final List<String> listHeader;
+  final List<dynamic> listKey;
+  final List<ItemListSetupModel> listColumn;
+  final List<AllDropdownModel> allDropdownModelList;
   final Pages pageData;
-  final ListTaps tap;
-  final String mainId;
-
-  final OnTapAdd<Map<String, dynamic>> onTapAdd;
 
   @override
-  State<BuildAlertAddDetails> createState() => _BuildAlertAddDetailsState();
+  State<AlertDialogAddWidget> createState() => _AlertDialogAddWidgetState();
 }
 
-class _BuildAlertAddDetailsState extends State<BuildAlertAddDetails> {
+class _AlertDialogAddWidgetState extends State<AlertDialogAddWidget> {
   String? lang;
   GlobalKey<FormState> formKey = GlobalKey();
   Map<String, dynamic> newRowData = {};
-  bool isShow = false;
-  late List<String> myListCategory;
-  late List<AllDropdownModel> myAllDropdownModelList;
 
   @override
   void didChangeDependencies() {
     lang = Localizations.localeOf(context).toString();
     super.didChangeDependencies();
-  }
-
-  @override
-  void initState() {
-    myListCategory = widget.pageData.tableSrc == AppStrings.tableGroup
-        ? TableGroup.listCategory
-        : TableGeneral.listCategory;
-    myAllDropdownModelList = widget.pageData.tableSrc == AppStrings.tableGroup
-        ? TableGroup.myAllDropdownModelList
-        : TableGeneral.myAllDropdownModelList;
-    newRowData[widget.tap.foreignKey] = widget.mainId;
-    super.initState();
   }
 
   @override
@@ -84,48 +58,8 @@ class _BuildAlertAddDetailsState extends State<BuildAlertAddDetails> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ...List.generate(myListCategory.length, (index) {
-                      String categoryName = myListCategory[index];
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 12, vertical: 8),
-                              decoration: BoxDecoration(
-                                  color: AppColors.grey.withOpacity(.4),
-                                  borderRadius: BorderRadius.circular(15)),
-                              child: Text(
-                                categoryName,
-                                style: AppStyles.textStyle18
-                                    .copyWith(color: Colors.black),
-                              )),
-                          ...getMyWidgetList(
-                              columnList: widget.columnList,
-                              categoryName: categoryName,
-                              show: true),
-                          Visibility(
-                            visible: isShow,
-                            child: Column(
-                              children: getMyWidgetList(
-                                  columnList: widget.columnList,
-                                  categoryName: categoryName,
-                                  show: false),
-                            ),
-                          ),
-                        ],
-                      );
-                    }),
-                    TextButton(
-                      onPressed: () {
-                        setState(() {
-                          isShow = !isShow;
-                        });
-                      },
-                      child: Text(!isShow
-                          ? S.of(context).show_more
-                          : S.of(context).show_less),
-                    ),
+                    ...getMyWidgetList(
+                        columnList: widget.listColumn, show: true),
                   ],
                 ),
               ),
@@ -150,101 +84,14 @@ class _BuildAlertAddDetailsState extends State<BuildAlertAddDetails> {
                   const SizedBox(
                     width: 50,
                   ),
-                  BlocConsumer<AddEditCubit, AddEditState>(
-                    listener: (context, state) {
-                      if (state is AddEditSuccess) {
-                        BlocProvider.of<GetPageDetailsTableCubit>(context)
-                            .getPageDetailsTable(
-                                tapData: ListTaps(
-                                  pageID: widget.tap.pageID,
-                                  pageDisplay: widget.tap.pageDisplay,
-                                  masterName: widget.tap.masterName,
-                                  modulName: widget.tap.modulName,
-                                  masterID: widget.tap.masterID,
-                                  modulID: widget.tap.modulID,
-                                  detailId: widget.tap.detailId,
-                                  listName: widget.tap.listName,
-                                  tableName: widget.tap.tableName,
-                                  primary: widget.tap.primary,
-                                  controllerName: widget.tap.controllerName,
-                                  tableSrc: widget.tap.tableSrc,
-                                  editSrc: widget.tap.editSrc,
-                                  isCompany: widget.tap.isCompany,
-                                  companyName: widget.tap.companyName,
-                                  showPrint: widget.tap.showPrint,
-                                  showExport: widget.tap.showExport,
-                                  showSearch: widget.tap.showSearch,
-                                  showEdit: widget.tap.showEdit,
-                                  showDelete: widget.tap.showDelete,
-                                  showRowPrint: widget.tap.showRowPrint,
-                                  showNew: widget.tap.showNew,
-                                  searchFirst: widget.tap.searchFirst,
-                                  showSetting: widget.tap.showSetting,
-                                  showMasterButton: widget.tap.showMasterButton,
-                                  canDrag: widget.tap.canDrag,
-                                  canGroup: widget.tap.canGroup,
-                                  showSum: widget.tap.showSum,
-                                  showColumnSetting:
-                                      widget.tap.showColumnSetting,
-                                  showRefersh: widget.tap.showRefersh,
-                                  canSort: widget.tap.canSort,
-                                  showPaging: widget.tap.showPaging,
-                                  showGroup: widget.tap.showGroup,
-                                  dataSourceApi: widget.tap.dataSourceApi,
-                                  limit: 10,
-                                  orderBy: widget.tap.orderBy,
-                                  tailCondition: widget.tap.tailCondition,
-                                  master: widget.tap.master,
-                                  foreignKey: widget.tap.foreignKey,
-                                  foreignKeyValue: widget.tap.foreignKeyValue,
-                                  groupLayout: widget.tap.groupLayout,
-                                  groupColumn: widget.tap.groupColumn,
-                                  outSiderGroupColumn:
-                                      widget.tap.outSiderGroupColumn,
-                                  editOnly: widget.tap.editOnly,
-                                  listMaster: widget.tap.listMaster,
-                                  excel: widget.tap.excel,
-                                  excelNew: widget.tap.excelNew,
-                                  showInPopUp: widget.tap.showInPopUp,
-                                  pageAttributeId: widget.tap.pageAttributeId,
-                                  displayArabic: widget.tap.displayArabic,
-                                  displayEnglish: widget.tap.displayEnglish,
-                                  displayChinese: widget.tap.displayChinese,
-                                  columnColor: widget.tap.columnColor,
-                                  enName: widget.tap.enName,
-                                  isDesc: widget.tap.isDesc,
-                                  unaryColumn: widget.tap.unaryColumn,
-                                  numberOfEmptyRow: widget.tap.numberOfEmptyRow,
-                                  offset: 0,
-                                  statment:
-                                      "and ${widget.tap.foreignKey}  =  ${widget.mainId} ",
-                                ),
-                                numberOfPage: 1,
-                                dropdownValueOfLimit: 10);
-                        widget.columnList.clear();
+                  CustomButton(
+                    text: S.of(context).btn_add,
+                    width: 80,
+                    onTap: () {
+                      if (formKey.currentState!.validate()) {
+                        formKey.currentState!.save();
+                        AddViewBody.tableList.add(newRowData);
                         Navigator.pop(context);
-                      } else if (state is AddEditFailure) {
-                        CustomAlertDialog.alertWithButton(
-                            context: context,
-                            type: AlertType.error,
-                            title: S.of(context).error,
-                            desc: state.errorMassage);
-                      }
-                    },
-                    builder: (context, state) {
-                      if (state is AddEditLoading) {
-                        return const CustomLoadingWidget();
-                      } else {
-                        return CustomButton(
-                          text: S.of(context).btn_add,
-                          width: 80,
-                          onTap: () {
-                            if (formKey.currentState!.validate()) {
-                              formKey.currentState!.save();
-                              widget.onTapAdd(newRowData);
-                            }
-                          },
-                        );
                       }
                     },
                   ),
@@ -258,8 +105,7 @@ class _BuildAlertAddDetailsState extends State<BuildAlertAddDetails> {
   }
 
   List<Widget> getMyWidgetList({
-    required List<ColumnList> columnList,
-    required String categoryName,
+    required List<ItemListSetupModel> columnList,
     required bool show,
   }) {
     List<Widget> list = [];
@@ -268,10 +114,7 @@ class _BuildAlertAddDetailsState extends State<BuildAlertAddDetails> {
           ? item.arColumnLabel!
           : item.enColumnLabel!;
       //text
-      if (item.insertType == "text" &&
-          item.insertVisable == true &&
-          item.categoryName == categoryName &&
-          item.insertDefult == show) {
+      if (item.insertType == "text") {
         list.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -311,10 +154,7 @@ class _BuildAlertAddDetailsState extends State<BuildAlertAddDetails> {
         );
       }
       //number
-      if (item.insertType == "number" &&
-          item.insertVisable == true &&
-          item.categoryName == categoryName &&
-          item.insertDefult == show) {
+      if (item.insertType == "number") {
         list.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -354,10 +194,7 @@ class _BuildAlertAddDetailsState extends State<BuildAlertAddDetails> {
         );
       }
       //Date
-      if (item.insertType == "date" &&
-          item.insertVisable == true &&
-          item.categoryName == categoryName &&
-          item.insertDefult == show) {
+      if (item.insertType == "date") {
         String date = '';
         list.add(
           Padding(
@@ -424,14 +261,11 @@ class _BuildAlertAddDetailsState extends State<BuildAlertAddDetails> {
       }
 
       //dropdown
-      if (item.insertType == "dropdown" &&
-          item.insertVisable == true &&
-          item.categoryName == categoryName &&
-          item.insertDefult == show) {
+      if (item.insertType == "dropdown") {
         List<ListDrop>? listDrop = [];
         List<ItemDrop>? myListDrop = [];
 
-        for (var ii in myAllDropdownModelList) {
+        for (var ii in widget.allDropdownModelList) {
           if (ii.listName == widget.pageData.listName) {
             listDrop = ii.list;
           }
@@ -468,13 +302,6 @@ class _BuildAlertAddDetailsState extends State<BuildAlertAddDetails> {
                           AppStyles.textStyle16.copyWith(color: Colors.black),
                       closedFillColor: Colors.transparent,
                       closedBorder: Border.all(color: AppColors.blueDark)),
-                  // validator: (value) {
-                  //   if (value?.isEmpty ?? true) {
-                  //     return S.of(context).field_is_required;
-                  //   } else {
-                  //     return null;
-                  //   }
-                  // },
                   items: myListDrop!.isEmpty
                       ? [""]
                       : List.generate(myListDrop.length,
@@ -491,10 +318,7 @@ class _BuildAlertAddDetailsState extends State<BuildAlertAddDetails> {
         );
       }
       //checkbox
-      if (item.insertType == "checkbox" &&
-          item.insertVisable == true &&
-          item.categoryName == categoryName &&
-          item.insertDefult == show) {
+      if (item.insertType == "checkbox") {
         bool checkboxValue = false;
         list.add(
           StatefulBuilder(

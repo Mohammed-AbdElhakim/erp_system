@@ -1,3 +1,4 @@
+import 'package:erp_system/features/screenTable/presentation/views/edit_view.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../features/auth/presentation/views/login_view.dart';
@@ -26,6 +27,7 @@ abstract class AppRouter {
   static const String kSubTaskView = "/subTaskView";
   static const String kDetailsRowView = "/detailsRowView";
   static const String kAddView = "/addView";
+  static const String kEditView = "/editView";
   static const String kTableGroupEditView = "/tableGroupEditView";
   static final router = GoRouter(
     routes: [
@@ -82,6 +84,17 @@ abstract class AppRouter {
         builder: (context, state) {
           AddPassDataModel data = state.extra as AddPassDataModel;
           return AddView(
+            columnList: data.columnList,
+            pageData: data.pageData,
+            listKey: data.listKey,
+          );
+        },
+      ),
+      GoRoute(
+        path: kEditView,
+        builder: (context, state) {
+          AddPassDataModel data = state.extra as AddPassDataModel;
+          return EditView(
             columnList: data.columnList,
             pageData: data.pageData,
             listKey: data.listKey,

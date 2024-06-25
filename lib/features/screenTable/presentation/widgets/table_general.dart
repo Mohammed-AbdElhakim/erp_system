@@ -84,8 +84,18 @@ class _TableGeneralState extends State<TableGeneral> {
                 List<String> listHeader = [];
                 List<dynamic> listKey = [];
                 List<ColumnList> listColumn = [];
+                List<String> listHeaderInTable = [];
+                List<dynamic> listKeyInTable = [];
+                List<ColumnList> listColumnInTable = [];
                 List<String> category = [];
                 for (var item in state.screenModel.columnList!) {
+                  if (item.visible == true) {
+                    listHeaderInTable.add(lang == AppStrings.enLangKey
+                        ? item.enColumnLabel!
+                        : item.arColumnLabel!);
+                    listKeyInTable.add(item.columnName);
+                    listColumnInTable.add(item);
+                  }
                   listHeader.add(lang == AppStrings.enLangKey
                       ? item.enColumnLabel!
                       : item.arColumnLabel!);
@@ -102,10 +112,10 @@ class _TableGeneralState extends State<TableGeneral> {
                     : (numberOfRecords ~/ TableGeneral.dropdownValue) + 1;
                 return CustomTableGeneral(
                   pageData: widget.pageData,
-                  listHeader: listHeader,
-                  listKey: listKey,
+                  listHeader: listHeaderInTable,
+                  listKey: listKeyInTable,
                   listData: listData!,
-                  listColumn: listColumn,
+                  listColumn: listColumnInTable,
                   listSum: listSum,
                   allDropdownModelList: allDropdownModelList,
                   paginationWidget: PaginationWidget(
