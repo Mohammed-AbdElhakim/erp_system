@@ -180,39 +180,55 @@ class _TablePageDetailsWidgetState extends State<TablePageDetailsWidget> {
                     headingRowHeight: 35,
                     headingRowColor:
                         MaterialStateProperty.all(AppColors.blueLight),
-                    columns: List.generate(
-                      widget.listHeader.length,
-                      (index) {
-                        return DataColumn(
-                          label: InkWell(
-                            onTap: () {
-                              buildShowDialog(
-                                context,
-                                text: widget.listSum![0][widget.listKey[index]]
-                                    .toString(),
-                                allDropdownModelList:
-                                    widget.allDropdownModelList,
-                                listName: widget.tap.listName,
-                              );
-                            },
-                            child: SizedBox(
-                              width: 130,
-                              child: Text(
-                                widget.listSum![0][widget.listKey[index]] ==
-                                        null
-                                    ? ""
-                                    : widget.listSum![0][widget.listKey[index]]
-                                        .toString(),
-                                // widget.listHeader[index],
-                                textAlign: TextAlign.center,
-                                style: AppStyles.textStyle14,
-                                overflow: TextOverflow.ellipsis,
-                              ),
+                    columns: [
+                      DataColumn(
+                        label: Expanded(
+                          child: SizedBox(
+                            width: 30,
+                            child: Text(
+                              '',
+                              textAlign: TextAlign.center,
+                              style: AppStyles.textStyle14,
                             ),
                           ),
-                        );
-                      },
-                    ),
+                        ),
+                      ),
+                      ...List.generate(
+                        widget.listHeader.length,
+                        (index) {
+                          return DataColumn(
+                            label: InkWell(
+                              onTap: () {
+                                buildShowDialog(
+                                  context,
+                                  text: widget.listSum![0]
+                                          [widget.listKey[index]]
+                                      .toString(),
+                                  allDropdownModelList:
+                                      widget.allDropdownModelList,
+                                  listName: widget.tap.listName,
+                                );
+                              },
+                              child: SizedBox(
+                                width: 130,
+                                child: Text(
+                                  widget.listSum![0][widget.listKey[index]] ==
+                                          null
+                                      ? ""
+                                      : widget.listSum![0]
+                                              [widget.listKey[index]]
+                                          .toString(),
+                                  // widget.listHeader[index],
+                                  textAlign: TextAlign.center,
+                                  style: AppStyles.textStyle14,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      )
+                    ],
                     rows: const [],
                   ),
                 ),
@@ -307,6 +323,7 @@ class _TablePageDetailsWidgetState extends State<TablePageDetailsWidget> {
       case "dropdown":
         String val = '';
         if (columnList.columnName == columnList.searchName) {
+          print(columnList.arColumnLabel!);
           List<ListDrop>? listDrop = [];
           List<ItemDrop>? myListDrop = [];
           for (var item in widget.allDropdownModelList) {
