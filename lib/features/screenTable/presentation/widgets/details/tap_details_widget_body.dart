@@ -1,30 +1,30 @@
-import 'package:erp_system/features/screenTable/presentation/widgets/build_alert_edit_details.dart';
-import 'package:erp_system/features/screenTable/presentation/widgets/build_alert_search_details.dart';
+import 'package:erp_system/features/screenTable/presentation/widgets/details/build_alert_edit_details.dart';
+import 'package:erp_system/features/screenTable/presentation/widgets/details/build_alert_search_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
-import '../../../../core/helper/AlertDialog/custom_alert_dialog.dart';
-import '../../../../core/models/menu_model/pages.dart';
-import '../../../../core/utils/app_colors.dart';
-import '../../../../core/utils/app_router.dart';
-import '../../../../core/utils/app_strings.dart';
-import '../../../../core/widgets/custom_error_massage.dart';
-import '../../../../core/widgets/custom_loading_widget.dart';
-import '../../../../generated/l10n.dart';
-import '../../data/models/dropdown_model/all_dropdown_model.dart';
-import '../../data/models/passData/add_pass_data_model.dart';
-import '../../data/models/screen_model.dart';
-import '../../data/models/tap_model.dart';
-import '../manager/addEdit/add_edit_cubit.dart';
-import '../manager/delete/delete_cubit.dart';
-import '../manager/getPageDetailsTable/get_page_details_table_cubit.dart';
+import '../../../../../core/helper/AlertDialog/custom_alert_dialog.dart';
+import '../../../../../core/models/menu_model/pages.dart';
+import '../../../../../core/utils/app_colors.dart';
+import '../../../../../core/utils/app_router.dart';
+import '../../../../../core/utils/app_strings.dart';
+import '../../../../../core/widgets/custom_error_massage.dart';
+import '../../../../../core/widgets/custom_loading_widget.dart';
+import '../../../../../generated/l10n.dart';
+import '../../../data/models/dropdown_model/all_dropdown_model.dart';
+import '../../../data/models/passData/add_pass_data_model.dart';
+import '../../../data/models/screen_model.dart';
+import '../../../data/models/tap_model.dart';
+import '../../manager/addEdit/add_edit_cubit.dart';
+import '../../manager/delete/delete_cubit.dart';
+import '../../manager/getPageDetailsTable/get_page_details_table_cubit.dart';
+import '../mainview/general/table_general.dart';
+import '../mainview/group/table_group.dart';
+import '../mainview/pagination_widget.dart';
 import 'build_alert_add_details.dart';
 import 'build_alert_delete_details.dart';
-import 'pagination_widget.dart';
-import 'table_general.dart';
-import 'table_group.dart';
 import 'table_page_details_widget.dart';
 
 class TapDetailsWidgetBody extends StatefulWidget {
@@ -306,7 +306,7 @@ class _TapDetailsWidgetBodyState extends State<TapDetailsWidgetBody> {
                             ),
                           );
                         },
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.search,
                         ),
                         color: AppColors.white,
@@ -443,7 +443,7 @@ class _TapDetailsWidgetBodyState extends State<TapDetailsWidgetBody> {
                             );
                           }
                         },
-                        icon: Icon(Icons.edit_note),
+                        icon: const Icon(Icons.edit_note),
                         color: AppColors.white,
                         style: IconButton.styleFrom(
                             backgroundColor: AppColors.blueGreyDark),
@@ -578,7 +578,7 @@ class _TapDetailsWidgetBodyState extends State<TapDetailsWidgetBody> {
                             );
                           }
                         },
-                        icon: Icon(Icons.add),
+                        icon: const Icon(Icons.add),
                         color: AppColors.white,
                         style: IconButton.styleFrom(
                             backgroundColor: AppColors.blueLight),
@@ -718,7 +718,7 @@ class _TapDetailsWidgetBodyState extends State<TapDetailsWidgetBody> {
                                 desc: S.of(context).massage_choose_delete);
                           }
                         },
-                        icon: Icon(Icons.delete),
+                        icon: const Icon(Icons.delete),
                         color: AppColors.white,
                         style: IconButton.styleFrom(
                             backgroundColor: AppColors.red),

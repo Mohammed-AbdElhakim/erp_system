@@ -4,10 +4,10 @@ import 'package:erp_system/features/screenTable/presentation/manager/getPageDeta
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/models/menu_model/pages.dart';
-import '../../../../core/utils/app_colors.dart';
-import '../../../../core/utils/app_styles.dart';
-import '../../data/repositories/screen_repo_impl.dart';
+import '../../../../../core/models/menu_model/pages.dart';
+import '../../../../../core/utils/app_colors.dart';
+import '../../../../../core/utils/app_styles.dart';
+import '../../../data/repositories/screen_repo_impl.dart';
 import 'tap_details_widget_body.dart';
 
 class TapDetailsWidget extends StatelessWidget {
@@ -20,7 +20,6 @@ class TapDetailsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return ExpansionTile(
       collapsedShape: const ContinuousRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(20))),

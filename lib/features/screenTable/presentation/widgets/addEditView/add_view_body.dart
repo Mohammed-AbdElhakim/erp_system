@@ -2,28 +2,33 @@ import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:erp_system/core/widgets/custom_error_massage.dart';
 import 'package:erp_system/core/widgets/custom_loading_widget.dart';
 import 'package:erp_system/features/screenTable/data/models/item_list_setup_model.dart';
+import 'package:erp_system/features/screenTable/presentation/manager/addEditExpenses/add_edit_expenses_cubit.dart';
 import 'package:erp_system/features/screenTable/presentation/manager/getListSetups/get_list_setups_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
-import '../../../../core/models/menu_model/pages.dart';
-import '../../../../core/utils/app_colors.dart';
-import '../../../../core/utils/app_strings.dart';
-import '../../../../core/utils/app_styles.dart';
-import '../../../../core/widgets/custom_button.dart';
-import '../../../../core/widgets/custom_text_form_field.dart';
-import '../../../../generated/l10n.dart';
-import '../../data/models/dropdown_model/all_dropdown_model.dart';
-import 'alert_dialog_add_widget.dart';
-import 'custom_table_add.dart';
-import 'table_group.dart';
+import '../../../../../core/helper/AlertDialog/custom_alert_dialog.dart';
+import '../../../../../core/models/menu_model/pages.dart';
+import '../../../../../core/utils/app_colors.dart';
+import '../../../../../core/utils/app_strings.dart';
+import '../../../../../core/utils/app_styles.dart';
+import '../../../../../core/widgets/custom_button.dart';
+import '../../../../../core/widgets/custom_text_form_field.dart';
+import '../../../../../generated/l10n.dart';
+import '../../../data/models/dropdown_model/all_dropdown_model.dart';
+import '../../../data/models/tap_model.dart';
+import '../../manager/getTable/get_table_cubit.dart';
+import '../mainview/group/table_group.dart';
+import 'custom_table_add_edit_.dart';
 
 class AddViewBody extends StatefulWidget {
-  const AddViewBody({super.key, required this.pageData, required this.listKey});
+  const AddViewBody(
+      {super.key, required this.pageData, required this.listKey, this.tapData});
+  final ListTaps? tapData;
   final Pages pageData;
   final List<dynamic> listKey;
-  static List<Map<String, dynamic>> tableList = [];
 
   @override
   State<AddViewBody> createState() => _AddViewBodyState();
@@ -34,6 +39,7 @@ class _AddViewBodyState extends State<AddViewBody> {
   GlobalKey<FormState> formKey = GlobalKey();
   Map<String, dynamic> singleObject = {};
   bool isShow = false;
+  List<Map<String, dynamic>> tableList = [];
   late List<AllDropdownModel> myAllDropdownModelList;
 
   @override
@@ -46,6 +52,13 @@ class _AddViewBodyState extends State<AddViewBody> {
   void initState() {
     myAllDropdownModelList = TableGroup.myAllDropdownModelList;
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    // AddViewBody.tableList = [];
+
+    super.dispose();
   }
 
   @override
@@ -114,39 +127,29 @@ class _AddViewBodyState extends State<AddViewBody> {
                               ),
                             );
                           }),
-                          IconButton(
-                              onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return AlertDialog(
-                                      content: AlertDialogAddWidget(
-                                        listKey: listKey,
-                                        listHeader: listHeader,
-                                        listColumn: listColumn,
-                                        allDropdownModelList:
-                                            TableGroup.myAllDropdownModelList,
-                                        pageData: widget.pageData,
-                                      ),
-                                    );
+                          StatefulBuilder(
+                            builder: (context, ssetState) {
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 16),
+                                child: CustomTableAddEdit(
+                                  onTapAdd: (data) {
+                                    ssetState(() {
+                                      tableList = data;
+                                    });
                                   },
-                                ).then((value) {
-                                  setState(() {});
-                                });
-                              },
-                              icon: Icon(Icons.add)),
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 16),
-                            child: CustomTableAdd(
-                              pageData: widget.pageData,
-                              listKey: listKey,
-                              listHeader: listHeader,
-                              listColumn: listColumn,
-                              allDropdownModelList:
-                                  TableGroup.myAllDropdownModelList,
-                              tableList: AddViewBody.tableList,
-                            ),
-                          ),
+                                  oldTableList: const [],
+                                  tapData: widget.tapData,
+                                  pageData: widget.pageData,
+                                  listKey: listKey,
+                                  listHeader: listHeader,
+                                  listColumn: listColumn,
+                                  allDropdownModelList:
+                                      TableGroup.myAllDropdownModelList,
+                                  typeView: "Add",
+                                ),
+                              );
+                            },
+                          )
                         ],
                       ),
                     ),
@@ -171,15 +174,57 @@ class _AddViewBodyState extends State<AddViewBody> {
                         const SizedBox(
                           width: 50,
                         ),
-                        CustomButton(
-                          text: S.of(context).btn_add,
-                          width: 80,
-                          onTap: () {
-                            if (formKey.currentState!.validate()) {
-                              formKey.currentState!.save();
-                              print("=======================");
-                              print(singleObject);
-                              print(AddViewBody.tableList);
+                        BlocConsumer<AddEditExpensesCubit,
+                            AddEditExpensesState>(
+                          listener: (context, state) {
+                            if (state is AddEditExpensesSuccess) {
+                              BlocProvider.of<GetTableCubit>(context).getTable(
+                                  pageId: widget.pageData.pageId,
+                                  employee: false,
+                                  isdesc: widget.pageData.isDesc,
+                                  limit: 10,
+                                  offset: 0,
+                                  orderby: widget.pageData.orderBy,
+                                  statment: '',
+                                  selectcolumns: '',
+                                  departmentName:
+                                      widget.pageData.departmentName,
+                                  isDepartment: widget.pageData.isDepartment,
+                                  authorizationID:
+                                      widget.pageData.authorizationID,
+                                  viewEmployeeColumn:
+                                      widget.pageData.viewEmployeeColumn,
+                                  numberOfPage: 1,
+                                  dropdownValueOfLimit: 10);
+                              Navigator.pop(context);
+                            } else if (state is AddEditExpensesFailure) {
+                              CustomAlertDialog.alertWithButton(
+                                  context: context,
+                                  type: AlertType.error,
+                                  title: S.of(context).error,
+                                  desc: state.errorMassage);
+                            }
+                          },
+                          builder: (context, state) {
+                            if (state is AddEditExpensesLoading) {
+                              return const CustomLoadingWidget();
+                            } else {
+                              return CustomButton(
+                                text: S.of(context).btn_add,
+                                width: 80,
+                                onTap: () {
+                                  if (formKey.currentState!.validate()) {
+                                    formKey.currentState!.save();
+
+                                    BlocProvider.of<AddEditExpensesCubit>(
+                                            context)
+                                        .add(
+                                      singleObject: singleObject,
+                                      tableList: tableList,
+                                    );
+                                  }
+                                },
+                              );
                             }
                           },
                         ),
@@ -379,8 +424,14 @@ class _AddViewBodyState extends State<AddViewBody> {
         List<ItemDrop>? myListDrop = [];
 
         for (var ii in myAllDropdownModelList) {
-          if (ii.listName == widget.pageData.listName) {
-            listDrop = ii.list;
+          if (widget.tapData == null) {
+            if (ii.listName == widget.pageData.listName) {
+              listDrop = ii.list;
+            }
+          } else {
+            if (ii.listName == widget.tapData!.listName) {
+              listDrop = ii.list;
+            }
           }
         }
         for (var ii in listDrop!) {
@@ -427,7 +478,9 @@ class _AddViewBodyState extends State<AddViewBody> {
                       : List.generate(myListDrop.length,
                           (index) => myListDrop![index].text ?? ''),
                   onChanged: (value) {
-                    singleObject.addAll({item.searchName!.toString(): value});
+                    ItemDrop ii = myListDrop!
+                        .firstWhere((element) => element.text == value);
+                    singleObject.addAll({item.searchName!.toString(): ii.id});
                   },
                 ),
               ],

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:erp_system/features/screenTable/data/models/expenses_details_model.dart';
 import 'package:erp_system/features/screenTable/data/models/item_list_setup_model.dart';
 import 'package:erp_system/features/screenTable/data/models/tap_model.dart';
 
@@ -416,6 +417,140 @@ class ScreenRepoImpl implements ScreenRepo {
       }
 
       return right(dataList);
+    } catch (e) {
+      if (e is DioException) {
+        return left(
+          ServerFailure.fromDioException(e),
+        );
+      }
+      return left(
+        ServerFailure(
+          e.toString(),
+        ),
+      );
+    }
+  }
+
+//------------------------------- المصاريف --------------------------
+  @override
+  Future<Either<Failure, String>> addExpenses(
+      {required Map<String, dynamic> body}) async {
+    try {
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
+              "";
+      String token =
+          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      var rrr = jsonEncode(body);
+      var data = await apiService.post(
+        endPoint: "web/ExpencesRecive",
+        data: body,
+        headers: {
+          "Authorization": "Bearer $token",
+          "CompanyKey": companyKey,
+        },
+      );
+      return right(data.toString());
+    } catch (e) {
+      if (e is DioException) {
+        return left(
+          ServerFailure.fromDioException(e),
+        );
+      }
+      return left(
+        ServerFailure(
+          e.toString(),
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> editExpenses(
+      {required Map<String, dynamic> body}) async {
+    try {
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
+              "";
+      String token =
+          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+
+      var data = await apiService.put(
+        endPoint: "web/ExpencesRecive",
+        data: body,
+        headers: {
+          "Authorization": "Bearer $token",
+          "CompanyKey": companyKey,
+        },
+      );
+      return right(data.toString());
+    } catch (e) {
+      if (e is DioException) {
+        return left(
+          ServerFailure.fromDioException(e),
+        );
+      }
+      return left(
+        ServerFailure(
+          e.toString(),
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> getExpensesMaster(
+      {required String id}) async {
+    try {
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
+              "";
+      String token =
+          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      Map<String, dynamic> data = await apiService.get(
+        endPoint: "web/PaymentView/get/$id",
+        headers: {
+          "Authorization": "Bearer $token",
+          "CompanyKey": companyKey,
+        },
+      );
+
+      return right(data);
+    } catch (e) {
+      if (e is DioException) {
+        return left(
+          ServerFailure.fromDioException(e),
+        );
+      }
+      return left(
+        ServerFailure(
+          e.toString(),
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<Failure, ExpensesDetailsModel>> getExpensesDetails(
+      {required ListTaps tapModel}) async {
+    try {
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
+              "";
+      String token =
+          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      var rrr = jsonEncode(tapModel.toJson());
+      Map<String, dynamic> data = await apiService.post(
+        endPoint: "web/Structure/getDataGlobal",
+        data: tapModel.toJson(),
+        headers: {
+          "Authorization": "Bearer $token",
+          "CompanyKey": companyKey,
+        },
+      );
+      ExpensesDetailsModel expensesDetailsModel =
+          ExpensesDetailsModel.fromJson(data);
+      return right(expensesDetailsModel);
     } catch (e) {
       if (e is DioException) {
         return left(

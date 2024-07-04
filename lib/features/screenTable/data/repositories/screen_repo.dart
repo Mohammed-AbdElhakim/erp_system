@@ -3,6 +3,7 @@ import 'package:dartz/dartz.dart';
 import '../../../../../core/errors/failures.dart';
 import '../models/dropdown_model/all_dropdown_model.dart';
 import '../models/dropdown_model/dropdown_model.dart';
+import '../models/expenses_details_model.dart';
 import '../models/item_list_setup_model.dart';
 import '../models/permission_model.dart';
 import '../models/screen_model.dart';
@@ -63,5 +64,23 @@ abstract class ScreenRepo {
 
   Future<Either<Failure, List<ItemListSetupModel>>> getListSetups({
     required String pageListName,
+  });
+
+  //------------------------------- المصاريف --------------------------
+
+  Future<Either<Failure, String>> addExpenses({
+    required Map<String, dynamic> body,
+  });
+
+  Future<Either<Failure, String>> editExpenses({
+    required Map<String, dynamic> body,
+  });
+
+  Future<Either<Failure, Map<String, dynamic>>> getExpensesMaster({
+    required String id,
+  });
+
+  Future<Either<Failure, ExpensesDetailsModel>> getExpensesDetails({
+    required ListTaps tapModel,
   });
 }

@@ -12,10 +12,11 @@ import '../../../../core/models/menu_model/pages.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
 import '../../data/models/screen_model.dart';
-import '../widgets/addEditView/add_view_body.dart';
+import '../widgets/addEditView/edit_view_body.dart';
+import '../widgets/mainview/group/table_group.dart';
 
-class AddView extends StatelessWidget {
-  const AddView(
+class EditView extends StatefulWidget {
+  const EditView(
       {super.key,
       required this.columnList,
       required this.pageData,
@@ -27,6 +28,17 @@ class AddView extends StatelessWidget {
   final List<dynamic> listKey;
 
   @override
+  State<EditView> createState() => _EditViewState();
+}
+
+class _EditViewState extends State<EditView> {
+  @override
+  void dispose() {
+    TableGroup.rowData = [];
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ChangeStatusBarColor(
       child: Scaffold(
@@ -34,11 +46,11 @@ class AddView extends StatelessWidget {
             isPortrait: true,
             title: "",
           ),
-          body: pageData.editSrc == AppStrings.addOrEditExcel
+          body: widget.pageData.editSrc == AppStrings.addOrEditExcel
               ? BlocProvider(
                   create: (context) =>
                       GetPageDetailsCubit(getIt.get<ScreenRepoImpl>())
-                        ..getPageDetails(pageData.pageId),
+                        ..getPageDetails(widget.pageData.pageId),
                   child: BlocBuilder<GetPageDetailsCubit, GetPageDetailsState>(
                     builder: (context, state) {
                       if (state is GetPageDetailsSuccess) {
@@ -47,10 +59,10 @@ class AddView extends StatelessWidget {
                           create: (context) =>
                               GetListSetupsCubit(getIt.get<ScreenRepoImpl>())
                                 ..getListSetups(listName),
-                          child: AddViewBody(
+                          child: EditViewBody(
                             tapData: state.tapModel.list[0],
-                            pageData: pageData,
-                            listKey: listKey,
+                            pageData: widget.pageData,
+                            listKey: widget.listKey,
                           ),
                         );
                       } else if (state is GetPageDetailsFailure) {
@@ -65,10 +77,10 @@ class AddView extends StatelessWidget {
               : BlocProvider(
                   create: (context) =>
                       GetListSetupsCubit(getIt.get<ScreenRepoImpl>())
-                        ..getListSetups(pageData.listName),
-                  child: AddViewBody(
-                    pageData: pageData,
-                    listKey: listKey,
+                        ..getListSetups(widget.pageData.listName),
+                  child: EditViewBody(
+                    pageData: widget.pageData,
+                    listKey: widget.listKey,
                   ),
                 )),
     );

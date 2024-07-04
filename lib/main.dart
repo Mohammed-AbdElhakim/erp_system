@@ -1,3 +1,4 @@
+import 'package:erp_system/features/screenTable/presentation/manager/addEditExpenses/add_edit_expenses_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -69,6 +70,10 @@ class _ERPSystemState extends State<ERPSystem> {
         ),
         BlocProvider(
           create: (context) => AddEditCubit(getIt.get<ScreenRepoImpl>()),
+        ),
+        BlocProvider(
+          create: (context) =>
+              AddEditExpensesCubit(getIt.get<ScreenRepoImpl>()),
         ),
         BlocProvider(
           create: (context) => DeleteCubit(getIt.get<ScreenRepoImpl>()),

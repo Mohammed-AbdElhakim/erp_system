@@ -4,12 +4,12 @@ import 'package:linked_scroll_controller/linked_scroll_controller.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-import '../../../../core/models/menu_model/pages.dart';
-import '../../../../core/utils/app_colors.dart';
-import '../../../../core/utils/app_styles.dart';
-import '../../../../core/utils/methods.dart';
-import '../../data/models/dropdown_model/all_dropdown_model.dart';
-import '../../data/models/screen_model.dart';
+import '../../../../../../core/models/menu_model/pages.dart';
+import '../../../../../../core/utils/app_colors.dart';
+import '../../../../../../core/utils/app_styles.dart';
+import '../../../../../../core/utils/methods.dart';
+import '../../../../data/models/dropdown_model/all_dropdown_model.dart';
+import '../../../../data/models/screen_model.dart';
 
 typedef OnTapHeader<String> = void Function(String titleHeader);
 typedef OnTapRow<T> = void Function(T rowData);

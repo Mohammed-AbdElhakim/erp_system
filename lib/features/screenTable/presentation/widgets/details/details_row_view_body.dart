@@ -5,7 +5,7 @@ import 'package:erp_system/features/screenTable/presentation/manager/getPageDeta
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/models/menu_model/pages.dart';
+import '../../../../../core/models/menu_model/pages.dart';
 import 'tap_details_widget.dart';
 
 class DetailsRowViewBody extends StatelessWidget {

@@ -1,5 +1,5 @@
 import 'package:erp_system/features/screenTable/presentation/manager/getPageDetails/get_page_details_cubit.dart';
-import 'package:erp_system/features/screenTable/presentation/widgets/details_row_view_body.dart';
+import 'package:erp_system/features/screenTable/presentation/widgets/details/details_row_view_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

@@ -1,36 +1,48 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
-import 'package:erp_system/features/screenTable/presentation/widgets/table_group.dart';
+import 'package:erp_system/features/screenTable/presentation/widgets/mainview/group/table_group.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
-import '../../../../core/helper/AlertDialog/custom_alert_dialog.dart';
-import '../../../../core/models/menu_model/pages.dart';
-import '../../../../core/utils/app_colors.dart';
-import '../../../../core/utils/app_strings.dart';
-import '../../../../core/utils/app_styles.dart';
-import '../../../../core/widgets/custom_button.dart';
-import '../../../../core/widgets/custom_loading_widget.dart';
-import '../../../../core/widgets/custom_text_form_field.dart';
-import '../../../../generated/l10n.dart';
-import '../../data/models/dropdown_model/all_dropdown_model.dart';
-import '../../data/models/screen_model.dart';
-import '../manager/addEdit/add_edit_cubit.dart';
-import '../manager/getTable/get_table_cubit.dart';
-import 'table_general.dart';
+import '../../../../../core/helper/AlertDialog/custom_alert_dialog.dart';
+import '../../../../../core/models/menu_model/pages.dart';
+import '../../../../../core/utils/app_colors.dart';
+import '../../../../../core/utils/app_strings.dart';
+import '../../../../../core/utils/app_styles.dart';
+import '../../../../../core/widgets/custom_button.dart';
+import '../../../../../core/widgets/custom_loading_widget.dart';
+import '../../../../../core/widgets/custom_text_form_field.dart';
+import '../../../../../generated/l10n.dart';
+import '../../../data/models/dropdown_model/all_dropdown_model.dart';
+import '../../../data/models/screen_model.dart';
+import '../../../data/models/tap_model.dart';
+import '../../manager/addEdit/add_edit_cubit.dart';
+import '../../manager/getPageDetailsTable/get_page_details_table_cubit.dart';
+import '../mainview/general/table_general.dart';
 
-class BuildAlertAdd extends StatefulWidget {
-  const BuildAlertAdd(
-      {super.key, required this.columnList, required this.pageData});
+typedef OnTapAdd<T> = void Function(T newRowData);
+
+class BuildAlertAddDetails extends StatefulWidget {
+  const BuildAlertAddDetails(
+      {super.key,
+      required this.columnList,
+      required this.pageData,
+      required this.tap,
+      required this.mainId,
+      required this.onTapAdd});
   final List<ColumnList> columnList;
   final Pages pageData;
+  final ListTaps tap;
+  final String mainId;
+
+  final OnTapAdd<Map<String, dynamic>> onTapAdd;
 
   @override
-  State<BuildAlertAdd> createState() => _BuildAlertAddState();
+  State<BuildAlertAddDetails> createState() => _BuildAlertAddDetailsState();
 }
 
-class _BuildAlertAddState extends State<BuildAlertAdd> {
+class _BuildAlertAddDetailsState extends State<BuildAlertAddDetails> {
   String? lang;
   GlobalKey<FormState> formKey = GlobalKey();
   Map<String, dynamic> newRowData = {};
@@ -52,6 +64,7 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
     myAllDropdownModelList = widget.pageData.tableSrc == AppStrings.tableGroup
         ? TableGroup.myAllDropdownModelList
         : TableGeneral.myAllDropdownModelList;
+    newRowData[widget.tap.foreignKey] = widget.mainId;
     super.initState();
   }
 
@@ -140,22 +153,74 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                   BlocConsumer<AddEditCubit, AddEditState>(
                     listener: (context, state) {
                       if (state is AddEditSuccess) {
-                        BlocProvider.of<GetTableCubit>(context).getTable(
-                            pageId: widget.pageData.pageId,
-                            employee: false,
-                            isdesc: widget.pageData.isDesc,
-                            limit: 10,
-                            offset: 0,
-                            orderby: widget.pageData.orderBy,
-                            statment: '',
-                            selectcolumns: '',
-                            departmentName: widget.pageData.departmentName,
-                            isDepartment: widget.pageData.isDepartment,
-                            authorizationID: widget.pageData.authorizationID,
-                            viewEmployeeColumn:
-                                widget.pageData.viewEmployeeColumn,
-                            numberOfPage: 1,
-                            dropdownValueOfLimit: 10);
+                        BlocProvider.of<GetPageDetailsTableCubit>(context)
+                            .getPageDetailsTable(
+                                tapData: ListTaps(
+                                  pageID: widget.tap.pageID,
+                                  pageDisplay: widget.tap.pageDisplay,
+                                  masterName: widget.tap.masterName,
+                                  modulName: widget.tap.modulName,
+                                  masterID: widget.tap.masterID,
+                                  modulID: widget.tap.modulID,
+                                  detailId: widget.tap.detailId,
+                                  listName: widget.tap.listName,
+                                  tableName: widget.tap.tableName,
+                                  primary: widget.tap.primary,
+                                  controllerName: widget.tap.controllerName,
+                                  tableSrc: widget.tap.tableSrc,
+                                  editSrc: widget.tap.editSrc,
+                                  isCompany: widget.tap.isCompany,
+                                  companyName: widget.tap.companyName,
+                                  showPrint: widget.tap.showPrint,
+                                  showExport: widget.tap.showExport,
+                                  showSearch: widget.tap.showSearch,
+                                  showEdit: widget.tap.showEdit,
+                                  showDelete: widget.tap.showDelete,
+                                  showRowPrint: widget.tap.showRowPrint,
+                                  showNew: widget.tap.showNew,
+                                  searchFirst: widget.tap.searchFirst,
+                                  showSetting: widget.tap.showSetting,
+                                  showMasterButton: widget.tap.showMasterButton,
+                                  canDrag: widget.tap.canDrag,
+                                  canGroup: widget.tap.canGroup,
+                                  showSum: widget.tap.showSum,
+                                  showColumnSetting:
+                                      widget.tap.showColumnSetting,
+                                  showRefersh: widget.tap.showRefersh,
+                                  canSort: widget.tap.canSort,
+                                  showPaging: widget.tap.showPaging,
+                                  showGroup: widget.tap.showGroup,
+                                  dataSourceApi: widget.tap.dataSourceApi,
+                                  limit: 10,
+                                  orderBy: widget.tap.orderBy,
+                                  tailCondition: widget.tap.tailCondition,
+                                  master: widget.tap.master,
+                                  foreignKey: widget.tap.foreignKey,
+                                  foreignKeyValue: widget.tap.foreignKeyValue,
+                                  groupLayout: widget.tap.groupLayout,
+                                  groupColumn: widget.tap.groupColumn,
+                                  outSiderGroupColumn:
+                                      widget.tap.outSiderGroupColumn,
+                                  editOnly: widget.tap.editOnly,
+                                  listMaster: widget.tap.listMaster,
+                                  excel: widget.tap.excel,
+                                  excelNew: widget.tap.excelNew,
+                                  showInPopUp: widget.tap.showInPopUp,
+                                  pageAttributeId: widget.tap.pageAttributeId,
+                                  displayArabic: widget.tap.displayArabic,
+                                  displayEnglish: widget.tap.displayEnglish,
+                                  displayChinese: widget.tap.displayChinese,
+                                  columnColor: widget.tap.columnColor,
+                                  enName: widget.tap.enName,
+                                  isDesc: widget.tap.isDesc,
+                                  unaryColumn: widget.tap.unaryColumn,
+                                  numberOfEmptyRow: widget.tap.numberOfEmptyRow,
+                                  offset: 0,
+                                  statment:
+                                      "and ${widget.tap.foreignKey}  =  ${widget.mainId} ",
+                                ),
+                                numberOfPage: 1,
+                                dropdownValueOfLimit: 10);
                         widget.columnList.clear();
                         Navigator.pop(context);
                       } else if (state is AddEditFailure) {
@@ -176,10 +241,7 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                           onTap: () {
                             if (formKey.currentState!.validate()) {
                               formKey.currentState!.save();
-                              BlocProvider.of<AddEditCubit>(context).add(
-                                  controllerName:
-                                      widget.pageData.controllerName,
-                                  body: newRowData);
+                              widget.onTapAdd(newRowData);
                             }
                           },
                         );
@@ -406,13 +468,13 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                           AppStyles.textStyle16.copyWith(color: Colors.black),
                       closedFillColor: Colors.transparent,
                       closedBorder: Border.all(color: AppColors.blueDark)),
-                  validator: (value) {
-                    if (value?.isEmpty ?? true) {
-                      return S.of(context).field_is_required;
-                    } else {
-                      return null;
-                    }
-                  },
+                  // validator: (value) {
+                  //   if (value?.isEmpty ?? true) {
+                  //     return S.of(context).field_is_required;
+                  //   } else {
+                  //     return null;
+                  //   }
+                  // },
                   items: myListDrop!.isEmpty
                       ? [""]
                       : List.generate(myListDrop.length,
@@ -423,55 +485,6 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                     newRowData.addAll({item.searchName!.toString(): ii.id});
                   },
                 ),
-                /*SizedBox(
-                  // height: 40,
-                  child: BlocProvider(
-                    create: (context) =>
-                        GetDropdownListCubit(getIt.get<ScreenRepoImpl>())
-                          ..getDropdownList(
-                            droModel: item.droModel ?? "",
-                            droValue: item.droValue ?? "",
-                            droText: item.droText ?? "",
-                            droCondition: item.droCondition ?? "",
-                            droCompany: item.droCompany ?? "",
-                          ),
-                    child:
-                        BlocBuilder<GetDropdownListCubit, GetDropdownListState>(
-                      builder: (context, state) {
-                        if (state is GetDropdownListSuccess) {
-                          List<ListDropdownModel> dropListData = [];
-                          dropListData.addAll(state.dropdownModel.list!);
-                          return CustomDropdown<String>.search(
-                            hintText: '',
-                            decoration: CustomDropdownDecoration(
-                                headerStyle: AppStyles.textStyle16
-                                    .copyWith(color: Colors.black),
-                                closedFillColor: Colors.transparent,
-                                closedBorder:
-                                    Border.all(color: AppColors.blueDark)),
-                            validator: (value) {
-                              if (value?.isEmpty ?? true) {
-                                return S.of(context).field_is_required;
-                              } else {
-                                return null;
-                              }
-                            },
-                            items: dropListData.isEmpty
-                                ? [""]
-                                : List.generate(dropListData.length,
-                                    (index) => dropListData[index].text ?? ''),
-                            onChanged: (value) {
-                              newRowData
-                                  .addAll({item.searchName!.toString(): value});
-                            },
-                          );
-                        } else {
-                          return const InitDropdown();
-                        }
-                      },
-                    ),
-                  ),
-                ),*/
               ],
             ),
           ),

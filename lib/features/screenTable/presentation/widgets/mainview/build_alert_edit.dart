@@ -4,25 +4,25 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
-import '../../../../core/helper/AlertDialog/custom_alert_dialog.dart';
-import '../../../../core/models/menu_model/pages.dart';
-import '../../../../core/utils/app_colors.dart';
-import '../../../../core/utils/app_strings.dart';
-import '../../../../core/utils/app_styles.dart';
-import '../../../../core/utils/service_locator.dart';
-import '../../../../core/widgets/custom_button.dart';
-import '../../../../core/widgets/custom_error_massage.dart';
-import '../../../../core/widgets/custom_loading_widget.dart';
-import '../../../../core/widgets/custom_text_form_field.dart';
-import '../../../../generated/l10n.dart';
-import '../../data/models/dropdown_model/all_dropdown_model.dart';
-import '../../data/models/screen_model.dart';
-import '../../data/repositories/screen_repo_impl.dart';
-import '../manager/addEdit/add_edit_cubit.dart';
-import '../manager/getById/get_by_id_cubit.dart';
-import '../manager/getTable/get_table_cubit.dart';
-import 'table_general.dart';
-import 'table_group.dart';
+import '../../../../../core/helper/AlertDialog/custom_alert_dialog.dart';
+import '../../../../../core/models/menu_model/pages.dart';
+import '../../../../../core/utils/app_colors.dart';
+import '../../../../../core/utils/app_strings.dart';
+import '../../../../../core/utils/app_styles.dart';
+import '../../../../../core/utils/service_locator.dart';
+import '../../../../../core/widgets/custom_button.dart';
+import '../../../../../core/widgets/custom_error_massage.dart';
+import '../../../../../core/widgets/custom_loading_widget.dart';
+import '../../../../../core/widgets/custom_text_form_field.dart';
+import '../../../../../generated/l10n.dart';
+import '../../../data/models/dropdown_model/all_dropdown_model.dart';
+import '../../../data/models/screen_model.dart';
+import '../../../data/repositories/screen_repo_impl.dart';
+import '../../manager/addEdit/add_edit_cubit.dart';
+import '../../manager/getById/get_by_id_cubit.dart';
+import '../../manager/getTable/get_table_cubit.dart';
+import 'general/table_general.dart';
+import 'group/table_group.dart';
 
 class BuildAlertEdit extends StatefulWidget {
   const BuildAlertEdit(
@@ -195,6 +195,7 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                                   onTap: () {
                                     if (formKey.currentState!.validate()) {
                                       formKey.currentState!.save();
+
                                       BlocProvider.of<AddEditCubit>(context)
                                           .edit(
                                               controllerName: widget
@@ -487,75 +488,6 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                   newRowData.addAll({item.searchName!.toString(): value});
                 },
               ),
-              /*SizedBox(
-                // height: 40,
-                child: BlocProvider(
-                  create: (context) =>
-                      GetDropdownListCubit(getIt.get<ScreenRepoImpl>())
-                        ..getDropdownList(
-                          droModel: item.droModel ?? "",
-                          droValue: item.droValue ?? "",
-                          droText: item.droText ?? "",
-                          droCondition: item.droCondition ?? "",
-                          droCompany: item.droCompany ?? "",
-                        ),
-                  child:
-                      BlocBuilder<GetDropdownListCubit, GetDropdownListState>(
-                    builder: (context, state) {
-                      if (state is GetDropdownListSuccess) {
-                        List<ListDropdownModel> dropListData = [];
-                        dropListData = state.dropdownModel.list!;
-                        String? dropValue;
-                        for (var i in dropListData) {
-                          if (i.value.toString() ==
-                              rowData[item.searchName].toString()) {
-                            dropValue = i.text ?? '';
-                          }
-                          if (i.text.toString() ==
-                              rowData[item.searchName].toString()) {
-                            dropValue = i.text ?? '';
-                          }
-                          if (i.value.toString() ==
-                              rowData[item.columnName].toString()) {
-                            dropValue = i.text ?? '';
-                          }
-                          if (i.text.toString() ==
-                              rowData[item.columnName].toString()) {
-                            dropValue = i.text ?? '';
-                          }
-                        }
-                        return CustomDropdown<String>.search(
-                          hintText: '',
-                          initialItem: dropValue,
-                          decoration: CustomDropdownDecoration(
-                              headerStyle: AppStyles.textStyle16
-                                  .copyWith(color: Colors.black),
-                              closedFillColor: Colors.transparent,
-                              closedBorder:
-                                  Border.all(color: AppColors.blueDark)),
-                          validator: (value) {
-                            if (value?.isEmpty ?? true) {
-                              return S.of(context).field_is_required;
-                            } else {
-                              return null;
-                            }
-                          },
-                          items: dropListData.isEmpty
-                              ? ['']
-                              : List.generate(dropListData.length,
-                                  (index) => dropListData[index].text ?? ''),
-                          onChanged: (value) {
-                            newRowData
-                                .addAll({item.searchName!.toString(): value});
-                          },
-                        );
-                      } else {
-                        return const InitDropdown();
-                      }
-                    },
-                  ),
-                ),
-              ),*/
             ],
           ),
         ));

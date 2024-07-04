@@ -9,7 +9,6 @@ import '../../features/screenTable/data/models/passData/add_pass_data_model.dart
 import '../../features/screenTable/data/models/passData/pass_data_details_row.dart';
 import '../../features/screenTable/presentation/views/add_view.dart';
 import '../../features/screenTable/presentation/views/details_row_view.dart';
-import '../../features/screenTable/presentation/views/table_group_edit_view.dart';
 import '../../features/splash/presentation/views/splash_view.dart';
 import '../../features/tasks/data/models/task_model.dart';
 import '../../features/tasks/presentation/views/sub_task_view.dart';
@@ -28,7 +27,6 @@ abstract class AppRouter {
   static const String kDetailsRowView = "/detailsRowView";
   static const String kAddView = "/addView";
   static const String kEditView = "/editView";
-  static const String kTableGroupEditView = "/tableGroupEditView";
   static final router = GoRouter(
     routes: [
       GoRoute(
@@ -100,10 +98,6 @@ abstract class AppRouter {
             listKey: data.listKey,
           );
         },
-      ),
-      GoRoute(
-        path: kTableGroupEditView,
-        builder: (context, state) => const TableGroupEditView(),
       ),
     ],
   );

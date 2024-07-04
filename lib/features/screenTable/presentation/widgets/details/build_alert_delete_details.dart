@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
-import '../../../../core/helper/AlertDialog/custom_alert_dialog.dart';
-import '../../../../core/widgets/custom_button.dart';
-import '../../../../core/widgets/custom_loading_widget.dart';
-import '../../../../generated/l10n.dart';
-import '../manager/delete/delete_cubit.dart';
+import '../../../../../core/helper/AlertDialog/custom_alert_dialog.dart';
+import '../../../../../core/widgets/custom_button.dart';
+import '../../../../../core/widgets/custom_loading_widget.dart';
+import '../../../../../generated/l10n.dart';
+import '../../manager/delete/delete_cubit.dart';
 
 typedef OnTapDelete<T> = void Function();
 

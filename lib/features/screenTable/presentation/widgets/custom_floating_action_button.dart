@@ -1,5 +1,5 @@
 import 'package:erp_system/core/utils/app_strings.dart';
-import 'package:erp_system/features/screenTable/presentation/widgets/table_group.dart';
+import 'package:erp_system/features/screenTable/presentation/widgets/mainview/group/table_group.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -19,10 +19,10 @@ import '../../data/models/screen_model.dart';
 import '../manager/delete/delete_cubit.dart';
 import '../manager/getPermissions/get_permissions_cubit.dart';
 import '../manager/getTable/get_table_cubit.dart';
-import 'build_alert_add.dart';
-import 'build_alert_edit.dart';
-import 'build_alert_search.dart';
-import 'table_general.dart';
+import 'mainview/build_alert_add.dart';
+import 'mainview/build_alert_edit.dart';
+import 'mainview/build_alert_search.dart';
+import 'mainview/general/table_general.dart';
 
 class CustomFloatingActionButton extends StatefulWidget {
   const CustomFloatingActionButton({super.key, required this.pageData});
@@ -85,7 +85,11 @@ class _CustomFloatingActionButtonState
             listData.addAll(state.screenModel.dataList!);
             columnList.addAll(state.screenModel.columnList!);
             for (var item in state.screenModel.columnList!) {
-              listKey.add(item.columnName);
+              if (item.insertType == "dropdown") {
+                listKey.add(item.searchName);
+              } else {
+                listKey.add(item.columnName);
+              }
             }
           }
         },
@@ -224,7 +228,11 @@ class _CustomFloatingActionButtonState
                               widget.pageData.viewEmployeeColumn,
                           numberOfPage: 1,
                           dropdownValueOfLimit: 10);
-
+                      if (widget.pageData.tableSrc == AppStrings.tableGroup) {
+                        TableGroup.rowData.clear();
+                      } else {
+                        TableGeneral.rowData.clear();
+                      }
                       Navigator.pop(context);
                     } else if (state is DeleteFailure) {
                       CustomAlertDialog.alertWithButton(
@@ -280,7 +288,14 @@ class _CustomFloatingActionButtonState
               desc: S.of(context).massage_no_edit);
         } else if (myRowData.length == 1) {
           if (widget.pageData.tableSrc == AppStrings.tableGroup) {
-            GoRouter.of(context).push(AppRouter.kTableGroupEditView);
+            GoRouter.of(context)
+                .push(AppRouter.kEditView,
+                    extra: AddPassDataModel(
+                      pageData: widget.pageData,
+                      columnList: columnList,
+                      listKey: listKey,
+                    ))
+                .then((value) => TableGroup.rowData.clear());
           } else {
             CustomAlertDialog.alertWithCustomContent(
               context: context,
@@ -303,12 +318,14 @@ class _CustomFloatingActionButtonState
       }
     } else if (icon == Icons.add) {
       if (widget.pageData.tableSrc == AppStrings.tableGroup) {
-        GoRouter.of(context).push(AppRouter.kAddView,
-            extra: AddPassDataModel(
-              pageData: widget.pageData,
-              columnList: columnList,
-              listKey: listKey,
-            ));
+        GoRouter.of(context)
+            .push(AppRouter.kAddView,
+                extra: AddPassDataModel(
+                  pageData: widget.pageData,
+                  columnList: columnList,
+                  listKey: listKey,
+                ))
+            .then((value) => TableGroup.rowData.clear());
       } else {
         CustomAlertDialog.alertWithCustomContent(
           context: context,

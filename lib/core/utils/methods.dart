@@ -298,3 +298,23 @@ buildShowDialog(
     }
   }
 }
+
+buildShowDialogText(
+  BuildContext context, {
+  required String text,
+}) {
+  if (text.length > 12) {
+    return showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        child: InkWell(
+          child: Container(
+            padding: const EdgeInsetsDirectional.symmetric(
+                horizontal: 16, vertical: 32),
+            child: Text(textAlign: TextAlign.center, text),
+          ),
+        ),
+      ),
+    );
+  }
+}
