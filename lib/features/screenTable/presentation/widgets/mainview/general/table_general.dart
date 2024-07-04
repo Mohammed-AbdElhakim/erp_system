@@ -78,6 +78,9 @@ class _TableGeneralState extends State<TableGeneral> {
           return BlocBuilder<GetTableCubit, GetTableState>(
             builder: (context, state) {
               if (state is GetTableSuccess) {
+                List<ColumnList> listColumns = state.screenModel.columnList!;
+                listColumns.sort((a, b) => a.sort!.compareTo(b.sort!));
+
                 int? numberOfRecords = state.screenModel.numberOfRecords;
                 List<dynamic>? listData = state.screenModel.dataList;
                 List<dynamic>? listSum = state.screenModel.summedColumns;
@@ -88,7 +91,7 @@ class _TableGeneralState extends State<TableGeneral> {
                 List<dynamic> listKeyInTable = [];
                 List<ColumnList> listColumnInTable = [];
                 List<String> category = [];
-                for (var item in state.screenModel.columnList!) {
+                for (var item in listColumns) {
                   if (item.visible == true) {
                     listHeaderInTable.add(lang == AppStrings.enLangKey
                         ? item.enColumnLabel!
