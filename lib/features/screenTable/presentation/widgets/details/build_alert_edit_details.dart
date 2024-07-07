@@ -489,7 +489,7 @@ class _BuildAlertEditDetailsState extends State<BuildAlertEditDetails> {
         List<ItemDrop>? myListDrop = [];
 
         for (var ii in myAllDropdownModelList) {
-          if (ii.listName == widget.pageData.listName) {
+          if (ii.listName == widget.tap.listName) {
             listDrop = ii.list;
           }
         }

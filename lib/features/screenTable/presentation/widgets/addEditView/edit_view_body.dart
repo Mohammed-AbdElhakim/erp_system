@@ -73,7 +73,6 @@ class _EditViewBodyState extends State<EditViewBody> {
 
   @override
   Widget build(BuildContext context) {
-    print(id);
     return BlocProvider(
       create: (context) => GetExpensesMasterCubit(getIt.get<ScreenRepoImpl>())
         ..getExpensesMaster(id: id),
@@ -81,7 +80,7 @@ class _EditViewBodyState extends State<EditViewBody> {
         builder: (context, state) {
           if (state is GetExpensesMasterSuccess) {
             Map<String, dynamic> dataMaster = state.data;
-            print(dataMaster);
+
             return BlocProvider(
               create: (context) =>
                   GetExpensesDetailsCubit(getIt.get<ScreenRepoImpl>())
@@ -154,11 +153,7 @@ class _EditViewBodyState extends State<EditViewBody> {
                   if (state is GetExpensesDetailsSuccess) {
                     List<Map<String, dynamic>> listDataInTable =
                         state.expensesDetailsModel.dynamicList!;
-                    int numberofrecords =
-                        state.expensesDetailsModel.numberofrecords!;
-                    print("(((((((((((((((((((((((((((((((((");
-                    print(listDataInTable);
-                    print(numberofrecords);
+
                     return BlocBuilder<GetListSetupsCubit, GetListSetupsState>(
                       builder: (context, state) {
                         if (state is GetListSetupsSuccess) {
@@ -338,10 +333,7 @@ class _EditViewBodyState extends State<EditViewBody> {
                                                       .validate()) {
                                                     formKey.currentState!
                                                         .save();
-                                                    print(
-                                                        "=======================");
-                                                    print(singleObject);
-                                                    print(tableList);
+
                                                     BlocProvider.of<
                                                                 AddEditExpensesCubit>(
                                                             context)

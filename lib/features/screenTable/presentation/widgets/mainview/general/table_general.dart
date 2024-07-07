@@ -79,6 +79,7 @@ class _TableGeneralState extends State<TableGeneral> {
             builder: (context, state) {
               if (state is GetTableSuccess) {
                 List<ColumnList> listColumns = state.screenModel.columnList!;
+
                 listColumns.sort((a, b) => a.sort!.compareTo(b.sort!));
 
                 int? numberOfRecords = state.screenModel.numberOfRecords;

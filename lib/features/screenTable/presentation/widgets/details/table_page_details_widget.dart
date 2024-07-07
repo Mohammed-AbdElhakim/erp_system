@@ -323,7 +323,6 @@ class _TablePageDetailsWidgetState extends State<TablePageDetailsWidget> {
       case "dropdown":
         String val = '';
         if (columnList.columnName == columnList.searchName) {
-          print(columnList.arColumnLabel!);
           List<ListDrop>? listDrop = [];
           List<ItemDrop>? myListDrop = [];
           for (var item in widget.allDropdownModelList) {

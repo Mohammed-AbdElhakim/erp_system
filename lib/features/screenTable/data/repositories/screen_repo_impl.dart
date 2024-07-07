@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:erp_system/features/screenTable/data/models/expenses_details_model.dart';
@@ -155,7 +153,7 @@ class ScreenRepoImpl implements ScreenRepo {
               "";
       String token =
           await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
-      var rrr = jsonEncode(body);
+
       var data = await apiService.post(
         endPoint: "home/AddEdit?controllerName=$controllerName",
         data: body,
@@ -368,7 +366,7 @@ class ScreenRepoImpl implements ScreenRepo {
               "";
       String token =
           await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
-      var rrr = jsonEncode(tapData.toJson());
+      // var rrr = jsonEncode(tapData.toJson());
       Map<String, dynamic> data = await apiService.post(
         endPoint: "home/GetPageDetailTable",
         data: tapData.toJson(),
@@ -441,7 +439,7 @@ class ScreenRepoImpl implements ScreenRepo {
               "";
       String token =
           await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
-      var rrr = jsonEncode(body);
+
       var data = await apiService.post(
         endPoint: "web/ExpencesRecive",
         data: body,
@@ -539,7 +537,7 @@ class ScreenRepoImpl implements ScreenRepo {
               "";
       String token =
           await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
-      var rrr = jsonEncode(tapModel.toJson());
+
       Map<String, dynamic> data = await apiService.post(
         endPoint: "web/Structure/getDataGlobal",
         data: tapModel.toJson(),

@@ -142,6 +142,7 @@ class _TapDetailsWidgetBodyState extends State<TapDetailsWidgetBody> {
                               columnList: listColumn,
                               tap: widget.tap,
                               oldStatement: BuildAlertSearchDetails.statement,
+                              pageData: widget.pageData,
                               onTapClean: () {
                                 BlocProvider.of<GetPageDetailsTableCubit>(
                                         context)

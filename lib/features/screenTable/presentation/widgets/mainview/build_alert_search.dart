@@ -8,16 +8,14 @@ import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_strings.dart';
 import '../../../../../core/utils/app_styles.dart';
 import '../../../../../core/utils/methods.dart';
-import '../../../../../core/utils/service_locator.dart';
 import '../../../../../core/widgets/custom_button.dart';
 import '../../../../../core/widgets/custom_text_form_field.dart';
 import '../../../../../generated/l10n.dart';
-import '../../../data/models/dropdown_model/dropdown_model.dart';
+import '../../../data/models/dropdown_model/all_dropdown_model.dart';
 import '../../../data/models/screen_model.dart';
-import '../../../data/repositories/screen_repo_impl.dart';
-import '../../manager/getDropdownList/get_dropdown_list_cubit.dart';
 import '../../manager/getTable/get_table_cubit.dart';
 import 'general/table_general.dart';
+import 'group/table_group.dart';
 
 class BuildAlertSearch extends StatefulWidget {
   const BuildAlertSearch(
@@ -39,14 +37,20 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
   String statment = '';
   GlobalKey<FormState> formKey = GlobalKey();
 
-  late String companyKey;
-  late String token;
-  late String host;
+  late List<AllDropdownModel> myAllDropdownModelList;
 
   @override
   void didChangeDependencies() {
     lang = Localizations.localeOf(context).toString();
     super.didChangeDependencies();
+  }
+
+  @override
+  void initState() {
+    myAllDropdownModelList = widget.pageData.tableSrc == AppStrings.tableGroup
+        ? TableGroup.myAllDropdownModelList
+        : TableGeneral.myAllDropdownModelList;
+    super.initState();
   }
 
   @override
@@ -423,12 +427,47 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
       if (item.insertType == "dropdown" && item.visible == true) {
         String oldValue = getStringDropdown(
             statement: widget.oldStatement, search: item.searchName!);
-        List<ListDropdownModel> dropList = [
-          ListDropdownModel(value: -1, text: '')
-        ];
+        // List<ListDropdownModel> dropList = [
+        //   ListDropdownModel(value: -1, text: '')
+        // ];
         List<String> selected = [];
-        List<int> intSelected = [];
+        // List<int> intSelected = [];
         String stFinial = "";
+
+        List<ListDrop>? listDrop = [];
+        List<ItemDrop>? myListDrop = [];
+
+        for (var ii in myAllDropdownModelList) {
+          if (ii.listName == widget.pageData.listName) {
+            listDrop = ii.list;
+          }
+        }
+        for (var ii in listDrop!) {
+          if (ii.columnName == item.columnName) {
+            myListDrop = ii.list;
+          }
+        }
+        List<String> dropValue = [];
+        if (oldValue.isEmpty) {
+          dropValue = [];
+        } else if (oldValue.contains("or")) {
+          List<String> sList = oldValue.split(" or ");
+          for (var s in sList) {
+            String finalVal =
+                s.substring((item.searchName!.length) + 3, s.length);
+            for (var i in myListDrop!) {
+              if (i.id.toString() == finalVal) {
+                dropValue.add(i.text ?? '');
+              }
+            }
+          }
+        } else {
+          for (var i in myListDrop!) {
+            if (i.id.toString() == oldValue) {
+              dropValue.add(i.text ?? '');
+            }
+          }
+        }
         listWidgets.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -439,102 +478,143 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
                   title,
                   style: AppStyles.textStyle14.copyWith(color: Colors.grey),
                 ),
-                SizedBox(
-                  // height: 40,
-                  child: BlocProvider(
-                    create: (context) =>
-                        GetDropdownListCubit(getIt.get<ScreenRepoImpl>())
-                          ..getDropdownList(
-                            droModel: item.droModel ?? "",
-                            droValue: item.droValue ?? "",
-                            droText: item.droText ?? "",
-                            droCondition: item.droCondition ?? "",
-                            droCompany: item.droCompany ?? "",
-                          ),
-                    child: BlocConsumer<GetDropdownListCubit,
-                        GetDropdownListState>(
-                      listener: (context, state) {
-                        if (state is GetDropdownListSuccess) {
-                          dropList = state.dropdownModel.list!;
+                CustomDropdown<String>.multiSelectSearch(
+                  hintText: '',
+                  initialItems: dropValue,
+                  decoration: CustomDropdownDecoration(
+                      headerStyle:
+                          AppStyles.textStyle16.copyWith(color: Colors.black),
+                      closedFillColor: Colors.transparent,
+                      closedBorder: Border.all(color: AppColors.blueDark)),
+                  items: myListDrop!.isEmpty
+                      ? ['']
+                      : List.generate(myListDrop.length,
+                          (index) => myListDrop![index].text ?? ''),
+                  onListChanged: (value) {
+                    selected.clear();
+                    String st = "";
+                    for (var s in value) {
+                      for (var d in myListDrop!) {
+                        if (s == d.text) {
+                          selected.add(d.id!);
                         }
-                      },
-                      builder: (context, state) {
-                        List<String> dropValue = [];
-                        if (oldValue.isEmpty) {
-                          dropValue = [];
-                        } else if (oldValue.contains("or")) {
-                          List<String> sList = oldValue.split(" or ");
-                          for (var s in sList) {
-                            String finalVal = s.substring(
-                                (item.searchName!.length) + 3, s.length);
-                            for (var i in dropList) {
-                              if (i.value.toString() == finalVal) {
-                                dropValue.add(i.text ?? '');
-                              }
-                            }
-                          }
-                        } else {
-                          for (var i in dropList) {
-                            if (i.value.toString() == oldValue) {
-                              dropValue.add(i.text ?? '');
-                            }
-                          }
-                        }
+                      }
+                    }
+                    if (statment.contains(stFinial)) {
+                      statment = statment.replaceAll(stFinial, '');
+                      BuildAlertSearch.statement = statment;
+                    }
+                    st += "and( ";
 
-                        return StatefulBuilder(
-                          builder: (context, dsetState) {
-                            String st = "";
-                            return CustomDropdown<String>.multiSelectSearch(
-                              hintText: '',
-                              initialItems: dropValue,
-                              decoration: CustomDropdownDecoration(
-                                  headerStyle: AppStyles.textStyle16
-                                      .copyWith(color: Colors.black),
-                                  closedFillColor: Colors.transparent,
-                                  closedBorder:
-                                      Border.all(color: AppColors.blueDark)),
-                              items: dropList.isEmpty
-                                  ? ['']
-                                  : List.generate(dropList.length,
-                                      (index) => dropList[index].text ?? ''),
-                              onListChanged: (x) {
-                                dsetState(() {
-                                  selected = x;
-                                });
-                                intSelected.clear();
-                                for (var s in selected) {
-                                  for (var d in dropList) {
-                                    if (s == d.text) {
-                                      intSelected.add(d.value);
-                                    }
-                                  }
-                                }
-                                if (statment.contains(stFinial)) {
-                                  statment = statment.replaceAll(stFinial, '');
-                                  BuildAlertSearch.statement = statment;
-                                }
-                                st += "and( ";
+                    for (var element in selected) {
+                      st += "${item.searchName} = $element";
+                      if (element != selected[selected.length - 1]) {
+                        st += " or ";
+                      }
+                    }
+                    st += " ) ";
+                    stFinial = st;
 
-                                for (var element in intSelected) {
-                                  st += "${item.searchName} = $element";
-                                  if (element !=
-                                      intSelected[intSelected.length - 1]) {
-                                    st += " or ";
-                                  }
-                                }
-                                st += " ) ";
-                                stFinial = st;
-
-                                statment = "$statment $stFinial";
-                                BuildAlertSearch.statement = statment;
-                              },
-                            );
-                          },
-                        );
-                      },
-                    ),
-                  ),
+                    statment = "$statment $stFinial";
+                    BuildAlertSearch.statement = statment;
+                  },
                 ),
+                // SizedBox(
+                //   // height: 40,
+                //   child: BlocProvider(
+                //     create: (context) =>
+                //         GetDropdownListCubit(getIt.get<ScreenRepoImpl>())
+                //           ..getDropdownList(
+                //             droModel: item.droModel ?? "",
+                //             droValue: item.droValue ?? "",
+                //             droText: item.droText ?? "",
+                //             droCondition: item.droCondition ?? "",
+                //             droCompany: item.droCompany ?? "",
+                //           ),
+                //     child: BlocConsumer<GetDropdownListCubit,
+                //         GetDropdownListState>(
+                //       listener: (context, state) {
+                //         if (state is GetDropdownListSuccess) {
+                //           dropList = state.dropdownModel.list!;
+                //         }
+                //       },
+                //       builder: (context, state) {
+                //         List<String> dropValue = [];
+                //         if (oldValue.isEmpty) {
+                //           dropValue = [];
+                //         } else if (oldValue.contains("or")) {
+                //           List<String> sList = oldValue.split(" or ");
+                //           for (var s in sList) {
+                //             String finalVal = s.substring(
+                //                 (item.searchName!.length) + 3, s.length);
+                //             for (var i in dropList) {
+                //               if (i.value.toString() == finalVal) {
+                //                 dropValue.add(i.text ?? '');
+                //               }
+                //             }
+                //           }
+                //         } else {
+                //           for (var i in dropList) {
+                //             if (i.value.toString() == oldValue) {
+                //               dropValue.add(i.text ?? '');
+                //             }
+                //           }
+                //         }
+                //
+                //         return StatefulBuilder(
+                //           builder: (context, dsetState) {
+                //             String st = "";
+                //             return CustomDropdown<String>.multiSelectSearch(
+                //               hintText: '',
+                //               initialItems: dropValue,
+                //               decoration: CustomDropdownDecoration(
+                //                   headerStyle: AppStyles.textStyle16
+                //                       .copyWith(color: Colors.black),
+                //                   closedFillColor: Colors.transparent,
+                //                   closedBorder:
+                //                       Border.all(color: AppColors.blueDark)),
+                //               items: dropList.isEmpty
+                //                   ? ['']
+                //                   : List.generate(dropList.length,
+                //                       (index) => dropList[index].text ?? ''),
+                //               onListChanged: (x) {
+                //                 dsetState(() {
+                //                   selected = x;
+                //                 });
+                //                 intSelected.clear();
+                //                 for (var s in selected) {
+                //                   for (var d in dropList) {
+                //                     if (s == d.text) {
+                //                       intSelected.add(d.value);
+                //                     }
+                //                   }
+                //                 }
+                //                 if (statment.contains(stFinial)) {
+                //                   statment = statment.replaceAll(stFinial, '');
+                //                   BuildAlertSearch.statement = statment;
+                //                 }
+                //                 st += "and( ";
+                //
+                //                 for (var element in intSelected) {
+                //                   st += "${item.searchName} = $element";
+                //                   if (element !=
+                //                       intSelected[intSelected.length - 1]) {
+                //                     st += " or ";
+                //                   }
+                //                 }
+                //                 st += " ) ";
+                //                 stFinial = st;
+                //
+                //                 statment = "$statment $stFinial";
+                //                 BuildAlertSearch.statement = statment;
+                //               },
+                //             );
+                //           },
+                //         );
+                //       },
+                //     ),
+                //   ),
+                // ),
               ],
             ),
           ),

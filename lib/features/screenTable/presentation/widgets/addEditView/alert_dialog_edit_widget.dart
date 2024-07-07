@@ -101,8 +101,7 @@ class _AlertDialogEditWidgetState extends State<AlertDialogEditWidget> {
                     onTap: () {
                       if (formKey.currentState!.validate()) {
                         formKey.currentState!.save();
-                        print("////////////////////////");
-                        print(newRowData);
+
                         widget.onTapAdd(newRowData);
                         Navigator.pop(context);
                       }
