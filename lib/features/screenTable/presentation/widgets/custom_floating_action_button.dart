@@ -21,7 +21,7 @@ import '../manager/getTable/get_table_cubit.dart';
 import '../views/screen_table.dart';
 import 'build_alert_search.dart';
 import 'editSrc/build_alert_add.dart';
-import 'editSrc/build_alert_editort 'build_alert_search.dart';
+import 'editSrc/build_alert_edit.dart';
 
 class CustomFloatingActionButton extends StatefulWidget {
   const CustomFloatingActionButton({super.key, required this.pageData});
