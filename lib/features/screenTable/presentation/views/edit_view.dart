@@ -6,6 +6,7 @@ import 'package:erp_system/features/screenTable/data/repositories/screen_repo_im
 import 'package:erp_system/features/screenTable/presentation/manager/getListSetups/get_list_setups_cubit.dart';
 import 'package:erp_system/features/screenTable/presentation/manager/getPageDetails/get_page_details_cubit.dart';
 import 'package:erp_system/features/screenTable/presentation/views/screen_table.dart';
+import 'package:erp_system/features/screenTable/presentation/widgets/editSrc/addSalesEdit/edit_sales.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -80,7 +81,11 @@ class _EditViewState extends State<EditView> {
           listKey: widget.listKey,
         );
       case AppStrings.addSalesEdit:
-        return;
+        return EditSales(
+          tapData: state.tapModel.list[0],
+          pageData: widget.pageData,
+          listKey: widget.listKey,
+        );
     }
   }
 }
