@@ -4,8 +4,6 @@ import 'package:erp_system/core/widgets/custom_loading_widget.dart';
 import 'package:erp_system/features/screenTable/data/models/item_list_setup_model.dart';
 import 'package:erp_system/features/screenTable/presentation/manager/addEditExpenses/add_edit_expenses_cubit.dart';
 import 'package:erp_system/features/screenTable/presentation/manager/getExpensesDetails/get_expenses_details_cubit.dart';
-import 'package:erp_system/features/screenTable/presentation/manager/getListSetups/get_list_setups_cubit.dart';
-import 'package:erp_system/features/screenTable/presentation/widgets/mainview/general/table_general.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -24,12 +22,13 @@ import '../../../data/models/dropdown_model/all_dropdown_model.dart';
 import '../../../data/models/tap_model.dart';
 import '../../../data/repositories/screen_repo_impl.dart';
 import '../../manager/getExpensesMaster/get_expenses_master_cubit.dart';
+import '../../manager/getListSetups/get_list_setups_cubit.dart';
 import '../../manager/getTable/get_table_cubit.dart';
-import '../mainview/group/table_group.dart';
+import '../../views/screen_table.dart';
 import 'custom_table_add_edit_.dart';
 
-class EditViewBody extends StatefulWidget {
-  const EditViewBody(
+class EditExcelViewBody extends StatefulWidget {
+  const EditExcelViewBody(
       {super.key, required this.pageData, required this.listKey, this.tapData});
   final ListTaps? tapData;
   final Pages pageData;
@@ -37,10 +36,10 @@ class EditViewBody extends StatefulWidget {
   // static List<Map<String, dynamic>> tableList = [];
 
   @override
-  State<EditViewBody> createState() => _EditViewBodyState();
+  State<EditExcelViewBody> createState() => _EditExcelViewBodyState();
 }
 
-class _EditViewBodyState extends State<EditViewBody> {
+class _EditExcelViewBodyState extends State<EditExcelViewBody> {
   String? lang;
   GlobalKey<FormState> formKey = GlobalKey();
   Map<String, dynamic> singleObject = {};
@@ -58,10 +57,10 @@ class _EditViewBodyState extends State<EditViewBody> {
 
   @override
   void initState() {
-    myAllDropdownModelList = TableGroup.myAllDropdownModelList;
+    myAllDropdownModelList = ScreenTable.myAllDropdownModelList;
     id = widget.pageData.tableSrc == AppStrings.tableGroup
-        ? TableGroup.rowData[0].toString()
-        : TableGeneral.rowData[0][widget.pageData.primary].toString();
+        ? ScreenTable.rowData[0].toString()
+        : ScreenTable.rowData[0][widget.pageData.primary].toString();
     super.initState();
   }
 
@@ -73,6 +72,7 @@ class _EditViewBodyState extends State<EditViewBody> {
 
   @override
   Widget build(BuildContext context) {
+    print(id);
     return BlocProvider(
       create: (context) => GetExpensesMasterCubit(getIt.get<ScreenRepoImpl>())
         ..getExpensesMaster(id: id),
@@ -196,41 +196,51 @@ class _EditViewBodyState extends State<EditViewBody> {
                                               (index) {
                                             String categoryName =
                                                 categoryList[index];
-                                            return Padding(
-                                              padding: const EdgeInsets.only(
-                                                  bottom: 16),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Container(
-                                                      padding: const EdgeInsets
-                                                          .symmetric(
-                                                          horizontal: 12,
-                                                          vertical: 8),
-                                                      decoration: BoxDecoration(
-                                                          color: AppColors.grey
-                                                              .withOpacity(.4),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      15)),
-                                                      child: Text(
-                                                        categoryName,
-                                                        style: AppStyles
-                                                            .textStyle18
-                                                            .copyWith(
-                                                                color: Colors
-                                                                    .black),
-                                                      )),
-                                                  ...getMyWidgetList(
-                                                      listData: listSetup,
-                                                      categoryName:
-                                                          categoryName,
-                                                      dataMaster: dataMaster),
-                                                ],
-                                              ),
-                                            );
+                                            List<Widget> widgetList =
+                                                getMyWidgetList(
+                                                    listData: listSetup,
+                                                    categoryName: categoryName,
+                                                    dataMaster: dataMaster);
+                                            return widgetList.isNotEmpty
+                                                ? Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            bottom: 16),
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Container(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .symmetric(
+                                                                  horizontal:
+                                                                      12,
+                                                                  vertical: 8),
+                                                          decoration: BoxDecoration(
+                                                              color: AppColors
+                                                                  .grey
+                                                                  .withOpacity(
+                                                                      .4),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          15)),
+                                                          child: Text(
+                                                            categoryName,
+                                                            style: AppStyles
+                                                                .textStyle18
+                                                                .copyWith(
+                                                                    color: Colors
+                                                                        .black),
+                                                          ),
+                                                        ),
+                                                        ...widgetList,
+                                                      ],
+                                                    ),
+                                                  )
+                                                : const SizedBox();
                                           }),
                                           Padding(
                                             padding: const EdgeInsets.only(
@@ -242,7 +252,7 @@ class _EditViewBodyState extends State<EditViewBody> {
                                               listKey: listKey,
                                               listHeader: listHeader,
                                               listColumn: listColumn,
-                                              allDropdownModelList: TableGroup
+                                              allDropdownModelList: ScreenTable
                                                   .myAllDropdownModelList,
                                               onTapAdd: (data) {
                                                 tableList = data;

@@ -14,8 +14,7 @@ import '../../../../../generated/l10n.dart';
 import '../../../data/models/dropdown_model/all_dropdown_model.dart';
 import '../../../data/models/screen_model.dart';
 import '../../manager/getTable/get_table_cubit.dart';
-import 'general/table_general.dart';
-import 'group/table_group.dart';
+import '../../views/screen_table.dart';
 
 class BuildAlertSearch extends StatefulWidget {
   const BuildAlertSearch(
@@ -47,9 +46,7 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
 
   @override
   void initState() {
-    myAllDropdownModelList = widget.pageData.tableSrc == AppStrings.tableGroup
-        ? TableGroup.myAllDropdownModelList
-        : TableGeneral.myAllDropdownModelList;
+    myAllDropdownModelList = ScreenTable.myAllDropdownModelList;
     super.initState();
   }
 
@@ -103,10 +100,10 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
                       textStyle:
                           AppStyles.textStyle16.copyWith(color: Colors.grey),
                       onTap: () {
-                        TableGeneral.isSearch = false;
+                        ScreenTable.isSearch = false;
                         BuildAlertSearch.statement = '';
-                        TableGeneral.isDesc = false;
-                        TableGeneral.orderBy = '';
+                        ScreenTable.isDesc = false;
+                        ScreenTable.orderBy = '';
                         BlocProvider.of<GetTableCubit>(context)
                             .getTable(
                                 pageId: widget.pageData.pageId,
@@ -135,7 +132,7 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
                     width: 80,
                     onTap: () {
                       formKey.currentState!.save();
-                      TableGeneral.isSearch = true;
+                      ScreenTable.isSearch = true;
                       BlocProvider.of<GetTableCubit>(context)
                           .getTable(
                               pageId: widget.pageData.pageId,

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:erp_system/features/screenTable/data/models/expenses_details_model.dart';
@@ -366,7 +368,7 @@ class ScreenRepoImpl implements ScreenRepo {
               "";
       String token =
           await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
-      // var rrr = jsonEncode(tapData.toJson());
+      var rrr = jsonEncode(tapData.toJson());
       Map<String, dynamic> data = await apiService.post(
         endPoint: "home/GetPageDetailTable",
         data: tapData.toJson(),

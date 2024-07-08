@@ -13,9 +13,8 @@ import '../../../../../generated/l10n.dart';
 import '../../../data/models/dropdown_model/all_dropdown_model.dart';
 import '../../../data/models/screen_model.dart';
 import '../../../data/models/tap_model.dart';
+import '../../views/screen_table.dart';
 import '../mainview/build_alert_search.dart';
-import '../mainview/general/table_general.dart';
-import '../mainview/group/table_group.dart';
 import 'tap_details_widget_body.dart';
 
 typedef OnTapSearch<T> = void Function(T myStatement);
@@ -60,9 +59,7 @@ class _BuildAlertSearchDetailsState extends State<BuildAlertSearchDetails> {
   @override
   void initState() {
     statment = "and ${widget.tap.foreignKey}  =  ${widget.mainId} ";
-    myAllDropdownModelList = widget.pageData.tableSrc == AppStrings.tableGroup
-        ? TableGroup.myAllDropdownModelList
-        : TableGeneral.myAllDropdownModelList;
+    myAllDropdownModelList = ScreenTable.myAllDropdownModelList;
     super.initState();
   }
 

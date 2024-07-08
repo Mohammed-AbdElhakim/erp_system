@@ -8,6 +8,7 @@ import '../../../../core/utils/methods.dart';
 import '../../../../core/widgets/change_status_bar_color.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
 import '../../../../core/widgets/custom_container.dart';
+import '../../data/models/dropdown_model/all_dropdown_model.dart';
 import '../manager/getAllDropdownList/get_all_dropdown_list_cubit.dart';
 import '../manager/getPermissions/get_permissions_cubit.dart';
 import '../manager/getTable/get_table_cubit.dart';
@@ -19,6 +20,14 @@ class ScreenTable extends StatefulWidget {
 
   final Pages pageData;
 
+  static List<dynamic> rowData = [];
+  static List<String> listCategory = [];
+  static List<AllDropdownModel> myAllDropdownModelList = [];
+  static bool isSearch = false;
+  static late String orderBy;
+  static late bool isDesc;
+  static late int numberPage;
+  static late int dropdownValue;
   @override
   State<ScreenTable> createState() => _ScreenTableState();
 }

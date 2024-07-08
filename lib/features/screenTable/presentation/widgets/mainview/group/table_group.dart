@@ -11,6 +11,7 @@ import '../../../../data/models/dropdown_model/all_dropdown_model.dart';
 import '../../../../data/models/screen_model.dart';
 import '../../../manager/getAllDropdownList/get_all_dropdown_list_cubit.dart';
 import '../../../manager/getTable/get_table_cubit.dart';
+import '../../../views/screen_table.dart';
 import '../build_alert_search.dart';
 import '../pagination_widget.dart';
 
@@ -18,16 +19,17 @@ class TableGroup extends StatefulWidget {
   const TableGroup({super.key, required this.pageData});
 
   final Pages pageData;
-  static List<int> rowData = [];
+  // static List<int> rowData = [];
   // static List<Map<String, dynamic>> rowData = [];
-  static List<String> listCategory = [];
-  static List<AllDropdownModel> myAllDropdownModelList = [];
 
-  static bool isSearch = false;
-  static late String orderBy;
-  static late bool isDesc;
-  static late int numberPage;
-  static late int dropdownValue;
+  // static List<String> listCategory = [];
+  // static List<AllDropdownModel> myAllDropdownModelList = [];
+  //
+  // static bool isSearch = false;
+  // static late String orderBy;
+  // static late bool isDesc;
+  // static late int numberPage;
+  // static late int dropdownValue;
 
   @override
   State<TableGroup> createState() => _TableGroupState();
@@ -47,19 +49,19 @@ class _TableGroupState extends State<TableGroup> {
     super.initState();
     headerScrollController = controllerGroup.addAndGet();
     dataScrollController = controllerGroup.addAndGet();
-    TableGroup.numberPage = 1;
-    TableGroup.isDesc = widget.pageData.isDesc;
-    TableGroup.orderBy = widget.pageData.orderBy;
-    TableGroup.dropdownValue = listNumberItemInList[0];
+    ScreenTable.numberPage = 1;
+    ScreenTable.isDesc = widget.pageData.isDesc;
+    ScreenTable.orderBy = widget.pageData.orderBy;
+    ScreenTable.dropdownValue = listNumberItemInList[0];
     BuildAlertSearch.statement = '';
   }
 
   @override
   void dispose() {
-    TableGroup.rowData = [];
-    TableGroup.listCategory = [];
-    TableGroup.myAllDropdownModelList = [];
-    TableGroup.isSearch == false;
+    ScreenTable.rowData = [];
+    ScreenTable.listCategory = [];
+    ScreenTable.myAllDropdownModelList = [];
+    ScreenTable.isSearch == false;
     super.dispose();
   }
 
@@ -76,7 +78,7 @@ class _TableGroupState extends State<TableGroup> {
         if (state is GetAllDropdownListSuccess) {
           List<AllDropdownModel> allDropdownModelList =
               state.allDropdownModelList;
-          TableGroup.myAllDropdownModelList = allDropdownModelList;
+          ScreenTable.myAllDropdownModelList = allDropdownModelList;
           return BlocBuilder<GetTableCubit, GetTableState>(
             builder: (context, state) {
               if (state is GetTableSuccess) {
@@ -109,12 +111,12 @@ class _TableGroupState extends State<TableGroup> {
                   category.add(item.categoryName!);
                 }
                 List<String> categoryList = category.toSet().toList();
-                TableGroup.listCategory = categoryList;
-                TableGroup.numberPage = state.numberPage;
-                TableGroup.dropdownValue = state.dropdownValue;
-                allPages = (numberOfRecords! % TableGroup.dropdownValue) == 0
-                    ? (numberOfRecords ~/ TableGroup.dropdownValue)
-                    : (numberOfRecords ~/ TableGroup.dropdownValue) + 1;
+                ScreenTable.listCategory = categoryList;
+                ScreenTable.numberPage = state.numberPage;
+                ScreenTable.dropdownValue = state.dropdownValue;
+                allPages = (numberOfRecords! % ScreenTable.dropdownValue) == 0
+                    ? (numberOfRecords ~/ ScreenTable.dropdownValue)
+                    : (numberOfRecords ~/ ScreenTable.dropdownValue) + 1;
                 return CustomTableGroup(
                   pageData: widget.pageData,
                   listHeader: listHeaderInTable,
@@ -125,36 +127,37 @@ class _TableGroupState extends State<TableGroup> {
                   allDropdownModelList: allDropdownModelList,
                   paginationWidget: PaginationWidget(
                     allPages: allPages,
-                    dropdownValue: TableGroup.dropdownValue,
+                    dropdownValue: ScreenTable.dropdownValue,
                     listNumberItemInList: listNumberItemInList,
-                    myPage: TableGroup.numberPage,
+                    myPage: ScreenTable.numberPage,
                     numberOfRecords: numberOfRecords,
                     onChangeLimit: (limit) {
                       setState(() {
-                        TableGroup.dropdownValue = limit;
-                        TableGroup.numberPage = 1;
-                        allPages = (numberOfRecords %
-                                    TableGroup.dropdownValue) ==
-                                0
-                            ? (numberOfRecords ~/ TableGroup.dropdownValue)
-                            : (numberOfRecords ~/ TableGroup.dropdownValue) + 1;
+                        ScreenTable.dropdownValue = limit;
+                        ScreenTable.numberPage = 1;
+                        allPages =
+                            (numberOfRecords % ScreenTable.dropdownValue) == 0
+                                ? (numberOfRecords ~/ ScreenTable.dropdownValue)
+                                : (numberOfRecords ~/
+                                        ScreenTable.dropdownValue) +
+                                    1;
                       });
 
                       BlocProvider.of<GetTableCubit>(context).getTable(
                         pageId: widget.pageData.pageId,
                         employee: false,
                         isdesc: widget.pageData.isDesc,
-                        limit: TableGroup.dropdownValue,
-                        offset:
-                            (TableGroup.numberPage * TableGroup.dropdownValue) -
-                                TableGroup.dropdownValue,
+                        limit: ScreenTable.dropdownValue,
+                        offset: (ScreenTable.numberPage *
+                                ScreenTable.dropdownValue) -
+                            ScreenTable.dropdownValue,
                         orderby: widget.pageData.orderBy,
-                        statment: TableGroup.isSearch == true
+                        statment: ScreenTable.isSearch == true
                             ? BuildAlertSearch.statement
                             : '',
                         selectcolumns: '',
-                        numberOfPage: TableGroup.numberPage,
-                        dropdownValueOfLimit: TableGroup.dropdownValue,
+                        numberOfPage: ScreenTable.numberPage,
+                        dropdownValueOfLimit: ScreenTable.dropdownValue,
                         departmentName: widget.pageData.departmentName,
                         isDepartment: widget.pageData.isDepartment,
                         authorizationID: widget.pageData.authorizationID,
@@ -163,19 +166,19 @@ class _TableGroupState extends State<TableGroup> {
                     },
                     onTapMin: () {
                       setState(() {
-                        TableGroup.numberPage--;
+                        ScreenTable.numberPage--;
                       });
 
                       BlocProvider.of<GetTableCubit>(context).getTable(
                         pageId: widget.pageData.pageId,
                         employee: false,
                         isdesc: widget.pageData.isDesc,
-                        limit: TableGroup.dropdownValue,
-                        offset:
-                            (TableGroup.numberPage * TableGroup.dropdownValue) -
-                                TableGroup.dropdownValue,
+                        limit: ScreenTable.dropdownValue,
+                        offset: (ScreenTable.numberPage *
+                                ScreenTable.dropdownValue) -
+                            ScreenTable.dropdownValue,
                         orderby: widget.pageData.orderBy,
-                        statment: TableGroup.isSearch == true
+                        statment: ScreenTable.isSearch == true
                             ? BuildAlertSearch.statement
                             : '',
                         selectcolumns: '',
@@ -183,25 +186,25 @@ class _TableGroupState extends State<TableGroup> {
                         isDepartment: widget.pageData.isDepartment,
                         authorizationID: widget.pageData.authorizationID,
                         viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
-                        numberOfPage: TableGroup.numberPage,
-                        dropdownValueOfLimit: TableGroup.dropdownValue,
+                        numberOfPage: ScreenTable.numberPage,
+                        dropdownValueOfLimit: ScreenTable.dropdownValue,
                       );
                     },
                     onTapAdd: () {
                       setState(() {
-                        TableGroup.numberPage++;
+                        ScreenTable.numberPage++;
                       });
 
                       BlocProvider.of<GetTableCubit>(context).getTable(
                         pageId: widget.pageData.pageId,
                         employee: false,
                         isdesc: widget.pageData.isDesc,
-                        limit: TableGroup.dropdownValue,
-                        offset:
-                            (TableGroup.numberPage * TableGroup.dropdownValue) -
-                                TableGroup.dropdownValue,
+                        limit: ScreenTable.dropdownValue,
+                        offset: (ScreenTable.numberPage *
+                                ScreenTable.dropdownValue) -
+                            ScreenTable.dropdownValue,
                         orderby: widget.pageData.orderBy,
-                        statment: TableGroup.isSearch == true
+                        statment: ScreenTable.isSearch == true
                             ? BuildAlertSearch.statement
                             : '',
                         selectcolumns: '',
@@ -209,27 +212,27 @@ class _TableGroupState extends State<TableGroup> {
                         isDepartment: widget.pageData.isDepartment,
                         authorizationID: widget.pageData.authorizationID,
                         viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
-                        numberOfPage: TableGroup.numberPage,
-                        dropdownValueOfLimit: TableGroup.dropdownValue,
+                        numberOfPage: ScreenTable.numberPage,
+                        dropdownValueOfLimit: ScreenTable.dropdownValue,
                       );
                     },
                   ),
                   onTapHeader: (String titleHeader) {
                     setState(() {
-                      TableGroup.orderBy = titleHeader;
-                      TableGroup.isDesc = !TableGroup.isDesc;
+                      ScreenTable.orderBy = titleHeader;
+                      ScreenTable.isDesc = !ScreenTable.isDesc;
                     });
 
                     BlocProvider.of<GetTableCubit>(context).getTable(
                       pageId: widget.pageData.pageId,
                       employee: false,
-                      isdesc: TableGroup.isDesc,
-                      limit: TableGroup.dropdownValue,
+                      isdesc: ScreenTable.isDesc,
+                      limit: ScreenTable.dropdownValue,
                       offset:
-                          (TableGroup.numberPage * TableGroup.dropdownValue) -
-                              TableGroup.dropdownValue,
-                      orderby: TableGroup.orderBy,
-                      statment: TableGroup.isSearch == true
+                          (ScreenTable.numberPage * ScreenTable.dropdownValue) -
+                              ScreenTable.dropdownValue,
+                      orderby: ScreenTable.orderBy,
+                      statment: ScreenTable.isSearch == true
                           ? BuildAlertSearch.statement
                           : '',
                       selectcolumns: '',
@@ -237,12 +240,12 @@ class _TableGroupState extends State<TableGroup> {
                       isDepartment: widget.pageData.isDepartment,
                       authorizationID: widget.pageData.authorizationID,
                       viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
-                      numberOfPage: TableGroup.numberPage,
-                      dropdownValueOfLimit: TableGroup.dropdownValue,
+                      numberOfPage: ScreenTable.numberPage,
+                      dropdownValueOfLimit: ScreenTable.dropdownValue,
                     );
                   },
                   onTapRow: (rowData) {
-                    TableGroup.rowData = rowData;
+                    ScreenTable.rowData = rowData;
                   },
                 );
               } else if (state is GetTableFailure) {

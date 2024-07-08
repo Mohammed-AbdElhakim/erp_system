@@ -1,5 +1,4 @@
 import 'package:erp_system/core/utils/app_strings.dart';
-import 'package:erp_system/features/screenTable/presentation/widgets/mainview/group/table_group.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -19,10 +18,10 @@ import '../../data/models/screen_model.dart';
 import '../manager/delete/delete_cubit.dart';
 import '../manager/getPermissions/get_permissions_cubit.dart';
 import '../manager/getTable/get_table_cubit.dart';
+import '../views/screen_table.dart';
 import 'mainview/build_alert_add.dart';
 import 'mainview/build_alert_edit.dart';
 import 'mainview/build_alert_search.dart';
-import 'mainview/general/table_general.dart';
 
 class CustomFloatingActionButton extends StatefulWidget {
   const CustomFloatingActionButton({super.key, required this.pageData});
@@ -151,48 +150,24 @@ class _CustomFloatingActionButtonState
         ),
       );
     } else if (icon == Icons.refresh) {
-      // ScreenTableBody.isSearch = false;
-      // BuildAlertSearch.statement = '';
-      if (widget.pageData.tableSrc == AppStrings.tableGroup) {
-        BlocProvider.of<GetTableCubit>(context).getTable(
-            pageId: widget.pageData.pageId,
-            employee: false,
-            isdesc: TableGroup.isDesc,
-            limit: 10,
-            offset: 0,
-            orderby: TableGroup.orderBy,
-            statment:
-                TableGroup.isSearch == true ? BuildAlertSearch.statement : '',
-            selectcolumns: '',
-            departmentName: widget.pageData.departmentName,
-            isDepartment: widget.pageData.isDepartment,
-            authorizationID: widget.pageData.authorizationID,
-            viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
-            dropdownValueOfLimit: TableGroup.dropdownValue,
-            numberOfPage: TableGroup.numberPage);
-      } else {
-        BlocProvider.of<GetTableCubit>(context).getTable(
-            pageId: widget.pageData.pageId,
-            employee: false,
-            isdesc: TableGeneral.isDesc,
-            limit: 10,
-            offset: 0,
-            orderby: TableGeneral.orderBy,
-            statment:
-                TableGeneral.isSearch == true ? BuildAlertSearch.statement : '',
-            selectcolumns: '',
-            departmentName: widget.pageData.departmentName,
-            isDepartment: widget.pageData.isDepartment,
-            authorizationID: widget.pageData.authorizationID,
-            viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
-            dropdownValueOfLimit: TableGeneral.dropdownValue,
-            numberOfPage: TableGeneral.numberPage);
-      }
+      BlocProvider.of<GetTableCubit>(context).getTable(
+          pageId: widget.pageData.pageId,
+          employee: false,
+          isdesc: ScreenTable.isDesc,
+          limit: 10,
+          offset: 0,
+          orderby: ScreenTable.orderBy,
+          statment:
+              ScreenTable.isSearch == true ? BuildAlertSearch.statement : '',
+          selectcolumns: '',
+          departmentName: widget.pageData.departmentName,
+          isDepartment: widget.pageData.isDepartment,
+          authorizationID: widget.pageData.authorizationID,
+          viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
+          dropdownValueOfLimit: ScreenTable.dropdownValue,
+          numberOfPage: ScreenTable.numberPage);
     } else if (icon == Icons.delete) {
-      List<dynamic> myRowData =
-          widget.pageData.tableSrc == AppStrings.tableGroup
-              ? TableGroup.rowData
-              : TableGeneral.rowData;
+      List<dynamic> myRowData = ScreenTable.rowData;
       if (myRowData.isNotEmpty) {
         List<String> listId = [];
         for (var item in myRowData) {
@@ -228,11 +203,9 @@ class _CustomFloatingActionButtonState
                               widget.pageData.viewEmployeeColumn,
                           numberOfPage: 1,
                           dropdownValueOfLimit: 10);
-                      if (widget.pageData.tableSrc == AppStrings.tableGroup) {
-                        TableGroup.rowData.clear();
-                      } else {
-                        TableGeneral.rowData.clear();
-                      }
+
+                      ScreenTable.rowData.clear();
+
                       Navigator.pop(context);
                     } else if (state is DeleteFailure) {
                       CustomAlertDialog.alertWithButton(
@@ -275,10 +248,7 @@ class _CustomFloatingActionButtonState
             desc: S.of(context).massage_choose_delete);
       }
     } else if (icon == Icons.edit_note) {
-      List<dynamic> myRowData =
-          widget.pageData.tableSrc == AppStrings.tableGroup
-              ? TableGroup.rowData
-              : TableGeneral.rowData;
+      List<dynamic> myRowData = ScreenTable.rowData;
       if (myRowData.isNotEmpty) {
         if (myRowData.length > 1) {
           CustomAlertDialog.alertWithButton(
@@ -287,16 +257,7 @@ class _CustomFloatingActionButtonState
               title: S.of(context).error,
               desc: S.of(context).massage_no_edit);
         } else if (myRowData.length == 1) {
-          if (widget.pageData.tableSrc == AppStrings.tableGroup) {
-            GoRouter.of(context)
-                .push(AppRouter.kEditView,
-                    extra: AddPassDataModel(
-                      pageData: widget.pageData,
-                      columnList: columnList,
-                      listKey: listKey,
-                    ))
-                .then((value) => TableGroup.rowData.clear());
-          } else {
+          if (widget.pageData.editSrc == "") {
             CustomAlertDialog.alertWithCustomContent(
               context: context,
               title: S.of(context).btn_edit,
@@ -307,6 +268,15 @@ class _CustomFloatingActionButtonState
                 pageData: widget.pageData,
               ),
             );
+          } else {
+            GoRouter.of(context)
+                .push(AppRouter.kEditView,
+                    extra: AddPassDataModel(
+                      pageData: widget.pageData,
+                      columnList: columnList,
+                      listKey: listKey,
+                    ))
+                .then((value) => ScreenTable.rowData.clear());
           }
         }
       } else {
@@ -317,16 +287,7 @@ class _CustomFloatingActionButtonState
             desc: S.of(context).massage_choose_edit);
       }
     } else if (icon == Icons.add) {
-      if (widget.pageData.tableSrc == AppStrings.tableGroup) {
-        GoRouter.of(context)
-            .push(AppRouter.kAddView,
-                extra: AddPassDataModel(
-                  pageData: widget.pageData,
-                  columnList: columnList,
-                  listKey: listKey,
-                ))
-            .then((value) => TableGroup.rowData.clear());
-      } else {
+      if (widget.pageData.editSrc == "") {
         CustomAlertDialog.alertWithCustomContent(
           context: context,
           title: S.of(context).btn_add,
@@ -337,6 +298,15 @@ class _CustomFloatingActionButtonState
             pageData: widget.pageData,
           ),
         );
+      } else {
+        GoRouter.of(context)
+            .push(AppRouter.kAddView,
+                extra: AddPassDataModel(
+                  pageData: widget.pageData,
+                  columnList: columnList,
+                  listKey: listKey,
+                ))
+            .then((value) => ScreenTable.rowData.clear());
       }
     }
   }

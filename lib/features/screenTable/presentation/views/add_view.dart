@@ -12,7 +12,7 @@ import '../../../../core/models/menu_model/pages.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
 import '../../data/models/screen_model.dart';
-import '../widgets/addEditView/add_view_body.dart';
+import '../widgets/addOrEditExcel/add_excel_view_body.dart';
 
 class AddView extends StatelessWidget {
   const AddView(
@@ -30,11 +30,50 @@ class AddView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeStatusBarColor(
       child: Scaffold(
-          appBar: const CustomAppBar(
-            isPortrait: true,
-            title: "",
+        appBar: const CustomAppBar(
+          isPortrait: true,
+          title: "",
+        ),
+        body: BlocProvider(
+          create: (context) => GetPageDetailsCubit(getIt.get<ScreenRepoImpl>())
+            ..getPageDetails(pageData.pageId),
+          child: BlocBuilder<GetPageDetailsCubit, GetPageDetailsState>(
+            builder: (context, state) {
+              if (state is GetPageDetailsSuccess) {
+                String listName = state.tapModel.list[0].listName;
+                return BlocProvider(
+                  create: (context) =>
+                      GetListSetupsCubit(getIt.get<ScreenRepoImpl>())
+                        ..getListSetups(listName),
+                  child: getMyWidget(pageData.editSrc, state),
+                );
+              } else if (state is GetPageDetailsFailure) {
+                return CustomErrorMassage(errorMassage: state.errorMassage);
+              } else {
+                return const CustomLoadingWidget();
+              }
+            },
           ),
-          body: pageData.editSrc == AppStrings.addOrEditExcel
+        ),
+      ),
+    );
+  }
+
+  getMyWidget(String editSrc, GetPageDetailsSuccess state) {
+    switch (editSrc) {
+      case AppStrings.addOrEditExcel:
+        return AddExcelViewBody(
+          tapData: state.tapModel.list[0],
+          pageData: pageData,
+          listKey: listKey,
+        );
+      case AppStrings.addSalesEdit:
+        return;
+    }
+  }
+}
+
+/*pageData.editSrc == AppStrings.addOrEditExcel
               ? BlocProvider(
                   create: (context) =>
                       GetPageDetailsCubit(getIt.get<ScreenRepoImpl>())
@@ -47,7 +86,7 @@ class AddView extends StatelessWidget {
                           create: (context) =>
                               GetListSetupsCubit(getIt.get<ScreenRepoImpl>())
                                 ..getListSetups(listName),
-                          child: AddViewBody(
+                          child: AddExcelViewBody(
                             tapData: state.tapModel.list[0],
                             pageData: pageData,
                             listKey: listKey,
@@ -66,11 +105,8 @@ class AddView extends StatelessWidget {
                   create: (context) =>
                       GetListSetupsCubit(getIt.get<ScreenRepoImpl>())
                         ..getListSetups(pageData.listName),
-                  child: AddViewBody(
+                  child: AddExcelViewBody(
                     pageData: pageData,
                     listKey: listKey,
                   ),
-                )),
-    );
-  }
-}
+                )*/

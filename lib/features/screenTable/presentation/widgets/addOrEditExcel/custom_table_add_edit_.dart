@@ -1,4 +1,3 @@
-import 'package:erp_system/features/screenTable/presentation/widgets/mainview/group/table_group.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:linked_scroll_controller/linked_scroll_controller.dart';
@@ -10,6 +9,7 @@ import '../../../../../core/utils/methods.dart';
 import '../../../data/models/dropdown_model/all_dropdown_model.dart';
 import '../../../data/models/item_list_setup_model.dart';
 import '../../../data/models/tap_model.dart';
+import '../../views/screen_table.dart';
 import 'alert_dialog_add_widget.dart';
 import 'alert_dialog_edit_widget.dart';
 
@@ -84,7 +84,8 @@ class _CustomTableAddEditState extends State<CustomTableAddEdit> {
                         listKey: widget.listKey,
                         listHeader: widget.listHeader,
                         listColumn: widget.listColumn,
-                        allDropdownModelList: TableGroup.myAllDropdownModelList,
+                        allDropdownModelList:
+                            ScreenTable.myAllDropdownModelList,
                         pageData: widget.pageData,
                         onTapAdd: (data) {
                           if (widget.typeView == "Add") {
@@ -123,7 +124,7 @@ class _CustomTableAddEditState extends State<CustomTableAddEdit> {
                           listHeader: widget.listHeader,
                           listColumn: widget.listColumn,
                           allDropdownModelList:
-                              TableGroup.myAllDropdownModelList,
+                              ScreenTable.myAllDropdownModelList,
                           pageData: widget.pageData,
                           onTapAdd: (data) {
                             if (widget.typeView == "Add") {

@@ -20,8 +20,7 @@ import '../../../data/models/tap_model.dart';
 import '../../manager/addEdit/add_edit_cubit.dart';
 import '../../manager/delete/delete_cubit.dart';
 import '../../manager/getPageDetailsTable/get_page_details_table_cubit.dart';
-import '../mainview/general/table_general.dart';
-import '../mainview/group/table_group.dart';
+import '../../views/screen_table.dart';
 import '../mainview/pagination_widget.dart';
 import 'build_alert_add_details.dart';
 import 'build_alert_delete_details.dart';
@@ -733,10 +732,7 @@ class _TapDetailsWidgetBodyState extends State<TapDetailsWidgetBody> {
                     listData: listData!,
                     listKey: listKeyInTable,
                     listColumn: listColumnInTable,
-                    allDropdownModelList:
-                        widget.pageData.tableSrc == AppStrings.tableGroup
-                            ? TableGroup.myAllDropdownModelList
-                            : TableGeneral.myAllDropdownModelList,
+                    allDropdownModelList: ScreenTable.myAllDropdownModelList,
                     tap: widget.tap,
                     onTapHeader: (titleHeader) {
                       setState(() {

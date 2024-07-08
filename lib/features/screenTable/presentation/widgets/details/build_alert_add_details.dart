@@ -1,5 +1,4 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
-import 'package:erp_system/features/screenTable/presentation/widgets/mainview/group/table_group.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -19,7 +18,7 @@ import '../../../data/models/screen_model.dart';
 import '../../../data/models/tap_model.dart';
 import '../../manager/addEdit/add_edit_cubit.dart';
 import '../../manager/getPageDetailsTable/get_page_details_table_cubit.dart';
-import '../mainview/general/table_general.dart';
+import '../../views/screen_table.dart';
 
 typedef OnTapAdd<T> = void Function(T newRowData);
 
@@ -58,12 +57,8 @@ class _BuildAlertAddDetailsState extends State<BuildAlertAddDetails> {
 
   @override
   void initState() {
-    myListCategory = widget.pageData.tableSrc == AppStrings.tableGroup
-        ? TableGroup.listCategory
-        : TableGeneral.listCategory;
-    myAllDropdownModelList = widget.pageData.tableSrc == AppStrings.tableGroup
-        ? TableGroup.myAllDropdownModelList
-        : TableGeneral.myAllDropdownModelList;
+    myListCategory = ScreenTable.listCategory;
+    myAllDropdownModelList = ScreenTable.myAllDropdownModelList;
     newRowData[widget.tap.foreignKey] = widget.mainId;
     super.initState();
   }

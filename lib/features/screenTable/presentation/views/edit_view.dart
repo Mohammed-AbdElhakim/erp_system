@@ -5,6 +5,7 @@ import 'package:erp_system/core/widgets/custom_loading_widget.dart';
 import 'package:erp_system/features/screenTable/data/repositories/screen_repo_impl.dart';
 import 'package:erp_system/features/screenTable/presentation/manager/getListSetups/get_list_setups_cubit.dart';
 import 'package:erp_system/features/screenTable/presentation/manager/getPageDetails/get_page_details_cubit.dart';
+import 'package:erp_system/features/screenTable/presentation/views/screen_table.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -12,8 +13,7 @@ import '../../../../core/models/menu_model/pages.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
 import '../../data/models/screen_model.dart';
-import '../widgets/addEditView/edit_view_body.dart';
-import '../widgets/mainview/group/table_group.dart';
+import '../widgets/addOrEditExcel/edit_excel_view_body.dart';
 
 class EditView extends StatefulWidget {
   const EditView(
@@ -34,7 +34,7 @@ class EditView extends StatefulWidget {
 class _EditViewState extends State<EditView> {
   @override
   void dispose() {
-    TableGroup.rowData = [];
+    ScreenTable.rowData = [];
     super.dispose();
   }
 
@@ -46,43 +46,41 @@ class _EditViewState extends State<EditView> {
             isPortrait: true,
             title: "",
           ),
-          body: widget.pageData.editSrc == AppStrings.addOrEditExcel
-              ? BlocProvider(
-                  create: (context) =>
-                      GetPageDetailsCubit(getIt.get<ScreenRepoImpl>())
-                        ..getPageDetails(widget.pageData.pageId),
-                  child: BlocBuilder<GetPageDetailsCubit, GetPageDetailsState>(
-                    builder: (context, state) {
-                      if (state is GetPageDetailsSuccess) {
-                        String listName = state.tapModel.list[0].listName;
-                        return BlocProvider(
-                          create: (context) =>
-                              GetListSetupsCubit(getIt.get<ScreenRepoImpl>())
-                                ..getListSetups(listName),
-                          child: EditViewBody(
-                            tapData: state.tapModel.list[0],
-                            pageData: widget.pageData,
-                            listKey: widget.listKey,
-                          ),
-                        );
-                      } else if (state is GetPageDetailsFailure) {
-                        return CustomErrorMassage(
-                            errorMassage: state.errorMassage);
-                      } else {
-                        return const CustomLoadingWidget();
-                      }
-                    },
-                  ),
-                )
-              : BlocProvider(
-                  create: (context) =>
-                      GetListSetupsCubit(getIt.get<ScreenRepoImpl>())
-                        ..getListSetups(widget.pageData.listName),
-                  child: EditViewBody(
-                    pageData: widget.pageData,
-                    listKey: widget.listKey,
-                  ),
-                )),
+          body: BlocProvider(
+            create: (context) =>
+                GetPageDetailsCubit(getIt.get<ScreenRepoImpl>())
+                  ..getPageDetails(widget.pageData.pageId),
+            child: BlocBuilder<GetPageDetailsCubit, GetPageDetailsState>(
+              builder: (context, state) {
+                if (state is GetPageDetailsSuccess) {
+                  String listName = state.tapModel.list[0].listName;
+                  return BlocProvider(
+                    create: (context) =>
+                        GetListSetupsCubit(getIt.get<ScreenRepoImpl>())
+                          ..getListSetups(listName),
+                    child: getMyWidget(widget.pageData.editSrc, state),
+                  );
+                } else if (state is GetPageDetailsFailure) {
+                  return CustomErrorMassage(errorMassage: state.errorMassage);
+                } else {
+                  return const CustomLoadingWidget();
+                }
+              },
+            ),
+          )),
     );
+  }
+
+  getMyWidget(String editSrc, GetPageDetailsSuccess state) {
+    switch (editSrc) {
+      case AppStrings.addOrEditExcel:
+        return EditExcelViewBody(
+          tapData: state.tapModel.list[0],
+          pageData: widget.pageData,
+          listKey: widget.listKey,
+        );
+      case AppStrings.addSalesEdit:
+        return;
+    }
   }
 }

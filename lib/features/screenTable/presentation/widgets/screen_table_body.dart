@@ -14,10 +14,12 @@ class ScreenTableBody extends StatelessWidget {
       return TableGroup(
         pageData: pageData,
       );
-    } else {
+    } else if (pageData.tableSrc == "") {
       return TableGeneral(
         pageData: pageData,
       );
+    } else {
+      return Text("tableSrc   ==>   ${pageData.tableSrc}");
     }
   }
 }

@@ -1,5 +1,4 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
-import 'package:erp_system/features/screenTable/presentation/widgets/mainview/group/table_group.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -18,7 +17,7 @@ import '../../../data/models/dropdown_model/all_dropdown_model.dart';
 import '../../../data/models/screen_model.dart';
 import '../../manager/addEdit/add_edit_cubit.dart';
 import '../../manager/getTable/get_table_cubit.dart';
-import 'general/table_general.dart';
+import '../../views/screen_table.dart';
 
 class BuildAlertAdd extends StatefulWidget {
   const BuildAlertAdd(
@@ -46,12 +45,8 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
 
   @override
   void initState() {
-    myListCategory = widget.pageData.tableSrc == AppStrings.tableGroup
-        ? TableGroup.listCategory
-        : TableGeneral.listCategory;
-    myAllDropdownModelList = widget.pageData.tableSrc == AppStrings.tableGroup
-        ? TableGroup.myAllDropdownModelList
-        : TableGeneral.myAllDropdownModelList;
+    myListCategory = ScreenTable.listCategory;
+    myAllDropdownModelList = ScreenTable.myAllDropdownModelList;
     super.initState();
   }
 

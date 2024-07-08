@@ -20,21 +20,21 @@ import '../../../../../generated/l10n.dart';
 import '../../../data/models/dropdown_model/all_dropdown_model.dart';
 import '../../../data/models/tap_model.dart';
 import '../../manager/getTable/get_table_cubit.dart';
-import '../mainview/group/table_group.dart';
+import '../../views/screen_table.dart';
 import 'custom_table_add_edit_.dart';
 
-class AddViewBody extends StatefulWidget {
-  const AddViewBody(
+class AddExcelViewBody extends StatefulWidget {
+  const AddExcelViewBody(
       {super.key, required this.pageData, required this.listKey, this.tapData});
   final ListTaps? tapData;
   final Pages pageData;
   final List<dynamic> listKey;
 
   @override
-  State<AddViewBody> createState() => _AddViewBodyState();
+  State<AddExcelViewBody> createState() => _AddExcelViewBodyState();
 }
 
-class _AddViewBodyState extends State<AddViewBody> {
+class _AddExcelViewBodyState extends State<AddExcelViewBody> {
   String? lang;
   GlobalKey<FormState> formKey = GlobalKey();
   Map<String, dynamic> singleObject = {};
@@ -50,7 +50,7 @@ class _AddViewBodyState extends State<AddViewBody> {
 
   @override
   void initState() {
-    myAllDropdownModelList = TableGroup.myAllDropdownModelList;
+    myAllDropdownModelList = ScreenTable.myAllDropdownModelList;
     super.initState();
   }
 
@@ -101,31 +101,36 @@ class _AddViewBodyState extends State<AddViewBody> {
                         children: [
                           ...List.generate(categoryList.length, (index) {
                             String categoryName = categoryList[index];
-                            return Padding(
-                              padding: const EdgeInsets.only(bottom: 16),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 12, vertical: 8),
-                                      decoration: BoxDecoration(
-                                          color: AppColors.grey.withOpacity(.4),
-                                          borderRadius:
-                                              BorderRadius.circular(15)),
-                                      child: Text(
-                                        categoryName,
-                                        style: AppStyles.textStyle18
-                                            .copyWith(color: Colors.black),
-                                      )),
-                                  ...getMyWidgetList(
-                                    listData: listSetup,
-                                    categoryName: categoryName,
-                                    // show: true
-                                  ),
-                                ],
-                              ),
+                            List<Widget> widgetList = getMyWidgetList(
+                              listData: listSetup,
+                              categoryName: categoryName,
                             );
+                            return widgetList.isNotEmpty
+                                ? Padding(
+                                    padding: const EdgeInsets.only(bottom: 16),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 12, vertical: 8),
+                                            decoration: BoxDecoration(
+                                                color: AppColors.grey
+                                                    .withOpacity(.4),
+                                                borderRadius:
+                                                    BorderRadius.circular(15)),
+                                            child: Text(
+                                              categoryName,
+                                              style: AppStyles.textStyle18
+                                                  .copyWith(
+                                                      color: Colors.black),
+                                            )),
+                                        ...widgetList,
+                                      ],
+                                    ),
+                                  )
+                                : const SizedBox();
                           }),
                           StatefulBuilder(
                             builder: (context, ssetState) {
@@ -144,7 +149,7 @@ class _AddViewBodyState extends State<AddViewBody> {
                                   listHeader: listHeader,
                                   listColumn: listColumn,
                                   allDropdownModelList:
-                                      TableGroup.myAllDropdownModelList,
+                                      ScreenTable.myAllDropdownModelList,
                                   typeView: "Add",
                                 ),
                               );

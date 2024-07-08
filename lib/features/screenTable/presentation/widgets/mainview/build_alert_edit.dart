@@ -21,8 +21,7 @@ import '../../../data/repositories/screen_repo_impl.dart';
 import '../../manager/addEdit/add_edit_cubit.dart';
 import '../../manager/getById/get_by_id_cubit.dart';
 import '../../manager/getTable/get_table_cubit.dart';
-import 'general/table_general.dart';
-import 'group/table_group.dart';
+import '../../views/screen_table.dart';
 
 class BuildAlertEdit extends StatefulWidget {
   const BuildAlertEdit(
@@ -52,15 +51,11 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
 
   @override
   void initState() {
-    myListCategory = widget.pageData.tableSrc == AppStrings.tableGroup
-        ? TableGroup.listCategory
-        : TableGeneral.listCategory;
-    myAllDropdownModelList = widget.pageData.tableSrc == AppStrings.tableGroup
-        ? TableGroup.myAllDropdownModelList
-        : TableGeneral.myAllDropdownModelList;
+    myListCategory = ScreenTable.listCategory;
+    myAllDropdownModelList = ScreenTable.myAllDropdownModelList;
     id = widget.pageData.tableSrc == AppStrings.tableGroup
-        ? TableGroup.rowData[0].toString()
-        : TableGeneral.rowData[0][widget.pageData.primary].toString();
+        ? ScreenTable.rowData[0].toString()
+        : ScreenTable.rowData[0][widget.pageData.primary].toString();
     super.initState();
   }
 

@@ -334,13 +334,13 @@ class _CustomTableGeneralState extends State<CustomTableGeneral> {
                   selectedRows[indexRow] == true ? Colors.white : Colors.black),
         );
       case "checkbox":
-        if (value == "true") {
+        if (value == "true" || value == "1") {
           return const Icon(
             Icons.check,
             size: 20,
             color: Colors.green,
           );
-        } else if (value == "false") {
+        } else {
           return const Icon(
             Icons.close,
             size: 20,
