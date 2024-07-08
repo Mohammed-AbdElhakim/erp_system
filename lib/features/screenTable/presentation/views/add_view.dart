@@ -13,6 +13,7 @@ import '../../../../core/utils/app_strings.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
 import '../../data/models/screen_model.dart';
 import '../widgets/editSrc/addOrEditExcel/add_excel_view_body.dart';
+import '../widgets/editSrc/addSalesEdit/add_sales.dart';
 
 class AddView extends StatelessWidget {
   const AddView(
@@ -68,7 +69,11 @@ class AddView extends StatelessWidget {
           listKey: listKey,
         );
       case AppStrings.addSalesEdit:
-        return;
+        return AddSales(
+          tapData: state.tapModel.list[0],
+          pageData: pageData,
+          listKey: listKey,
+        );
     }
   }
 }
