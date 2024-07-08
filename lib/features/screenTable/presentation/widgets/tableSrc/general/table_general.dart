@@ -11,8 +11,8 @@ import '../../../../data/models/screen_model.dart';
 import '../../../manager/getAllDropdownList/get_all_dropdown_list_cubit.dart';
 import '../../../manager/getTable/get_table_cubit.dart';
 import '../../../views/screen_table.dart';
-import '../build_alert_search.dart';
-import '../pagination_widget.dart';
+import '../../build_alert_search.dart';
+import '../../pagination_widget.dart';
 import 'custom_table_general.dart';
 
 class TableGeneral extends StatefulWidget {

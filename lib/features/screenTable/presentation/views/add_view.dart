@@ -12,7 +12,7 @@ import '../../../../core/models/menu_model/pages.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
 import '../../data/models/screen_model.dart';
-import '../widgets/addOrEditExcel/add_excel_view_body.dart';
+import '../widgets/editSrc/addOrEditExcel/add_excel_view_body.dart';
 
 class AddView extends StatelessWidget {
   const AddView(

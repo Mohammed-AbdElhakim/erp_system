@@ -21,7 +21,7 @@ import '../../manager/addEdit/add_edit_cubit.dart';
 import '../../manager/delete/delete_cubit.dart';
 import '../../manager/getPageDetailsTable/get_page_details_table_cubit.dart';
 import '../../views/screen_table.dart';
-import '../mainview/pagination_widget.dart';
+import '../pagination_widget.dart';
 import 'build_alert_add_details.dart';
 import 'build_alert_delete_details.dart';
 import 'table_page_details_widget.dart';

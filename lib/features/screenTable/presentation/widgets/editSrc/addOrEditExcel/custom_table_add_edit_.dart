@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:linked_scroll_controller/linked_scroll_controller.dart';
 
-import '../../../../../core/models/menu_model/pages.dart';
-import '../../../../../core/utils/app_colors.dart';
-import '../../../../../core/utils/app_styles.dart';
-import '../../../../../core/utils/methods.dart';
-import '../../../data/models/dropdown_model/all_dropdown_model.dart';
-import '../../../data/models/item_list_setup_model.dart';
-import '../../../data/models/tap_model.dart';
-import '../../views/screen_table.dart';
+import '../../../../../../core/models/menu_model/pages.dart';
+import '../../../../../../core/utils/app_colors.dart';
+import '../../../../../../core/utils/app_styles.dart';
+import '../../../../../../core/utils/methods.dart';
+import '../../../../data/models/dropdown_model/all_dropdown_model.dart';
+import '../../../../data/models/item_list_setup_model.dart';
+import '../../../../data/models/tap_model.dart';
+import '../../../views/screen_table.dart';
 import 'alert_dialog_add_widget.dart';
 import 'alert_dialog_edit_widget.dart';
 

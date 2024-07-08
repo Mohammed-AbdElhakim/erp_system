@@ -14,7 +14,7 @@ import '../../../data/models/dropdown_model/all_dropdown_model.dart';
 import '../../../data/models/screen_model.dart';
 import '../../../data/models/tap_model.dart';
 import '../../views/screen_table.dart';
-import '../mainview/build_alert_search.dart';
+import '../build_alert_search.dart';
 import 'tap_details_widget_body.dart';
 
 typedef OnTapSearch<T> = void Function(T myStatement);
