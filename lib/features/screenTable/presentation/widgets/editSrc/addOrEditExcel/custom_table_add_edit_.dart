@@ -13,7 +13,7 @@ import '../../../views/screen_table.dart';
 import 'alert_dialog_add_widget.dart';
 import 'alert_dialog_edit_widget.dart';
 
-typedef OnTapAdd<T> = void Function(T data);
+typedef OnTapAction<T> = void Function(T data);
 
 class CustomTableAddEdit extends StatefulWidget {
   const CustomTableAddEdit({
@@ -24,7 +24,7 @@ class CustomTableAddEdit extends StatefulWidget {
     required this.allDropdownModelList,
     required this.pageData,
     this.tapData,
-    required this.onTapAdd,
+    required this.onTapAction,
     required this.oldTableList,
     required this.typeView,
   });
@@ -35,7 +35,7 @@ class CustomTableAddEdit extends StatefulWidget {
   final List<ItemListSetupModel> listColumn;
   final List<AllDropdownModel> allDropdownModelList;
   final List<Map<String, dynamic>> oldTableList;
-  final OnTapAdd<List<Map<String, dynamic>>> onTapAdd;
+  final OnTapAction<List<Map<String, dynamic>>> onTapAction;
   final String typeView;
 
   @override
@@ -90,10 +90,10 @@ class _CustomTableAddEditState extends State<CustomTableAddEdit> {
                         onTapAdd: (data) {
                           if (widget.typeView == "Add") {
                             tableListInAddView.add(data);
-                            widget.onTapAdd(tableListInAddView);
+                            widget.onTapAction(tableListInAddView);
                           } else if (widget.typeView == "Edit") {
                             tableListInEditView.add(data);
-                            widget.onTapAdd(tableListInEditView);
+                            widget.onTapAction(tableListInEditView);
                           }
                         },
                       ),
@@ -131,12 +131,12 @@ class _CustomTableAddEditState extends State<CustomTableAddEdit> {
                               tableListInAddView.removeAt(indexSelect);
                               tableListInAddView.insert(indexSelect, data);
                               indexSelect = -1;
-                              widget.onTapAdd(tableListInAddView);
+                              widget.onTapAction(tableListInAddView);
                             } else if (widget.typeView == "Edit") {
                               tableListInEditView.removeAt(indexSelect);
                               tableListInEditView.insert(indexSelect, data);
                               indexSelect = -1;
-                              widget.onTapAdd(tableListInEditView);
+                              widget.onTapAction(tableListInEditView);
                             }
                           },
                           dataOld: widget.typeView == "Add"
@@ -161,9 +161,16 @@ class _CustomTableAddEditState extends State<CustomTableAddEdit> {
             IconButton(
               onPressed: () {
                 if (indexSelect != -1) {
-                  widget.typeView == "Add"
-                      ? tableListInAddView.removeAt(indexSelect)
-                      : tableListInEditView.removeAt(indexSelect);
+                  if (widget.typeView == "Add") {
+                    tableListInAddView.removeAt(indexSelect);
+                    widget.onTapAction(tableListInAddView);
+                  } else if (widget.typeView == "Edit") {
+                    tableListInEditView.removeAt(indexSelect);
+                    widget.onTapAction(tableListInEditView);
+                  }
+                  // widget.typeView == "Add"
+                  //     ? tableListInAddView.removeAt(indexSelect)
+                  //     : tableListInEditView.removeAt(indexSelect);
                   indexSelect = -1;
                   setState(() {});
                 }

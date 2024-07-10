@@ -254,7 +254,7 @@ class _EditExcelViewBodyState extends State<EditExcelViewBody> {
                                               listColumn: listColumn,
                                               allDropdownModelList: ScreenTable
                                                   .myAllDropdownModelList,
-                                              onTapAdd: (data) {
+                                              onTapAction: (data) {
                                                 tableList = data;
                                               },
                                               typeView: "Edit",

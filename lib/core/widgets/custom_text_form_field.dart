@@ -12,6 +12,7 @@ class CustomTextFormField extends StatelessWidget {
     this.onChanged,
     this.onSaved,
     this.isValidator = true,
+    this.readOnly,
     this.keyboardType,
     this.obscureText = false,
     this.prefixIcon,
@@ -26,6 +27,7 @@ class CustomTextFormField extends StatelessWidget {
   final bool? isValidator;
   final bool obscureText;
   final bool? isBorder;
+  final bool? readOnly;
   final Widget? prefixIcon;
 
   @override
@@ -46,9 +48,12 @@ class CustomTextFormField extends StatelessWidget {
       onSaved: onSaved,
       keyboardType: keyboardType,
       obscureText: obscureText,
+      readOnly: readOnly ?? false,
       decoration: InputDecoration(
         hintText: hintText,
         hintStyle: TextStyle(color: AppColors.grey),
+        filled: readOnly ?? false,
+        fillColor: readOnly == true ? Colors.grey.shade300 : null,
         contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
         border: buildBorder(isBorder: isBorder),
         enabledBorder:

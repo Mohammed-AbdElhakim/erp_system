@@ -137,7 +137,7 @@ class _AddExcelViewBodyState extends State<AddExcelViewBody> {
                               return Padding(
                                 padding: const EdgeInsets.only(bottom: 16),
                                 child: CustomTableAddEdit(
-                                  onTapAdd: (data) {
+                                  onTapAction: (data) {
                                     ssetState(() {
                                       tableList = data;
                                     });
