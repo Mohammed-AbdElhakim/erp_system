@@ -334,7 +334,7 @@ class _SalesAlertDialogEditWidgetState
                               double productPrice =
                                   AddSales.listProductPrices.firstWhere(
                                         (element) =>
-                                            element['PPID'] == proID &&
+                                            element['ProductID'] == proID &&
                                             element['CustomerCategoryID'] ==
                                                 customerCategoryID,
                                         orElse: () => {},

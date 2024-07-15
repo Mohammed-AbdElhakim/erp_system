@@ -239,13 +239,15 @@ class _SalesAlertDialogAddWidgetState extends State<SalesAlertDialogAddWidget> {
                                             ['ProName'] ??
                                         ''),
                             onChanged: (value) {
+                              print(
+                                  "ريان=======================================");
                               int proID = AddSales.listProduct.firstWhere(
                                   (element) =>
                                       element['ProName'] == value)['ProID'];
                               double productPrice =
                                   AddSales.listProductPrices.firstWhere(
                                         (element) =>
-                                            element['PPID'] == proID &&
+                                            element['ProductID'] == proID &&
                                             element['CustomerCategoryID'] ==
                                                 customerCategoryID,
                                         orElse: () => {},
