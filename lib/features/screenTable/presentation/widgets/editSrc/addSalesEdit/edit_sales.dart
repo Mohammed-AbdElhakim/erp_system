@@ -1,4 +1,5 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
+import 'package:dio/dio.dart';
 import 'package:erp_system/core/widgets/custom_error_massage.dart';
 import 'package:erp_system/core/widgets/custom_loading_widget.dart';
 import 'package:erp_system/features/screenTable/data/models/item_list_setup_model.dart';
@@ -10,7 +11,9 @@ import 'package:intl/intl.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 import '../../../../../../core/helper/AlertDialog/custom_alert_dialog.dart';
+import '../../../../../../core/helper/SharedPreferences/pref.dart';
 import '../../../../../../core/models/menu_model/pages.dart';
+import '../../../../../../core/utils/api_service.dart';
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_strings.dart';
 import '../../../../../../core/utils/app_styles.dart';
@@ -25,7 +28,7 @@ import '../../../manager/getExpensesMaster/get_expenses_master_cubit.dart';
 import '../../../manager/getListSetups/get_list_setups_cubit.dart';
 import '../../../manager/getTable/get_table_cubit.dart';
 import '../../../views/screen_table.dart';
-import '../addOrEditExcel/custom_table_add_edit_.dart';
+import 'sales_table_add_edit_.dart';
 
 class EditSales extends StatefulWidget {
   const EditSales(
@@ -34,6 +37,10 @@ class EditSales extends StatefulWidget {
   final Pages pageData;
   final List<dynamic> listKey;
   // static List<Map<String, dynamic>> tableList = [];
+  static List<dynamic> listCustomerAccount = [];
+  static List<dynamic> listProduct = [];
+  static List<dynamic> listProductPrices = [];
+  static int userId = -1;
 
   @override
   State<EditSales> createState() => _EditSalesState();
@@ -93,6 +100,7 @@ class _EditSalesState extends State<EditSales> {
     id = widget.pageData.tableSrc == AppStrings.tableGroup
         ? ScreenTable.rowData[0].toString()
         : ScreenTable.rowData[0][widget.pageData.primary].toString();
+    getDataList();
     super.initState();
   }
 
@@ -281,7 +289,7 @@ class _EditSalesState extends State<EditSales> {
                                               return Padding(
                                                 padding: const EdgeInsets.only(
                                                     bottom: 16),
-                                                child: CustomTableAddEdit(
+                                                child: SalesTableAddEdit(
                                                   oldTableList: listDataInTable,
                                                   tapData: widget.tapData,
                                                   pageData: widget.pageData,
@@ -1007,13 +1015,6 @@ class _EditSalesState extends State<EditSales> {
                           AppStyles.textStyle16.copyWith(color: Colors.black),
                       closedFillColor: Colors.transparent,
                       closedBorder: Border.all(color: AppColors.blueDark)),
-                  // validator: (value) {
-                  //   if (value?.isEmpty ?? true) {
-                  //     return S.of(context).field_is_required;
-                  //   } else {
-                  //     return null;
-                  //   }
-                  // },
                   items: myListDrop.isEmpty
                       ? [""]
                       : List.generate(myListDrop.length,
@@ -1022,6 +1023,9 @@ class _EditSalesState extends State<EditSales> {
                     ItemDrop ii = myListDrop!
                         .firstWhere((element) => element.text == value);
                     singleObject.addAll({item.searchName!.toString(): ii.id});
+                    if (item.columnName == "CustomerID") {
+                      EditSales.userId = int.parse(ii.id ?? "-1");
+                    }
                   },
                 ),
               ],
@@ -1827,5 +1831,46 @@ class _EditSalesState extends State<EditSales> {
 
   double taxPercent({required double total, required double tax}) {
     return 100 * tax / total;
+  }
+
+  void getDataList() async {
+    try {
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
+              "";
+      String token =
+          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      Map<String, dynamic> dataProduct = await ApiService(Dio()).post(
+        endPoint: "web/Structure/getDataGlobal",
+        data: {"TableName": "Product"},
+        headers: {
+          "Authorization": "Bearer $token",
+          "CompanyKey": companyKey,
+        },
+      );
+
+      Map<String, dynamic> dataProductPrices = await ApiService(Dio()).post(
+        endPoint: "web/Structure/getDataGlobal",
+        data: {"TableName": "ProductPrices"},
+        headers: {
+          "Authorization": "Bearer $token",
+          "CompanyKey": companyKey,
+        },
+      );
+      Map<String, dynamic> dataCustomerAccount = await ApiService(Dio()).post(
+        endPoint: "web/Structure/getDataGlobal",
+        data: {"TableName": "CustomerAccount"},
+        headers: {
+          "Authorization": "Bearer $token",
+          "CompanyKey": companyKey,
+        },
+      );
+
+      EditSales.listProduct = dataProduct['dynamicList'];
+      EditSales.listProductPrices = dataProductPrices['dynamicList'];
+      EditSales.listCustomerAccount = dataCustomerAccount['dynamicList'];
+    } catch (e) {
+      print(e);
+    }
   }
 }

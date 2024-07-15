@@ -1,17 +1,20 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
+import 'package:dio/dio.dart';
 import 'package:erp_system/core/widgets/custom_error_massage.dart';
 import 'package:erp_system/core/widgets/custom_loading_widget.dart';
 import 'package:erp_system/features/screenTable/data/models/item_list_setup_model.dart';
 import 'package:erp_system/features/screenTable/presentation/manager/addEditExpenses/add_edit_expenses_cubit.dart';
 import 'package:erp_system/features/screenTable/presentation/manager/getListSetups/get_list_setups_cubit.dart';
-import 'package:erp_system/features/screenTable/presentation/widgets/editSrc/addSalesEdit/sales_widget.dart';
+import 'package:erp_system/features/screenTable/presentation/widgets/editSrc/addSalesEdit/sales_table_add_edit_.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 import '../../../../../../core/helper/AlertDialog/custom_alert_dialog.dart';
+import '../../../../../../core/helper/SharedPreferences/pref.dart';
 import '../../../../../../core/models/menu_model/pages.dart';
+import '../../../../../../core/utils/api_service.dart';
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_strings.dart';
 import '../../../../../../core/utils/app_styles.dart';
@@ -22,7 +25,6 @@ import '../../../../data/models/dropdown_model/all_dropdown_model.dart';
 import '../../../../data/models/tap_model.dart';
 import '../../../manager/getTable/get_table_cubit.dart';
 import '../../../views/screen_table.dart';
-import '../addOrEditExcel/custom_table_add_edit_.dart';
 
 class AddSales extends StatefulWidget {
   const AddSales(
@@ -30,6 +32,10 @@ class AddSales extends StatefulWidget {
   final ListTaps? tapData;
   final Pages pageData;
   final List<dynamic> listKey;
+  static List<dynamic> listCustomerAccount = [];
+  static List<dynamic> listProduct = [];
+  static List<dynamic> listProductPrices = [];
+  static int userId = -1;
 
   @override
   State<AddSales> createState() => _AddSalesState();
@@ -75,7 +81,6 @@ class _AddSalesState extends State<AddSales> {
   TextEditingController taxController = TextEditingController();
   TextEditingController totalAfterTaxController = TextEditingController();
   TextEditingController shippingPriceController = TextEditingController();
-
   @override
   void didChangeDependencies() {
     lang = Localizations.localeOf(context).toString();
@@ -85,6 +90,7 @@ class _AddSalesState extends State<AddSales> {
   @override
   void initState() {
     myAllDropdownModelList = ScreenTable.myAllDropdownModelList;
+    getDataList();
     super.initState();
   }
 
@@ -176,7 +182,7 @@ class _AddSalesState extends State<AddSales> {
                               builder: (context, ssetState) {
                                 return Padding(
                                   padding: const EdgeInsets.only(bottom: 16),
-                                  child: CustomTableAddEdit(
+                                  child: SalesTableAddEdit(
                                     onTapAction: (data) {
                                       total = 0.0;
                                       ssetState(() {
@@ -337,86 +343,98 @@ class _AddSalesState extends State<AddSales> {
                             const SizedBox(
                               height: 24,
                             ),
-                            createForm(listSetup),
+                            // createForm(listSetup),
                             // const SizedBox(
                             //   height: 24,
                             // ),
-                            // ...List.generate(
-                            //     listHeaderSales.length,
-                            //     (index) => Container(
-                            //           decoration: BoxDecoration(
-                            //               border: BorderDirectional(
-                            //             top: const BorderSide(color: Colors.grey),
-                            //             start:
-                            //                 const BorderSide(color: Colors.grey),
-                            //             end: const BorderSide(color: Colors.grey),
-                            //             bottom: index ==
-                            //                     listHeaderSales.length - 1
-                            //                 ? const BorderSide(color: Colors.grey)
-                            //                 : BorderSide.none,
-                            //           )),
-                            //           child: Row(
-                            //             children: [
-                            //               Expanded(
-                            //                 child: Container(
-                            //                   height: 55,
-                            //                   padding: const EdgeInsets.symmetric(
-                            //                       horizontal: 8, vertical: 5),
-                            //                   decoration: BoxDecoration(
-                            //                       border: const BorderDirectional(
-                            //                         end: BorderSide(
-                            //                             color: Colors.grey,
-                            //                             width: .5),
-                            //                       ),
-                            //                       color: listHeaderSales[index] ==
-                            //                                   "الاجمالى" ||
-                            //                               listHeaderSales[
-                            //                                       index] ==
-                            //                                   "الاجل على العميل" ||
-                            //                               listHeaderSales[
-                            //                                       index] ==
-                            //                                   "عدد الاقساط" ||
-                            //                               listHeaderSales[
-                            //                                       index] ==
-                            //                                   "تاريخ اول قسط" ||
-                            //                               listHeaderSales[
-                            //                                       index] ==
-                            //                                   "شهور القسط"
-                            //                           ? Colors.cyanAccent
-                            //                           : null),
-                            //                   alignment: AlignmentDirectional
-                            //                       .centerStart,
-                            //                   child: Text(listHeaderSales[index]),
-                            //                 ),
-                            //               ),
-                            //               Expanded(
-                            //                 flex: 2,
-                            //                 child: Container(
-                            //                   height: 55,
-                            //                   padding: const EdgeInsets.symmetric(
-                            //                       horizontal: 8, vertical: 5),
-                            //                   decoration: BoxDecoration(
-                            //                       border: const BorderDirectional(
-                            //                         start: BorderSide(
-                            //                             color: Colors.grey,
-                            //                             width: .7),
-                            //                       ),
-                            //                       color: listHeaderSales[index] ==
-                            //                                   "الاجمالى" ||
-                            //                               listHeaderSales[
-                            //                                       index] ==
-                            //                                   "الاجل على العميل"
-                            //                           ? Colors.cyanAccent
-                            //                           : null),
-                            //                   alignment: Alignment.center,
-                            //                   child: getWidgetSales(
-                            //                       title: listHeaderSales[index],
-                            //                       listSetup: listSetup),
-                            //                 ),
-                            //               ),
-                            //             ],
-                            //           ),
-                            //         )),
+                            ...List.generate(
+                                listHeaderSales.length,
+                                (index) => Container(
+                                      decoration: BoxDecoration(
+                                          border: BorderDirectional(
+                                        top: const BorderSide(
+                                            color: Colors.grey),
+                                        start: const BorderSide(
+                                            color: Colors.grey),
+                                        end: const BorderSide(
+                                            color: Colors.grey),
+                                        bottom:
+                                            index == listHeaderSales.length - 1
+                                                ? const BorderSide(
+                                                    color: Colors.grey)
+                                                : BorderSide.none,
+                                      )),
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            child: Container(
+                                              height: 55,
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 8,
+                                                      vertical: 5),
+                                              decoration: BoxDecoration(
+                                                  border:
+                                                      const BorderDirectional(
+                                                    end: BorderSide(
+                                                        color: Colors.grey,
+                                                        width: .5),
+                                                  ),
+                                                  color: listHeaderSales[
+                                                                  index] ==
+                                                              "الاجمالى" ||
+                                                          listHeaderSales[
+                                                                  index] ==
+                                                              "الاجل على العميل" ||
+                                                          listHeaderSales[
+                                                                  index] ==
+                                                              "عدد الاقساط" ||
+                                                          listHeaderSales[
+                                                                  index] ==
+                                                              "تاريخ اول قسط" ||
+                                                          listHeaderSales[
+                                                                  index] ==
+                                                              "شهور القسط"
+                                                      ? Colors.cyanAccent
+                                                      : null),
+                                              alignment: AlignmentDirectional
+                                                  .centerStart,
+                                              child:
+                                                  Text(listHeaderSales[index]),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            flex: 2,
+                                            child: Container(
+                                              height: 55,
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 8,
+                                                      vertical: 5),
+                                              decoration: BoxDecoration(
+                                                  border:
+                                                      const BorderDirectional(
+                                                    start: BorderSide(
+                                                        color: Colors.grey,
+                                                        width: .7),
+                                                  ),
+                                                  color: listHeaderSales[
+                                                                  index] ==
+                                                              "الاجمالى" ||
+                                                          listHeaderSales[
+                                                                  index] ==
+                                                              "الاجل على العميل"
+                                                      ? Colors.cyanAccent
+                                                      : null),
+                                              alignment: Alignment.center,
+                                              child: getWidgetSales(
+                                                  title: listHeaderSales[index],
+                                                  listSetup: listSetup),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )),
                             const SizedBox(
                               height: 24,
                             )
@@ -504,9 +522,12 @@ class _AddSalesState extends State<AddSales> {
                                                 cashCollectedController.text
                                                     .trim())
                                             : 0.0,
-                                        "shippingPrice": double.parse(
-                                            shippingPriceController.text
-                                                .trim()),
+                                        "shippingPrice": shippingPriceController
+                                                .text.isNotEmpty
+                                            ? double.parse(
+                                                shippingPriceController.text
+                                                    .trim())
+                                            : 0.0,
                                         "remind": double.parse(
                                             deadlineClientController.text
                                                 .trim()),
@@ -773,13 +794,6 @@ class _AddSalesState extends State<AddSales> {
                           AppStyles.textStyle16.copyWith(color: Colors.black),
                       closedFillColor: Colors.transparent,
                       closedBorder: Border.all(color: AppColors.blueDark)),
-                  // validator: (value) {
-                  //   if (value?.isEmpty ?? true) {
-                  //     return S.of(context).field_is_required;
-                  //   } else {
-                  //     return null;
-                  //   }
-                  // },
                   items: myListDrop!.isEmpty
                       ? [""]
                       : List.generate(myListDrop.length,
@@ -788,6 +802,9 @@ class _AddSalesState extends State<AddSales> {
                     ItemDrop ii = myListDrop!
                         .firstWhere((element) => element.text == value);
                     singleObject.addAll({item.searchName!.toString(): ii.id});
+                    if (item.columnName == "CustomerID") {
+                      AddSales.userId = int.parse(ii.id ?? "-1");
+                    }
                   },
                 ),
               ],
@@ -839,8 +856,10 @@ class _AddSalesState extends State<AddSales> {
     return list;
   }
 
-  /*getWidgetSales(
-      {required String title, required List<ItemListSetupModel> listSetup}) {
+  getWidgetSales({
+    required String title,
+    required List<ItemListSetupModel> listSetup,
+  }) {
     switch (title) {
       case "الاجمالى":
         return Text(
@@ -848,49 +867,59 @@ class _AddSalesState extends State<AddSales> {
           style: TextStyle(color: Colors.red, fontSize: 20),
         );
       case "المحصل نقدا":
-        return CustomTextFormField(
-          controller: cashCollectedController,
-          hintText: '',
-          isValidator: false,
-          keyboardType: TextInputType.number,
-          onChanged: (value) {
-            totalAfterTaxController.text = totalAfterTax(
-              total: total,
-              shippingPrice: shippingPriceController.text.isEmpty
-                  ? 0
-                  : double.parse(shippingPriceController.text),
-              discountTaxPercent: discountTaxPercentController.text.isEmpty
-                  ? 0
-                  : double.parse(discountTaxPercentController.text),
-              discountPercent: discountPercentController.text.isEmpty
-                  ? 0
-                  : double.parse(discountPercentController.text),
-              taxPercent: taxPercentController.text.isEmpty
-                  ? 0
-                  : double.parse(taxPercentController.text),
-            ).toString();
-            deadlineClient = deadlineClientValue(
-              total: total,
-              shippingPrice: shippingPriceController.text.isEmpty
-                  ? 0
-                  : double.parse(shippingPriceController.text),
-              discountTaxPercent: discountTaxPercentController.text.isEmpty
-                  ? 0
-                  : double.parse(discountTaxPercentController.text),
-              discountPercent: discountPercentController.text.isEmpty
-                  ? 0
-                  : double.parse(discountPercentController.text),
-              taxPercent: taxPercentController.text.isEmpty
-                  ? 0
-                  : double.parse(taxPercentController.text),
-              cashCollected: cashCollectedController.text.isEmpty
-                  ? 0
-                  : double.parse(cashCollectedController.text),
-            );
-            setState(() {});
-          },
+        // cashCollectedController.text =
+        //     oldDataMaster['Contract']['POPaid'].toString();
+        return StatefulBuilder(
+          builder: (context, wsetState) => CustomTextFormField(
+            controller: cashCollectedController,
+            hintText: '',
+            isValidator: false,
+            keyboardType: TextInputType.number,
+            onChanged: (value) {
+              print(value);
+              totalAfterTaxController.text = totalAfterTax(
+                total: total,
+                shippingPrice: shippingPriceController.text.isEmpty
+                    ? 0
+                    : double.parse(shippingPriceController.text),
+                discountTaxPercent: discountTaxPercentController.text.isEmpty
+                    ? 0
+                    : double.parse(discountTaxPercentController.text),
+                discountPercent: discountPercentController.text.isEmpty
+                    ? 0
+                    : double.parse(discountPercentController.text),
+                taxPercent: taxPercentController.text.isEmpty
+                    ? 0
+                    : double.parse(taxPercentController.text),
+              ).toString();
+              deadlineClientController.text = deadlineClientValue(
+                total: total,
+                shippingPrice: shippingPriceController.text.isEmpty
+                    ? 0
+                    : double.parse(shippingPriceController.text),
+                discountTaxPercent: discountTaxPercentController.text.isEmpty
+                    ? 0
+                    : double.parse(discountTaxPercentController.text),
+                discountPercent: discountPercentController.text.isEmpty
+                    ? 0
+                    : double.parse(discountPercentController.text),
+                taxPercent: taxPercentController.text.isEmpty
+                    ? 0
+                    : double.parse(taxPercentController.text),
+                cashCollected: cashCollectedController.text.isEmpty
+                    ? 0
+                    : double.parse(cashCollectedController.text),
+              ).toString();
+              // singleObject['Contract'].updateAll((key, value) => key == "POPaid"
+              //     ? double.parse(cashCollectedController.text)
+              //     : value);
+
+              wsetState(() {});
+            },
+          ),
         );
       case "عدد الاقساط":
+        numberOfInstallmentsController.text = "";
         return CustomTextFormField(
           controller: numberOfInstallmentsController,
           hintText: '',
@@ -917,20 +946,22 @@ class _AddSalesState extends State<AddSales> {
                 }
               },
               child: Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      border: Border.all(color: AppColors.blueDark)),
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.all(8),
-                  child: Text(
-                    date,
-                    textAlign: TextAlign.center,
-                    style: AppStyles.textStyle14.copyWith(color: Colors.black),
-                  )),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    border: Border.all(color: AppColors.blueDark)),
+                alignment: Alignment.center,
+                padding: const EdgeInsets.all(8),
+                child: Text(
+                  date,
+                  textAlign: TextAlign.center,
+                  style: AppStyles.textStyle14.copyWith(color: Colors.black),
+                ),
+              ),
             );
           },
         );
       case "شهور القسط":
+        installmentMonthsController.text = "";
         return CustomTextFormField(
           controller: installmentMonthsController,
           hintText: '',
@@ -977,364 +1008,466 @@ class _AddSalesState extends State<AddSales> {
           onChanged: (value) {},
         );
       case "ضريبة خصم منبع":
-        return Row(
-          children: [
-            Expanded(
-              child: CustomTextFormField(
-                controller: discountTaxPercentController,
-                hintText: '',
-                isValidator: false,
-                keyboardType: TextInputType.number,
-                onChanged: (newValue) {
-                  discountTaxController.text = discountTax(
-                          discountTaxPercent:
-                              newValue.isEmpty ? 0 : double.parse(newValue),
-                          total: total,
-                          discountPercent: discountPercentController
-                                  .text.isEmpty
-                              ? 0
-                              : double.parse(discountPercentController.text))
-                      .toString();
-                  totalAfterTaxController.text = totalAfterTax(
-                    total: total,
-                    shippingPrice: shippingPriceController.text.isEmpty
-                        ? 0
-                        : double.parse(shippingPriceController.text),
-                    discountTaxPercent:
-                        discountTaxPercentController.text.isEmpty
-                            ? 0
-                            : double.parse(discountTaxPercentController.text),
-                    discountPercent: discountPercentController.text.isEmpty
-                        ? 0
-                        : double.parse(discountPercentController.text),
-                    taxPercent: taxPercentController.text.isEmpty
-                        ? 0
-                        : double.parse(taxPercentController.text),
-                  ).toString();
-
-                  deadlineClient = deadlineClientValue(
-                    total: total,
-                    shippingPrice: shippingPriceController.text.isEmpty
-                        ? 0
-                        : double.parse(shippingPriceController.text),
-                    discountTaxPercent:
-                        discountTaxPercentController.text.isEmpty
-                            ? 0
-                            : double.parse(discountTaxPercentController.text),
-                    discountPercent: discountPercentController.text.isEmpty
-                        ? 0
-                        : double.parse(discountPercentController.text),
-                    taxPercent: taxPercentController.text.isEmpty
-                        ? 0
-                        : double.parse(taxPercentController.text),
-                    cashCollected: cashCollectedController.text.isEmpty
-                        ? 0
-                        : double.parse(cashCollectedController.text),
-                  );
-                  setState(() {});
-                },
-              ),
-            ),
-            const SizedBox(
-              width: 12,
-            ),
-            Expanded(
-              flex: 2,
-              child: CustomTextFormField(
-                controller: discountTaxController,
-                hintText: '',
-                isValidator: false,
-                keyboardType: TextInputType.number,
-                onChanged: (newValue) {
-                  discountTaxPercentController.text = discountTaxPercent(
-                          totalAfterDiscount: totalAfterDiscount(
-                              total: total,
-                              discountPercent:
-                                  discountPercentController.text.isEmpty
-                                      ? 0
-                                      : double.parse(
-                                          discountPercentController.text)),
-                          discountTax:
-                              newValue.isEmpty ? 0 : double.parse(newValue))
-                      .toString();
-
-                  totalAfterTaxController.text = totalAfterTax(
-                    total: total,
-                    shippingPrice: shippingPriceController.text.isEmpty
-                        ? 0
-                        : double.parse(shippingPriceController.text),
-                    discountTaxPercent:
-                        discountTaxPercentController.text.isEmpty
-                            ? 0
-                            : double.parse(discountTaxPercentController.text),
-                    discountPercent: discountPercentController.text.isEmpty
-                        ? 0
-                        : double.parse(discountPercentController.text),
-                    taxPercent: taxPercentController.text.isEmpty
-                        ? 0
-                        : double.parse(taxPercentController.text),
-                  ).toString();
-
-                  deadlineClient = deadlineClientValue(
-                    total: total,
-                    shippingPrice: shippingPriceController.text.isEmpty
-                        ? 0
-                        : double.parse(shippingPriceController.text),
-                    discountTaxPercent:
-                        discountTaxPercentController.text.isEmpty
-                            ? 0
-                            : double.parse(discountTaxPercentController.text),
-                    discountPercent: discountPercentController.text.isEmpty
-                        ? 0
-                        : double.parse(discountPercentController.text),
-                    taxPercent: taxPercentController.text.isEmpty
-                        ? 0
-                        : double.parse(taxPercentController.text),
-                    cashCollected: cashCollectedController.text.isEmpty
-                        ? 0
-                        : double.parse(cashCollectedController.text),
-                  );
-                  setState(() {});
-                },
-              ),
-            ),
-          ],
-        );
-      case "خصم اجنبي":
-        return Row(
-          children: [
-            Expanded(
-              child: CustomTextFormField(
-                controller: discountPercentController,
-                hintText: '',
-                isValidator: false,
-                keyboardType: TextInputType.number,
-                onChanged: (newValue) {
-                  discountController.text = discount(
-                          total: total,
-                          discountPercent:
-                              newValue.isEmpty ? 0 : double.parse(newValue))
-                      .toString();
-                  totalAfterTaxController.text = totalAfterTax(
-                    total: total,
-                    shippingPrice: shippingPriceController.text.isEmpty
-                        ? 0
-                        : double.parse(shippingPriceController.text),
-                    discountTaxPercent:
-                        discountTaxPercentController.text.isEmpty
-                            ? 0
-                            : double.parse(discountTaxPercentController.text),
-                    discountPercent: discountPercentController.text.isEmpty
-                        ? 0
-                        : double.parse(discountPercentController.text),
-                    taxPercent: taxPercentController.text.isEmpty
-                        ? 0
-                        : double.parse(taxPercentController.text),
-                  ).toString();
-
-                  deadlineClient = deadlineClientValue(
-                    total: total,
-                    shippingPrice: shippingPriceController.text.isEmpty
-                        ? 0
-                        : double.parse(shippingPriceController.text),
-                    discountTaxPercent:
-                        discountTaxPercentController.text.isEmpty
-                            ? 0
-                            : double.parse(discountTaxPercentController.text),
-                    discountPercent: discountPercentController.text.isEmpty
-                        ? 0
-                        : double.parse(discountPercentController.text),
-                    taxPercent: taxPercentController.text.isEmpty
-                        ? 0
-                        : double.parse(taxPercentController.text),
-                    cashCollected: cashCollectedController.text.isEmpty
-                        ? 0
-                        : double.parse(cashCollectedController.text),
-                  );
-                  setState(() {});
-                },
-              ),
-            ),
-            const SizedBox(
-              width: 12,
-            ),
-            Expanded(
-              flex: 2,
-              child: CustomTextFormField(
-                controller: discountController,
-                hintText: '',
-                isValidator: false,
-                keyboardType: TextInputType.number,
-                onChanged: (newValue) {
-                  discountPercentController.text = discountPercent(
-                    total: total,
-                    discount: newValue.isEmpty ? 0 : double.parse(newValue),
-                  ).toString();
-                  totalAfterTaxController.text = totalAfterTax(
-                    total: total,
-                    shippingPrice: shippingPriceController.text.isEmpty
-                        ? 0
-                        : double.parse(shippingPriceController.text),
-                    discountTaxPercent:
-                        discountTaxPercentController.text.isEmpty
-                            ? 0
-                            : double.parse(discountTaxPercentController.text),
-                    discountPercent: discountPercentController.text.isEmpty
-                        ? 0
-                        : double.parse(discountPercentController.text),
-                    taxPercent: taxPercentController.text.isEmpty
-                        ? 0
-                        : double.parse(taxPercentController.text),
-                  ).toString();
-
-                  deadlineClient = deadlineClientValue(
-                    total: total,
-                    shippingPrice: shippingPriceController.text.isEmpty
-                        ? 0
-                        : double.parse(shippingPriceController.text),
-                    discountTaxPercent:
-                        discountTaxPercentController.text.isEmpty
-                            ? 0
-                            : double.parse(discountTaxPercentController.text),
-                    discountPercent: discountPercentController.text.isEmpty
-                        ? 0
-                        : double.parse(discountPercentController.text),
-                    taxPercent: taxPercentController.text.isEmpty
-                        ? 0
-                        : double.parse(taxPercentController.text),
-                    cashCollected: cashCollectedController.text.isEmpty
-                        ? 0
-                        : double.parse(cashCollectedController.text),
-                  );
-                  setState(() {});
-                },
-              ),
-            ),
-          ],
-        );
-      case "ضريبة القيمة المضافة":
-        return Row(
-          children: [
-            Expanded(
-              child: CustomTextFormField(
-                controller: taxPercentController,
-                hintText: '',
-                isValidator: false,
-                keyboardType: TextInputType.number,
-                onChanged: (newValue) {
-                  taxController.text = tax(
-                          taxPercent:
-                              newValue.isEmpty ? 0 : double.parse(newValue),
-                          total: total,
-                          discountPercent: discountPercentController
-                                  .text.isEmpty
-                              ? 0
-                              : double.parse(discountPercentController.text))
-                      .toString();
-                  totalAfterTaxController.text = totalAfterTax(
-                    total: total,
-                    shippingPrice: shippingPriceController.text.isEmpty
-                        ? 0
-                        : double.parse(shippingPriceController.text),
-                    discountTaxPercent:
-                        discountTaxPercentController.text.isEmpty
-                            ? 0
-                            : double.parse(discountTaxPercentController.text),
-                    discountPercent: discountPercentController.text.isEmpty
-                        ? 0
-                        : double.parse(discountPercentController.text),
-                    taxPercent: taxPercentController.text.isEmpty
-                        ? 0
-                        : double.parse(taxPercentController.text),
-                  ).toString();
-
-                  deadlineClient = deadlineClientValue(
-                    total: total,
-                    shippingPrice: shippingPriceController.text.isEmpty
-                        ? 0
-                        : double.parse(shippingPriceController.text),
-                    discountTaxPercent:
-                        discountTaxPercentController.text.isEmpty
-                            ? 0
-                            : double.parse(discountTaxPercentController.text),
-                    discountPercent: discountPercentController.text.isEmpty
-                        ? 0
-                        : double.parse(discountPercentController.text),
-                    taxPercent: taxPercentController.text.isEmpty
-                        ? 0
-                        : double.parse(taxPercentController.text),
-                    cashCollected: cashCollectedController.text.isEmpty
-                        ? 0
-                        : double.parse(cashCollectedController.text),
-                  );
-                  setState(() {});
-                },
-              ),
-            ),
-            const SizedBox(
-              width: 12,
-            ),
-            Expanded(
-              flex: 2,
-              child: CustomTextFormField(
-                controller: taxController,
-                hintText: '',
-                isValidator: false,
-                keyboardType: TextInputType.number,
-                onChanged: (newValue) {
-                  taxPercentController.text = taxPercent(
-                    total: total,
-                    tax: tax(
+        // discountTaxController.text =
+        //     oldDataMaster['Contract']['TaxCurrancy'].toString() ?? "";
+        // discountTaxPercentController.text = oldDataMaster['Contract']
+        //             ['TaxCurrancy'] !=
+        //         null
+        //     ? discountTaxPercent(
+        //             totalAfterDiscount: totalAfterDiscount(
+        //                 total:
+        //                     oldDataMaster['Contract']['TotalCurrancy'] ?? 0.0,
+        //                 discountPercent: oldDataMaster['Contract']
+        //                             ['DiscountCurrancy'] !=
+        //                         null
+        //                     ? discountPercent(
+        //                         total: oldDataMaster['Contract']
+        //                                 ['TotalCurrancy'] ??
+        //                             0.0,
+        //                         discount: oldDataMaster['Contract']
+        //                                 ['DiscountCurrancy'] ??
+        //                             0.0)
+        //                     : 0.0),
+        //             discountTax: discountTaxController.text.isEmpty
+        //                 ? 0.0
+        //                 : double.parse(discountTaxController.text))
+        //         .toString()
+        //     : "";
+        return StatefulBuilder(
+          builder: (context, wsetState) => Row(
+            children: [
+              Expanded(
+                child: CustomTextFormField(
+                  controller: discountTaxPercentController,
+                  hintText: '',
+                  isValidator: false,
+                  keyboardType: TextInputType.number,
+                  onChanged: (newValue) {
+                    discountTaxController.text = discountTax(
+                            discountTaxPercent:
+                                newValue.isEmpty ? 0 : double.parse(newValue),
+                            total: total,
+                            discountPercent: discountPercentController
+                                    .text.isEmpty
+                                ? 0
+                                : double.parse(discountPercentController.text))
+                        .toString();
+                    totalAfterTaxController.text = totalAfterTax(
                       total: total,
+                      shippingPrice: shippingPriceController.text.isEmpty
+                          ? 0
+                          : double.parse(shippingPriceController.text),
+                      discountTaxPercent:
+                          discountTaxPercentController.text.isEmpty
+                              ? 0
+                              : double.parse(discountTaxPercentController.text),
                       discountPercent: discountPercentController.text.isEmpty
                           ? 0
                           : double.parse(discountPercentController.text),
-                      taxPercent: newValue.isEmpty ? 0 : double.parse(newValue),
-                    ),
-                  ).toString();
-                  totalAfterTaxController.text = totalAfterTax(
-                    total: total,
-                    shippingPrice: shippingPriceController.text.isEmpty
-                        ? 0
-                        : double.parse(shippingPriceController.text),
-                    discountTaxPercent:
-                        discountTaxPercentController.text.isEmpty
-                            ? 0
-                            : double.parse(discountTaxPercentController.text),
-                    discountPercent: discountPercentController.text.isEmpty
-                        ? 0
-                        : double.parse(discountPercentController.text),
-                    taxPercent: taxPercentController.text.isEmpty
-                        ? 0
-                        : double.parse(taxPercentController.text),
-                  ).toString();
+                      taxPercent: taxPercentController.text.isEmpty
+                          ? 0
+                          : double.parse(taxPercentController.text),
+                    ).toString();
 
-                  deadlineClient = deadlineClientValue(
-                    total: total,
-                    shippingPrice: shippingPriceController.text.isEmpty
-                        ? 0
-                        : double.parse(shippingPriceController.text),
-                    discountTaxPercent:
-                        discountTaxPercentController.text.isEmpty
-                            ? 0
-                            : double.parse(discountTaxPercentController.text),
-                    discountPercent: discountPercentController.text.isEmpty
-                        ? 0
-                        : double.parse(discountPercentController.text),
-                    taxPercent: taxPercentController.text.isEmpty
-                        ? 0
-                        : double.parse(taxPercentController.text),
-                    cashCollected: cashCollectedController.text.isEmpty
-                        ? 0
-                        : double.parse(cashCollectedController.text),
-                  );
-                  setState(() {});
-                },
+                    deadlineClientController.text = deadlineClientValue(
+                      total: total,
+                      shippingPrice: shippingPriceController.text.isEmpty
+                          ? 0
+                          : double.parse(shippingPriceController.text),
+                      discountTaxPercent:
+                          discountTaxPercentController.text.isEmpty
+                              ? 0
+                              : double.parse(discountTaxPercentController.text),
+                      discountPercent: discountPercentController.text.isEmpty
+                          ? 0
+                          : double.parse(discountPercentController.text),
+                      taxPercent: taxPercentController.text.isEmpty
+                          ? 0
+                          : double.parse(taxPercentController.text),
+                      cashCollected: cashCollectedController.text.isEmpty
+                          ? 0
+                          : double.parse(cashCollectedController.text),
+                    ).toString();
+                    // singleObject['Contract'].updateAll((key, value) => key ==
+                    //         "TaxCurrancy"
+                    //     ? discountTax(
+                    //         discountTaxPercent:
+                    //             newValue.isEmpty ? 0 : double.parse(newValue),
+                    //         total: total,
+                    //         discountPercent: discountPercentController
+                    //                 .text.isEmpty
+                    //             ? 0
+                    //             : double.parse(discountPercentController.text))
+                    //     : value);
+
+                    wsetState(() {});
+                  },
+                ),
               ),
-            ),
-          ],
+              const SizedBox(
+                width: 12,
+              ),
+              Expanded(
+                flex: 2,
+                child: CustomTextFormField(
+                  controller: discountTaxController,
+                  hintText: '',
+                  isValidator: false,
+                  keyboardType: TextInputType.number,
+                  onChanged: (newValue) {
+                    discountTaxPercentController.text = discountTaxPercent(
+                            totalAfterDiscount: totalAfterDiscount(
+                                total: total,
+                                discountPercent:
+                                    discountPercentController.text.isEmpty
+                                        ? 0
+                                        : double.parse(
+                                            discountPercentController.text)),
+                            discountTax:
+                                newValue.isEmpty ? 0 : double.parse(newValue))
+                        .toString();
+
+                    totalAfterTaxController.text = totalAfterTax(
+                      total: total,
+                      shippingPrice: shippingPriceController.text.isEmpty
+                          ? 0
+                          : double.parse(shippingPriceController.text),
+                      discountTaxPercent:
+                          discountTaxPercentController.text.isEmpty
+                              ? 0
+                              : double.parse(discountTaxPercentController.text),
+                      discountPercent: discountPercentController.text.isEmpty
+                          ? 0
+                          : double.parse(discountPercentController.text),
+                      taxPercent: taxPercentController.text.isEmpty
+                          ? 0
+                          : double.parse(taxPercentController.text),
+                    ).toString();
+
+                    deadlineClientController.text = deadlineClientValue(
+                      total: total,
+                      shippingPrice: shippingPriceController.text.isEmpty
+                          ? 0
+                          : double.parse(shippingPriceController.text),
+                      discountTaxPercent:
+                          discountTaxPercentController.text.isEmpty
+                              ? 0
+                              : double.parse(discountTaxPercentController.text),
+                      discountPercent: discountPercentController.text.isEmpty
+                          ? 0
+                          : double.parse(discountPercentController.text),
+                      taxPercent: taxPercentController.text.isEmpty
+                          ? 0
+                          : double.parse(taxPercentController.text),
+                      cashCollected: cashCollectedController.text.isEmpty
+                          ? 0
+                          : double.parse(cashCollectedController.text),
+                    ).toString();
+                    // singleObject['Contract'].updateAll((key, value) =>
+                    //     key == "TaxCurrancy"
+                    //         ? double.parse(discountTaxController.text)
+                    //         : value);
+
+                    wsetState(() {});
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      case "خصم اجنبي":
+        // discountController.text =
+        //     oldDataMaster['Contract']['DiscountCurrancy'].toString() ?? "";
+        // discountPercentController.text = oldDataMaster['Contract']
+        //             ['DiscountCurrancy'] !=
+        //         null
+        //     ? discountPercent(
+        //             total: oldDataMaster['Contract']['TotalCurrancy'] ?? 0.0,
+        //             discount:
+        //                 oldDataMaster['Contract']['DiscountCurrancy'] ?? 0.0)
+        //         .toString()
+        //     : "";
+        return StatefulBuilder(
+          builder: (context, wsetState) => Row(
+            children: [
+              Expanded(
+                child: CustomTextFormField(
+                  controller: discountPercentController,
+                  hintText: '',
+                  isValidator: false,
+                  keyboardType: TextInputType.number,
+                  onChanged: (newValue) {
+                    discountController.text = discount(
+                            total: total,
+                            discountPercent:
+                                newValue.isEmpty ? 0 : double.parse(newValue))
+                        .toString();
+                    totalAfterTaxController.text = totalAfterTax(
+                      total: total,
+                      shippingPrice: shippingPriceController.text.isEmpty
+                          ? 0
+                          : double.parse(shippingPriceController.text),
+                      discountTaxPercent:
+                          discountTaxPercentController.text.isEmpty
+                              ? 0
+                              : double.parse(discountTaxPercentController.text),
+                      discountPercent: discountPercentController.text.isEmpty
+                          ? 0
+                          : double.parse(discountPercentController.text),
+                      taxPercent: taxPercentController.text.isEmpty
+                          ? 0
+                          : double.parse(taxPercentController.text),
+                    ).toString();
+
+                    deadlineClientController.text = deadlineClientValue(
+                      total: total,
+                      shippingPrice: shippingPriceController.text.isEmpty
+                          ? 0
+                          : double.parse(shippingPriceController.text),
+                      discountTaxPercent:
+                          discountTaxPercentController.text.isEmpty
+                              ? 0
+                              : double.parse(discountTaxPercentController.text),
+                      discountPercent: discountPercentController.text.isEmpty
+                          ? 0
+                          : double.parse(discountPercentController.text),
+                      taxPercent: taxPercentController.text.isEmpty
+                          ? 0
+                          : double.parse(taxPercentController.text),
+                      cashCollected: cashCollectedController.text.isEmpty
+                          ? 0
+                          : double.parse(cashCollectedController.text),
+                    ).toString();
+                    // singleObject['Contract'].updateAll((key, value) => key ==
+                    //         "DiscountCurrancy"
+                    //     ? discount(
+                    //         total: total,
+                    //         discountPercent:
+                    //             newValue.isEmpty ? 0 : double.parse(newValue))
+                    //     : value);
+                    wsetState(() {});
+                  },
+                ),
+              ),
+              const SizedBox(
+                width: 12,
+              ),
+              Expanded(
+                flex: 2,
+                child: CustomTextFormField(
+                  controller: discountController,
+                  hintText: '',
+                  isValidator: false,
+                  keyboardType: TextInputType.number,
+                  onChanged: (newValue) {
+                    discountPercentController.text = discountPercent(
+                      total: total,
+                      discount: newValue.isEmpty ? 0 : double.parse(newValue),
+                    ).toString();
+                    totalAfterTaxController.text = totalAfterTax(
+                      total: total,
+                      shippingPrice: shippingPriceController.text.isEmpty
+                          ? 0
+                          : double.parse(shippingPriceController.text),
+                      discountTaxPercent:
+                          discountTaxPercentController.text.isEmpty
+                              ? 0
+                              : double.parse(discountTaxPercentController.text),
+                      discountPercent: discountPercentController.text.isEmpty
+                          ? 0
+                          : double.parse(discountPercentController.text),
+                      taxPercent: taxPercentController.text.isEmpty
+                          ? 0
+                          : double.parse(taxPercentController.text),
+                    ).toString();
+
+                    deadlineClientController.text = deadlineClientValue(
+                      total: total,
+                      shippingPrice: shippingPriceController.text.isEmpty
+                          ? 0
+                          : double.parse(shippingPriceController.text),
+                      discountTaxPercent:
+                          discountTaxPercentController.text.isEmpty
+                              ? 0
+                              : double.parse(discountTaxPercentController.text),
+                      discountPercent: discountPercentController.text.isEmpty
+                          ? 0
+                          : double.parse(discountPercentController.text),
+                      taxPercent: taxPercentController.text.isEmpty
+                          ? 0
+                          : double.parse(taxPercentController.text),
+                      cashCollected: cashCollectedController.text.isEmpty
+                          ? 0
+                          : double.parse(cashCollectedController.text),
+                    ).toString();
+                    // singleObject['Contract'].updateAll((key, value) =>
+                    //     key == "DiscountCurrancy"
+                    //         ? double.parse(discountController.text)
+                    //         : value);
+                    wsetState(() {});
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      case "ضريبة القيمة المضافة":
+        // taxController.text = oldDataMaster['Contract']['AddTaxCurrancy'] != null
+        //     ? oldDataMaster['Contract']['AddTaxCurrancy'].toString()
+        //     : "";
+        // taxPercentController.text = oldDataMaster['Contract']
+        //             ['AddTaxCurrancy'] !=
+        //         null
+        //     ? taxPercent(
+        //             total: oldDataMaster['Contract']['TotalCurrancy'] ?? 0.0,
+        //             tax: oldDataMaster['Contract']['AddTaxCurrancy'] ?? 0.0)
+        //         .toString()
+        //     : "";
+        return StatefulBuilder(
+          builder: (context, wsetState) => Row(
+            children: [
+              Expanded(
+                child: CustomTextFormField(
+                  controller: taxPercentController,
+                  hintText: '',
+                  isValidator: false,
+                  keyboardType: TextInputType.number,
+                  onChanged: (newValue) {
+                    taxController.text = tax(
+                            taxPercent:
+                                newValue.isEmpty ? 0 : double.parse(newValue),
+                            total: total,
+                            discountPercent: discountPercentController
+                                    .text.isEmpty
+                                ? 0
+                                : double.parse(discountPercentController.text))
+                        .toString();
+                    totalAfterTaxController.text = totalAfterTax(
+                      total: total,
+                      shippingPrice: shippingPriceController.text.isEmpty
+                          ? 0
+                          : double.parse(shippingPriceController.text),
+                      discountTaxPercent:
+                          discountTaxPercentController.text.isEmpty
+                              ? 0
+                              : double.parse(discountTaxPercentController.text),
+                      discountPercent: discountPercentController.text.isEmpty
+                          ? 0
+                          : double.parse(discountPercentController.text),
+                      taxPercent: taxPercentController.text.isEmpty
+                          ? 0
+                          : double.parse(taxPercentController.text),
+                    ).toString();
+
+                    deadlineClientController.text = deadlineClientValue(
+                      total: total,
+                      shippingPrice: shippingPriceController.text.isEmpty
+                          ? 0
+                          : double.parse(shippingPriceController.text),
+                      discountTaxPercent:
+                          discountTaxPercentController.text.isEmpty
+                              ? 0
+                              : double.parse(discountTaxPercentController.text),
+                      discountPercent: discountPercentController.text.isEmpty
+                          ? 0
+                          : double.parse(discountPercentController.text),
+                      taxPercent: taxPercentController.text.isEmpty
+                          ? 0
+                          : double.parse(taxPercentController.text),
+                      cashCollected: cashCollectedController.text.isEmpty
+                          ? 0
+                          : double.parse(cashCollectedController.text),
+                    ).toString();
+                    // singleObject['Contract'].updateAll((key, value) => key ==
+                    //         "AddTaxCurrancy"
+                    //     ? tax(
+                    //         taxPercent:
+                    //             newValue.isEmpty ? 0 : double.parse(newValue),
+                    //         total: total,
+                    //         discountPercent: discountPercentController
+                    //                 .text.isEmpty
+                    //             ? 0
+                    //             : double.parse(discountPercentController.text))
+                    //     : value);
+                    wsetState(() {});
+                  },
+                ),
+              ),
+              const SizedBox(
+                width: 12,
+              ),
+              Expanded(
+                flex: 2,
+                child: CustomTextFormField(
+                  controller: taxController,
+                  hintText: '',
+                  isValidator: false,
+                  keyboardType: TextInputType.number,
+                  onChanged: (newValue) {
+                    taxPercentController.text = taxPercent(
+                      total: total,
+                      tax: tax(
+                        total: total,
+                        discountPercent: discountPercentController.text.isEmpty
+                            ? 0
+                            : double.parse(discountPercentController.text),
+                        taxPercent:
+                            newValue.isEmpty ? 0 : double.parse(newValue),
+                      ),
+                    ).toString();
+                    totalAfterTaxController.text = totalAfterTax(
+                      total: total,
+                      shippingPrice: shippingPriceController.text.isEmpty
+                          ? 0
+                          : double.parse(shippingPriceController.text),
+                      discountTaxPercent:
+                          discountTaxPercentController.text.isEmpty
+                              ? 0
+                              : double.parse(discountTaxPercentController.text),
+                      discountPercent: discountPercentController.text.isEmpty
+                          ? 0
+                          : double.parse(discountPercentController.text),
+                      taxPercent: taxPercentController.text.isEmpty
+                          ? 0
+                          : double.parse(taxPercentController.text),
+                    ).toString();
+
+                    deadlineClientController.text = deadlineClientValue(
+                      total: total,
+                      shippingPrice: shippingPriceController.text.isEmpty
+                          ? 0
+                          : double.parse(shippingPriceController.text),
+                      discountTaxPercent:
+                          discountTaxPercentController.text.isEmpty
+                              ? 0
+                              : double.parse(discountTaxPercentController.text),
+                      discountPercent: discountPercentController.text.isEmpty
+                          ? 0
+                          : double.parse(discountPercentController.text),
+                      taxPercent: taxPercentController.text.isEmpty
+                          ? 0
+                          : double.parse(taxPercentController.text),
+                      cashCollected: cashCollectedController.text.isEmpty
+                          ? 0
+                          : double.parse(cashCollectedController.text),
+                    ).toString();
+                    // singleObject['Contract'].updateAll((key, value) =>
+                    //     key == "AddTaxCurrancy"
+                    //         ? double.parse(taxController.text)
+                    //         : value);
+                    wsetState(() {});
+                  },
+                ),
+              ),
+            ],
+          ),
         );
       case "اجمالي بعد الضرائب":
+        // totalAfterTaxController.text = oldDataMaster['Contract']
+        //             ['TotalOrderBeforCurrancy'] !=
+        //         null
+        //     ? oldDataMaster['Contract']['TotalOrderBeforCurrancy'].toString()
+        //     : "";
         return CustomTextFormField(
           controller: totalAfterTaxController,
           hintText: '',
@@ -1345,56 +1478,71 @@ class _AddSalesState extends State<AddSales> {
           fillColor: Colors.grey.shade300,
         );
       case "مصاريف الشحن":
-        return CustomTextFormField(
-          controller: shippingPriceController,
-          hintText: '',
-          isValidator: false,
-          keyboardType: TextInputType.number,
-          onChanged: (newValue) {
-            totalAfterTaxController.text = totalAfterTax(
-              total: total,
-              shippingPrice: shippingPriceController.text.isEmpty
-                  ? 0
-                  : double.parse(shippingPriceController.text),
-              discountTaxPercent: discountTaxPercentController.text.isEmpty
-                  ? 0
-                  : double.parse(discountTaxPercentController.text),
-              discountPercent: discountPercentController.text.isEmpty
-                  ? 0
-                  : double.parse(discountPercentController.text),
-              taxPercent: taxPercentController.text.isEmpty
-                  ? 0
-                  : double.parse(taxPercentController.text),
-            ).toString();
+        // shippingPriceController.text =
+        //     oldDataMaster['Contract']['shippingPrice'].toString();
+        return StatefulBuilder(
+          builder: (context, wsetState) => CustomTextFormField(
+            controller: shippingPriceController,
+            hintText: '',
+            isValidator: false,
+            keyboardType: TextInputType.number,
+            onChanged: (newValue) {
+              totalAfterTaxController.text = totalAfterTax(
+                total: total,
+                shippingPrice: shippingPriceController.text.isEmpty
+                    ? 0
+                    : double.parse(shippingPriceController.text),
+                discountTaxPercent: discountTaxPercentController.text.isEmpty
+                    ? 0
+                    : double.parse(discountTaxPercentController.text),
+                discountPercent: discountPercentController.text.isEmpty
+                    ? 0
+                    : double.parse(discountPercentController.text),
+                taxPercent: taxPercentController.text.isEmpty
+                    ? 0
+                    : double.parse(taxPercentController.text),
+              ).toString();
 
-            deadlineClient = deadlineClientValue(
-              total: total,
-              shippingPrice: shippingPriceController.text.isEmpty
-                  ? 0
-                  : double.parse(shippingPriceController.text),
-              discountTaxPercent: discountTaxPercentController.text.isEmpty
-                  ? 0
-                  : double.parse(discountTaxPercentController.text),
-              discountPercent: discountPercentController.text.isEmpty
-                  ? 0
-                  : double.parse(discountPercentController.text),
-              taxPercent: taxPercentController.text.isEmpty
-                  ? 0
-                  : double.parse(taxPercentController.text),
-              cashCollected: cashCollectedController.text.isEmpty
-                  ? 0
-                  : double.parse(cashCollectedController.text),
-            );
-            setState(() {});
-          },
+              deadlineClientController.text = deadlineClientValue(
+                total: total,
+                shippingPrice: shippingPriceController.text.isEmpty
+                    ? 0
+                    : double.parse(shippingPriceController.text),
+                discountTaxPercent: discountTaxPercentController.text.isEmpty
+                    ? 0
+                    : double.parse(discountTaxPercentController.text),
+                discountPercent: discountPercentController.text.isEmpty
+                    ? 0
+                    : double.parse(discountPercentController.text),
+                taxPercent: taxPercentController.text.isEmpty
+                    ? 0
+                    : double.parse(taxPercentController.text),
+                cashCollected: cashCollectedController.text.isEmpty
+                    ? 0
+                    : double.parse(cashCollectedController.text),
+              ).toString();
+              // singleObject['Contract'].updateAll((key, value) =>
+              //     key == "shippingPrice" ? double.parse(newValue) : value);
+              wsetState(() {});
+            },
+          ),
         );
       case "الاجل على العميل":
-        return Text(
-          "$deadlineClient",
-          style: TextStyle(color: Colors.red, fontSize: 20),
+        // deadlineClientController.text =
+        //     oldDataMaster['Contract']['remind'] != null
+        //         ? oldDataMaster['Contract']['remind'].toString()
+        //         : "0.0";
+        return CustomTextFormField(
+          controller: deadlineClientController,
+          hintText: '',
+          isBorder: false,
+          readOnly: true,
+          isValidator: false,
+          keyboardType: TextInputType.number,
+          textStyle: TextStyle(color: Colors.red, fontSize: 20),
         );
     }
-  }*/
+  }
 
   double discount({required double total, required double discountPercent}) {
     return discountPercent * total / 100;
@@ -1471,600 +1619,641 @@ class _AddSalesState extends State<AddSales> {
     return 100 * tax / total;
   }
 
-  createForm(List<ItemListSetupModel> listSetup) {
-    String date = DateFormat("yyyy-MM-dd", 'en').format(DateTime.now());
-    ItemListSetupModel item =
-        listSetup.firstWhere((element) => element.columnName == "SafeAccount");
-    List<ListDrop>? listDrop = [];
-    List<ItemDrop>? myListDrop = [];
+  // createForm(List<ItemListSetupModel> listSetup) {
+  //   String date = DateFormat("yyyy-MM-dd", 'en').format(DateTime.now());
+  //   ItemListSetupModel item =
+  //       listSetup.firstWhere((element) => element.columnName == "SafeAccount");
+  //   List<ListDrop>? listDrop = [];
+  //   List<ItemDrop>? myListDrop = [];
+  //
+  //   for (var ii in myAllDropdownModelList) {
+  //     if (widget.tapData == null) {
+  //       if (ii.listName == widget.pageData.listName) {
+  //         listDrop = ii.list;
+  //       }
+  //     } else {
+  //       if (ii.listName == widget.tapData!.listName) {
+  //         listDrop = ii.list;
+  //       }
+  //     }
+  //   }
+  //   for (var ii in listDrop!) {
+  //     if (ii.columnName == item.columnName) {
+  //       myListDrop = ii.list;
+  //     }
+  //   }
+  //   return Column(
+  //     children: [
+  //       SalesWidget(
+  //         title: "الاجمالى",
+  //         isBorderTop: true,
+  //         colorBackgroundTitle: Colors.cyanAccent,
+  //         colorBackgroundWidget: Colors.cyanAccent,
+  //         child: CustomTextFormField(
+  //           controller: totalController,
+  //           hintText: '',
+  //           isBorder: false,
+  //           readOnly: true,
+  //           isValidator: false,
+  //           keyboardType: TextInputType.number,
+  //           textStyle: TextStyle(color: Colors.red, fontSize: 20),
+  //         ),
+  //       ),
+  //       SalesWidget(
+  //         title: "المحصل نقدا",
+  //         child: CustomTextFormField(
+  //           controller: cashCollectedController,
+  //           hintText: '',
+  //           isValidator: false,
+  //           keyboardType: TextInputType.number,
+  //           onChanged: (value) {
+  //             totalAfterTaxController.text = totalAfterTax(
+  //               total: total,
+  //               shippingPrice: shippingPriceController.text.isEmpty
+  //                   ? 0
+  //                   : double.parse(shippingPriceController.text),
+  //               discountTaxPercent: discountTaxPercentController.text.isEmpty
+  //                   ? 0
+  //                   : double.parse(discountTaxPercentController.text),
+  //               discountPercent: discountPercentController.text.isEmpty
+  //                   ? 0
+  //                   : double.parse(discountPercentController.text),
+  //               taxPercent: taxPercentController.text.isEmpty
+  //                   ? 0
+  //                   : double.parse(taxPercentController.text),
+  //             ).toString();
+  //             deadlineClientController.text = deadlineClientValue(
+  //               total: total,
+  //               shippingPrice: shippingPriceController.text.isEmpty
+  //                   ? 0
+  //                   : double.parse(shippingPriceController.text),
+  //               discountTaxPercent: discountTaxPercentController.text.isEmpty
+  //                   ? 0
+  //                   : double.parse(discountTaxPercentController.text),
+  //               discountPercent: discountPercentController.text.isEmpty
+  //                   ? 0
+  //                   : double.parse(discountPercentController.text),
+  //               taxPercent: taxPercentController.text.isEmpty
+  //                   ? 0
+  //                   : double.parse(taxPercentController.text),
+  //               cashCollected: cashCollectedController.text.isEmpty
+  //                   ? 0
+  //                   : double.parse(cashCollectedController.text),
+  //             ).toString();
+  //           },
+  //         ),
+  //       ),
+  //       SalesWidget(
+  //         title: "عدد الاقساط",
+  //         colorBackgroundTitle: Colors.cyanAccent,
+  //         child: CustomTextFormField(
+  //           controller: numberOfInstallmentsController,
+  //           hintText: '',
+  //           isValidator: false,
+  //           keyboardType: TextInputType.number,
+  //           onChanged: (value) {},
+  //         ),
+  //       ),
+  //       SalesWidget(
+  //         title: "تاريخ اول قسط",
+  //         colorBackgroundTitle: Colors.cyanAccent,
+  //         child: StatefulBuilder(
+  //           builder: (context, dsetState) {
+  //             return InkWell(
+  //               onTap: () async {
+  //                 DateTime? dateTime = await showDatePicker(
+  //                   context: context,
+  //                   initialDate: DateTime.now(),
+  //                   firstDate: DateTime(1980),
+  //                   lastDate: DateTime(2100),
+  //                 );
+  //                 if (dateTime != null) {
+  //                   dsetState(() {
+  //                     date = DateFormat("yyyy-MM-dd", 'en').format(dateTime);
+  //                   });
+  //                 }
+  //               },
+  //               child: Container(
+  //                   decoration: BoxDecoration(
+  //                       borderRadius: BorderRadius.circular(5),
+  //                       border: Border.all(color: AppColors.blueDark)),
+  //                   alignment: Alignment.center,
+  //                   padding: const EdgeInsets.all(8),
+  //                   child: Text(
+  //                     date,
+  //                     textAlign: TextAlign.center,
+  //                     style:
+  //                         AppStyles.textStyle14.copyWith(color: Colors.black),
+  //                   )),
+  //             );
+  //           },
+  //         ),
+  //       ),
+  //       SalesWidget(
+  //         title: "شهور القسط",
+  //         colorBackgroundTitle: Colors.cyanAccent,
+  //         child: CustomTextFormField(
+  //           controller: installmentMonthsController,
+  //           hintText: '',
+  //           isValidator: false,
+  //           keyboardType: TextInputType.number,
+  //           onChanged: (newValue) {},
+  //         ),
+  //       ),
+  //       const SalesWidget(
+  //         title: "اجمالي الخصم الجزئي",
+  //         child: Text(
+  //           "0.0",
+  //         ),
+  //       ),
+  //       SalesWidget(
+  //         title: "الخزينة",
+  //         child: CustomDropdown<String>.search(
+  //           hintText: '',
+  //           decoration: CustomDropdownDecoration(
+  //               headerStyle:
+  //                   AppStyles.textStyle16.copyWith(color: Colors.black),
+  //               closedFillColor: Colors.transparent,
+  //               closedBorder: Border.all(color: AppColors.blueDark)),
+  //           items: myListDrop!.isEmpty
+  //               ? [""]
+  //               : List.generate(myListDrop.length,
+  //                   (index) => myListDrop![index].text ?? ''),
+  //           onChanged: (value) {},
+  //         ),
+  //       ),
+  //       SalesWidget(
+  //         title: "ضريبة خصم منبع",
+  //         child: Row(
+  //           children: [
+  //             Expanded(
+  //               child: CustomTextFormField(
+  //                 controller: discountTaxPercentController,
+  //                 hintText: '',
+  //                 isValidator: false,
+  //                 keyboardType: TextInputType.number,
+  //                 onChanged: (newValue) {
+  //                   discountTaxController.text = discountTax(
+  //                           discountTaxPercent:
+  //                               newValue.isEmpty ? 0 : double.parse(newValue),
+  //                           total: total,
+  //                           discountPercent: discountPercentController
+  //                                   .text.isEmpty
+  //                               ? 0
+  //                               : double.parse(discountPercentController.text))
+  //                       .toString();
+  //                   totalAfterTaxController.text = totalAfterTax(
+  //                     total: total,
+  //                     shippingPrice: shippingPriceController.text.isEmpty
+  //                         ? 0
+  //                         : double.parse(shippingPriceController.text),
+  //                     discountTaxPercent:
+  //                         discountTaxPercentController.text.isEmpty
+  //                             ? 0
+  //                             : double.parse(discountTaxPercentController.text),
+  //                     discountPercent: discountPercentController.text.isEmpty
+  //                         ? 0
+  //                         : double.parse(discountPercentController.text),
+  //                     taxPercent: taxPercentController.text.isEmpty
+  //                         ? 0
+  //                         : double.parse(taxPercentController.text),
+  //                   ).toString();
+  //
+  //                   deadlineClientController.text = deadlineClientValue(
+  //                     total: total,
+  //                     shippingPrice: shippingPriceController.text.isEmpty
+  //                         ? 0
+  //                         : double.parse(shippingPriceController.text),
+  //                     discountTaxPercent:
+  //                         discountTaxPercentController.text.isEmpty
+  //                             ? 0
+  //                             : double.parse(discountTaxPercentController.text),
+  //                     discountPercent: discountPercentController.text.isEmpty
+  //                         ? 0
+  //                         : double.parse(discountPercentController.text),
+  //                     taxPercent: taxPercentController.text.isEmpty
+  //                         ? 0
+  //                         : double.parse(taxPercentController.text),
+  //                     cashCollected: cashCollectedController.text.isEmpty
+  //                         ? 0
+  //                         : double.parse(cashCollectedController.text),
+  //                   ).toString();
+  //                 },
+  //               ),
+  //             ),
+  //             const SizedBox(
+  //               width: 12,
+  //             ),
+  //             Expanded(
+  //               flex: 2,
+  //               child: CustomTextFormField(
+  //                 controller: discountTaxController,
+  //                 hintText: '',
+  //                 isValidator: false,
+  //                 keyboardType: TextInputType.number,
+  //                 onChanged: (newValue) {
+  //                   discountTaxPercentController.text = discountTaxPercent(
+  //                           totalAfterDiscount: totalAfterDiscount(
+  //                               total: total,
+  //                               discountPercent:
+  //                                   discountPercentController.text.isEmpty
+  //                                       ? 0
+  //                                       : double.parse(
+  //                                           discountPercentController.text)),
+  //                           discountTax:
+  //                               newValue.isEmpty ? 0 : double.parse(newValue))
+  //                       .toString();
+  //
+  //                   totalAfterTaxController.text = totalAfterTax(
+  //                     total: total,
+  //                     shippingPrice: shippingPriceController.text.isEmpty
+  //                         ? 0
+  //                         : double.parse(shippingPriceController.text),
+  //                     discountTaxPercent:
+  //                         discountTaxPercentController.text.isEmpty
+  //                             ? 0
+  //                             : double.parse(discountTaxPercentController.text),
+  //                     discountPercent: discountPercentController.text.isEmpty
+  //                         ? 0
+  //                         : double.parse(discountPercentController.text),
+  //                     taxPercent: taxPercentController.text.isEmpty
+  //                         ? 0
+  //                         : double.parse(taxPercentController.text),
+  //                   ).toString();
+  //
+  //                   deadlineClientController.text = deadlineClientValue(
+  //                     total: total,
+  //                     shippingPrice: shippingPriceController.text.isEmpty
+  //                         ? 0
+  //                         : double.parse(shippingPriceController.text),
+  //                     discountTaxPercent:
+  //                         discountTaxPercentController.text.isEmpty
+  //                             ? 0
+  //                             : double.parse(discountTaxPercentController.text),
+  //                     discountPercent: discountPercentController.text.isEmpty
+  //                         ? 0
+  //                         : double.parse(discountPercentController.text),
+  //                     taxPercent: taxPercentController.text.isEmpty
+  //                         ? 0
+  //                         : double.parse(taxPercentController.text),
+  //                     cashCollected: cashCollectedController.text.isEmpty
+  //                         ? 0
+  //                         : double.parse(cashCollectedController.text),
+  //                   ).toString();
+  //                 },
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //       SalesWidget(
+  //         title: "خصم اجنبي",
+  //         child: Row(
+  //           children: [
+  //             Expanded(
+  //               child: CustomTextFormField(
+  //                 controller: discountPercentController,
+  //                 hintText: '',
+  //                 isValidator: false,
+  //                 keyboardType: TextInputType.number,
+  //                 onChanged: (newValue) {
+  //                   discountController.text = discount(
+  //                           total: total,
+  //                           discountPercent:
+  //                               newValue.isEmpty ? 0 : double.parse(newValue))
+  //                       .toString();
+  //                   totalAfterTaxController.text = totalAfterTax(
+  //                     total: total,
+  //                     shippingPrice: shippingPriceController.text.isEmpty
+  //                         ? 0
+  //                         : double.parse(shippingPriceController.text),
+  //                     discountTaxPercent:
+  //                         discountTaxPercentController.text.isEmpty
+  //                             ? 0
+  //                             : double.parse(discountTaxPercentController.text),
+  //                     discountPercent: discountPercentController.text.isEmpty
+  //                         ? 0
+  //                         : double.parse(discountPercentController.text),
+  //                     taxPercent: taxPercentController.text.isEmpty
+  //                         ? 0
+  //                         : double.parse(taxPercentController.text),
+  //                   ).toString();
+  //
+  //                   deadlineClientController.text = deadlineClientValue(
+  //                     total: total,
+  //                     shippingPrice: shippingPriceController.text.isEmpty
+  //                         ? 0
+  //                         : double.parse(shippingPriceController.text),
+  //                     discountTaxPercent:
+  //                         discountTaxPercentController.text.isEmpty
+  //                             ? 0
+  //                             : double.parse(discountTaxPercentController.text),
+  //                     discountPercent: discountPercentController.text.isEmpty
+  //                         ? 0
+  //                         : double.parse(discountPercentController.text),
+  //                     taxPercent: taxPercentController.text.isEmpty
+  //                         ? 0
+  //                         : double.parse(taxPercentController.text),
+  //                     cashCollected: cashCollectedController.text.isEmpty
+  //                         ? 0
+  //                         : double.parse(cashCollectedController.text),
+  //                   ).toString();
+  //                 },
+  //               ),
+  //             ),
+  //             const SizedBox(
+  //               width: 12,
+  //             ),
+  //             Expanded(
+  //               flex: 2,
+  //               child: CustomTextFormField(
+  //                 controller: discountController,
+  //                 hintText: '',
+  //                 isValidator: false,
+  //                 keyboardType: TextInputType.number,
+  //                 onChanged: (newValue) {
+  //                   discountPercentController.text = discountPercent(
+  //                     total: total,
+  //                     discount: newValue.isEmpty ? 0 : double.parse(newValue),
+  //                   ).toString();
+  //                   totalAfterTaxController.text = totalAfterTax(
+  //                     total: total,
+  //                     shippingPrice: shippingPriceController.text.isEmpty
+  //                         ? 0
+  //                         : double.parse(shippingPriceController.text),
+  //                     discountTaxPercent:
+  //                         discountTaxPercentController.text.isEmpty
+  //                             ? 0
+  //                             : double.parse(discountTaxPercentController.text),
+  //                     discountPercent: discountPercentController.text.isEmpty
+  //                         ? 0
+  //                         : double.parse(discountPercentController.text),
+  //                     taxPercent: taxPercentController.text.isEmpty
+  //                         ? 0
+  //                         : double.parse(taxPercentController.text),
+  //                   ).toString();
+  //
+  //                   deadlineClientController.text = deadlineClientValue(
+  //                     total: total,
+  //                     shippingPrice: shippingPriceController.text.isEmpty
+  //                         ? 0
+  //                         : double.parse(shippingPriceController.text),
+  //                     discountTaxPercent:
+  //                         discountTaxPercentController.text.isEmpty
+  //                             ? 0
+  //                             : double.parse(discountTaxPercentController.text),
+  //                     discountPercent: discountPercentController.text.isEmpty
+  //                         ? 0
+  //                         : double.parse(discountPercentController.text),
+  //                     taxPercent: taxPercentController.text.isEmpty
+  //                         ? 0
+  //                         : double.parse(taxPercentController.text),
+  //                     cashCollected: cashCollectedController.text.isEmpty
+  //                         ? 0
+  //                         : double.parse(cashCollectedController.text),
+  //                   ).toString();
+  //                 },
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //       SalesWidget(
+  //         title: "ضريبة القيمة المضافة",
+  //         child: Row(
+  //           children: [
+  //             Expanded(
+  //               child: CustomTextFormField(
+  //                 controller: taxPercentController,
+  //                 hintText: '',
+  //                 isValidator: false,
+  //                 keyboardType: TextInputType.number,
+  //                 onChanged: (newValue) {
+  //                   taxController.text = tax(
+  //                           taxPercent:
+  //                               newValue.isEmpty ? 0 : double.parse(newValue),
+  //                           total: total,
+  //                           discountPercent: discountPercentController
+  //                                   .text.isEmpty
+  //                               ? 0
+  //                               : double.parse(discountPercentController.text))
+  //                       .toString();
+  //                   totalAfterTaxController.text = totalAfterTax(
+  //                     total: total,
+  //                     shippingPrice: shippingPriceController.text.isEmpty
+  //                         ? 0
+  //                         : double.parse(shippingPriceController.text),
+  //                     discountTaxPercent:
+  //                         discountTaxPercentController.text.isEmpty
+  //                             ? 0
+  //                             : double.parse(discountTaxPercentController.text),
+  //                     discountPercent: discountPercentController.text.isEmpty
+  //                         ? 0
+  //                         : double.parse(discountPercentController.text),
+  //                     taxPercent: taxPercentController.text.isEmpty
+  //                         ? 0
+  //                         : double.parse(taxPercentController.text),
+  //                   ).toString();
+  //
+  //                   deadlineClientController.text = deadlineClientValue(
+  //                     total: total,
+  //                     shippingPrice: shippingPriceController.text.isEmpty
+  //                         ? 0
+  //                         : double.parse(shippingPriceController.text),
+  //                     discountTaxPercent:
+  //                         discountTaxPercentController.text.isEmpty
+  //                             ? 0
+  //                             : double.parse(discountTaxPercentController.text),
+  //                     discountPercent: discountPercentController.text.isEmpty
+  //                         ? 0
+  //                         : double.parse(discountPercentController.text),
+  //                     taxPercent: taxPercentController.text.isEmpty
+  //                         ? 0
+  //                         : double.parse(taxPercentController.text),
+  //                     cashCollected: cashCollectedController.text.isEmpty
+  //                         ? 0
+  //                         : double.parse(cashCollectedController.text),
+  //                   ).toString();
+  //                 },
+  //               ),
+  //             ),
+  //             const SizedBox(
+  //               width: 12,
+  //             ),
+  //             Expanded(
+  //               flex: 2,
+  //               child: CustomTextFormField(
+  //                 controller: taxController,
+  //                 hintText: '',
+  //                 isValidator: false,
+  //                 keyboardType: TextInputType.number,
+  //                 onChanged: (newValue) {
+  //                   taxPercentController.text = taxPercent(
+  //                     total: total,
+  //                     tax: tax(
+  //                       total: total,
+  //                       discountPercent: discountPercentController.text.isEmpty
+  //                           ? 0
+  //                           : double.parse(discountPercentController.text),
+  //                       taxPercent:
+  //                           newValue.isEmpty ? 0 : double.parse(newValue),
+  //                     ),
+  //                   ).toString();
+  //                   totalAfterTaxController.text = totalAfterTax(
+  //                     total: total,
+  //                     shippingPrice: shippingPriceController.text.isEmpty
+  //                         ? 0
+  //                         : double.parse(shippingPriceController.text),
+  //                     discountTaxPercent:
+  //                         discountTaxPercentController.text.isEmpty
+  //                             ? 0
+  //                             : double.parse(discountTaxPercentController.text),
+  //                     discountPercent: discountPercentController.text.isEmpty
+  //                         ? 0
+  //                         : double.parse(discountPercentController.text),
+  //                     taxPercent: taxPercentController.text.isEmpty
+  //                         ? 0
+  //                         : double.parse(taxPercentController.text),
+  //                   ).toString();
+  //
+  //                   deadlineClientController.text = deadlineClientValue(
+  //                     total: total,
+  //                     shippingPrice: shippingPriceController.text.isEmpty
+  //                         ? 0
+  //                         : double.parse(shippingPriceController.text),
+  //                     discountTaxPercent:
+  //                         discountTaxPercentController.text.isEmpty
+  //                             ? 0
+  //                             : double.parse(discountTaxPercentController.text),
+  //                     discountPercent: discountPercentController.text.isEmpty
+  //                         ? 0
+  //                         : double.parse(discountPercentController.text),
+  //                     taxPercent: taxPercentController.text.isEmpty
+  //                         ? 0
+  //                         : double.parse(taxPercentController.text),
+  //                     cashCollected: cashCollectedController.text.isEmpty
+  //                         ? 0
+  //                         : double.parse(cashCollectedController.text),
+  //                   ).toString();
+  //                 },
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //       SalesWidget(
+  //         title: "اجمالي بعد الضرائب",
+  //         child: CustomTextFormField(
+  //           controller: totalAfterTaxController,
+  //           hintText: '',
+  //           isValidator: false,
+  //           keyboardType: TextInputType.number,
+  //           readOnly: true,
+  //           filled: true,
+  //           fillColor: Colors.grey.shade300,
+  //         ),
+  //       ),
+  //       SalesWidget(
+  //         title: "مصاريف الشحن",
+  //         child: CustomTextFormField(
+  //           controller: shippingPriceController,
+  //           hintText: '',
+  //           isValidator: false,
+  //           keyboardType: TextInputType.number,
+  //           onChanged: (newValue) {
+  //             totalAfterTaxController.text = totalAfterTax(
+  //               total: total,
+  //               shippingPrice: shippingPriceController.text.isEmpty
+  //                   ? 0
+  //                   : double.parse(shippingPriceController.text),
+  //               discountTaxPercent: discountTaxPercentController.text.isEmpty
+  //                   ? 0
+  //                   : double.parse(discountTaxPercentController.text),
+  //               discountPercent: discountPercentController.text.isEmpty
+  //                   ? 0
+  //                   : double.parse(discountPercentController.text),
+  //               taxPercent: taxPercentController.text.isEmpty
+  //                   ? 0
+  //                   : double.parse(taxPercentController.text),
+  //             ).toString();
+  //
+  //             deadlineClientController.text = deadlineClientValue(
+  //               total: total,
+  //               shippingPrice: shippingPriceController.text.isEmpty
+  //                   ? 0
+  //                   : double.parse(shippingPriceController.text),
+  //               discountTaxPercent: discountTaxPercentController.text.isEmpty
+  //                   ? 0
+  //                   : double.parse(discountTaxPercentController.text),
+  //               discountPercent: discountPercentController.text.isEmpty
+  //                   ? 0
+  //                   : double.parse(discountPercentController.text),
+  //               taxPercent: taxPercentController.text.isEmpty
+  //                   ? 0
+  //                   : double.parse(taxPercentController.text),
+  //               cashCollected: cashCollectedController.text.isEmpty
+  //                   ? 0
+  //                   : double.parse(cashCollectedController.text),
+  //             ).toString();
+  //           },
+  //         ),
+  //       ),
+  //       SalesWidget(
+  //         title: "الاجل على العميل",
+  //         colorBackgroundTitle: Colors.cyanAccent,
+  //         colorBackgroundWidget: Colors.cyanAccent,
+  //         child: CustomTextFormField(
+  //           controller: deadlineClientController,
+  //           hintText: '',
+  //           isBorder: false,
+  //           readOnly: true,
+  //           isValidator: false,
+  //           keyboardType: TextInputType.number,
+  //           textStyle: TextStyle(color: Colors.red, fontSize: 20),
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 
-    for (var ii in myAllDropdownModelList) {
-      if (widget.tapData == null) {
-        if (ii.listName == widget.pageData.listName) {
-          listDrop = ii.list;
-        }
-      } else {
-        if (ii.listName == widget.tapData!.listName) {
-          listDrop = ii.list;
-        }
-      }
+  void getDataList() async {
+    try {
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
+              "";
+      String token =
+          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      Map<String, dynamic> dataProduct = await ApiService(Dio()).post(
+        endPoint: "web/Structure/getDataGlobal",
+        data: {"TableName": "Product"},
+        headers: {
+          "Authorization": "Bearer $token",
+          "CompanyKey": companyKey,
+        },
+      );
+
+      Map<String, dynamic> dataProductPrices = await ApiService(Dio()).post(
+        endPoint: "web/Structure/getDataGlobal",
+        data: {"TableName": "ProductPrices"},
+        headers: {
+          "Authorization": "Bearer $token",
+          "CompanyKey": companyKey,
+        },
+      );
+      Map<String, dynamic> dataCustomerAccount = await ApiService(Dio()).post(
+        endPoint: "web/Structure/getDataGlobal",
+        data: {"TableName": "CustomerAccount"},
+        headers: {
+          "Authorization": "Bearer $token",
+          "CompanyKey": companyKey,
+        },
+      );
+
+      AddSales.listProduct = dataProduct['dynamicList'];
+      AddSales.listProductPrices = dataProductPrices['dynamicList'];
+      AddSales.listCustomerAccount = dataCustomerAccount['dynamicList'];
+    } catch (e) {
+      print(e);
     }
-    for (var ii in listDrop!) {
-      if (ii.columnName == item.columnName) {
-        myListDrop = ii.list;
-      }
-    }
-    return Column(
-      children: [
-        SalesWidget(
-          title: "الاجمالى",
-          isBorderTop: true,
-          colorBackgroundTitle: Colors.cyanAccent,
-          colorBackgroundWidget: Colors.cyanAccent,
-          child: CustomTextFormField(
-            controller: totalController,
-            hintText: '',
-            isBorder: false,
-            readOnly: true,
-            isValidator: false,
-            keyboardType: TextInputType.number,
-            textStyle: TextStyle(color: Colors.red, fontSize: 20),
-          ),
-        ),
-        SalesWidget(
-          title: "المحصل نقدا",
-          child: CustomTextFormField(
-            controller: cashCollectedController,
-            hintText: '',
-            isValidator: false,
-            keyboardType: TextInputType.number,
-            onChanged: (value) {
-              totalAfterTaxController.text = totalAfterTax(
-                total: total,
-                shippingPrice: shippingPriceController.text.isEmpty
-                    ? 0
-                    : double.parse(shippingPriceController.text),
-                discountTaxPercent: discountTaxPercentController.text.isEmpty
-                    ? 0
-                    : double.parse(discountTaxPercentController.text),
-                discountPercent: discountPercentController.text.isEmpty
-                    ? 0
-                    : double.parse(discountPercentController.text),
-                taxPercent: taxPercentController.text.isEmpty
-                    ? 0
-                    : double.parse(taxPercentController.text),
-              ).toString();
-              deadlineClientController.text = deadlineClientValue(
-                total: total,
-                shippingPrice: shippingPriceController.text.isEmpty
-                    ? 0
-                    : double.parse(shippingPriceController.text),
-                discountTaxPercent: discountTaxPercentController.text.isEmpty
-                    ? 0
-                    : double.parse(discountTaxPercentController.text),
-                discountPercent: discountPercentController.text.isEmpty
-                    ? 0
-                    : double.parse(discountPercentController.text),
-                taxPercent: taxPercentController.text.isEmpty
-                    ? 0
-                    : double.parse(taxPercentController.text),
-                cashCollected: cashCollectedController.text.isEmpty
-                    ? 0
-                    : double.parse(cashCollectedController.text),
-              ).toString();
-            },
-          ),
-        ),
-        SalesWidget(
-          title: "عدد الاقساط",
-          colorBackgroundTitle: Colors.cyanAccent,
-          child: CustomTextFormField(
-            controller: numberOfInstallmentsController,
-            hintText: '',
-            isValidator: false,
-            keyboardType: TextInputType.number,
-            onChanged: (value) {},
-          ),
-        ),
-        SalesWidget(
-          title: "تاريخ اول قسط",
-          colorBackgroundTitle: Colors.cyanAccent,
-          child: StatefulBuilder(
-            builder: (context, dsetState) {
-              return InkWell(
-                onTap: () async {
-                  DateTime? dateTime = await showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime(1980),
-                    lastDate: DateTime(2100),
-                  );
-                  if (dateTime != null) {
-                    dsetState(() {
-                      date = DateFormat("yyyy-MM-dd", 'en').format(dateTime);
-                    });
-                  }
-                },
-                child: Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        border: Border.all(color: AppColors.blueDark)),
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.all(8),
-                    child: Text(
-                      date,
-                      textAlign: TextAlign.center,
-                      style:
-                          AppStyles.textStyle14.copyWith(color: Colors.black),
-                    )),
-              );
-            },
-          ),
-        ),
-        SalesWidget(
-          title: "شهور القسط",
-          colorBackgroundTitle: Colors.cyanAccent,
-          child: CustomTextFormField(
-            controller: installmentMonthsController,
-            hintText: '',
-            isValidator: false,
-            keyboardType: TextInputType.number,
-            onChanged: (newValue) {},
-          ),
-        ),
-        const SalesWidget(
-          title: "اجمالي الخصم الجزئي",
-          child: Text(
-            "0.0",
-          ),
-        ),
-        SalesWidget(
-          title: "الخزينة",
-          child: CustomDropdown<String>.search(
-            hintText: '',
-            decoration: CustomDropdownDecoration(
-                headerStyle:
-                    AppStyles.textStyle16.copyWith(color: Colors.black),
-                closedFillColor: Colors.transparent,
-                closedBorder: Border.all(color: AppColors.blueDark)),
-            items: myListDrop!.isEmpty
-                ? [""]
-                : List.generate(myListDrop.length,
-                    (index) => myListDrop![index].text ?? ''),
-            onChanged: (value) {},
-          ),
-        ),
-        SalesWidget(
-          title: "ضريبة خصم منبع",
-          child: Row(
-            children: [
-              Expanded(
-                child: CustomTextFormField(
-                  controller: discountTaxPercentController,
-                  hintText: '',
-                  isValidator: false,
-                  keyboardType: TextInputType.number,
-                  onChanged: (newValue) {
-                    discountTaxController.text = discountTax(
-                            discountTaxPercent:
-                                newValue.isEmpty ? 0 : double.parse(newValue),
-                            total: total,
-                            discountPercent: discountPercentController
-                                    .text.isEmpty
-                                ? 0
-                                : double.parse(discountPercentController.text))
-                        .toString();
-                    totalAfterTaxController.text = totalAfterTax(
-                      total: total,
-                      shippingPrice: shippingPriceController.text.isEmpty
-                          ? 0
-                          : double.parse(shippingPriceController.text),
-                      discountTaxPercent:
-                          discountTaxPercentController.text.isEmpty
-                              ? 0
-                              : double.parse(discountTaxPercentController.text),
-                      discountPercent: discountPercentController.text.isEmpty
-                          ? 0
-                          : double.parse(discountPercentController.text),
-                      taxPercent: taxPercentController.text.isEmpty
-                          ? 0
-                          : double.parse(taxPercentController.text),
-                    ).toString();
-
-                    deadlineClientController.text = deadlineClientValue(
-                      total: total,
-                      shippingPrice: shippingPriceController.text.isEmpty
-                          ? 0
-                          : double.parse(shippingPriceController.text),
-                      discountTaxPercent:
-                          discountTaxPercentController.text.isEmpty
-                              ? 0
-                              : double.parse(discountTaxPercentController.text),
-                      discountPercent: discountPercentController.text.isEmpty
-                          ? 0
-                          : double.parse(discountPercentController.text),
-                      taxPercent: taxPercentController.text.isEmpty
-                          ? 0
-                          : double.parse(taxPercentController.text),
-                      cashCollected: cashCollectedController.text.isEmpty
-                          ? 0
-                          : double.parse(cashCollectedController.text),
-                    ).toString();
-                  },
-                ),
-              ),
-              const SizedBox(
-                width: 12,
-              ),
-              Expanded(
-                flex: 2,
-                child: CustomTextFormField(
-                  controller: discountTaxController,
-                  hintText: '',
-                  isValidator: false,
-                  keyboardType: TextInputType.number,
-                  onChanged: (newValue) {
-                    discountTaxPercentController.text = discountTaxPercent(
-                            totalAfterDiscount: totalAfterDiscount(
-                                total: total,
-                                discountPercent:
-                                    discountPercentController.text.isEmpty
-                                        ? 0
-                                        : double.parse(
-                                            discountPercentController.text)),
-                            discountTax:
-                                newValue.isEmpty ? 0 : double.parse(newValue))
-                        .toString();
-
-                    totalAfterTaxController.text = totalAfterTax(
-                      total: total,
-                      shippingPrice: shippingPriceController.text.isEmpty
-                          ? 0
-                          : double.parse(shippingPriceController.text),
-                      discountTaxPercent:
-                          discountTaxPercentController.text.isEmpty
-                              ? 0
-                              : double.parse(discountTaxPercentController.text),
-                      discountPercent: discountPercentController.text.isEmpty
-                          ? 0
-                          : double.parse(discountPercentController.text),
-                      taxPercent: taxPercentController.text.isEmpty
-                          ? 0
-                          : double.parse(taxPercentController.text),
-                    ).toString();
-
-                    deadlineClientController.text = deadlineClientValue(
-                      total: total,
-                      shippingPrice: shippingPriceController.text.isEmpty
-                          ? 0
-                          : double.parse(shippingPriceController.text),
-                      discountTaxPercent:
-                          discountTaxPercentController.text.isEmpty
-                              ? 0
-                              : double.parse(discountTaxPercentController.text),
-                      discountPercent: discountPercentController.text.isEmpty
-                          ? 0
-                          : double.parse(discountPercentController.text),
-                      taxPercent: taxPercentController.text.isEmpty
-                          ? 0
-                          : double.parse(taxPercentController.text),
-                      cashCollected: cashCollectedController.text.isEmpty
-                          ? 0
-                          : double.parse(cashCollectedController.text),
-                    ).toString();
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
-        SalesWidget(
-          title: "خصم اجنبي",
-          child: Row(
-            children: [
-              Expanded(
-                child: CustomTextFormField(
-                  controller: discountPercentController,
-                  hintText: '',
-                  isValidator: false,
-                  keyboardType: TextInputType.number,
-                  onChanged: (newValue) {
-                    discountController.text = discount(
-                            total: total,
-                            discountPercent:
-                                newValue.isEmpty ? 0 : double.parse(newValue))
-                        .toString();
-                    totalAfterTaxController.text = totalAfterTax(
-                      total: total,
-                      shippingPrice: shippingPriceController.text.isEmpty
-                          ? 0
-                          : double.parse(shippingPriceController.text),
-                      discountTaxPercent:
-                          discountTaxPercentController.text.isEmpty
-                              ? 0
-                              : double.parse(discountTaxPercentController.text),
-                      discountPercent: discountPercentController.text.isEmpty
-                          ? 0
-                          : double.parse(discountPercentController.text),
-                      taxPercent: taxPercentController.text.isEmpty
-                          ? 0
-                          : double.parse(taxPercentController.text),
-                    ).toString();
-
-                    deadlineClientController.text = deadlineClientValue(
-                      total: total,
-                      shippingPrice: shippingPriceController.text.isEmpty
-                          ? 0
-                          : double.parse(shippingPriceController.text),
-                      discountTaxPercent:
-                          discountTaxPercentController.text.isEmpty
-                              ? 0
-                              : double.parse(discountTaxPercentController.text),
-                      discountPercent: discountPercentController.text.isEmpty
-                          ? 0
-                          : double.parse(discountPercentController.text),
-                      taxPercent: taxPercentController.text.isEmpty
-                          ? 0
-                          : double.parse(taxPercentController.text),
-                      cashCollected: cashCollectedController.text.isEmpty
-                          ? 0
-                          : double.parse(cashCollectedController.text),
-                    ).toString();
-                  },
-                ),
-              ),
-              const SizedBox(
-                width: 12,
-              ),
-              Expanded(
-                flex: 2,
-                child: CustomTextFormField(
-                  controller: discountController,
-                  hintText: '',
-                  isValidator: false,
-                  keyboardType: TextInputType.number,
-                  onChanged: (newValue) {
-                    discountPercentController.text = discountPercent(
-                      total: total,
-                      discount: newValue.isEmpty ? 0 : double.parse(newValue),
-                    ).toString();
-                    totalAfterTaxController.text = totalAfterTax(
-                      total: total,
-                      shippingPrice: shippingPriceController.text.isEmpty
-                          ? 0
-                          : double.parse(shippingPriceController.text),
-                      discountTaxPercent:
-                          discountTaxPercentController.text.isEmpty
-                              ? 0
-                              : double.parse(discountTaxPercentController.text),
-                      discountPercent: discountPercentController.text.isEmpty
-                          ? 0
-                          : double.parse(discountPercentController.text),
-                      taxPercent: taxPercentController.text.isEmpty
-                          ? 0
-                          : double.parse(taxPercentController.text),
-                    ).toString();
-
-                    deadlineClientController.text = deadlineClientValue(
-                      total: total,
-                      shippingPrice: shippingPriceController.text.isEmpty
-                          ? 0
-                          : double.parse(shippingPriceController.text),
-                      discountTaxPercent:
-                          discountTaxPercentController.text.isEmpty
-                              ? 0
-                              : double.parse(discountTaxPercentController.text),
-                      discountPercent: discountPercentController.text.isEmpty
-                          ? 0
-                          : double.parse(discountPercentController.text),
-                      taxPercent: taxPercentController.text.isEmpty
-                          ? 0
-                          : double.parse(taxPercentController.text),
-                      cashCollected: cashCollectedController.text.isEmpty
-                          ? 0
-                          : double.parse(cashCollectedController.text),
-                    ).toString();
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
-        SalesWidget(
-          title: "ضريبة القيمة المضافة",
-          child: Row(
-            children: [
-              Expanded(
-                child: CustomTextFormField(
-                  controller: taxPercentController,
-                  hintText: '',
-                  isValidator: false,
-                  keyboardType: TextInputType.number,
-                  onChanged: (newValue) {
-                    taxController.text = tax(
-                            taxPercent:
-                                newValue.isEmpty ? 0 : double.parse(newValue),
-                            total: total,
-                            discountPercent: discountPercentController
-                                    .text.isEmpty
-                                ? 0
-                                : double.parse(discountPercentController.text))
-                        .toString();
-                    totalAfterTaxController.text = totalAfterTax(
-                      total: total,
-                      shippingPrice: shippingPriceController.text.isEmpty
-                          ? 0
-                          : double.parse(shippingPriceController.text),
-                      discountTaxPercent:
-                          discountTaxPercentController.text.isEmpty
-                              ? 0
-                              : double.parse(discountTaxPercentController.text),
-                      discountPercent: discountPercentController.text.isEmpty
-                          ? 0
-                          : double.parse(discountPercentController.text),
-                      taxPercent: taxPercentController.text.isEmpty
-                          ? 0
-                          : double.parse(taxPercentController.text),
-                    ).toString();
-
-                    deadlineClientController.text = deadlineClientValue(
-                      total: total,
-                      shippingPrice: shippingPriceController.text.isEmpty
-                          ? 0
-                          : double.parse(shippingPriceController.text),
-                      discountTaxPercent:
-                          discountTaxPercentController.text.isEmpty
-                              ? 0
-                              : double.parse(discountTaxPercentController.text),
-                      discountPercent: discountPercentController.text.isEmpty
-                          ? 0
-                          : double.parse(discountPercentController.text),
-                      taxPercent: taxPercentController.text.isEmpty
-                          ? 0
-                          : double.parse(taxPercentController.text),
-                      cashCollected: cashCollectedController.text.isEmpty
-                          ? 0
-                          : double.parse(cashCollectedController.text),
-                    ).toString();
-                  },
-                ),
-              ),
-              const SizedBox(
-                width: 12,
-              ),
-              Expanded(
-                flex: 2,
-                child: CustomTextFormField(
-                  controller: taxController,
-                  hintText: '',
-                  isValidator: false,
-                  keyboardType: TextInputType.number,
-                  onChanged: (newValue) {
-                    taxPercentController.text = taxPercent(
-                      total: total,
-                      tax: tax(
-                        total: total,
-                        discountPercent: discountPercentController.text.isEmpty
-                            ? 0
-                            : double.parse(discountPercentController.text),
-                        taxPercent:
-                            newValue.isEmpty ? 0 : double.parse(newValue),
-                      ),
-                    ).toString();
-                    totalAfterTaxController.text = totalAfterTax(
-                      total: total,
-                      shippingPrice: shippingPriceController.text.isEmpty
-                          ? 0
-                          : double.parse(shippingPriceController.text),
-                      discountTaxPercent:
-                          discountTaxPercentController.text.isEmpty
-                              ? 0
-                              : double.parse(discountTaxPercentController.text),
-                      discountPercent: discountPercentController.text.isEmpty
-                          ? 0
-                          : double.parse(discountPercentController.text),
-                      taxPercent: taxPercentController.text.isEmpty
-                          ? 0
-                          : double.parse(taxPercentController.text),
-                    ).toString();
-
-                    deadlineClientController.text = deadlineClientValue(
-                      total: total,
-                      shippingPrice: shippingPriceController.text.isEmpty
-                          ? 0
-                          : double.parse(shippingPriceController.text),
-                      discountTaxPercent:
-                          discountTaxPercentController.text.isEmpty
-                              ? 0
-                              : double.parse(discountTaxPercentController.text),
-                      discountPercent: discountPercentController.text.isEmpty
-                          ? 0
-                          : double.parse(discountPercentController.text),
-                      taxPercent: taxPercentController.text.isEmpty
-                          ? 0
-                          : double.parse(taxPercentController.text),
-                      cashCollected: cashCollectedController.text.isEmpty
-                          ? 0
-                          : double.parse(cashCollectedController.text),
-                    ).toString();
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
-        SalesWidget(
-          title: "اجمالي بعد الضرائب",
-          child: CustomTextFormField(
-            controller: totalAfterTaxController,
-            hintText: '',
-            isValidator: false,
-            keyboardType: TextInputType.number,
-            readOnly: true,
-            filled: true,
-            fillColor: Colors.grey.shade300,
-          ),
-        ),
-        SalesWidget(
-          title: "مصاريف الشحن",
-          child: CustomTextFormField(
-            controller: shippingPriceController,
-            hintText: '',
-            isValidator: false,
-            keyboardType: TextInputType.number,
-            onChanged: (newValue) {
-              totalAfterTaxController.text = totalAfterTax(
-                total: total,
-                shippingPrice: shippingPriceController.text.isEmpty
-                    ? 0
-                    : double.parse(shippingPriceController.text),
-                discountTaxPercent: discountTaxPercentController.text.isEmpty
-                    ? 0
-                    : double.parse(discountTaxPercentController.text),
-                discountPercent: discountPercentController.text.isEmpty
-                    ? 0
-                    : double.parse(discountPercentController.text),
-                taxPercent: taxPercentController.text.isEmpty
-                    ? 0
-                    : double.parse(taxPercentController.text),
-              ).toString();
-
-              deadlineClientController.text = deadlineClientValue(
-                total: total,
-                shippingPrice: shippingPriceController.text.isEmpty
-                    ? 0
-                    : double.parse(shippingPriceController.text),
-                discountTaxPercent: discountTaxPercentController.text.isEmpty
-                    ? 0
-                    : double.parse(discountTaxPercentController.text),
-                discountPercent: discountPercentController.text.isEmpty
-                    ? 0
-                    : double.parse(discountPercentController.text),
-                taxPercent: taxPercentController.text.isEmpty
-                    ? 0
-                    : double.parse(taxPercentController.text),
-                cashCollected: cashCollectedController.text.isEmpty
-                    ? 0
-                    : double.parse(cashCollectedController.text),
-              ).toString();
-            },
-          ),
-        ),
-        SalesWidget(
-          title: "الاجل على العميل",
-          colorBackgroundTitle: Colors.cyanAccent,
-          colorBackgroundWidget: Colors.cyanAccent,
-          child: CustomTextFormField(
-            controller: deadlineClientController,
-            hintText: '',
-            isBorder: false,
-            readOnly: true,
-            isValidator: false,
-            keyboardType: TextInputType.number,
-            textStyle: TextStyle(color: Colors.red, fontSize: 20),
-          ),
-        ),
-      ],
-    );
   }
 }
