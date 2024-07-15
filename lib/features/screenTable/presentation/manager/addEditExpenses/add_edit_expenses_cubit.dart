@@ -10,14 +10,14 @@ part 'add_edit_expenses_state.dart';
 class AddEditExpensesCubit extends Cubit<AddEditExpensesState> {
   AddEditExpensesCubit(this.screenRepo) : super(AddEditExpensesInitial());
   final ScreenRepo screenRepo;
-  Future<void> add({
-    required List<Map<String, dynamic>> tableList,
-    required Map<String, dynamic> singleObject,
-  }) async {
+  Future<void> add(
+      {required List<Map<String, dynamic>> tableList,
+      required Map<String, dynamic> singleObject,
+      required String controllerName}) async {
     emit(AddEditExpensesLoading());
     Either<Failure, String> result = await screenRepo.addExpenses(
-      body: {"array": tableList, "singleObject": singleObject},
-    );
+        body: {"array": tableList, "singleObject": singleObject},
+        controllerName: controllerName);
     result.fold((failure) {
       emit(AddEditExpensesFailure(failure.errorMassage));
     }, (send) {
@@ -25,14 +25,14 @@ class AddEditExpensesCubit extends Cubit<AddEditExpensesState> {
     });
   }
 
-  Future<void> edit({
-    required List<Map<String, dynamic>> tableList,
-    required Map<String, dynamic> singleObject,
-  }) async {
+  Future<void> edit(
+      {required List<Map<String, dynamic>> tableList,
+      required Map<String, dynamic> singleObject,
+      required String controllerName}) async {
     emit(AddEditExpensesLoading());
     Either<Failure, String> result = await screenRepo.editExpenses(
-      body: {"array": tableList, "singleObject": singleObject},
-    );
+        body: {"array": tableList, "singleObject": singleObject},
+        controllerName: controllerName);
     result.fold((failure) {
       emit(AddEditExpensesFailure(failure.errorMassage));
     }, (send) {

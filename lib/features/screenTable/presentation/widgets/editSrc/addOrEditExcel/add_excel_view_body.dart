@@ -226,6 +226,8 @@ class _AddExcelViewBodyState extends State<AddExcelViewBody> {
                                         .add(
                                       singleObject: singleObject,
                                       tableList: tableList,
+                                      controllerName:
+                                          widget.tapData!.controllerName,
                                     );
                                   }
                                 },

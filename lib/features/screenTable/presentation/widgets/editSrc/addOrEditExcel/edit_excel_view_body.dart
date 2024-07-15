@@ -75,7 +75,8 @@ class _EditExcelViewBodyState extends State<EditExcelViewBody> {
     print(id);
     return BlocProvider(
       create: (context) => GetExpensesMasterCubit(getIt.get<ScreenRepoImpl>())
-        ..getExpensesMaster(id: id),
+        ..getExpensesMaster(
+            id: id, controllerName: widget.pageData.controllerName),
       child: BlocBuilder<GetExpensesMasterCubit, GetExpensesMasterState>(
         builder: (context, state) {
           if (state is GetExpensesMasterSuccess) {
@@ -351,6 +352,9 @@ class _EditExcelViewBodyState extends State<EditExcelViewBody> {
                                                       singleObject:
                                                           singleObject,
                                                       tableList: tableList,
+                                                      controllerName: widget
+                                                          .tapData!
+                                                          .controllerName,
                                                     );
                                                   }
                                                 },

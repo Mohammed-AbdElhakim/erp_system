@@ -68,17 +68,14 @@ abstract class ScreenRepo {
 
   //------------------------------- المصاريف --------------------------
 
-  Future<Either<Failure, String>> addExpenses({
-    required Map<String, dynamic> body,
-  });
+  Future<Either<Failure, String>> addExpenses(
+      {required Map<String, dynamic> body, required String controllerName});
 
-  Future<Either<Failure, String>> editExpenses({
-    required Map<String, dynamic> body,
-  });
+  Future<Either<Failure, String>> editExpenses(
+      {required Map<String, dynamic> body, required String controllerName});
 
-  Future<Either<Failure, Map<String, dynamic>>> getExpensesMaster({
-    required String id,
-  });
+  Future<Either<Failure, Map<String, dynamic>>> getExpensesMaster(
+      {required String id, required String controllerName});
 
   Future<Either<Failure, ExpensesDetailsModel>> getExpensesDetails({
     required ListTaps tapModel,

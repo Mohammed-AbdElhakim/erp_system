@@ -10,12 +10,11 @@ part 'get_expenses_master_state.dart';
 class GetExpensesMasterCubit extends Cubit<GetExpensesMasterState> {
   GetExpensesMasterCubit(this.screenRepo) : super(GetExpensesMasterInitial());
   final ScreenRepo screenRepo;
-  Future<void> getExpensesMaster({
-    required String id,
-  }) async {
+  Future<void> getExpensesMaster(
+      {required String id, required String controllerName}) async {
     emit(GetExpensesMasterLoading());
-    Either<Failure, Map<String, dynamic>> result =
-        await screenRepo.getExpensesMaster(id: id);
+    Either<Failure, Map<String, dynamic>> result = await screenRepo
+        .getExpensesMaster(id: id, controllerName: controllerName);
     result.fold((failure) {
       emit(GetExpensesMasterFailure(failure.errorMassage));
     }, (data) {
