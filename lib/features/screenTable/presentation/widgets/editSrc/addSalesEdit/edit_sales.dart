@@ -692,12 +692,7 @@ class _EditSalesState extends State<EditSales> {
                                                     //   // "TaxDetailTotal":double.parse(),
                                                     //   // "DiscountDetailTotal":double.parse(),
                                                     // });
-                                                    print(
-                                                        "///////////////////////////////");
-                                                    print(singleObject);
-                                                    print(
-                                                        "///////////////////////////////");
-                                                    print(tableList);
+
                                                     BlocProvider.of<
                                                                 AddEditExpensesCubit>(
                                                             context)
@@ -1011,7 +1006,7 @@ class _EditSalesState extends State<EditSales> {
                   hintText: '',
                   initialItem: dropValue,
                   closedHeaderPadding:
-                      EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                   decoration: CustomDropdownDecoration(
                       headerStyle:
                           AppStyles.textStyle16.copyWith(color: Colors.black),
@@ -1080,7 +1075,7 @@ class _EditSalesState extends State<EditSales> {
         total = oldDataMaster['Contract']['TotalCurrancy'] ?? 0.0;
         return Text(
           "$total",
-          style: TextStyle(color: Colors.red, fontSize: 20),
+          style: const TextStyle(color: Colors.red, fontSize: 20),
         );
       case "المحصل نقدا":
         cashCollectedController.text =
@@ -1092,7 +1087,6 @@ class _EditSalesState extends State<EditSales> {
             isValidator: false,
             keyboardType: TextInputType.number,
             onChanged: (value) {
-              print(value);
               totalAfterTaxController.text = totalAfterTax(
                 total: total,
                 shippingPrice: shippingPriceController.text.isEmpty
@@ -1226,7 +1220,9 @@ class _EditSalesState extends State<EditSales> {
         );
       case "ضريبة خصم منبع":
         discountTaxController.text =
-            oldDataMaster['Contract']['TaxCurrancy'].toString() ?? "";
+            oldDataMaster['Contract']['TaxCurrancy'] != null
+                ? oldDataMaster['Contract']['TaxCurrancy'].toString()
+                : "";
         discountTaxPercentController.text = oldDataMaster['Contract']
                     ['TaxCurrancy'] !=
                 null
@@ -1394,7 +1390,9 @@ class _EditSalesState extends State<EditSales> {
         );
       case "خصم اجنبي":
         discountController.text =
-            oldDataMaster['Contract']['DiscountCurrancy'].toString() ?? "";
+            oldDataMaster['Contract']['DiscountCurrancy'] != null
+                ? oldDataMaster['Contract']['DiscountCurrancy'].toString()
+                : "";
         discountPercentController.text = oldDataMaster['Contract']
                     ['DiscountCurrancy'] !=
                 null
@@ -1756,7 +1754,7 @@ class _EditSalesState extends State<EditSales> {
           readOnly: true,
           isValidator: false,
           keyboardType: TextInputType.number,
-          textStyle: TextStyle(color: Colors.red, fontSize: 20),
+          textStyle: const TextStyle(color: Colors.red, fontSize: 20),
         );
     }
   }

@@ -460,7 +460,7 @@ class _BuildAlertAddDetailsState extends State<BuildAlertAddDetails> {
                 CustomDropdown<String>.search(
                   hintText: '',
                   closedHeaderPadding:
-                      EdgeInsets.symmetric(horizontal: 15, vertical: 8)
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                   decoration: CustomDropdownDecoration(
                       headerStyle:
                           AppStyles.textStyle16.copyWith(color: Colors.black),

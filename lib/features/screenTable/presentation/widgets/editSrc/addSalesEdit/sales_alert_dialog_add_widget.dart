@@ -224,7 +224,7 @@ class _SalesAlertDialogAddWidgetState extends State<SalesAlertDialogAddWidget> {
                           ),
                           CustomDropdown<String>.search(
                             hintText: '',
-                            closedHeaderPadding: EdgeInsets.symmetric(
+                            closedHeaderPadding: const EdgeInsets.symmetric(
                                 horizontal: 15, vertical: 8),
                             decoration: CustomDropdownDecoration(
                                 headerStyle: AppStyles.textStyle16
@@ -241,8 +241,6 @@ class _SalesAlertDialogAddWidgetState extends State<SalesAlertDialogAddWidget> {
                                             ['ProName'] ??
                                         ''),
                             onChanged: (value) {
-                              print(
-                                  "ريان=======================================");
                               int proID = AddSales.listProduct.firstWhere(
                                   (element) =>
                                       element['ProName'] == value)['ProID'];

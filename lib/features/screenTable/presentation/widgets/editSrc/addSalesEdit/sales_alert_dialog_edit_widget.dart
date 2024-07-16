@@ -313,7 +313,7 @@ class _SalesAlertDialogEditWidgetState
                           CustomDropdown<String>.search(
                             hintText: '',
                             initialItem: dropValue,
-                            closedHeaderPadding: EdgeInsets.symmetric(
+                            closedHeaderPadding: const EdgeInsets.symmetric(
                                 horizontal: 15, vertical: 8),
                             decoration: CustomDropdownDecoration(
                                 headerStyle: AppStyles.textStyle16

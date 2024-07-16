@@ -532,7 +532,7 @@ class _BuildAlertEditDetailsState extends State<BuildAlertEditDetails> {
                 hintText: '',
                 initialItem: dropValue,
                 closedHeaderPadding:
-                    EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                 decoration: CustomDropdownDecoration(
                     headerStyle:
                         AppStyles.textStyle16.copyWith(color: Colors.black),

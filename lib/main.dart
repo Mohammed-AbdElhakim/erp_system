@@ -46,7 +46,7 @@ class ERPSystem extends StatefulWidget {
 }
 
 class _ERPSystemState extends State<ERPSystem> {
-  Locale _locale = Locale(AppStrings.arLangKey);
+  Locale _locale = const Locale(AppStrings.arLangKey);
 
   @override
   void didChangeDependencies() async {

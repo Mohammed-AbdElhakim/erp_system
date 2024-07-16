@@ -368,7 +368,7 @@ class ScreenRepoImpl implements ScreenRepo {
               "";
       String token =
           await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
-      var rrr = jsonEncode(tapData.toJson());
+      // var rrr = jsonEncode(tapData.toJson());
       Map<String, dynamic> data = await apiService.post(
         endPoint: "home/GetPageDetailTable",
         data: tapData.toJson(),
@@ -541,7 +541,7 @@ class ScreenRepoImpl implements ScreenRepo {
               "";
       String token =
           await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
-      var rrr = jsonEncode(tapModel.toJson());
+      // var rrr = jsonEncode(tapModel.toJson());
       Map<String, dynamic> data = await apiService.post(
         endPoint: "web/Structure/getDataGlobal",
         data: tapModel.toJson(),

@@ -199,9 +199,7 @@ class _AddSalesState extends State<AddSales> {
                                                         i['Qty'] ?? "1"));
                                             totalController.text =
                                                 total.toString();
-                                            print("=================");
-                                            print(total);
-                                            print(totalController.text);
+
                                             discountController.text = discount(
                                                     total: total,
                                                     discountPercent:
@@ -793,7 +791,7 @@ class _AddSalesState extends State<AddSales> {
                   child: CustomDropdown<String>.search(
                     hintText: '',
                     closedHeaderPadding:
-                        EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                        const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                     decoration: CustomDropdownDecoration(
                       headerStyle:
                           AppStyles.textStyle16.copyWith(color: Colors.black),
@@ -871,7 +869,7 @@ class _AddSalesState extends State<AddSales> {
       case "الاجمالى":
         return Text(
           "$total",
-          style: TextStyle(color: Colors.red, fontSize: 20),
+          style: const TextStyle(color: Colors.red, fontSize: 20),
         );
       case "المحصل نقدا":
         // cashCollectedController.text =
@@ -883,7 +881,6 @@ class _AddSalesState extends State<AddSales> {
             isValidator: false,
             keyboardType: TextInputType.number,
             onChanged: (value) {
-              print(value);
               totalAfterTaxController.text = totalAfterTax(
                 total: total,
                 shippingPrice: shippingPriceController.text.isEmpty
@@ -1006,7 +1003,7 @@ class _AddSalesState extends State<AddSales> {
         return CustomDropdown<String>.search(
           hintText: '',
           closedHeaderPadding:
-              EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+              const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
           decoration: CustomDropdownDecoration(
               headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
               closedFillColor: Colors.transparent,
@@ -1549,7 +1546,7 @@ class _AddSalesState extends State<AddSales> {
           readOnly: true,
           isValidator: false,
           keyboardType: TextInputType.number,
-          textStyle: TextStyle(color: Colors.red, fontSize: 20),
+          textStyle: const TextStyle(color: Colors.red, fontSize: 20),
         );
     }
   }
