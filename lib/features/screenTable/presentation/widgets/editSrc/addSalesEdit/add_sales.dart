@@ -724,8 +724,9 @@ class _AddSalesState extends State<AddSales> {
                         }
                       },
                       child: Container(
+                          height: 40,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
+                              borderRadius: BorderRadius.circular(12),
                               border: Border.all(color: AppColors.blueDark)),
                           alignment: Alignment.center,
                           padding: const EdgeInsets.all(8),
@@ -787,25 +788,31 @@ class _AddSalesState extends State<AddSales> {
                       )
                   ],
                 ),
-                CustomDropdown<String>.search(
-                  hintText: '',
-                  decoration: CustomDropdownDecoration(
+                SizedBox(
+                  height: 40,
+                  child: CustomDropdown<String>.search(
+                    hintText: '',
+                    closedHeaderPadding:
+                        EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                    decoration: CustomDropdownDecoration(
                       headerStyle:
                           AppStyles.textStyle16.copyWith(color: Colors.black),
                       closedFillColor: Colors.transparent,
-                      closedBorder: Border.all(color: AppColors.blueDark)),
-                  items: myListDrop!.isEmpty
-                      ? [""]
-                      : List.generate(myListDrop.length,
-                          (index) => myListDrop![index].text ?? ''),
-                  onChanged: (value) {
-                    ItemDrop ii = myListDrop!
-                        .firstWhere((element) => element.text == value);
-                    singleObject.addAll({item.searchName!.toString(): ii.id});
-                    if (item.columnName == "CustomerID") {
-                      AddSales.userId = int.parse(ii.id ?? "-1");
-                    }
-                  },
+                      closedBorder: Border.all(color: AppColors.blueDark),
+                    ),
+                    items: myListDrop!.isEmpty
+                        ? [""]
+                        : List.generate(myListDrop.length,
+                            (index) => myListDrop![index].text ?? ''),
+                    onChanged: (value) {
+                      ItemDrop ii = myListDrop!
+                          .firstWhere((element) => element.text == value);
+                      singleObject.addAll({item.searchName!.toString(): ii.id});
+                      if (item.columnName == "CustomerID") {
+                        AddSales.userId = int.parse(ii.id ?? "-1");
+                      }
+                    },
+                  ),
                 ),
               ],
             ),
@@ -946,8 +953,9 @@ class _AddSalesState extends State<AddSales> {
                 }
               },
               child: Container(
+                height: 40,
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
+                    borderRadius: BorderRadius.circular(12),
                     border: Border.all(color: AppColors.blueDark)),
                 alignment: Alignment.center,
                 padding: const EdgeInsets.all(8),
@@ -997,6 +1005,8 @@ class _AddSalesState extends State<AddSales> {
         }
         return CustomDropdown<String>.search(
           hintText: '',
+          closedHeaderPadding:
+              EdgeInsets.symmetric(horizontal: 15, vertical: 8),
           decoration: CustomDropdownDecoration(
               headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
               closedFillColor: Colors.transparent,

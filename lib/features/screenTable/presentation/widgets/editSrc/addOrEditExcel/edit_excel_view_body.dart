@@ -571,8 +571,9 @@ class _EditExcelViewBodyState extends State<EditExcelViewBody> {
                         }
                       },
                       child: Container(
+                          height: 40,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
+                              borderRadius: BorderRadius.circular(12),
                               border: Border.all(color: AppColors.blueDark)),
                           alignment: Alignment.center,
                           padding: const EdgeInsets.all(8),
@@ -652,6 +653,8 @@ class _EditExcelViewBodyState extends State<EditExcelViewBody> {
                 CustomDropdown<String>.search(
                   hintText: '',
                   initialItem: dropValue,
+                  closedHeaderPadding:
+                      EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                   decoration: CustomDropdownDecoration(
                       headerStyle:
                           AppStyles.textStyle16.copyWith(color: Colors.black),

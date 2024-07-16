@@ -469,8 +469,9 @@ class _BuildAlertSearchDetailsState extends State<BuildAlertSearchDetails> {
                               }
                             },
                             child: Container(
+                                height: 40,
                                 decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
+                                    borderRadius: BorderRadius.circular(12),
                                     border:
                                         Border.all(color: AppColors.blueDark)),
                                 alignment: Alignment.center,
@@ -510,8 +511,9 @@ class _BuildAlertSearchDetailsState extends State<BuildAlertSearchDetails> {
                               }
                             },
                             child: Container(
+                                height: 40,
                                 decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
+                                    borderRadius: BorderRadius.circular(12),
                                     border:
                                         Border.all(color: AppColors.blueDark)),
                                 alignment: Alignment.center,
@@ -597,6 +599,8 @@ class _BuildAlertSearchDetailsState extends State<BuildAlertSearchDetails> {
                 CustomDropdown<String>.multiSelectSearch(
                   hintText: '',
                   initialItems: dropValue,
+                  closedHeaderPadding:
+                      EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                   decoration: CustomDropdownDecoration(
                       headerStyle:
                           AppStyles.textStyle16.copyWith(color: Colors.black),

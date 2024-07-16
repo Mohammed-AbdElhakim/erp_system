@@ -38,36 +38,39 @@ class CustomTextFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      controller: controller,
-      validator: isValidator == true
-          ? (value) {
-              if (value?.isEmpty ?? true) {
-                return validatorMassage ?? S.of(context).field_is_required;
-              } else {
-                return null;
+    return SizedBox(
+      height: 40,
+      child: TextFormField(
+        controller: controller,
+        validator: isValidator == true
+            ? (value) {
+                if (value?.isEmpty ?? true) {
+                  return validatorMassage ?? S.of(context).field_is_required;
+                } else {
+                  return null;
+                }
               }
-            }
-          : null,
-      textAlign: TextAlign.center,
-      onChanged: onChanged,
-      onSaved: onSaved,
-      keyboardType: keyboardType,
-      obscureText: obscureText,
-      style: textStyle,
-      readOnly: readOnly ?? false,
-      decoration: InputDecoration(
-        hintText: hintText,
-        hintStyle: TextStyle(color: AppColors.grey),
-        filled: filled,
-        fillColor: fillColor,
-        contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
-        border: buildBorder(isBorder: isBorder),
-        enabledBorder:
-            buildBorder(color: AppColors.blueDark, isBorder: isBorder),
-        focusedBorder:
-            buildBorder(color: AppColors.blueDark, isBorder: isBorder),
-        prefixIcon: prefixIcon,
+            : null,
+        textAlign: TextAlign.center,
+        onChanged: onChanged,
+        onSaved: onSaved,
+        keyboardType: keyboardType,
+        obscureText: obscureText,
+        style: textStyle,
+        readOnly: readOnly ?? false,
+        decoration: InputDecoration(
+          hintText: hintText,
+          hintStyle: TextStyle(color: AppColors.grey),
+          filled: filled,
+          fillColor: fillColor,
+          contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
+          border: buildBorder(isBorder: isBorder),
+          enabledBorder:
+              buildBorder(color: AppColors.blueDark, isBorder: isBorder),
+          focusedBorder:
+              buildBorder(color: AppColors.blueDark, isBorder: isBorder),
+          prefixIcon: prefixIcon,
+        ),
       ),
     );
   }

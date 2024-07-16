@@ -403,8 +403,9 @@ class _AddExcelViewBodyState extends State<AddExcelViewBody> {
                         }
                       },
                       child: Container(
+                          height: 40,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
+                              borderRadius: BorderRadius.circular(12),
                               border: Border.all(color: AppColors.blueDark)),
                           alignment: Alignment.center,
                           padding: const EdgeInsets.all(8),
@@ -468,6 +469,8 @@ class _AddExcelViewBodyState extends State<AddExcelViewBody> {
                 ),
                 CustomDropdown<String>.search(
                   hintText: '',
+                  closedHeaderPadding:
+                      EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                   decoration: CustomDropdownDecoration(
                       headerStyle:
                           AppStyles.textStyle16.copyWith(color: Colors.black),
