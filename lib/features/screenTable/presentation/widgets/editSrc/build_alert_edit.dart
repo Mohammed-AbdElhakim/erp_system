@@ -429,16 +429,16 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
         }
         String? dropValue;
         for (var i in myListDrop!) {
-          if (i.text.toString() == rowData[item.searchName].toString()) {
+          if (i.id.toString() == rowData[item.searchName].toString()) {
             dropValue = i.text ?? '';
           }
-          if (i.text.toString() == rowData[item.searchName].toString()) {
+          if (i.id.toString() == rowData[item.searchName].toString()) {
             dropValue = i.text ?? '';
           }
-          if (i.text.toString() == rowData[item.columnName].toString()) {
+          if (i.id.toString() == rowData[item.columnName].toString()) {
             dropValue = i.text ?? '';
           }
-          if (i.text.toString() == rowData[item.columnName].toString()) {
+          if (i.id.toString() == rowData[item.columnName].toString()) {
             dropValue = i.text ?? '';
           }
         }
@@ -471,13 +471,15 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                         AppStyles.textStyle16.copyWith(color: Colors.black),
                     closedFillColor: Colors.transparent,
                     closedBorder: Border.all(color: AppColors.blueDark)),
-                validator: (value) {
-                  if (value?.isEmpty ?? true) {
-                    return S.of(context).field_is_required;
-                  } else {
-                    return null;
-                  }
-                },
+                validator: item.isRquired == true
+                    ? (value) {
+                        if (value?.isEmpty ?? true) {
+                          return S.of(context).field_is_required;
+                        } else {
+                          return null;
+                        }
+                      }
+                    : null,
                 items: myListDrop.isEmpty
                     ? ['']
                     : List.generate(myListDrop.length,
