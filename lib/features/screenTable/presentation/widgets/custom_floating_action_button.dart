@@ -269,12 +269,18 @@ class _CustomFloatingActionButtonState
               ),
             );
           } else {
-            GoRouter.of(context).push(AppRouter.kEditView,
-                extra: AddPassDataModel(
-                  pageData: widget.pageData,
-                  columnList: columnList,
-                  listKey: listKey,
-                ));
+            GoRouter.of(context)
+                .push(AppRouter.kEditView,
+                    extra: AddPassDataModel(
+                      pageData: widget.pageData,
+                      columnList: columnList,
+                      listKey: listKey,
+                    ))
+                .then((value) {
+              if (widget.pageData.tableSrc == AppStrings.tableGroup) {
+                ScreenTable.rowData.clear();
+              }
+            });
           }
         }
       } else {
@@ -297,14 +303,12 @@ class _CustomFloatingActionButtonState
           ),
         );
       } else {
-        GoRouter.of(context)
-            .push(AppRouter.kAddView,
-                extra: AddPassDataModel(
-                  pageData: widget.pageData,
-                  columnList: columnList,
-                  listKey: listKey,
-                ))
-            .then((value) => ScreenTable.rowData.clear());
+        GoRouter.of(context).push(AppRouter.kAddView,
+            extra: AddPassDataModel(
+              pageData: widget.pageData,
+              columnList: columnList,
+              listKey: listKey,
+            ));
       }
     }
   }

@@ -5,7 +5,6 @@ import 'package:erp_system/core/widgets/custom_loading_widget.dart';
 import 'package:erp_system/features/screenTable/data/repositories/screen_repo_impl.dart';
 import 'package:erp_system/features/screenTable/presentation/manager/getListSetups/get_list_setups_cubit.dart';
 import 'package:erp_system/features/screenTable/presentation/manager/getPageDetails/get_page_details_cubit.dart';
-import 'package:erp_system/features/screenTable/presentation/views/screen_table.dart';
 import 'package:erp_system/features/screenTable/presentation/widgets/editSrc/addSalesEdit/edit_sales.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,12 +32,6 @@ class EditView extends StatefulWidget {
 }
 
 class _EditViewState extends State<EditView> {
-  @override
-  void dispose() {
-    ScreenTable.rowData = [];
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return ChangeStatusBarColor(
