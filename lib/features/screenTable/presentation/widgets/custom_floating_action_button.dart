@@ -269,14 +269,12 @@ class _CustomFloatingActionButtonState
               ),
             );
           } else {
-            GoRouter.of(context)
-                .push(AppRouter.kEditView,
-                    extra: AddPassDataModel(
-                      pageData: widget.pageData,
-                      columnList: columnList,
-                      listKey: listKey,
-                    ))
-                .then((value) => ScreenTable.rowData.clear());
+            GoRouter.of(context).push(AppRouter.kEditView,
+                extra: AddPassDataModel(
+                  pageData: widget.pageData,
+                  columnList: columnList,
+                  listKey: listKey,
+                ));
           }
         }
       } else {

@@ -12,6 +12,7 @@ import '../../../../../../generated/l10n.dart';
 import '../../../../data/models/dropdown_model/all_dropdown_model.dart';
 import '../../../../data/models/item_list_setup_model.dart';
 import '../../../../data/models/tap_model.dart';
+import 'edit_sales.dart';
 
 typedef OnTapAdd<T> = void Function(T data);
 
@@ -25,6 +26,7 @@ class SalesAlertDialogAddWidget extends StatefulWidget {
     required this.pageData,
     this.tapData,
     required this.onTapAdd,
+    required this.typeView,
   });
   final ListTaps? tapData;
   final List<String> listHeader;
@@ -33,6 +35,7 @@ class SalesAlertDialogAddWidget extends StatefulWidget {
   final List<AllDropdownModel> allDropdownModelList;
   final Pages pageData;
   final OnTapAdd<Map<String, dynamic>> onTapAdd;
+  final String typeView;
 
   @override
   State<SalesAlertDialogAddWidget> createState() =>
@@ -48,8 +51,16 @@ class _SalesAlertDialogAddWidgetState extends State<SalesAlertDialogAddWidget> {
 
   @override
   void initState() {
-    customerCategoryID = AddSales.listCustomerAccount.firstWhere((element) =>
-        element['CustomerAccountID'] == AddSales.userId)['CategoryID'];
+    if (widget.typeView == "Add") {
+      print(AddSales.userId);
+      customerCategoryID = AddSales.listCustomerAccount.firstWhere((element) =>
+          element['CustomerAccountID'] == AddSales.userId)['CategoryID'];
+    } else {
+      print(EditSales.userId);
+      customerCategoryID = EditSales.listCustomerAccount.firstWhere((element) =>
+          element['CustomerAccountID'] == EditSales.userId)['CategoryID'];
+    }
+
     super.initState();
   }
 
@@ -103,14 +114,14 @@ class _SalesAlertDialogAddWidgetState extends State<SalesAlertDialogAddWidget> {
                             isValidator: widget.listColumn[0].isRquired!,
                             keyboardType: TextInputType.number,
                             onSaved: (newValue) {
-                              if (newValue!.isNotEmpty) {
-                                setState(() {
-                                  newRowData.addAll({
-                                    widget.listColumn[0].columnName!.toString():
-                                        newValue
-                                  });
+                              // if (newValue!.isNotEmpty) {
+                              setState(() {
+                                newRowData.addAll({
+                                  widget.listColumn[0].columnName!.toString():
+                                      newValue!.isEmpty ? "1" : newValue
                                 });
-                              }
+                              });
+                              // }
                             },
                           ),
                         ],
@@ -186,14 +197,14 @@ class _SalesAlertDialogAddWidgetState extends State<SalesAlertDialogAddWidget> {
                             isValidator: widget.listColumn[2].isRquired!,
                             keyboardType: TextInputType.text,
                             onSaved: (newValue) {
-                              if (newValue!.isNotEmpty) {
-                                setState(() {
-                                  newRowData.addAll({
-                                    widget.listColumn[2].columnName!.toString():
-                                        newValue
-                                  });
+                              // if (newValue!.isNotEmpty) {
+                              setState(() {
+                                newRowData.addAll({
+                                  widget.listColumn[2].columnName!.toString():
+                                      newValue!.isEmpty ? "" : newValue
                                 });
-                              }
+                              });
+                              // }
                             },
                           ),
                         ],
@@ -305,14 +316,14 @@ class _SalesAlertDialogAddWidgetState extends State<SalesAlertDialogAddWidget> {
                             isValidator: widget.listColumn[4].isRquired!,
                             keyboardType: TextInputType.text,
                             onSaved: (newValue) {
-                              if (newValue!.isNotEmpty) {
-                                setState(() {
-                                  newRowData.addAll({
-                                    widget.listColumn[4].columnName!.toString():
-                                        newValue
-                                  });
+                              // if (newValue!.isNotEmpty) {
+                              setState(() {
+                                newRowData.addAll({
+                                  widget.listColumn[4].columnName!.toString():
+                                      newValue!.isEmpty ? "" : newValue
                                 });
-                              }
+                              });
+                              // }
                             },
                           ),
                         ],

@@ -25,7 +25,7 @@ void main() async {
       statusBarIconBrightness: Brightness.light,
     ),
   );
-  // WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
   // await Hive.initFlutter();
   // Hive.registerAdapter(ListDropdownModelAdapter());
   // await Hive.openBox<ListDropdownModel>(AppStrings.listDropdownBox);

@@ -78,6 +78,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "refresh": MessageLookupByLibrary.simpleMessage("تحديث"),
         "revision": MessageLookupByLibrary.simpleMessage("تم المراجعة"),
         "search": MessageLookupByLibrary.simpleMessage("بحث....."),
+        "select_client":
+            MessageLookupByLibrary.simpleMessage("من فضلك اختر العميل."),
         "show_less": MessageLookupByLibrary.simpleMessage("عرض أقل"),
         "show_more": MessageLookupByLibrary.simpleMessage("عرض المزيد"),
         "start_date": MessageLookupByLibrary.simpleMessage("تاريخ البداية: "),

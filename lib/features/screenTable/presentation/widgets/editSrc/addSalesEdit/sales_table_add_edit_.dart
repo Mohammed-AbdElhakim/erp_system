@@ -1,15 +1,21 @@
+import 'package:erp_system/features/screenTable/presentation/widgets/editSrc/addSalesEdit/edit_sales.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:linked_scroll_controller/linked_scroll_controller.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
+import '../../../../../../core/helper/AlertDialog/custom_alert_dialog.dart';
 import '../../../../../../core/models/menu_model/pages.dart';
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_styles.dart';
 import '../../../../../../core/utils/methods.dart';
+import '../../../../../../generated/l10n.dart';
 import '../../../../data/models/dropdown_model/all_dropdown_model.dart';
 import '../../../../data/models/item_list_setup_model.dart';
 import '../../../../data/models/tap_model.dart';
+import '../../../views/barcode_view.dart';
 import '../../../views/screen_table.dart';
+import 'add_sales.dart';
 import 'sales_alert_dialog_add_widget.dart';
 import 'sales_alert_dialog_edit_widget.dart';
 
@@ -38,6 +44,8 @@ class SalesTableAddEdit extends StatefulWidget {
   final OnTapAction<List<Map<String, dynamic>>> onTapAction;
   final String typeView;
 
+  static String barcode = '';
+
   @override
   State<SalesTableAddEdit> createState() => _SalesTableAddEditState();
 }
@@ -49,6 +57,10 @@ class _SalesTableAddEditState extends State<SalesTableAddEdit> {
   Map<String, dynamic> myObject = {};
   List<Map<String, dynamic>> tableListInAddView = [];
   late List<Map<String, dynamic>> tableListInEditView;
+  late int customerCategoryID;
+  late int productId;
+  late String proName;
+  late double proPrice;
 
   int indexSelect = -1;
   bool select = false;
@@ -75,33 +87,46 @@ class _SalesTableAddEditState extends State<SalesTableAddEdit> {
           children: [
             IconButton(
               onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      content: SalesAlertDialogAddWidget(
-                        tapData: widget.tapData,
-                        listKey: widget.listKey,
-                        listHeader: widget.listHeader,
-                        listColumn: widget.listColumn,
-                        allDropdownModelList:
-                            ScreenTable.myAllDropdownModelList,
-                        pageData: widget.pageData,
-                        onTapAdd: (data) {
-                          if (widget.typeView == "Add") {
-                            tableListInAddView.add(data);
-                            widget.onTapAction(tableListInAddView);
-                          } else if (widget.typeView == "Edit") {
-                            tableListInEditView.add(data);
-                            widget.onTapAction(tableListInEditView);
-                          }
-                        },
-                      ),
-                    );
-                  },
-                ).then((value) {
-                  setState(() {});
-                });
+                if (widget.typeView == "Add" && AddSales.userId == -1) {
+                  CustomAlertDialog.alertWithButton(
+                      context: context,
+                      type: AlertType.error,
+                      title: S.of(context).error,
+                      textButton: S.of(context).ok,
+                      desc: S.of(context).select_client,
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      });
+                } else {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        content: SalesAlertDialogAddWidget(
+                          typeView: widget.typeView,
+                          tapData: widget.tapData,
+                          listKey: widget.listKey,
+                          listHeader: widget.listHeader,
+                          listColumn: widget.listColumn,
+                          allDropdownModelList:
+                              ScreenTable.myAllDropdownModelList,
+                          pageData: widget.pageData,
+                          onTapAdd: (data) {
+                            if (widget.typeView == "Add") {
+                              tableListInAddView.add(data);
+                              widget.onTapAction(tableListInAddView);
+                            } else if (widget.typeView == "Edit") {
+                              tableListInEditView.add(data);
+                              widget.onTapAction(tableListInEditView);
+                            }
+                          },
+                        ),
+                      );
+                    },
+                  ).then((value) {
+                    setState(() {});
+                  });
+                }
               },
               icon: const Icon(
                 Icons.add,
@@ -112,6 +137,95 @@ class _SalesTableAddEditState extends State<SalesTableAddEdit> {
               ),
             ),
             IconButton(
+              onPressed: () async {
+                if (widget.typeView == "Add" && AddSales.userId == -1) {
+                  CustomAlertDialog.alertWithButton(
+                      context: context,
+                      type: AlertType.error,
+                      title: S.of(context).error,
+                      textButton: S.of(context).ok,
+                      desc: S.of(context).select_client,
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      });
+                } else {
+                  final resultScanner = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const BarcodeView(),
+                      ));
+                  // result = "11961";
+                  if (!context.mounted) return;
+
+                  // ScaffoldMessenger.of(context)
+                  //   ..removeCurrentSnackBar()
+                  //   ..showSnackBar(SnackBar(
+                  //     content: Text('$resultScanner'),
+                  //     duration: const Duration(seconds: 2),
+                  //   ));
+
+                  getDataPro(widget.typeView, resultScanner);
+
+                  Map<String, dynamic> proData = {
+                    "ProductID": productId,
+                    "Qty": "1",
+                    "PriceCurrancy": "$proPrice",
+                    "systemDescription": "",
+                    "BatchNumber": "",
+                  };
+                  if (widget.typeView == "Add") {
+                    if (tableListInAddView.isEmpty) {
+                      tableListInAddView.add(proData);
+                      widget.onTapAction(tableListInAddView);
+                    } else {
+                      Map<String, dynamic> data = tableListInAddView.firstWhere(
+                        (element) =>
+                            element['ProductID'] == proData['ProductID'],
+                        orElse: () => {},
+                      );
+                      if (data.isEmpty) {
+                        tableListInAddView.add(proData);
+                        widget.onTapAction(tableListInAddView);
+                      } else {
+                        data['Qty'] = (int.parse(data['Qty']) + 1).toString();
+                        // element['PriceCurrancy'] =
+                        //     (proPrice * int.parse(element['Qty'])).toString();
+                        widget.onTapAction(tableListInAddView);
+                      }
+                    }
+                  } else if (widget.typeView == "Edit") {
+                    if (tableListInEditView.isEmpty) {
+                      tableListInEditView.add(proData);
+                      widget.onTapAction(tableListInEditView);
+                    } else {
+                      Map<String, dynamic> data =
+                          tableListInEditView.firstWhere(
+                        (element) =>
+                            element['ProductID'] == proData['ProductID'],
+                        orElse: () => {},
+                      );
+                      if (data.isEmpty) {
+                        tableListInEditView.add(proData);
+                        widget.onTapAction(tableListInEditView);
+                      } else {
+                        data['Qty'] = (int.parse(data['Qty']) + 1).toString();
+                        // element['PriceCurrancy'] =
+                        //     (proPrice * int.parse(element['Qty'])).toString();
+                        widget.onTapAction(tableListInEditView);
+                      }
+                    }
+                  }
+                }
+              },
+              icon: const Icon(
+                Icons.barcode_reader,
+                color: Colors.white,
+              ),
+              style: IconButton.styleFrom(
+                backgroundColor: AppColors.green,
+              ),
+            ),
+            IconButton(
               onPressed: () {
                 if (indexSelect != -1) {
                   showDialog(
@@ -119,6 +233,7 @@ class _SalesTableAddEditState extends State<SalesTableAddEdit> {
                     builder: (context) {
                       return AlertDialog(
                         content: SalesAlertDialogEditWidget(
+                          typeView: widget.typeView,
                           tapData: widget.tapData,
                           listKey: widget.listKey,
                           listHeader: widget.listHeader,
@@ -442,6 +557,91 @@ class _SalesTableAddEditState extends State<SalesTableAddEdit> {
           style: TextStyle(
               color: indexSelect == indexRow ? Colors.white : Colors.black),
         );
+    }
+  }
+
+  void getDataPro(String type, String resultScanner) {
+    if (type == "Add") {
+      productId = AddSales.listBarcodeData.firstWhere(
+        (element) => element['BarcodeProc'] == resultScanner /*"11961"*/,
+        orElse: () => {"ProductId": -1},
+      )['ProductId'];
+
+      print(AddSales.userId);
+      customerCategoryID = AddSales.listCustomerAccount.firstWhere((element) =>
+          element['CustomerAccountID'] == AddSales.userId)['CategoryID'];
+
+      double productPrice = AddSales.listProductPrices.firstWhere(
+            (element) =>
+                element['ProductID'] == productId &&
+                element['CustomerCategoryID'] == customerCategoryID,
+            orElse: () => {},
+          )['Price'] ??
+          0.0;
+      if (productPrice != 0.0) {
+        print(productPrice);
+        proPrice = productPrice;
+        proName = AddSales.listProduct.firstWhere(
+              (element) => element["ProID"] == productId,
+              orElse: () => {},
+            )['ProName'] ??
+            "";
+      } else {
+        double price = AddSales.listProduct.firstWhere(
+              (element) => element["ProID"] == productId,
+              orElse: () => {},
+            )['ProPrice'] ??
+            -1;
+        if (price != -1) {
+          print(productPrice);
+          proPrice = price;
+          proName = AddSales.listProduct.firstWhere(
+                (element) => element["ProID"] == productId,
+                orElse: () => {},
+              )['ProName'] ??
+              "";
+        }
+      }
+    } else {
+      productId = EditSales.listBarcodeData.firstWhere(
+        (element) => element['BarcodeProc'] == "11961",
+        orElse: () => {"ProductId": -1},
+      )['ProductId'];
+
+      customerCategoryID = EditSales.listCustomerAccount.firstWhere((element) =>
+          element['CustomerAccountID'] == EditSales.userId)['CategoryID'];
+
+      double productPrice = EditSales.listProductPrices.firstWhere(
+            (element) =>
+                element['ProductID'] == productId &&
+                element['CustomerCategoryID'] == customerCategoryID,
+            orElse: () => {},
+          )['Price'] ??
+          0.0;
+      if (productPrice != 0.0) {
+        print(productPrice);
+        proPrice = productPrice;
+        proName = EditSales.listProduct.firstWhere(
+              (element) => element["ProID"] == productId,
+              orElse: () => {},
+            )['ProName'] ??
+            "";
+      } else {
+        double price = EditSales.listProduct.firstWhere(
+              (element) => element["ProID"] == productId,
+              orElse: () => {},
+            )['ProPrice'] ??
+            -1;
+        if (price != -1) {
+          print(productPrice);
+          proPrice = price;
+          proName = EditSales.listProduct.firstWhere(
+                (element) => element["ProID"] == productId,
+                orElse: () => {},
+              )['ProName'] ??
+              "";
+        }
+      }
     }
   }
 }

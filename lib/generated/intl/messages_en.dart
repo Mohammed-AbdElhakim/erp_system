@@ -81,6 +81,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "refresh": MessageLookupByLibrary.simpleMessage("Refresh"),
         "revision": MessageLookupByLibrary.simpleMessage("Reviewed"),
         "search": MessageLookupByLibrary.simpleMessage("Search....."),
+        "select_client":
+            MessageLookupByLibrary.simpleMessage("Please select a client."),
         "show_less": MessageLookupByLibrary.simpleMessage("Show less"),
         "show_more": MessageLookupByLibrary.simpleMessage("Show more"),
         "start_date": MessageLookupByLibrary.simpleMessage("Start Date: "),

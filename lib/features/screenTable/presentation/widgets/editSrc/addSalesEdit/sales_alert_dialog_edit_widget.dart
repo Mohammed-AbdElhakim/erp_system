@@ -12,6 +12,7 @@ import '../../../../data/models/dropdown_model/all_dropdown_model.dart';
 import '../../../../data/models/item_list_setup_model.dart';
 import '../../../../data/models/tap_model.dart';
 import 'add_sales.dart';
+import 'edit_sales.dart';
 
 typedef OnTapAdd<T> = void Function(T data);
 
@@ -26,6 +27,7 @@ class SalesAlertDialogEditWidget extends StatefulWidget {
     this.tapData,
     required this.onTapAdd,
     required this.dataOld,
+    required this.typeView,
   });
   final ListTaps? tapData;
   final List<String> listHeader;
@@ -35,6 +37,7 @@ class SalesAlertDialogEditWidget extends StatefulWidget {
   final Pages pageData;
   final OnTapAdd<Map<String, dynamic>> onTapAdd;
   final Map<String, dynamic> dataOld;
+  final String typeView;
 
   @override
   State<SalesAlertDialogEditWidget> createState() =>
@@ -61,8 +64,13 @@ class _SalesAlertDialogEditWidgetState
 
   @override
   void initState() {
-    customerCategoryID = AddSales.listCustomerAccount.firstWhere((element) =>
-        element['CustomerAccountID'] == AddSales.userId)['CategoryID'];
+    if (widget.typeView == "Add") {
+      customerCategoryID = AddSales.listCustomerAccount.firstWhere((element) =>
+          element['CustomerAccountID'] == AddSales.userId)['CategoryID'];
+    } else {
+      customerCategoryID = EditSales.listCustomerAccount.firstWhere((element) =>
+          element['CustomerAccountID'] == EditSales.userId)['CategoryID'];
+    }
     qtyController.text =
         widget.dataOld[widget.listColumn[0].columnName].toString() == "null"
             ? ''

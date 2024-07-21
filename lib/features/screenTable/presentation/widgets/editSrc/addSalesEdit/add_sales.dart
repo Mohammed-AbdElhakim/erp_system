@@ -9,6 +9,7 @@ import 'package:erp_system/features/screenTable/presentation/widgets/editSrc/add
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:location/location.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 import '../../../../../../core/helper/AlertDialog/custom_alert_dialog.dart';
@@ -33,6 +34,7 @@ class AddSales extends StatefulWidget {
   final Pages pageData;
   final List<dynamic> listKey;
   static List<dynamic> listCustomerAccount = [];
+  static List<dynamic> listBarcodeData = [];
   static List<dynamic> listProduct = [];
   static List<dynamic> listProductPrices = [];
   static int userId = -1;
@@ -45,10 +47,10 @@ class _AddSalesState extends State<AddSales> {
   String? lang;
   GlobalKey<FormState> formKey = GlobalKey();
   Map<String, dynamic> singleObject = {};
-  bool isShow = false;
   List<Map<String, dynamic>> tableList = [];
   late List<AllDropdownModel> myAllDropdownModelList;
-
+  double? lat;
+  double? long;
   List<String> listHeaderSales = [
     "الاجمالى",
     "المحصل نقدا",
@@ -67,7 +69,7 @@ class _AddSalesState extends State<AddSales> {
 
   double total = 0.0;
   // double deadlineClient = 0.0;
-  TextEditingController totalController = TextEditingController();
+  // TextEditingController totalController = TextEditingController();
   TextEditingController deadlineClientController = TextEditingController();
   TextEditingController cashCollectedController = TextEditingController();
   TextEditingController numberOfInstallmentsController =
@@ -97,7 +99,7 @@ class _AddSalesState extends State<AddSales> {
   @override
   void dispose() {
     // AddViewBody.tableList = [];
-
+    AddSales.userId = -1;
     super.dispose();
   }
 
@@ -197,8 +199,8 @@ class _AddSalesState extends State<AddSales> {
                                                         i['PriceCurrancy']) *
                                                     double.parse(
                                                         i['Qty'] ?? "1"));
-                                            totalController.text =
-                                                total.toString();
+                                            // totalController.text =
+                                            //     total.toString();
 
                                             discountController.text = discount(
                                                     total: total,
@@ -320,8 +322,8 @@ class _AddSalesState extends State<AddSales> {
                                       } else {
                                         salessetState(() {
                                           total = 0.0;
-                                          totalController.text =
-                                              total.toString();
+                                          // totalController.text =
+                                          //     total.toString();
                                         });
                                       }
                                     },
@@ -500,9 +502,14 @@ class _AddSalesState extends State<AddSales> {
                                 return CustomButton(
                                   text: S.of(context).btn_add,
                                   width: 80,
-                                  onTap: () {
+                                  onTap: () async {
                                     if (formKey.currentState!.validate()) {
                                       formKey.currentState!.save();
+                                      // await getLocation();
+                                      print(
+                                          "=======lat=======$lat==================");
+                                      print(
+                                          "=======long=======$long==================");
                                       singleObject.addAll({
                                         "TotalCurrancy": total,
                                         "DiscountCurrancy": double.parse(
@@ -2256,11 +2263,47 @@ class _AddSalesState extends State<AddSales> {
         },
       );
 
+      Map<String, dynamic> barcodeData = await ApiService(Dio()).post(
+        endPoint: "web/Structure/getDataGlobal",
+        data: {"TableName": "BarcodeData"},
+        headers: {
+          "Authorization": "Bearer $token",
+          "CompanyKey": companyKey,
+        },
+      );
+
       AddSales.listProduct = dataProduct['dynamicList'];
       AddSales.listProductPrices = dataProductPrices['dynamicList'];
       AddSales.listCustomerAccount = dataCustomerAccount['dynamicList'];
+      AddSales.listBarcodeData = barcodeData['dynamicList'];
     } catch (e) {
       print(e);
     }
+  }
+
+  Future<void> getLocation() async {
+    Location location = Location();
+
+    var serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
+        return;
+      }
+    }
+
+    var permissionGranted = await location.hasPermission();
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != PermissionStatus.granted) {
+        return;
+      }
+    }
+
+    var locationData = await location.getLocation();
+    setState(() {
+      lat = locationData.latitude;
+      long = locationData.longitude;
+    });
   }
 }

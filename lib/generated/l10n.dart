@@ -599,6 +599,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Please select a client.`
+  String get select_client {
+    return Intl.message(
+      'Please select a client.',
+      name: 'select_client',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

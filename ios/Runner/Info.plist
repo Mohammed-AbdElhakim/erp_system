@@ -64,5 +64,9 @@
     <string>The app needs the location</string>
 
 
+    <key>NSCameraUsageDescription</key>
+    <string>We need to access your camera for barcode scanning.</string>
+
+
 </dict>
 </plist>

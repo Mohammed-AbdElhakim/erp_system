@@ -40,6 +40,7 @@ class EditSales extends StatefulWidget {
   static List<dynamic> listCustomerAccount = [];
   static List<dynamic> listProduct = [];
   static List<dynamic> listProductPrices = [];
+  static List<dynamic> listBarcodeData = [];
   static int userId = -1;
 
   @override
@@ -50,7 +51,6 @@ class _EditSalesState extends State<EditSales> {
   String? lang;
   GlobalKey<FormState> formKey = GlobalKey();
   Map<String, dynamic> singleObject = {};
-  bool isShow = false;
   List<Map<String, dynamic>> tableList = [];
   late List<AllDropdownModel> myAllDropdownModelList;
   late String id;
@@ -73,7 +73,6 @@ class _EditSalesState extends State<EditSales> {
   ];
 
   double total = 0.0;
-  // double deadlineClient = 0.0;
   TextEditingController deadlineClientController = TextEditingController();
   TextEditingController cashCollectedController = TextEditingController();
   TextEditingController numberOfInstallmentsController =
@@ -107,6 +106,7 @@ class _EditSalesState extends State<EditSales> {
   @override
   void dispose() {
     // EditViewBody.tableList = [];
+    EditSales.userId = -1;
     super.dispose();
   }
 
@@ -121,7 +121,7 @@ class _EditSalesState extends State<EditSales> {
         builder: (context, state) {
           if (state is GetExpensesMasterSuccess) {
             Map<String, dynamic> dataMaster = state.data;
-
+            total = dataMaster['Contract']['TotalCurrancy'] ?? 0.0;
             return BlocProvider(
               create: (context) =>
                   GetExpensesDetailsCubit(getIt.get<ScreenRepoImpl>())
@@ -219,501 +219,503 @@ class _EditSalesState extends State<EditSales> {
                             }
                           }
                           List<String> categoryList = category.toSet().toList();
-                          return Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Form(
-                              key: formKey,
-                              child: Stack(
-                                alignment: Alignment.center,
-                                clipBehavior: Clip.none,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(bottom: 60),
-                                    child: SingleChildScrollView(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          ...List.generate(categoryList.length,
-                                              (index) {
-                                            String categoryName =
-                                                categoryList[index];
-                                            List<Widget> widgetList =
-                                                getMyWidgetList(
-                                                    listData: listSetup,
-                                                    categoryName: categoryName,
-                                                    dataMaster: dataMaster);
-                                            return widgetList.isNotEmpty
-                                                ? Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            bottom: 16),
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Container(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .symmetric(
-                                                                  horizontal:
-                                                                      12,
-                                                                  vertical: 8),
-                                                          decoration: BoxDecoration(
-                                                              color: AppColors
-                                                                  .grey
-                                                                  .withOpacity(
-                                                                      .4),
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          15)),
-                                                          child: Text(
-                                                            categoryName,
-                                                            style: AppStyles
-                                                                .textStyle18
-                                                                .copyWith(
-                                                                    color: Colors
-                                                                        .black),
+                          return StatefulBuilder(
+                            builder: (context, salessetState) => Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Form(
+                                key: formKey,
+                                child: Stack(
+                                  alignment: Alignment.center,
+                                  clipBehavior: Clip.none,
+                                  children: [
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 60),
+                                      child: SingleChildScrollView(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            ...List.generate(
+                                                categoryList.length, (index) {
+                                              String categoryName =
+                                                  categoryList[index];
+                                              List<Widget> widgetList =
+                                                  getMyWidgetList(
+                                                      listData: listSetup,
+                                                      categoryName:
+                                                          categoryName,
+                                                      dataMaster: dataMaster);
+                                              return widgetList.isNotEmpty
+                                                  ? Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              bottom: 16),
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Container(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .symmetric(
+                                                                    horizontal:
+                                                                        12,
+                                                                    vertical:
+                                                                        8),
+                                                            decoration: BoxDecoration(
+                                                                color: AppColors
+                                                                    .grey
+                                                                    .withOpacity(
+                                                                        .4),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            15)),
+                                                            child: Text(
+                                                              categoryName,
+                                                              style: AppStyles
+                                                                  .textStyle18
+                                                                  .copyWith(
+                                                                      color: Colors
+                                                                          .black),
+                                                            ),
                                                           ),
-                                                        ),
-                                                        ...widgetList,
-                                                      ],
-                                                    ),
-                                                  )
-                                                : const SizedBox();
-                                          }),
-                                          StatefulBuilder(
-                                            builder: (context, ssetState) {
-                                              return Padding(
-                                                padding: const EdgeInsets.only(
-                                                    bottom: 16),
-                                                child: SalesTableAddEdit(
-                                                  oldTableList: listDataInTable,
-                                                  tapData: widget.tapData,
-                                                  pageData: widget.pageData,
-                                                  listKey: listKey,
-                                                  listHeader: listHeader,
-                                                  listColumn: listColumn,
-                                                  allDropdownModelList:
-                                                      ScreenTable
-                                                          .myAllDropdownModelList,
-                                                  onTapAction: (data) {
-                                                    tableList = data;
-                                                    if (tableList.isNotEmpty) {
-                                                      for (var i in tableList) {
-                                                        setState(() {
-                                                          total = total +
-                                                              (double.parse(i[
-                                                                      'PriceCurrancy']) *
-                                                                  double.parse(
-                                                                      i['Qty'] ??
-                                                                          "1"));
+                                                          ...widgetList,
+                                                        ],
+                                                      ),
+                                                    )
+                                                  : const SizedBox();
+                                            }),
+                                            StatefulBuilder(
+                                              builder: (context, ssetState) {
+                                                return Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          bottom: 16),
+                                                  child: SalesTableAddEdit(
+                                                    oldTableList:
+                                                        listDataInTable,
+                                                    tapData: widget.tapData,
+                                                    pageData: widget.pageData,
+                                                    listKey: listKey,
+                                                    listHeader: listHeader,
+                                                    listColumn: listColumn,
+                                                    allDropdownModelList:
+                                                        ScreenTable
+                                                            .myAllDropdownModelList,
+                                                    onTapAction: (data) {
+                                                      total = 0.0;
+                                                      ssetState(() {
+                                                        tableList = data;
+                                                      });
+                                                      if (tableList
+                                                          .isNotEmpty) {
+                                                        for (var i
+                                                            in tableList) {
+                                                          salessetState(() {
+                                                            total = total +
+                                                                (double.parse(i[
+                                                                            'PriceCurrancy']
+                                                                        .toString()) *
+                                                                    double.parse(
+                                                                        i['Qty'] ??
+                                                                            "1"));
 
-                                                          discountController
-                                                              .text = discount(
-                                                                  total: total,
-                                                                  discountPercent: discountPercentController
-                                                                          .text
-                                                                          .isEmpty
-                                                                      ? 0
-                                                                      : double.parse(
-                                                                          discountPercentController
-                                                                              .text))
-                                                              .toString();
-                                                          discountTaxController
-                                                              .text = discountTax(
-                                                                  discountTaxPercent: discountTaxPercentController
+                                                            discountController
+                                                                .text = discount(
+                                                                    total:
+                                                                        total,
+                                                                    discountPercent: discountPercentController
+                                                                            .text
+                                                                            .isEmpty
+                                                                        ? 0
+                                                                        : double.parse(
+                                                                            discountPercentController.text))
+                                                                .toString();
+                                                            discountTaxController
+                                                                .text = discountTax(
+                                                                    discountTaxPercent: discountTaxPercentController
+                                                                            .text
+                                                                            .isEmpty
+                                                                        ? 0
+                                                                        : double.parse(discountTaxPercentController
+                                                                            .text),
+                                                                    total:
+                                                                        total,
+                                                                    discountPercent: discountPercentController
+                                                                            .text
+                                                                            .isEmpty
+                                                                        ? 0
+                                                                        : double.parse(
+                                                                            discountPercentController.text))
+                                                                .toString();
+                                                            taxController.text =
+                                                                tax(
+                                                              total: total,
+                                                              discountPercent: discountPercentController
+                                                                      .text
+                                                                      .isEmpty
+                                                                  ? 0
+                                                                  : double.parse(
+                                                                      discountPercentController
+                                                                          .text),
+                                                              taxPercent: taxPercentController
+                                                                      .text
+                                                                      .isEmpty
+                                                                  ? 0
+                                                                  : double.parse(
+                                                                      taxPercentController
+                                                                          .text),
+                                                            ).toString();
+
+                                                            totalAfterTaxController
+                                                                    .text =
+                                                                totalAfterTax(
+                                                              total: total,
+                                                              shippingPrice: shippingPriceController
+                                                                      .text
+                                                                      .isEmpty
+                                                                  ? 0
+                                                                  : double.parse(
+                                                                      shippingPriceController
+                                                                          .text),
+                                                              discountTaxPercent:
+                                                                  discountTaxPercentController
                                                                           .text
                                                                           .isEmpty
                                                                       ? 0
                                                                       : double.parse(
                                                                           discountTaxPercentController
                                                                               .text),
-                                                                  total: total,
-                                                                  discountPercent: discountPercentController
+                                                              discountPercent: discountPercentController
+                                                                      .text
+                                                                      .isEmpty
+                                                                  ? 0
+                                                                  : double.parse(
+                                                                      discountPercentController
+                                                                          .text),
+                                                              taxPercent: taxPercentController
+                                                                      .text
+                                                                      .isEmpty
+                                                                  ? 0
+                                                                  : double.parse(
+                                                                      taxPercentController
+                                                                          .text),
+                                                            ).toString();
+
+                                                            deadlineClientController
+                                                                    .text =
+                                                                deadlineClientValue(
+                                                              total: total,
+                                                              shippingPrice: shippingPriceController
+                                                                      .text
+                                                                      .isEmpty
+                                                                  ? 0
+                                                                  : double.parse(
+                                                                      shippingPriceController
+                                                                          .text),
+                                                              discountTaxPercent:
+                                                                  discountTaxPercentController
                                                                           .text
                                                                           .isEmpty
                                                                       ? 0
                                                                       : double.parse(
-                                                                          discountPercentController
-                                                                              .text))
-                                                              .toString();
-                                                          taxController.text =
-                                                              tax(
-                                                            total: total,
-                                                            discountPercent:
-                                                                discountPercentController
-                                                                        .text
-                                                                        .isEmpty
-                                                                    ? 0
-                                                                    : double.parse(
-                                                                        discountPercentController
-                                                                            .text),
-                                                            taxPercent: taxPercentController
-                                                                    .text
-                                                                    .isEmpty
-                                                                ? 0
-                                                                : double.parse(
-                                                                    taxPercentController
-                                                                        .text),
-                                                          ).toString();
-
-                                                          totalAfterTaxController
-                                                                  .text =
-                                                              totalAfterTax(
-                                                            total: total,
-                                                            shippingPrice:
-                                                                shippingPriceController
-                                                                        .text
-                                                                        .isEmpty
-                                                                    ? 0
-                                                                    : double.parse(
-                                                                        shippingPriceController
-                                                                            .text),
-                                                            discountTaxPercent:
-                                                                discountTaxPercentController
-                                                                        .text
-                                                                        .isEmpty
-                                                                    ? 0
-                                                                    : double.parse(
-                                                                        discountTaxPercentController
-                                                                            .text),
-                                                            discountPercent:
-                                                                discountPercentController
-                                                                        .text
-                                                                        .isEmpty
-                                                                    ? 0
-                                                                    : double.parse(
-                                                                        discountPercentController
-                                                                            .text),
-                                                            taxPercent: taxPercentController
-                                                                    .text
-                                                                    .isEmpty
-                                                                ? 0
-                                                                : double.parse(
-                                                                    taxPercentController
-                                                                        .text),
-                                                          ).toString();
-
-                                                          deadlineClientController
-                                                                  .text =
-                                                              deadlineClientValue(
-                                                            total: total,
-                                                            shippingPrice:
-                                                                shippingPriceController
-                                                                        .text
-                                                                        .isEmpty
-                                                                    ? 0
-                                                                    : double.parse(
-                                                                        shippingPriceController
-                                                                            .text),
-                                                            discountTaxPercent:
-                                                                discountTaxPercentController
-                                                                        .text
-                                                                        .isEmpty
-                                                                    ? 0
-                                                                    : double.parse(
-                                                                        discountTaxPercentController
-                                                                            .text),
-                                                            discountPercent:
-                                                                discountPercentController
-                                                                        .text
-                                                                        .isEmpty
-                                                                    ? 0
-                                                                    : double.parse(
-                                                                        discountPercentController
-                                                                            .text),
-                                                            taxPercent: taxPercentController
-                                                                    .text
-                                                                    .isEmpty
-                                                                ? 0
-                                                                : double.parse(
-                                                                    taxPercentController
-                                                                        .text),
-                                                            cashCollected:
-                                                                cashCollectedController
-                                                                        .text
-                                                                        .isEmpty
-                                                                    ? 0
-                                                                    : double.parse(
-                                                                        cashCollectedController
-                                                                            .text),
-                                                          ).toString();
+                                                                          discountTaxPercentController
+                                                                              .text),
+                                                              discountPercent: discountPercentController
+                                                                      .text
+                                                                      .isEmpty
+                                                                  ? 0
+                                                                  : double.parse(
+                                                                      discountPercentController
+                                                                          .text),
+                                                              taxPercent: taxPercentController
+                                                                      .text
+                                                                      .isEmpty
+                                                                  ? 0
+                                                                  : double.parse(
+                                                                      taxPercentController
+                                                                          .text),
+                                                              cashCollected: cashCollectedController
+                                                                      .text
+                                                                      .isEmpty
+                                                                  ? 0
+                                                                  : double.parse(
+                                                                      cashCollectedController
+                                                                          .text),
+                                                            ).toString();
+                                                          });
+                                                        }
+                                                      } else {
+                                                        salessetState(() {
+                                                          total = 0.0;
                                                         });
                                                       }
-                                                    } else {
-                                                      setState(() {
-                                                        total = 0.0;
-                                                      });
-                                                    }
-                                                  },
-                                                  typeView: "Edit",
-                                                ),
-                                              );
+                                                    },
+                                                    typeView: "Edit",
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                            const SizedBox(
+                                              height: 24,
+                                            ),
+                                            ...List.generate(
+                                                listHeaderSales.length,
+                                                (index) => Container(
+                                                      decoration: BoxDecoration(
+                                                          border:
+                                                              BorderDirectional(
+                                                        top: const BorderSide(
+                                                            color: Colors.grey),
+                                                        start: const BorderSide(
+                                                            color: Colors.grey),
+                                                        end: const BorderSide(
+                                                            color: Colors.grey),
+                                                        bottom: index ==
+                                                                listHeaderSales.length -
+                                                                    1
+                                                            ? const BorderSide(
+                                                                color:
+                                                                    Colors.grey)
+                                                            : BorderSide.none,
+                                                      )),
+                                                      child: Row(
+                                                        children: [
+                                                          Expanded(
+                                                            child: Container(
+                                                              height: 55,
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .symmetric(
+                                                                      horizontal:
+                                                                          8,
+                                                                      vertical:
+                                                                          5),
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                      border:
+                                                                          const BorderDirectional(
+                                                                        end: BorderSide(
+                                                                            color:
+                                                                                Colors.grey,
+                                                                            width: .5),
+                                                                      ),
+                                                                      color: listHeaderSales[index] == "الاجمالى" ||
+                                                                              listHeaderSales[index] == "الاجل على العميل" ||
+                                                                              listHeaderSales[index] == "عدد الاقساط" ||
+                                                                              listHeaderSales[index] == "تاريخ اول قسط" ||
+                                                                              listHeaderSales[index] == "شهور القسط"
+                                                                          ? Colors.cyanAccent
+                                                                          : null),
+                                                              alignment:
+                                                                  AlignmentDirectional
+                                                                      .centerStart,
+                                                              child: Text(
+                                                                  listHeaderSales[
+                                                                      index]),
+                                                            ),
+                                                          ),
+                                                          Expanded(
+                                                            flex: 2,
+                                                            child: Container(
+                                                              height: 55,
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .symmetric(
+                                                                      horizontal:
+                                                                          8,
+                                                                      vertical:
+                                                                          5),
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                      border:
+                                                                          const BorderDirectional(
+                                                                        start: BorderSide(
+                                                                            color:
+                                                                                Colors.grey,
+                                                                            width: .7),
+                                                                      ),
+                                                                      color: listHeaderSales[index] == "الاجمالى" ||
+                                                                              listHeaderSales[index] ==
+                                                                                  "الاجل على العميل"
+                                                                          ? Colors
+                                                                              .cyanAccent
+                                                                          : null),
+                                                              alignment:
+                                                                  Alignment
+                                                                      .center,
+                                                              child: getWidgetSales(
+                                                                  title:
+                                                                      listHeaderSales[
+                                                                          index],
+                                                                  listSetup:
+                                                                      listSetup,
+                                                                  oldDataMaster:
+                                                                      dataMaster),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    )),
+                                            const SizedBox(
+                                              height: 24,
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      bottom: 0,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          CustomButton(
+                                            text: S.of(context).cancel,
+                                            width: 80,
+                                            noGradient: true,
+                                            color: Colors.transparent,
+                                            noShadow: true,
+                                            textStyle: AppStyles.textStyle16
+                                                .copyWith(color: Colors.grey),
+                                            onTap: () {
+                                              Navigator.pop(context);
                                             },
                                           ),
                                           const SizedBox(
-                                            height: 24,
+                                            width: 50,
                                           ),
-                                          ...List.generate(
-                                              listHeaderSales.length,
-                                              (index) => Container(
-                                                    decoration: BoxDecoration(
-                                                        border:
-                                                            BorderDirectional(
-                                                      top: const BorderSide(
-                                                          color: Colors.grey),
-                                                      start: const BorderSide(
-                                                          color: Colors.grey),
-                                                      end: const BorderSide(
-                                                          color: Colors.grey),
-                                                      bottom: index ==
-                                                              listHeaderSales
-                                                                      .length -
-                                                                  1
-                                                          ? const BorderSide(
-                                                              color:
-                                                                  Colors.grey)
-                                                          : BorderSide.none,
-                                                    )),
-                                                    child: Row(
-                                                      children: [
-                                                        Expanded(
-                                                          child: Container(
-                                                            height: 55,
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .symmetric(
-                                                                    horizontal:
-                                                                        8,
-                                                                    vertical:
-                                                                        5),
-                                                            decoration:
-                                                                BoxDecoration(
-                                                                    border:
-                                                                        const BorderDirectional(
-                                                                      end: BorderSide(
-                                                                          color: Colors
-                                                                              .grey,
-                                                                          width:
-                                                                              .5),
-                                                                    ),
-                                                                    color: listHeaderSales[index] == "الاجمالى" ||
-                                                                            listHeaderSales[index] ==
-                                                                                "الاجل على العميل" ||
-                                                                            listHeaderSales[index] ==
-                                                                                "عدد الاقساط" ||
-                                                                            listHeaderSales[index] ==
-                                                                                "تاريخ اول قسط" ||
-                                                                            listHeaderSales[index] ==
-                                                                                "شهور القسط"
-                                                                        ? Colors
-                                                                            .cyanAccent
-                                                                        : null),
-                                                            alignment:
-                                                                AlignmentDirectional
-                                                                    .centerStart,
-                                                            child: Text(
-                                                                listHeaderSales[
-                                                                    index]),
-                                                          ),
-                                                        ),
-                                                        Expanded(
-                                                          flex: 2,
-                                                          child: Container(
-                                                            height: 55,
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .symmetric(
-                                                                    horizontal:
-                                                                        8,
-                                                                    vertical:
-                                                                        5),
-                                                            decoration:
-                                                                BoxDecoration(
-                                                                    border:
-                                                                        const BorderDirectional(
-                                                                      start: BorderSide(
-                                                                          color: Colors
-                                                                              .grey,
-                                                                          width:
-                                                                              .7),
-                                                                    ),
-                                                                    color: listHeaderSales[index] ==
-                                                                                "الاجمالى" ||
-                                                                            listHeaderSales[index] ==
-                                                                                "الاجل على العميل"
-                                                                        ? Colors
-                                                                            .cyanAccent
-                                                                        : null),
-                                                            alignment: Alignment
-                                                                .center,
-                                                            child: getWidgetSales(
-                                                                title:
-                                                                    listHeaderSales[
-                                                                        index],
-                                                                listSetup:
-                                                                    listSetup,
-                                                                oldDataMaster:
-                                                                    dataMaster),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  )),
-                                          const SizedBox(
-                                            height: 24,
-                                          )
+                                          BlocConsumer<AddEditExpensesCubit,
+                                              AddEditExpensesState>(
+                                            listener: (context, state) {
+                                              if (state
+                                                  is AddEditExpensesSuccess) {
+                                                BlocProvider.of<
+                                                        GetTableCubit>(context)
+                                                    .getTable(
+                                                        pageId: widget
+                                                            .pageData.pageId,
+                                                        employee: false,
+                                                        isdesc:
+                                                            widget
+                                                                .pageData.isDesc,
+                                                        limit: 10,
+                                                        offset: 0,
+                                                        orderby:
+                                                            widget.pageData
+                                                                .orderBy,
+                                                        statment: '',
+                                                        selectcolumns: '',
+                                                        departmentName:
+                                                            widget.pageData
+                                                                .departmentName,
+                                                        isDepartment:
+                                                            widget.pageData
+                                                                .isDepartment,
+                                                        authorizationID:
+                                                            widget.pageData
+                                                                .authorizationID,
+                                                        viewEmployeeColumn: widget
+                                                            .pageData
+                                                            .viewEmployeeColumn,
+                                                        numberOfPage: 1,
+                                                        dropdownValueOfLimit:
+                                                            10);
+                                                Navigator.pop(context);
+                                              } else if (state
+                                                  is AddEditExpensesFailure) {
+                                                CustomAlertDialog
+                                                    .alertWithButton(
+                                                        context: context,
+                                                        type: AlertType.error,
+                                                        title:
+                                                            S.of(context).error,
+                                                        desc:
+                                                            state.errorMassage);
+                                              }
+                                            },
+                                            builder: (context, state) {
+                                              if (state
+                                                  is AddEditExpensesLoading) {
+                                                return const CustomLoadingWidget();
+                                              } else {
+                                                return CustomButton(
+                                                  text: S.of(context).btn_edit,
+                                                  width: 80,
+                                                  onTap: () {
+                                                    if (formKey.currentState!
+                                                        .validate()) {
+                                                      formKey.currentState!
+                                                          .save();
+
+                                                      // singleObject.addAll({
+                                                      //   "TotalCurrancy": total,
+                                                      //   "DiscountCurrancy":
+                                                      //       double.parse(
+                                                      //           discountController
+                                                      //               .text
+                                                      //               .trim()),
+                                                      //   "TaxCurrancy": double.parse(
+                                                      //       discountTaxController
+                                                      //           .text
+                                                      //           .trim()),
+                                                      //   "AddTaxCurrancy":
+                                                      //       double.parse(
+                                                      //           taxController.text
+                                                      //               .trim()),
+                                                      //   "TotalOrderBeforCurrancy":
+                                                      //       totalAfterTaxController
+                                                      //               .text
+                                                      //               .isNotEmpty
+                                                      //           ? double.parse(
+                                                      //               totalAfterTaxController
+                                                      //                   .text
+                                                      //                   .trim())
+                                                      //           : 0.0,
+                                                      //   "POPaid": double.parse(
+                                                      //       cashCollectedController
+                                                      //           .text
+                                                      //           .trim()),
+                                                      //   "shippingPrice": double.parse(
+                                                      //       shippingPriceController
+                                                      //           .text
+                                                      //           .trim()),
+                                                      //   "remind": double.parse(
+                                                      //       deadlineClientController
+                                                      //           .text
+                                                      //           .trim()),
+                                                      //   // "SafeAccount":double.parse(),
+                                                      //   // "SuplayOrderPoPaid":double.parse(),
+                                                      //   // "Voucher":double.parse(),
+                                                      //   // "TaxDetailTotal":double.parse(),
+                                                      //   // "DiscountDetailTotal":double.parse(),
+                                                      // });
+
+                                                      BlocProvider.of<
+                                                                  AddEditExpensesCubit>(
+                                                              context)
+                                                          .edit(
+                                                              singleObject:
+                                                                  singleObject,
+                                                              tableList:
+                                                                  tableList,
+                                                              controllerName: widget
+                                                                  .tapData!
+                                                                  .controllerName);
+                                                    }
+                                                  },
+                                                );
+                                              }
+                                            },
+                                          ),
                                         ],
                                       ),
                                     ),
-                                  ),
-                                  Positioned(
-                                    bottom: 0,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        CustomButton(
-                                          text: S.of(context).cancel,
-                                          width: 80,
-                                          noGradient: true,
-                                          color: Colors.transparent,
-                                          noShadow: true,
-                                          textStyle: AppStyles.textStyle16
-                                              .copyWith(color: Colors.grey),
-                                          onTap: () {
-                                            Navigator.pop(context);
-                                          },
-                                        ),
-                                        const SizedBox(
-                                          width: 50,
-                                        ),
-                                        BlocConsumer<AddEditExpensesCubit,
-                                            AddEditExpensesState>(
-                                          listener: (context, state) {
-                                            if (state
-                                                is AddEditExpensesSuccess) {
-                                              BlocProvider.of<
-                                                      GetTableCubit>(context)
-                                                  .getTable(
-                                                      pageId: widget
-                                                          .pageData.pageId,
-                                                      employee: false,
-                                                      isdesc:
-                                                          widget
-                                                              .pageData.isDesc,
-                                                      limit: 10,
-                                                      offset: 0,
-                                                      orderby:
-                                                          widget
-                                                              .pageData.orderBy,
-                                                      statment: '',
-                                                      selectcolumns: '',
-                                                      departmentName:
-                                                          widget.pageData
-                                                              .departmentName,
-                                                      isDepartment:
-                                                          widget.pageData
-                                                              .isDepartment,
-                                                      authorizationID:
-                                                          widget.pageData
-                                                              .authorizationID,
-                                                      viewEmployeeColumn: widget
-                                                          .pageData
-                                                          .viewEmployeeColumn,
-                                                      numberOfPage: 1,
-                                                      dropdownValueOfLimit: 10);
-                                              Navigator.pop(context);
-                                            } else if (state
-                                                is AddEditExpensesFailure) {
-                                              CustomAlertDialog.alertWithButton(
-                                                  context: context,
-                                                  type: AlertType.error,
-                                                  title: S.of(context).error,
-                                                  desc: state.errorMassage);
-                                            }
-                                          },
-                                          builder: (context, state) {
-                                            if (state
-                                                is AddEditExpensesLoading) {
-                                              return const CustomLoadingWidget();
-                                            } else {
-                                              return CustomButton(
-                                                text: S.of(context).btn_edit,
-                                                width: 80,
-                                                onTap: () {
-                                                  if (formKey.currentState!
-                                                      .validate()) {
-                                                    formKey.currentState!
-                                                        .save();
-
-                                                    // singleObject.addAll({
-                                                    //   "TotalCurrancy": total,
-                                                    //   "DiscountCurrancy":
-                                                    //       double.parse(
-                                                    //           discountController
-                                                    //               .text
-                                                    //               .trim()),
-                                                    //   "TaxCurrancy": double.parse(
-                                                    //       discountTaxController
-                                                    //           .text
-                                                    //           .trim()),
-                                                    //   "AddTaxCurrancy":
-                                                    //       double.parse(
-                                                    //           taxController.text
-                                                    //               .trim()),
-                                                    //   "TotalOrderBeforCurrancy":
-                                                    //       totalAfterTaxController
-                                                    //               .text
-                                                    //               .isNotEmpty
-                                                    //           ? double.parse(
-                                                    //               totalAfterTaxController
-                                                    //                   .text
-                                                    //                   .trim())
-                                                    //           : 0.0,
-                                                    //   "POPaid": double.parse(
-                                                    //       cashCollectedController
-                                                    //           .text
-                                                    //           .trim()),
-                                                    //   "shippingPrice": double.parse(
-                                                    //       shippingPriceController
-                                                    //           .text
-                                                    //           .trim()),
-                                                    //   "remind": double.parse(
-                                                    //       deadlineClientController
-                                                    //           .text
-                                                    //           .trim()),
-                                                    //   // "SafeAccount":double.parse(),
-                                                    //   // "SuplayOrderPoPaid":double.parse(),
-                                                    //   // "Voucher":double.parse(),
-                                                    //   // "TaxDetailTotal":double.parse(),
-                                                    //   // "DiscountDetailTotal":double.parse(),
-                                                    // });
-
-                                                    BlocProvider.of<
-                                                                AddEditExpensesCubit>(
-                                                            context)
-                                                        .edit(
-                                                            singleObject:
-                                                                singleObject,
-                                                            tableList:
-                                                                tableList,
-                                                            controllerName: widget
-                                                                .tapData!
-                                                                .controllerName);
-                                                  }
-                                                },
-                                              );
-                                            }
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           );
@@ -968,20 +970,33 @@ class _EditSalesState extends State<EditSales> {
           if (i.id.toString() ==
               dataMaster['Contract'][item.searchName].toString()) {
             dropValue = i.text ?? '';
+            if (item.columnName == "CustomerID") {
+              EditSales.userId = int.parse(i.id ?? "-1");
+            }
           }
           if (i.id.toString() ==
               dataMaster['Contract'][item.searchName].toString()) {
             dropValue = i.text ?? '';
+            if (item.columnName == "CustomerID") {
+              EditSales.userId = int.parse(i.id ?? "-1");
+            }
           }
           if (i.id.toString() ==
               dataMaster['Contract'][item.columnName].toString()) {
             dropValue = i.text ?? '';
+            if (item.columnName == "CustomerID") {
+              EditSales.userId = int.parse(i.id ?? "-1");
+            }
           }
           if (i.id.toString() ==
               dataMaster['Contract'][item.columnName].toString()) {
             dropValue = i.text ?? '';
+            if (item.columnName == "CustomerID") {
+              EditSales.userId = int.parse(i.id ?? "-1");
+            }
           }
         }
+
         list.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -1072,7 +1087,7 @@ class _EditSalesState extends State<EditSales> {
       required Map<String, dynamic> oldDataMaster}) {
     switch (title) {
       case "الاجمالى":
-        total = oldDataMaster['Contract']['TotalCurrancy'] ?? 0.0;
+        // total = oldDataMaster['Contract']['TotalCurrancy'] ?? 0.0;
         return Text(
           "$total",
           style: const TextStyle(color: Colors.red, fontSize: 20),
@@ -1867,9 +1882,19 @@ class _EditSalesState extends State<EditSales> {
         },
       );
 
+      Map<String, dynamic> barcodeData = await ApiService(Dio()).post(
+        endPoint: "web/Structure/getDataGlobal",
+        data: {"TableName": "BarcodeData"},
+        headers: {
+          "Authorization": "Bearer $token",
+          "CompanyKey": companyKey,
+        },
+      );
+
       EditSales.listProduct = dataProduct['dynamicList'];
       EditSales.listProductPrices = dataProductPrices['dynamicList'];
       EditSales.listCustomerAccount = dataCustomerAccount['dynamicList'];
+      EditSales.listBarcodeData = barcodeData['dynamicList'];
     } catch (e) {
       print(e);
     }

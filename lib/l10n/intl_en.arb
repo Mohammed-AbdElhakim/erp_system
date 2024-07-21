@@ -53,7 +53,8 @@
   "description_task": "Description: " ,
   "task": "Task: " ,
   "start_date": "Start Date: ",
-  "end_date": "End Date: "
+  "end_date": "End Date: ",
+  "select_client": "Please select a client."
 
 
 
