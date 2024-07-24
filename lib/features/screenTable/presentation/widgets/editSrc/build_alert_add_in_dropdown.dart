@@ -16,32 +16,35 @@ import '../../../../../core/widgets/custom_button.dart';
 import '../../../../../core/widgets/custom_loading_widget.dart';
 import '../../../../../core/widgets/custom_text_form_field.dart';
 import '../../../../../generated/l10n.dart';
-import '../../../../home/presentation/widgets/home_view_body.dart';
 import '../../../data/models/dropdown_model/all_dropdown_model.dart';
-import '../../../data/models/permission_model.dart';
 import '../../../data/models/screen_model.dart';
 import '../../manager/addEdit/add_edit_cubit.dart';
-import '../../manager/getTable/get_table_cubit.dart';
-import '../../views/screen_table.dart';
-import 'build_alert_add_in_dropdown.dart';
 
-class BuildAlertAdd extends StatefulWidget {
-  const BuildAlertAdd(
-      {super.key, required this.columnList, required this.pageData});
+typedef OnTapBtn<T> = void Function(T value);
+
+class BuildAlertAddInDropdown extends StatefulWidget {
+  const BuildAlertAddInDropdown({
+    super.key,
+    required this.columnList,
+    required this.pageData,
+    required this.onTapBtn,
+  });
   final List<ColumnList> columnList;
   final Pages pageData;
+  final OnTapBtn<bool> onTapBtn;
 
   @override
-  State<BuildAlertAdd> createState() => _BuildAlertAddState();
+  State<BuildAlertAddInDropdown> createState() =>
+      _BuildAlertAddInDropdownState();
 }
 
-class _BuildAlertAddState extends State<BuildAlertAdd> {
+class _BuildAlertAddInDropdownState extends State<BuildAlertAddInDropdown> {
   String? lang;
   GlobalKey<FormState> formKey = GlobalKey();
   Map<String, dynamic> newRowData = {};
   bool isShow = false;
   late List<String> myListCategory;
-  late List<AllDropdownModel> myAllDropdownModelList;
+  List<AllDropdownModel> myAllDropdownModelList = [];
 
   @override
   void didChangeDependencies() {
@@ -51,154 +54,144 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
 
   @override
   void initState() {
-    myListCategory = ScreenTable.listCategory;
-    myAllDropdownModelList = ScreenTable.myAllDropdownModelList;
+    myListCategory = getCategory(widget.columnList);
+    getDropdownList(widget.pageData.pageId);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height * .75,
-      child: Form(
-        key: formKey,
-        child: Stack(
-          alignment: Alignment.center,
-          clipBehavior: Clip.none,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(bottom: 60),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ...List.generate(myListCategory.length, (index) {
-                      String categoryName = myListCategory[index];
-                      return Column(
+    return myAllDropdownModelList.isEmpty
+        ? const Center(
+            child: CircularProgressIndicator(),
+          )
+        : SizedBox(
+            height: MediaQuery.of(context).size.height * .75,
+            child: Form(
+              key: formKey,
+              child: Stack(
+                alignment: Alignment.center,
+                clipBehavior: Clip.none,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 60),
+                    child: SingleChildScrollView(
+                      child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          if (getMyWidgetList(
-                                  columnList: widget.columnList,
-                                  categoryName: categoryName,
-                                  show: true)
-                              .isNotEmpty)
-                            Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 12, vertical: 8),
-                                decoration: BoxDecoration(
-                                    color: AppColors.grey.withOpacity(.4),
-                                    borderRadius: BorderRadius.circular(15)),
-                                child: Text(
-                                  categoryName,
-                                  style: AppStyles.textStyle18
-                                      .copyWith(color: Colors.black),
-                                )),
-                          ...getMyWidgetList(
-                              columnList: widget.columnList,
-                              categoryName: categoryName,
-                              show: true),
-                          Visibility(
-                            visible: isShow,
-                            child: Column(
-                              children: getMyWidgetList(
-                                  columnList: widget.columnList,
-                                  categoryName: categoryName,
-                                  show: false),
-                            ),
+                          ...List.generate(myListCategory.length, (index) {
+                            String categoryName = myListCategory[index];
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                if (getMyWidgetList(
+                                        columnList: widget.columnList,
+                                        categoryName: categoryName,
+                                        show: true)
+                                    .isNotEmpty)
+                                  Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 12, vertical: 8),
+                                      decoration: BoxDecoration(
+                                          color: AppColors.grey.withOpacity(.4),
+                                          borderRadius:
+                                              BorderRadius.circular(15)),
+                                      child: Text(
+                                        categoryName,
+                                        style: AppStyles.textStyle18
+                                            .copyWith(color: Colors.black),
+                                      )),
+                                ...getMyWidgetList(
+                                    columnList: widget.columnList,
+                                    categoryName: categoryName,
+                                    show: true),
+                                Visibility(
+                                  visible: isShow,
+                                  child: Column(
+                                    children: getMyWidgetList(
+                                        columnList: widget.columnList,
+                                        categoryName: categoryName,
+                                        show: false),
+                                  ),
+                                ),
+                              ],
+                            );
+                          }),
+                          TextButton(
+                            onPressed: () {
+                              setState(() {
+                                isShow = !isShow;
+                              });
+                            },
+                            child: Text(!isShow
+                                ? S.of(context).show_more
+                                : S.of(context).show_less),
                           ),
                         ],
-                      );
-                    }),
-                    TextButton(
-                      onPressed: () {
-                        setState(() {
-                          isShow = !isShow;
-                        });
-                      },
-                      child: Text(!isShow
-                          ? S.of(context).show_more
-                          : S.of(context).show_less),
+                      ),
                     ),
-                  ],
-                ),
-              ),
-            ),
-            Positioned(
-              bottom: 0,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  CustomButton(
-                    text: S.of(context).cancel,
-                    width: 80,
-                    noGradient: true,
-                    color: Colors.transparent,
-                    noShadow: true,
-                    textStyle:
-                        AppStyles.textStyle16.copyWith(color: Colors.grey),
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
                   ),
-                  const SizedBox(
-                    width: 50,
-                  ),
-                  BlocConsumer<AddEditCubit, AddEditState>(
-                    listener: (context, state) {
-                      if (state is AddEditSuccess) {
-                        BlocProvider.of<GetTableCubit>(context).getTable(
-                            pageId: widget.pageData.pageId,
-                            employee: false,
-                            isdesc: widget.pageData.isDesc,
-                            limit: 10,
-                            offset: 0,
-                            orderby: widget.pageData.orderBy,
-                            statment: '',
-                            selectcolumns: '',
-                            departmentName: widget.pageData.departmentName,
-                            isDepartment: widget.pageData.isDepartment,
-                            authorizationID: widget.pageData.authorizationID,
-                            viewEmployeeColumn:
-                                widget.pageData.viewEmployeeColumn,
-                            numberOfPage: 1,
-                            dropdownValueOfLimit: 10);
-                        widget.columnList.clear();
-                        Navigator.pop(context);
-                      } else if (state is AddEditFailure) {
-                        CustomAlertDialog.alertWithButton(
-                            context: context,
-                            type: AlertType.error,
-                            title: S.of(context).error,
-                            desc: state.errorMassage);
-                      }
-                    },
-                    builder: (context, state) {
-                      if (state is AddEditLoading) {
-                        return const CustomLoadingWidget();
-                      } else {
-                        return CustomButton(
-                          text: S.of(context).btn_add,
+                  Positioned(
+                    bottom: 0,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        CustomButton(
+                          text: S.of(context).cancel,
                           width: 80,
+                          noGradient: true,
+                          color: Colors.transparent,
+                          noShadow: true,
+                          textStyle: AppStyles.textStyle16
+                              .copyWith(color: Colors.grey),
                           onTap: () {
-                            if (formKey.currentState!.validate()) {
-                              formKey.currentState!.save();
-                              BlocProvider.of<AddEditCubit>(context).add(
-                                  controllerName:
-                                      widget.pageData.controllerName,
-                                  body: newRowData);
+                            Navigator.pop(context);
+                          },
+                        ),
+                        const SizedBox(
+                          width: 50,
+                        ),
+                        BlocConsumer<AddEditCubit, AddEditState>(
+                          listener: (context, state) {
+                            if (state is AddEditSuccess) {
+                              widget.columnList.clear();
+                              widget.onTapBtn(true);
+                              Navigator.pop(context);
+                            } else if (state is AddEditFailure) {
+                              CustomAlertDialog.alertWithButton(
+                                  context: context,
+                                  type: AlertType.error,
+                                  title: S.of(context).error,
+                                  desc: state.errorMassage);
                             }
                           },
-                        );
-                      }
-                    },
+                          builder: (context, state) {
+                            if (state is AddEditLoading) {
+                              return const CustomLoadingWidget();
+                            } else {
+                              return CustomButton(
+                                text: S.of(context).btn_add,
+                                width: 80,
+                                onTap: () {
+                                  if (formKey.currentState!.validate()) {
+                                    formKey.currentState!.save();
+                                    BlocProvider.of<AddEditCubit>(context).add(
+                                        controllerName:
+                                            widget.pageData.controllerName,
+                                        body: newRowData);
+                                  }
+                                },
+                              );
+                            }
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
             ),
-          ],
-        ),
-      ),
-    );
+          );
   }
 
   List<Widget> getMyWidgetList({
@@ -386,7 +379,6 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
             myListDrop = ii.list;
           }
         }
-        Pages? dropPage = getDropPage(item.pageId);
         list.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -404,44 +396,7 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                         Icons.star,
                         color: Colors.red,
                         size: 10,
-                      ),
-                    SizedBox(
-                      width: 12,
-                    ),
-                    if (dropPage != null)
-                      InkWell(
-                        onTap: () async {
-                          bool canAdd = await getPermissions(item.pageId);
-                          if (canAdd == true) {
-                            getColumnListAndAdd(dropPage);
-                          } else {
-                            CustomAlertDialog.alertWithButton(
-                                context: context,
-                                type: AlertType.error,
-                                title: S.of(context).error,
-                                desc: S.of(context).massage_no_permission);
-                          }
-                        },
-                        child: const Icon(
-                          Icons.add,
-                          color: Colors.blue,
-                          size: 24,
-                        ),
-                      ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    if (dropPage != null)
-                      InkWell(
-                        onTap: () async {
-                          getDropdownList(widget.pageData.pageId);
-                        },
-                        child: const Icon(
-                          Icons.refresh,
-                          color: Colors.green,
-                          size: 24,
-                        ),
-                      ),
+                      )
                   ],
                 ),
                 CustomDropdown<String>.search(
@@ -571,83 +526,13 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
     return list;
   }
 
-  void getColumnListAndAdd(Pages page) async {
-    try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
-      Map<String, dynamic> data = await ApiService(Dio()).post(
-        endPoint: "home/getGeneralTable",
-        data: {
-          "pageId": page.pageId,
-          "employee": false,
-          "isdesc": page.isDesc,
-          "limit": 10,
-          "offset": 0,
-          "orderby": page.orderBy,
-          "statment": '',
-          "selectcolumns": '',
-          "IsDepartment": page.isDepartment,
-          "DepartmentName": page.departmentName,
-          "AuthorizationID": page.authorizationID,
-          "ViewEmployeeColumn": page.viewEmployeeColumn
-        },
-        headers: {
-          "Authorization": "Bearer $token",
-          "CompanyKey": companyKey,
-        },
-      );
-      ScreenModel screenModel = ScreenModel.fromJson(data);
-
-      List<ColumnList>? columnList = screenModel.columnList;
-      CustomAlertDialog.alertWithCustomContent(
-        context: context,
-        title: S.of(context).btn_add,
-        isOverlayTapDismiss: false,
-        isCloseButton: false,
-        content: BuildAlertAddInDropdown(
-          columnList: columnList!,
-          pageData: page,
-          onTapBtn: (val) {
-            getDropdownList(widget.pageData.pageId);
-          },
-        ),
-      );
-    } catch (e) {
-      print(e);
+  List<String> getCategory(List<ColumnList> columnList) {
+    List<String> category = [];
+    for (var item in columnList) {
+      category.add(item.categoryName!);
     }
-  }
-
-  Pages? getDropPage(int? pageId) {
-    for (var page in HomeViewBody.pagesList) {
-      if (page.pageId == pageId) {
-        return page;
-      }
-    }
-  }
-
-  Future<bool> getPermissions(int? pageId) async {
-    try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
-      Map<String, dynamic> data = await ApiService(Dio()).get(
-        endPoint: "home/GetPagePermissions?pageId=$pageId",
-        headers: {
-          "Authorization": "Bearer $token",
-          "CompanyKey": companyKey,
-        },
-      );
-      PermissionModel permissionModel = PermissionModel.fromJson(data);
-      return permissionModel.showNew;
-    } catch (e) {
-      print(e);
-      return false;
-    }
+    List<String> categoryList = category.toSet().toList();
+    return categoryList;
   }
 
   void getDropdownList(int pageId) async {

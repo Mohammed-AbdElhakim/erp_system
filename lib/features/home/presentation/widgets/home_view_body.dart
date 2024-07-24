@@ -14,6 +14,7 @@ class HomeViewBody extends StatefulWidget {
   const HomeViewBody({super.key, required this.isPortrait});
 
   final bool isPortrait;
+  static List<Pages> pagesList = [];
 
   @override
   State<HomeViewBody> createState() => _HomeViewBodyState();
@@ -31,6 +32,7 @@ class _HomeViewBodyState extends State<HomeViewBody> {
           for (var element in state.menu.list) {
             for (var page in element.pages) {
               allPagesList.add(page);
+              HomeViewBody.pagesList = allPagesList;
               if (page.isFastScreen == true) {
                 pagesListInFastScreen.add(page);
               }

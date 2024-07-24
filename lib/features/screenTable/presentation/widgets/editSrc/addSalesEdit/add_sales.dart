@@ -22,10 +22,14 @@ import '../../../../../../core/utils/app_styles.dart';
 import '../../../../../../core/widgets/custom_button.dart';
 import '../../../../../../core/widgets/custom_text_form_field.dart';
 import '../../../../../../generated/l10n.dart';
+import '../../../../../home/presentation/widgets/home_view_body.dart';
 import '../../../../data/models/dropdown_model/all_dropdown_model.dart';
+import '../../../../data/models/permission_model.dart';
+import '../../../../data/models/screen_model.dart';
 import '../../../../data/models/tap_model.dart';
 import '../../../manager/getTable/get_table_cubit.dart';
 import '../../../views/screen_table.dart';
+import '../build_alert_add_in_dropdown.dart';
 
 class AddSales extends StatefulWidget {
   const AddSales(
@@ -505,7 +509,7 @@ class _AddSalesState extends State<AddSales> {
                                   onTap: () async {
                                     if (formKey.currentState!.validate()) {
                                       formKey.currentState!.save();
-                                      // await getLocation();
+                                      await getLocation();
                                       print(
                                           "=======lat=======$lat==================");
                                       print(
@@ -542,11 +546,12 @@ class _AddSalesState extends State<AddSales> {
                                         // "TaxDetailTotal":double.parse(),
                                         // "DiscountDetailTotal":double.parse(),
                                       });
-                                      // print(
-                                      //     "***********************************");
-                                      // print(singleObject);
-                                      // print(tableList);
-
+                                      // ScaffoldMessenger.of(context)
+                                      //     .showSnackBar(SnackBar(
+                                      //   content: Text(
+                                      //       'lat   =>   $lat\nlong   =>   $long'),
+                                      //   duration: const Duration(seconds: 20),
+                                      // ));
                                       BlocProvider.of<AddEditExpensesCubit>(
                                               context)
                                           .add(
@@ -773,6 +778,8 @@ class _AddSalesState extends State<AddSales> {
             myListDrop = ii.list;
           }
         }
+
+        Pages? dropPage = getDropPage(item.pageId);
         list.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -790,7 +797,44 @@ class _AddSalesState extends State<AddSales> {
                         Icons.star,
                         color: Colors.red,
                         size: 10,
-                      )
+                      ),
+                    SizedBox(
+                      width: 12,
+                    ),
+                    if (dropPage != null)
+                      InkWell(
+                        onTap: () async {
+                          bool canAdd = await getPermissions(item.pageId);
+                          if (canAdd == true) {
+                            getColumnListAndAdd(dropPage);
+                          } else {
+                            CustomAlertDialog.alertWithButton(
+                                context: context,
+                                type: AlertType.error,
+                                title: S.of(context).error,
+                                desc: S.of(context).massage_no_permission);
+                          }
+                        },
+                        child: const Icon(
+                          Icons.add,
+                          color: Colors.blue,
+                          size: 24,
+                        ),
+                      ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    if (dropPage != null)
+                      InkWell(
+                        onTap: () async {
+                          getDropdownList(widget.pageData.pageId);
+                        },
+                        child: const Icon(
+                          Icons.refresh,
+                          color: Colors.green,
+                          size: 24,
+                        ),
+                      ),
                   ],
                 ),
                 SizedBox(
@@ -2305,5 +2349,112 @@ class _AddSalesState extends State<AddSales> {
       lat = locationData.latitude;
       long = locationData.longitude;
     });
+  }
+
+  void getColumnListAndAdd(Pages page) async {
+    try {
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
+              "";
+      String token =
+          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      Map<String, dynamic> data = await ApiService(Dio()).post(
+        endPoint: "home/getGeneralTable",
+        data: {
+          "pageId": page.pageId,
+          "employee": false,
+          "isdesc": page.isDesc,
+          "limit": 10,
+          "offset": 0,
+          "orderby": page.orderBy,
+          "statment": '',
+          "selectcolumns": '',
+          "IsDepartment": page.isDepartment,
+          "DepartmentName": page.departmentName,
+          "AuthorizationID": page.authorizationID,
+          "ViewEmployeeColumn": page.viewEmployeeColumn
+        },
+        headers: {
+          "Authorization": "Bearer $token",
+          "CompanyKey": companyKey,
+        },
+      );
+      ScreenModel screenModel = ScreenModel.fromJson(data);
+
+      List<ColumnList>? columnList = screenModel.columnList;
+      CustomAlertDialog.alertWithCustomContent(
+        context: context,
+        title: S.of(context).btn_add,
+        isOverlayTapDismiss: false,
+        isCloseButton: false,
+        content: BuildAlertAddInDropdown(
+          columnList: columnList!,
+          pageData: page,
+          onTapBtn: (val) {
+            getDropdownList(widget.pageData.pageId);
+          },
+        ),
+      );
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Pages? getDropPage(int? pageId) {
+    for (var page in HomeViewBody.pagesList) {
+      if (page.pageId == pageId) {
+        return page;
+      }
+    }
+  }
+
+  Future<bool> getPermissions(int? pageId) async {
+    try {
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
+              "";
+      String token =
+          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      Map<String, dynamic> data = await ApiService(Dio()).get(
+        endPoint: "home/GetPagePermissions?pageId=$pageId",
+        headers: {
+          "Authorization": "Bearer $token",
+          "CompanyKey": companyKey,
+        },
+      );
+      PermissionModel permissionModel = PermissionModel.fromJson(data);
+      return permissionModel.showNew;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+  void getDropdownList(int pageId) async {
+    try {
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
+              "";
+      String token =
+          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      List<dynamic> data = await ApiService(Dio()).get(
+        endPoint: "home/GetPageDropDown?pageId=$pageId",
+        headers: {
+          "Authorization": "Bearer $token",
+          "CompanyKey": companyKey,
+        },
+      );
+
+      List<AllDropdownModel> dataList = [];
+      for (var i in data) {
+        dataList.add(AllDropdownModel.fromJson(i));
+      }
+
+      setState(() {
+        myAllDropdownModelList = dataList;
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 }
