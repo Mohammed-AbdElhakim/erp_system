@@ -488,17 +488,17 @@ class _BuildAlertAddDetailsState extends State<BuildAlertAddDetails> {
                     SizedBox(
                       width: 5,
                     ),
-                    if (dropPage != null)
-                      InkWell(
-                        onTap: () async {
-                          getDropdownList(widget.pageData.pageId);
-                        },
-                        child: const Icon(
-                          Icons.refresh,
-                          color: Colors.green,
-                          size: 24,
-                        ),
+                    // if (dropPage != null)
+                    InkWell(
+                      onTap: () async {
+                        getDropdownList(widget.pageData.pageId);
+                      },
+                      child: const Icon(
+                        Icons.refresh,
+                        color: Colors.green,
+                        size: 24,
                       ),
+                    ),
                   ],
                 ),
                 CustomDropdown<String>.search(

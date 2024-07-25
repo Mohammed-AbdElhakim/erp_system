@@ -2,6 +2,7 @@ import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 import '../../../../../core/helper/AlertDialog/custom_alert_dialog.dart';
 import '../../../../../core/helper/SharedPreferences/pref.dart';
@@ -593,15 +594,57 @@ class _BuildAlertSearchDetailsState extends State<BuildAlertSearchDetails> {
             }
           }
         }
+        Pages? dropPage = getDropPage(item.pageId);
         listWidgets.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  title,
-                  style: AppStyles.textStyle14.copyWith(color: Colors.grey),
+                Row(
+                  children: [
+                    Text(
+                      title,
+                      style: AppStyles.textStyle14.copyWith(color: Colors.grey),
+                    ),
+                    SizedBox(
+                      width: 12,
+                    ),
+                    if (dropPage != null)
+                      InkWell(
+                        onTap: () async {
+                          bool canAdd = await getPermissions(item.pageId);
+                          if (canAdd == true) {
+                            getColumnListAndAdd(dropPage);
+                          } else {
+                            CustomAlertDialog.alertWithButton(
+                                context: context,
+                                type: AlertType.error,
+                                title: S.of(context).error,
+                                desc: S.of(context).massage_no_permission);
+                          }
+                        },
+                        child: const Icon(
+                          Icons.add,
+                          color: Colors.blue,
+                          size: 24,
+                        ),
+                      ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    // if (dropPage != null)
+                    InkWell(
+                      onTap: () async {
+                        getDropdownList(widget.pageData.pageId);
+                      },
+                      child: const Icon(
+                        Icons.refresh,
+                        color: Colors.green,
+                        size: 24,
+                      ),
+                    ),
+                  ],
                 ),
                 CustomDropdown<String>.multiSelectSearch(
                   hintText: '',
