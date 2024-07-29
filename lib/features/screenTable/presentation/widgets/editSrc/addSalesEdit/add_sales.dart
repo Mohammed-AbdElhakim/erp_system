@@ -8,6 +8,7 @@ import 'package:erp_system/features/screenTable/presentation/manager/getListSetu
 import 'package:erp_system/features/screenTable/presentation/widgets/editSrc/addSalesEdit/sales_table_add_edit_.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'package:location/location.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -41,6 +42,7 @@ class AddSales extends StatefulWidget {
   static List<dynamic> listBarcodeData = [];
   static List<dynamic> listProduct = [];
   static List<dynamic> listProductPrices = [];
+  static List<dynamic> listCustomerAccountLocation = [];
   static int userId = -1;
 
   @override
@@ -55,6 +57,7 @@ class _AddSalesState extends State<AddSales> {
   late List<AllDropdownModel> myAllDropdownModelList;
   double? lat;
   double? long;
+  bool isGetLocationAndListLocation = false;
   List<String> listHeaderSales = [
     "الاجمالى",
     "المحصل نقدا",
@@ -97,6 +100,7 @@ class _AddSalesState extends State<AddSales> {
   void initState() {
     myAllDropdownModelList = ScreenTable.myAllDropdownModelList;
     getDataList();
+
     super.initState();
   }
 
@@ -503,65 +507,81 @@ class _AddSalesState extends State<AddSales> {
                               if (state is AddEditExpensesLoading) {
                                 return const CustomLoadingWidget();
                               } else {
-                                return CustomButton(
-                                  text: S.of(context).btn_add,
-                                  width: 80,
-                                  onTap: () async {
-                                    if (formKey.currentState!.validate()) {
-                                      formKey.currentState!.save();
-                                      await getLocation();
-                                      print(
-                                          "=======lat=======$lat==================");
-                                      print(
-                                          "=======long=======$long==================");
-                                      singleObject.addAll({
-                                        "TotalCurrancy": total,
-                                        "DiscountCurrancy": double.parse(
-                                            discountController.text.trim()),
-                                        "TaxCurrancy": double.parse(
-                                            discountTaxController.text.trim()),
-                                        "AddTaxCurrancy": double.parse(
-                                            taxController.text.trim()),
-                                        "TotalOrderBeforCurrancy": double.parse(
-                                            totalAfterTaxController.text
-                                                .trim()),
-                                        "POPaid": cashCollectedController
-                                                .text.isNotEmpty
-                                            ? double.parse(
-                                                cashCollectedController.text
-                                                    .trim())
-                                            : 0.0,
-                                        "shippingPrice": shippingPriceController
-                                                .text.isNotEmpty
-                                            ? double.parse(
-                                                shippingPriceController.text
-                                                    .trim())
-                                            : 0.0,
-                                        "remind": double.parse(
-                                            deadlineClientController.text
-                                                .trim()),
-                                        // "SafeAccount":double.parse(),
-                                        // "SuplayOrderPoPaid":double.parse(),
-                                        // "Voucher":double.parse(),
-                                        // "TaxDetailTotal":double.parse(),
-                                        // "DiscountDetailTotal":double.parse(),
-                                      });
-                                      // ScaffoldMessenger.of(context)
-                                      //     .showSnackBar(SnackBar(
-                                      //   content: Text(
-                                      //       'lat   =>   $lat\nlong   =>   $long'),
-                                      //   duration: const Duration(seconds: 20),
-                                      // ));
-                                      BlocProvider.of<AddEditExpensesCubit>(
-                                              context)
-                                          .add(
-                                              singleObject: singleObject,
-                                              tableList: tableList,
-                                              controllerName: widget
-                                                  .tapData!.controllerName);
-                                    }
-                                  },
-                                );
+                                if (isGetLocationAndListLocation == false) {
+                                  return CustomButton(
+                                    text: S.of(context).btn_add,
+                                    width: 80,
+                                    onTap: () async {
+                                      if (formKey.currentState!.validate()) {
+                                        formKey.currentState!.save();
+                                        singleObject.addAll({
+                                          "TotalCurrancy": total,
+                                          "DiscountCurrancy": double.parse(
+                                              discountController.text.trim()),
+                                          "TaxCurrancy": double.parse(
+                                              discountTaxController.text
+                                                  .trim()),
+                                          "AddTaxCurrancy": double.parse(
+                                              taxController.text.trim()),
+                                          "TotalOrderBeforCurrancy":
+                                              double.parse(
+                                                  totalAfterTaxController.text
+                                                      .trim()),
+                                          "POPaid": cashCollectedController
+                                                  .text.isNotEmpty
+                                              ? double.parse(
+                                                  cashCollectedController.text
+                                                      .trim())
+                                              : 0.0,
+                                          "shippingPrice":
+                                              shippingPriceController
+                                                      .text.isNotEmpty
+                                                  ? double.parse(
+                                                      shippingPriceController
+                                                          .text
+                                                          .trim())
+                                                  : 0.0,
+                                          "remind": double.parse(
+                                              deadlineClientController.text
+                                                  .trim()),
+                                          // "SafeAccount":double.parse(),
+                                          // "SuplayOrderPoPaid":double.parse(),
+                                          // "Voucher":double.parse(),
+                                          // "TaxDetailTotal":double.parse(),
+                                          // "DiscountDetailTotal":double.parse(),
+                                        });
+
+                                        print(
+                                            "=======lat=======$lat==================");
+                                        print(
+                                            "=======long=======$long==================");
+                                        bool? customerClose =
+                                            getCustomer(AddSales.userId);
+
+                                        if (customerClose == true) {
+                                          checkLocation();
+                                        } else {
+                                          BlocProvider.of<AddEditExpensesCubit>(
+                                                  context)
+                                              .add(
+                                                  singleObject: singleObject,
+                                                  tableList: tableList,
+                                                  controllerName: widget
+                                                      .tapData!.controllerName);
+                                        }
+
+                                        // ScaffoldMessenger.of(context)
+                                        //     .showSnackBar(SnackBar(
+                                        //   content: Text(
+                                        //       'lat   =>   $lat\nlong   =>   $long'),
+                                        //   duration: const Duration(seconds: 20),
+                                        // ));
+                                      }
+                                    },
+                                  );
+                                } else {
+                                  return const CustomLoadingWidget();
+                                }
                               }
                             },
                           ),
@@ -1677,603 +1697,6 @@ class _AddSalesState extends State<AddSales> {
     return 100 * tax / total;
   }
 
-  // createForm(List<ItemListSetupModel> listSetup) {
-  //   String date = DateFormat("yyyy-MM-dd", 'en').format(DateTime.now());
-  //   ItemListSetupModel item =
-  //       listSetup.firstWhere((element) => element.columnName == "SafeAccount");
-  //   List<ListDrop>? listDrop = [];
-  //   List<ItemDrop>? myListDrop = [];
-  //
-  //   for (var ii in myAllDropdownModelList) {
-  //     if (widget.tapData == null) {
-  //       if (ii.listName == widget.pageData.listName) {
-  //         listDrop = ii.list;
-  //       }
-  //     } else {
-  //       if (ii.listName == widget.tapData!.listName) {
-  //         listDrop = ii.list;
-  //       }
-  //     }
-  //   }
-  //   for (var ii in listDrop!) {
-  //     if (ii.columnName == item.columnName) {
-  //       myListDrop = ii.list;
-  //     }
-  //   }
-  //   return Column(
-  //     children: [
-  //       SalesWidget(
-  //         title: "الاجمالى",
-  //         isBorderTop: true,
-  //         colorBackgroundTitle: Colors.cyanAccent,
-  //         colorBackgroundWidget: Colors.cyanAccent,
-  //         child: CustomTextFormField(
-  //           controller: totalController,
-  //           hintText: '',
-  //           isBorder: false,
-  //           readOnly: true,
-  //           isValidator: false,
-  //           keyboardType: TextInputType.number,
-  //           textStyle: TextStyle(color: Colors.red, fontSize: 20),
-  //         ),
-  //       ),
-  //       SalesWidget(
-  //         title: "المحصل نقدا",
-  //         child: CustomTextFormField(
-  //           controller: cashCollectedController,
-  //           hintText: '',
-  //           isValidator: false,
-  //           keyboardType: TextInputType.number,
-  //           onChanged: (value) {
-  //             totalAfterTaxController.text = totalAfterTax(
-  //               total: total,
-  //               shippingPrice: shippingPriceController.text.isEmpty
-  //                   ? 0
-  //                   : double.parse(shippingPriceController.text),
-  //               discountTaxPercent: discountTaxPercentController.text.isEmpty
-  //                   ? 0
-  //                   : double.parse(discountTaxPercentController.text),
-  //               discountPercent: discountPercentController.text.isEmpty
-  //                   ? 0
-  //                   : double.parse(discountPercentController.text),
-  //               taxPercent: taxPercentController.text.isEmpty
-  //                   ? 0
-  //                   : double.parse(taxPercentController.text),
-  //             ).toString();
-  //             deadlineClientController.text = deadlineClientValue(
-  //               total: total,
-  //               shippingPrice: shippingPriceController.text.isEmpty
-  //                   ? 0
-  //                   : double.parse(shippingPriceController.text),
-  //               discountTaxPercent: discountTaxPercentController.text.isEmpty
-  //                   ? 0
-  //                   : double.parse(discountTaxPercentController.text),
-  //               discountPercent: discountPercentController.text.isEmpty
-  //                   ? 0
-  //                   : double.parse(discountPercentController.text),
-  //               taxPercent: taxPercentController.text.isEmpty
-  //                   ? 0
-  //                   : double.parse(taxPercentController.text),
-  //               cashCollected: cashCollectedController.text.isEmpty
-  //                   ? 0
-  //                   : double.parse(cashCollectedController.text),
-  //             ).toString();
-  //           },
-  //         ),
-  //       ),
-  //       SalesWidget(
-  //         title: "عدد الاقساط",
-  //         colorBackgroundTitle: Colors.cyanAccent,
-  //         child: CustomTextFormField(
-  //           controller: numberOfInstallmentsController,
-  //           hintText: '',
-  //           isValidator: false,
-  //           keyboardType: TextInputType.number,
-  //           onChanged: (value) {},
-  //         ),
-  //       ),
-  //       SalesWidget(
-  //         title: "تاريخ اول قسط",
-  //         colorBackgroundTitle: Colors.cyanAccent,
-  //         child: StatefulBuilder(
-  //           builder: (context, dsetState) {
-  //             return InkWell(
-  //               onTap: () async {
-  //                 DateTime? dateTime = await showDatePicker(
-  //                   context: context,
-  //                   initialDate: DateTime.now(),
-  //                   firstDate: DateTime(1980),
-  //                   lastDate: DateTime(2100),
-  //                 );
-  //                 if (dateTime != null) {
-  //                   dsetState(() {
-  //                     date = DateFormat("yyyy-MM-dd", 'en').format(dateTime);
-  //                   });
-  //                 }
-  //               },
-  //               child: Container(
-  //                   decoration: BoxDecoration(
-  //                       borderRadius: BorderRadius.circular(5),
-  //                       border: Border.all(color: AppColors.blueDark)),
-  //                   alignment: Alignment.center,
-  //                   padding: const EdgeInsets.all(8),
-  //                   child: Text(
-  //                     date,
-  //                     textAlign: TextAlign.center,
-  //                     style:
-  //                         AppStyles.textStyle14.copyWith(color: Colors.black),
-  //                   )),
-  //             );
-  //           },
-  //         ),
-  //       ),
-  //       SalesWidget(
-  //         title: "شهور القسط",
-  //         colorBackgroundTitle: Colors.cyanAccent,
-  //         child: CustomTextFormField(
-  //           controller: installmentMonthsController,
-  //           hintText: '',
-  //           isValidator: false,
-  //           keyboardType: TextInputType.number,
-  //           onChanged: (newValue) {},
-  //         ),
-  //       ),
-  //       const SalesWidget(
-  //         title: "اجمالي الخصم الجزئي",
-  //         child: Text(
-  //           "0.0",
-  //         ),
-  //       ),
-  //       SalesWidget(
-  //         title: "الخزينة",
-  //         child: CustomDropdown<String>.search(
-  //           hintText: '',
-  //           decoration: CustomDropdownDecoration(
-  //               headerStyle:
-  //                   AppStyles.textStyle16.copyWith(color: Colors.black),
-  //               closedFillColor: Colors.transparent,
-  //               closedBorder: Border.all(color: AppColors.blueDark)),
-  //           items: myListDrop!.isEmpty
-  //               ? [""]
-  //               : List.generate(myListDrop.length,
-  //                   (index) => myListDrop![index].text ?? ''),
-  //           onChanged: (value) {},
-  //         ),
-  //       ),
-  //       SalesWidget(
-  //         title: "ضريبة خصم منبع",
-  //         child: Row(
-  //           children: [
-  //             Expanded(
-  //               child: CustomTextFormField(
-  //                 controller: discountTaxPercentController,
-  //                 hintText: '',
-  //                 isValidator: false,
-  //                 keyboardType: TextInputType.number,
-  //                 onChanged: (newValue) {
-  //                   discountTaxController.text = discountTax(
-  //                           discountTaxPercent:
-  //                               newValue.isEmpty ? 0 : double.parse(newValue),
-  //                           total: total,
-  //                           discountPercent: discountPercentController
-  //                                   .text.isEmpty
-  //                               ? 0
-  //                               : double.parse(discountPercentController.text))
-  //                       .toString();
-  //                   totalAfterTaxController.text = totalAfterTax(
-  //                     total: total,
-  //                     shippingPrice: shippingPriceController.text.isEmpty
-  //                         ? 0
-  //                         : double.parse(shippingPriceController.text),
-  //                     discountTaxPercent:
-  //                         discountTaxPercentController.text.isEmpty
-  //                             ? 0
-  //                             : double.parse(discountTaxPercentController.text),
-  //                     discountPercent: discountPercentController.text.isEmpty
-  //                         ? 0
-  //                         : double.parse(discountPercentController.text),
-  //                     taxPercent: taxPercentController.text.isEmpty
-  //                         ? 0
-  //                         : double.parse(taxPercentController.text),
-  //                   ).toString();
-  //
-  //                   deadlineClientController.text = deadlineClientValue(
-  //                     total: total,
-  //                     shippingPrice: shippingPriceController.text.isEmpty
-  //                         ? 0
-  //                         : double.parse(shippingPriceController.text),
-  //                     discountTaxPercent:
-  //                         discountTaxPercentController.text.isEmpty
-  //                             ? 0
-  //                             : double.parse(discountTaxPercentController.text),
-  //                     discountPercent: discountPercentController.text.isEmpty
-  //                         ? 0
-  //                         : double.parse(discountPercentController.text),
-  //                     taxPercent: taxPercentController.text.isEmpty
-  //                         ? 0
-  //                         : double.parse(taxPercentController.text),
-  //                     cashCollected: cashCollectedController.text.isEmpty
-  //                         ? 0
-  //                         : double.parse(cashCollectedController.text),
-  //                   ).toString();
-  //                 },
-  //               ),
-  //             ),
-  //             const SizedBox(
-  //               width: 12,
-  //             ),
-  //             Expanded(
-  //               flex: 2,
-  //               child: CustomTextFormField(
-  //                 controller: discountTaxController,
-  //                 hintText: '',
-  //                 isValidator: false,
-  //                 keyboardType: TextInputType.number,
-  //                 onChanged: (newValue) {
-  //                   discountTaxPercentController.text = discountTaxPercent(
-  //                           totalAfterDiscount: totalAfterDiscount(
-  //                               total: total,
-  //                               discountPercent:
-  //                                   discountPercentController.text.isEmpty
-  //                                       ? 0
-  //                                       : double.parse(
-  //                                           discountPercentController.text)),
-  //                           discountTax:
-  //                               newValue.isEmpty ? 0 : double.parse(newValue))
-  //                       .toString();
-  //
-  //                   totalAfterTaxController.text = totalAfterTax(
-  //                     total: total,
-  //                     shippingPrice: shippingPriceController.text.isEmpty
-  //                         ? 0
-  //                         : double.parse(shippingPriceController.text),
-  //                     discountTaxPercent:
-  //                         discountTaxPercentController.text.isEmpty
-  //                             ? 0
-  //                             : double.parse(discountTaxPercentController.text),
-  //                     discountPercent: discountPercentController.text.isEmpty
-  //                         ? 0
-  //                         : double.parse(discountPercentController.text),
-  //                     taxPercent: taxPercentController.text.isEmpty
-  //                         ? 0
-  //                         : double.parse(taxPercentController.text),
-  //                   ).toString();
-  //
-  //                   deadlineClientController.text = deadlineClientValue(
-  //                     total: total,
-  //                     shippingPrice: shippingPriceController.text.isEmpty
-  //                         ? 0
-  //                         : double.parse(shippingPriceController.text),
-  //                     discountTaxPercent:
-  //                         discountTaxPercentController.text.isEmpty
-  //                             ? 0
-  //                             : double.parse(discountTaxPercentController.text),
-  //                     discountPercent: discountPercentController.text.isEmpty
-  //                         ? 0
-  //                         : double.parse(discountPercentController.text),
-  //                     taxPercent: taxPercentController.text.isEmpty
-  //                         ? 0
-  //                         : double.parse(taxPercentController.text),
-  //                     cashCollected: cashCollectedController.text.isEmpty
-  //                         ? 0
-  //                         : double.parse(cashCollectedController.text),
-  //                   ).toString();
-  //                 },
-  //               ),
-  //             ),
-  //           ],
-  //         ),
-  //       ),
-  //       SalesWidget(
-  //         title: "خصم اجنبي",
-  //         child: Row(
-  //           children: [
-  //             Expanded(
-  //               child: CustomTextFormField(
-  //                 controller: discountPercentController,
-  //                 hintText: '',
-  //                 isValidator: false,
-  //                 keyboardType: TextInputType.number,
-  //                 onChanged: (newValue) {
-  //                   discountController.text = discount(
-  //                           total: total,
-  //                           discountPercent:
-  //                               newValue.isEmpty ? 0 : double.parse(newValue))
-  //                       .toString();
-  //                   totalAfterTaxController.text = totalAfterTax(
-  //                     total: total,
-  //                     shippingPrice: shippingPriceController.text.isEmpty
-  //                         ? 0
-  //                         : double.parse(shippingPriceController.text),
-  //                     discountTaxPercent:
-  //                         discountTaxPercentController.text.isEmpty
-  //                             ? 0
-  //                             : double.parse(discountTaxPercentController.text),
-  //                     discountPercent: discountPercentController.text.isEmpty
-  //                         ? 0
-  //                         : double.parse(discountPercentController.text),
-  //                     taxPercent: taxPercentController.text.isEmpty
-  //                         ? 0
-  //                         : double.parse(taxPercentController.text),
-  //                   ).toString();
-  //
-  //                   deadlineClientController.text = deadlineClientValue(
-  //                     total: total,
-  //                     shippingPrice: shippingPriceController.text.isEmpty
-  //                         ? 0
-  //                         : double.parse(shippingPriceController.text),
-  //                     discountTaxPercent:
-  //                         discountTaxPercentController.text.isEmpty
-  //                             ? 0
-  //                             : double.parse(discountTaxPercentController.text),
-  //                     discountPercent: discountPercentController.text.isEmpty
-  //                         ? 0
-  //                         : double.parse(discountPercentController.text),
-  //                     taxPercent: taxPercentController.text.isEmpty
-  //                         ? 0
-  //                         : double.parse(taxPercentController.text),
-  //                     cashCollected: cashCollectedController.text.isEmpty
-  //                         ? 0
-  //                         : double.parse(cashCollectedController.text),
-  //                   ).toString();
-  //                 },
-  //               ),
-  //             ),
-  //             const SizedBox(
-  //               width: 12,
-  //             ),
-  //             Expanded(
-  //               flex: 2,
-  //               child: CustomTextFormField(
-  //                 controller: discountController,
-  //                 hintText: '',
-  //                 isValidator: false,
-  //                 keyboardType: TextInputType.number,
-  //                 onChanged: (newValue) {
-  //                   discountPercentController.text = discountPercent(
-  //                     total: total,
-  //                     discount: newValue.isEmpty ? 0 : double.parse(newValue),
-  //                   ).toString();
-  //                   totalAfterTaxController.text = totalAfterTax(
-  //                     total: total,
-  //                     shippingPrice: shippingPriceController.text.isEmpty
-  //                         ? 0
-  //                         : double.parse(shippingPriceController.text),
-  //                     discountTaxPercent:
-  //                         discountTaxPercentController.text.isEmpty
-  //                             ? 0
-  //                             : double.parse(discountTaxPercentController.text),
-  //                     discountPercent: discountPercentController.text.isEmpty
-  //                         ? 0
-  //                         : double.parse(discountPercentController.text),
-  //                     taxPercent: taxPercentController.text.isEmpty
-  //                         ? 0
-  //                         : double.parse(taxPercentController.text),
-  //                   ).toString();
-  //
-  //                   deadlineClientController.text = deadlineClientValue(
-  //                     total: total,
-  //                     shippingPrice: shippingPriceController.text.isEmpty
-  //                         ? 0
-  //                         : double.parse(shippingPriceController.text),
-  //                     discountTaxPercent:
-  //                         discountTaxPercentController.text.isEmpty
-  //                             ? 0
-  //                             : double.parse(discountTaxPercentController.text),
-  //                     discountPercent: discountPercentController.text.isEmpty
-  //                         ? 0
-  //                         : double.parse(discountPercentController.text),
-  //                     taxPercent: taxPercentController.text.isEmpty
-  //                         ? 0
-  //                         : double.parse(taxPercentController.text),
-  //                     cashCollected: cashCollectedController.text.isEmpty
-  //                         ? 0
-  //                         : double.parse(cashCollectedController.text),
-  //                   ).toString();
-  //                 },
-  //               ),
-  //             ),
-  //           ],
-  //         ),
-  //       ),
-  //       SalesWidget(
-  //         title: "ضريبة القيمة المضافة",
-  //         child: Row(
-  //           children: [
-  //             Expanded(
-  //               child: CustomTextFormField(
-  //                 controller: taxPercentController,
-  //                 hintText: '',
-  //                 isValidator: false,
-  //                 keyboardType: TextInputType.number,
-  //                 onChanged: (newValue) {
-  //                   taxController.text = tax(
-  //                           taxPercent:
-  //                               newValue.isEmpty ? 0 : double.parse(newValue),
-  //                           total: total,
-  //                           discountPercent: discountPercentController
-  //                                   .text.isEmpty
-  //                               ? 0
-  //                               : double.parse(discountPercentController.text))
-  //                       .toString();
-  //                   totalAfterTaxController.text = totalAfterTax(
-  //                     total: total,
-  //                     shippingPrice: shippingPriceController.text.isEmpty
-  //                         ? 0
-  //                         : double.parse(shippingPriceController.text),
-  //                     discountTaxPercent:
-  //                         discountTaxPercentController.text.isEmpty
-  //                             ? 0
-  //                             : double.parse(discountTaxPercentController.text),
-  //                     discountPercent: discountPercentController.text.isEmpty
-  //                         ? 0
-  //                         : double.parse(discountPercentController.text),
-  //                     taxPercent: taxPercentController.text.isEmpty
-  //                         ? 0
-  //                         : double.parse(taxPercentController.text),
-  //                   ).toString();
-  //
-  //                   deadlineClientController.text = deadlineClientValue(
-  //                     total: total,
-  //                     shippingPrice: shippingPriceController.text.isEmpty
-  //                         ? 0
-  //                         : double.parse(shippingPriceController.text),
-  //                     discountTaxPercent:
-  //                         discountTaxPercentController.text.isEmpty
-  //                             ? 0
-  //                             : double.parse(discountTaxPercentController.text),
-  //                     discountPercent: discountPercentController.text.isEmpty
-  //                         ? 0
-  //                         : double.parse(discountPercentController.text),
-  //                     taxPercent: taxPercentController.text.isEmpty
-  //                         ? 0
-  //                         : double.parse(taxPercentController.text),
-  //                     cashCollected: cashCollectedController.text.isEmpty
-  //                         ? 0
-  //                         : double.parse(cashCollectedController.text),
-  //                   ).toString();
-  //                 },
-  //               ),
-  //             ),
-  //             const SizedBox(
-  //               width: 12,
-  //             ),
-  //             Expanded(
-  //               flex: 2,
-  //               child: CustomTextFormField(
-  //                 controller: taxController,
-  //                 hintText: '',
-  //                 isValidator: false,
-  //                 keyboardType: TextInputType.number,
-  //                 onChanged: (newValue) {
-  //                   taxPercentController.text = taxPercent(
-  //                     total: total,
-  //                     tax: tax(
-  //                       total: total,
-  //                       discountPercent: discountPercentController.text.isEmpty
-  //                           ? 0
-  //                           : double.parse(discountPercentController.text),
-  //                       taxPercent:
-  //                           newValue.isEmpty ? 0 : double.parse(newValue),
-  //                     ),
-  //                   ).toString();
-  //                   totalAfterTaxController.text = totalAfterTax(
-  //                     total: total,
-  //                     shippingPrice: shippingPriceController.text.isEmpty
-  //                         ? 0
-  //                         : double.parse(shippingPriceController.text),
-  //                     discountTaxPercent:
-  //                         discountTaxPercentController.text.isEmpty
-  //                             ? 0
-  //                             : double.parse(discountTaxPercentController.text),
-  //                     discountPercent: discountPercentController.text.isEmpty
-  //                         ? 0
-  //                         : double.parse(discountPercentController.text),
-  //                     taxPercent: taxPercentController.text.isEmpty
-  //                         ? 0
-  //                         : double.parse(taxPercentController.text),
-  //                   ).toString();
-  //
-  //                   deadlineClientController.text = deadlineClientValue(
-  //                     total: total,
-  //                     shippingPrice: shippingPriceController.text.isEmpty
-  //                         ? 0
-  //                         : double.parse(shippingPriceController.text),
-  //                     discountTaxPercent:
-  //                         discountTaxPercentController.text.isEmpty
-  //                             ? 0
-  //                             : double.parse(discountTaxPercentController.text),
-  //                     discountPercent: discountPercentController.text.isEmpty
-  //                         ? 0
-  //                         : double.parse(discountPercentController.text),
-  //                     taxPercent: taxPercentController.text.isEmpty
-  //                         ? 0
-  //                         : double.parse(taxPercentController.text),
-  //                     cashCollected: cashCollectedController.text.isEmpty
-  //                         ? 0
-  //                         : double.parse(cashCollectedController.text),
-  //                   ).toString();
-  //                 },
-  //               ),
-  //             ),
-  //           ],
-  //         ),
-  //       ),
-  //       SalesWidget(
-  //         title: "اجمالي بعد الضرائب",
-  //         child: CustomTextFormField(
-  //           controller: totalAfterTaxController,
-  //           hintText: '',
-  //           isValidator: false,
-  //           keyboardType: TextInputType.number,
-  //           readOnly: true,
-  //           filled: true,
-  //           fillColor: Colors.grey.shade300,
-  //         ),
-  //       ),
-  //       SalesWidget(
-  //         title: "مصاريف الشحن",
-  //         child: CustomTextFormField(
-  //           controller: shippingPriceController,
-  //           hintText: '',
-  //           isValidator: false,
-  //           keyboardType: TextInputType.number,
-  //           onChanged: (newValue) {
-  //             totalAfterTaxController.text = totalAfterTax(
-  //               total: total,
-  //               shippingPrice: shippingPriceController.text.isEmpty
-  //                   ? 0
-  //                   : double.parse(shippingPriceController.text),
-  //               discountTaxPercent: discountTaxPercentController.text.isEmpty
-  //                   ? 0
-  //                   : double.parse(discountTaxPercentController.text),
-  //               discountPercent: discountPercentController.text.isEmpty
-  //                   ? 0
-  //                   : double.parse(discountPercentController.text),
-  //               taxPercent: taxPercentController.text.isEmpty
-  //                   ? 0
-  //                   : double.parse(taxPercentController.text),
-  //             ).toString();
-  //
-  //             deadlineClientController.text = deadlineClientValue(
-  //               total: total,
-  //               shippingPrice: shippingPriceController.text.isEmpty
-  //                   ? 0
-  //                   : double.parse(shippingPriceController.text),
-  //               discountTaxPercent: discountTaxPercentController.text.isEmpty
-  //                   ? 0
-  //                   : double.parse(discountTaxPercentController.text),
-  //               discountPercent: discountPercentController.text.isEmpty
-  //                   ? 0
-  //                   : double.parse(discountPercentController.text),
-  //               taxPercent: taxPercentController.text.isEmpty
-  //                   ? 0
-  //                   : double.parse(taxPercentController.text),
-  //               cashCollected: cashCollectedController.text.isEmpty
-  //                   ? 0
-  //                   : double.parse(cashCollectedController.text),
-  //             ).toString();
-  //           },
-  //         ),
-  //       ),
-  //       SalesWidget(
-  //         title: "الاجل على العميل",
-  //         colorBackgroundTitle: Colors.cyanAccent,
-  //         colorBackgroundWidget: Colors.cyanAccent,
-  //         child: CustomTextFormField(
-  //           controller: deadlineClientController,
-  //           hintText: '',
-  //           isBorder: false,
-  //           readOnly: true,
-  //           isValidator: false,
-  //           keyboardType: TextInputType.number,
-  //           textStyle: TextStyle(color: Colors.red, fontSize: 20),
-  //         ),
-  //       ),
-  //     ],
-  //   );
-  // }
-
   void getDataList() async {
     try {
       String companyKey =
@@ -2326,6 +1749,9 @@ class _AddSalesState extends State<AddSales> {
   }
 
   Future<void> getLocation() async {
+    setState(() {
+      isGetLocationAndListLocation = true;
+    });
     Location location = Location();
 
     var serviceEnabled = await location.serviceEnabled();
@@ -2348,6 +1774,7 @@ class _AddSalesState extends State<AddSales> {
     setState(() {
       lat = locationData.latitude;
       long = locationData.longitude;
+      isGetLocationAndListLocation = false;
     });
   }
 
@@ -2455,6 +1882,81 @@ class _AddSalesState extends State<AddSales> {
       });
     } catch (e) {
       print(e);
+    }
+  }
+
+  bool? getCustomer(int userId) {
+    for (var item in AddSales.listCustomerAccount) {
+      if (item['CustomerAccountID'] == userId) {
+        return item['Closelocation'];
+      }
+    }
+  }
+
+  Future<void> getCustomerLocation(int userId) async {
+    setState(() {
+      isGetLocationAndListLocation = true;
+    });
+    try {
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
+              "";
+      String token =
+          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      Map<String, dynamic> customerAccountLocation =
+          await ApiService(Dio()).post(
+        endPoint: "web/Structure/getDataGlobal",
+        data: {
+          "TableName": "CustomerAccountLocation",
+          "TailCondition": "CustomerID= $userId"
+        },
+        headers: {
+          "Authorization": "Bearer $token",
+          "CompanyKey": companyKey,
+        },
+      );
+      AddSales.listCustomerAccountLocation =
+          customerAccountLocation['dynamicList'];
+      setState(() {
+        isGetLocationAndListLocation = false;
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void checkLocation() async {
+    await getLocation();
+    await getCustomerLocation(AddSales.userId);
+    double distance;
+    for (var location in AddSales.listCustomerAccountLocation) {
+      distance = (Geolocator.distanceBetween(
+            lat ?? 0.0,
+            long ?? 0.0,
+            location['LocationLat'],
+            location['LocationLong'],
+          )) /
+          1000;
+      // radius.add(distance);
+      if (distance == location['Radius'] ||
+          distance < location['Radius'] ||
+          distance == 0.0) {
+        BlocProvider.of<AddEditExpensesCubit>(context).add(
+            singleObject: singleObject,
+            tableList: tableList,
+            controllerName: widget.tapData!.controllerName);
+      } else {
+        CustomAlertDialog.alertWithButton(
+            context: context,
+            type: AlertType.error,
+            isCloseButton: false,
+            isOverlayTapDismiss: false,
+            title: S.of(context).error,
+            desc: S.of(context).no_location,
+            onPressed: () {
+              Navigator.of(context).pop();
+            });
+      }
     }
   }
 }
