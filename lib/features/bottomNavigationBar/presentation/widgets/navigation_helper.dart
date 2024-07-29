@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../../../dashboard/presentation/views/dashboard_view.dart';
 import '../../../email.dart';
 import '../../../home/presentation/views/home_view.dart';
 import '../../../information.dart';
-import '../../../location.dart';
 
 class NavigationHelper {
   static Widget getMyWidget(int index) {
@@ -11,7 +11,7 @@ class NavigationHelper {
       case 1:
         return const HomeView();
       case 2:
-        return const Location();
+        return const DashboardView();
       case 3:
         return const Email();
       default:

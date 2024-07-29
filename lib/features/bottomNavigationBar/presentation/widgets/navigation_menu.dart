@@ -17,7 +17,7 @@ class NavigationMenu extends StatefulWidget {
 class _NavigationMenuState extends State<NavigationMenu> {
   List<NavigationModel> listNavigation = [
     NavigationModel(id: 1, icon: Icons.home_outlined),
-    NavigationModel(id: 2, icon: Icons.location_on_outlined),
+    NavigationModel(id: 2, icon: Icons.dashboard),
     NavigationModel(id: 3, icon: Icons.email_outlined),
     NavigationModel(id: 4, icon: Icons.person_outline),
   ];

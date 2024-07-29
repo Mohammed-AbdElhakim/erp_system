@@ -1,25 +1,20 @@
 import 'package:flutter/material.dart';
 
-import '../core/utils/app_colors.dart';
-import '../core/utils/methods.dart';
-import '../core/widgets/custom_app_bar.dart';
-import 'bottomNavigationBar/presentation/widgets/my_drawer.dart';
+import '../../../../core/utils/app_colors.dart';
+import '../../../../core/utils/methods.dart';
+import '../../../../core/widgets/custom_app_bar.dart';
+import '../../../bottomNavigationBar/presentation/widgets/my_drawer.dart';
 
-class Location extends StatefulWidget {
-  const Location({super.key});
+class DashboardView extends StatelessWidget {
+  const DashboardView({super.key});
 
-  @override
-  State<Location> createState() => _LocationState();
-}
-
-class _LocationState extends State<Location> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: const MyDrawer(),
       appBar: CustomAppBar(
         isPortrait: isOrientationPortrait(context),
-        title: "Location",
+        title: "Dashboard",
         actions: [
           Stack(
             children: [
@@ -41,7 +36,7 @@ class _LocationState extends State<Location> {
         ],
       ),
       body: const Center(
-        child: Text('Location'),
+        child: Text('dashboard'),
       ),
     );
   }
