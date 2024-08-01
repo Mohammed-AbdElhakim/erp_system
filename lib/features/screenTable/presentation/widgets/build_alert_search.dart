@@ -808,6 +808,7 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
         return page;
       }
     }
+    return null;
   }
 
   Future<bool> getPermissions(int? pageId) async {

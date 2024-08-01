@@ -3,25 +3,25 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../core/models/menu_model/pages.dart';
-import '../../../../core/utils/app_colors.dart';
-import '../../../../core/utils/app_router.dart';
-import '../../../../core/utils/app_strings.dart';
-import '../../../../core/widgets/custom_loading_widget.dart';
+import '../models/menu_model/pages.dart';
+import '../utils/app_colors.dart';
+import '../utils/app_router.dart';
+import '../utils/app_strings.dart';
+import 'custom_loading_widget.dart';
 
-class ItemGridView extends StatefulWidget {
+class PageItemGridView extends StatefulWidget {
   final Pages page;
 
-  const ItemGridView({
+  const PageItemGridView({
     super.key,
     required this.page,
   });
 
   @override
-  State<ItemGridView> createState() => _ItemGridViewState();
+  State<PageItemGridView> createState() => _PageItemGridViewState();
 }
 
-class _ItemGridViewState extends State<ItemGridView> {
+class _PageItemGridViewState extends State<PageItemGridView> {
   String? lang;
   @override
   void didChangeDependencies() {

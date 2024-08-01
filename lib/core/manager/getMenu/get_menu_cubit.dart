@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/errors/failures.dart';
 import '../../../../../core/models/menu_model/menu_model.dart';
-import '../../../data/repositories/menu/menu_repo.dart';
+import '../../repositories/menu/menu_repo.dart';
 
 part 'get_menu_state.dart';
 

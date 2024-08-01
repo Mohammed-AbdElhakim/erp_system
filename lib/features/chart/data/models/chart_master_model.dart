@@ -1,14 +1,14 @@
-class DashboardModel {
-  List<DynamicList>? dynamicList;
+class ChartMasterModel {
+  List<ChartMasterData>? dynamicList;
   int? numberofrecords;
 
-  DashboardModel({this.dynamicList, this.numberofrecords});
+  ChartMasterModel({this.dynamicList, this.numberofrecords});
 
-  DashboardModel.fromJson(Map<String, dynamic> json) {
+  ChartMasterModel.fromJson(Map<String, dynamic> json) {
     if (json['dynamicList'] != null) {
-      dynamicList = <DynamicList>[];
+      dynamicList = <ChartMasterData>[];
       json['dynamicList'].forEach((v) {
-        dynamicList!.add(DynamicList.fromJson(v));
+        dynamicList!.add(ChartMasterData.fromJson(v));
       });
     }
     numberofrecords = json['numberofrecords'];
@@ -24,7 +24,7 @@ class DashboardModel {
   }
 }
 
-class DynamicList {
+class ChartMasterData {
   int? id;
   String? arName;
   String? tableOrView;
@@ -37,7 +37,7 @@ class DynamicList {
   String? type;
   bool? isCompany;
 
-  DynamicList(
+  ChartMasterData(
       {this.id,
       this.arName,
       this.tableOrView,
@@ -50,17 +50,17 @@ class DynamicList {
       this.type,
       this.isCompany});
 
-  DynamicList.fromJson(Map<String, dynamic> json) {
+  ChartMasterData.fromJson(Map<String, dynamic> json) {
     id = json['Id'];
-    arName = json['ArName'];
+    arName = json['ArName'] ?? "";
     tableOrView = json['TableOrView'];
-    enName = json['EnName'];
-    isVisible = json['IsVisible'];
+    enName = json['EnName'] ?? "";
+    isVisible = json['IsVisible'] ?? false;
     labelName = json['LabelName'];
     x = json['X'];
     name = json['Name'];
     value = json['Value'];
-    type = json['Type'];
+    type = json['Type'] ?? "";
     isCompany = json['IsCompany'];
   }
 

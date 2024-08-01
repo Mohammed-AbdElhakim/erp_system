@@ -3,9 +3,10 @@ import 'package:get_it/get_it.dart';
 
 import '../../features/attendance/data/repositories/attendance_repo_impl.dart';
 import '../../features/auth/data/repositories/login/login_repo_impl.dart';
-import '../../features/home/data/repositories/menu/menu_repo_impl.dart';
+import '../../features/chart/data/repositories/chart_repo_impl.dart';
 import '../../features/screenTable/data/repositories/screen_repo_impl.dart';
 import '../../features/tasks/data/repositories/task_repo_impl.dart';
+import '../repositories/menu/menu_repo_impl.dart';
 import 'api_service.dart';
 
 final getIt = GetIt.instance;
@@ -27,6 +28,12 @@ void setupServiceLocator() {
 
   getIt.registerSingleton<ScreenRepoImpl>(
     ScreenRepoImpl(
+      getIt.get<ApiService>(),
+    ),
+  );
+
+  getIt.registerSingleton<ChartRepoImpl>(
+    ChartRepoImpl(
       getIt.get<ApiService>(),
     ),
   );

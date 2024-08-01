@@ -4,6 +4,7 @@ import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/methods.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
 import '../../../bottomNavigationBar/presentation/widgets/my_drawer.dart';
+import '../widgets/dashboard_view_body.dart';
 
 class DashboardView extends StatelessWidget {
   const DashboardView({super.key});
@@ -35,8 +36,8 @@ class DashboardView extends StatelessWidget {
           ),
         ],
       ),
-      body: const Center(
-        child: Text('dashboard'),
+      body: DashboardViewBody(
+        isPortrait: isOrientationPortrait(context),
       ),
     );
   }

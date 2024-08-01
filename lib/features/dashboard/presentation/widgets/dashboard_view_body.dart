@@ -1,26 +1,28 @@
+import 'package:erp_system/core/widgets/custom_error_massage.dart';
+import 'package:erp_system/core/widgets/custom_loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/manager/getMenu/get_menu_cubit.dart';
 import '../../../../core/models/menu_model/pages.dart';
-import '../../../../core/widgets/custom_error_massage.dart';
-import '../../../../core/widgets/custom_loading_widget.dart';
 import '../../../../core/widgets/custom_text_form_field_search.dart';
 import '../../../../core/widgets/page_item_grid_view.dart';
 import '../../../../generated/l10n.dart';
-import 'home_view_header.dart';
 
-class HomeViewBody extends StatefulWidget {
-  const HomeViewBody({super.key, required this.isPortrait});
-
+class DashboardViewBody extends StatefulWidget {
+  const DashboardViewBody({super.key, required this.isPortrait});
   final bool isPortrait;
-  static List<Pages> pagesList = [];
-
   @override
-  State<HomeViewBody> createState() => _HomeViewBodyState();
+  State<DashboardViewBody> createState() => _DashboardViewBodyState();
 }
 
-class _HomeViewBodyState extends State<HomeViewBody> {
+class _DashboardViewBodyState extends State<DashboardViewBody> {
+  // @override
+  // void initState() {
+  //   BlocProvider.of<DashboardCubit>(context).getDashboardData();
+  //   super.initState();
+  // }
+
   List<Pages> pagesListSearch = [];
   TextEditingController controllerSearch = TextEditingController();
   @override
@@ -28,40 +30,25 @@ class _HomeViewBodyState extends State<HomeViewBody> {
     return BlocBuilder<GetMenuCubit, GetMenuState>(
       builder: (context, state) {
         if (state is GetMenuSuccess) {
-          List<Pages> pagesListInFastScreen = [];
-          List<Pages> allPagesList = [];
+          List<Pages> pagesList = [];
           for (var element in state.menu.list) {
             for (var page in element.pages) {
-              if (page.url != "chart") {
-                allPagesList.add(page);
-              }
-
-              HomeViewBody.pagesList = allPagesList;
-              if (page.isFastScreen == true && page.url != "chart") {
-                pagesListInFastScreen.add(page);
+              if (page.url == "chart") {
+                pagesList.add(page);
               }
             }
           }
           return CustomScrollView(
             slivers: [
-              widget.isPortrait
-                  ? const SliverToBoxAdapter(
-                      child: HomeViewHeader(),
-                    )
-                  : const SliverToBoxAdapter(
-                      child: SizedBox(
-                        height: 25,
-                      ),
-                    ),
               SliverToBoxAdapter(
                 child: Padding(
-                  padding:
-                      const EdgeInsets.only(left: 16, right: 16, bottom: 35),
+                  padding: const EdgeInsets.only(
+                      left: 16, right: 16, bottom: 35, top: 35),
                   child: CustomTextFormFieldSearch(
                     hintText: S.of(context).search,
                     controller: controllerSearch,
                     onChanged: (value) {
-                      pagesListSearch = allPagesList
+                      pagesListSearch = pagesList
                           .where((page) => page.nameAr.contains(value))
                           .toList();
                       setState(() {});
@@ -76,7 +63,7 @@ class _HomeViewBodyState extends State<HomeViewBody> {
                       ? pagesListSearch.isEmpty
                           ? 0
                           : pagesListSearch.length
-                      : pagesListInFastScreen.length,
+                      : pagesList.length,
                   physics: const NeverScrollableScrollPhysics(),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: widget.isPortrait ? 3 : 5,
@@ -91,7 +78,7 @@ class _HomeViewBodyState extends State<HomeViewBody> {
                     return PageItemGridView(
                         page: controllerSearch.text.isNotEmpty
                             ? pagesListSearch[index]
-                            : pagesListInFastScreen[index]);
+                            : pagesList[index]);
                   },
                 ),
               ),
