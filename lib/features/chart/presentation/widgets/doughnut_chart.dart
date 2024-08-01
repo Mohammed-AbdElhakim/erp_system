@@ -25,7 +25,7 @@ class _DoughnutChartState extends State<DoughnutChart> {
   Widget build(BuildContext context) {
     return SfCircularChart(
       tooltipBehavior: _tooltip,
-      legend: Legend(
+      legend: const Legend(
         isVisible: true,
         overflowMode: LegendItemOverflowMode.wrap,
         shouldAlwaysShowScrollbar: true,
@@ -37,7 +37,7 @@ class _DoughnutChartState extends State<DoughnutChart> {
           pointColorMapper: (XY dat, _) => getMyColor(data.indexOf(dat)),
           xValueMapper: (XY data, _) => data.x,
           yValueMapper: (XY data, _) => data.y,
-          dataLabelSettings: DataLabelSettings(isVisible: true),
+          dataLabelSettings: const DataLabelSettings(isVisible: true),
           enableTooltip: true,
         )
       ],

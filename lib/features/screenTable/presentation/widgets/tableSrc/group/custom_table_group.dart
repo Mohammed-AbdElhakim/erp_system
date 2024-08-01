@@ -186,7 +186,7 @@ class _CustomTableGroupState extends State<CustomTableGroup> {
                     dataRowMaxHeight: 50,
                     headingRowHeight: 35,
                     headingRowColor:
-                        MaterialStateProperty.all(AppColors.blueLight),
+                        WidgetStateProperty.all(AppColors.blueLight),
                     columns: [
                       ...List.generate(
                         widget.listHeader.length,

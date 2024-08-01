@@ -198,7 +198,7 @@ class _CustomTableAddEditState extends State<CustomTableAddEdit> {
                 dataRowMinHeight: 50,
                 dataRowMaxHeight: 50,
                 headingRowHeight: 35,
-                headingRowColor: MaterialStateProperty.all(AppColors.blueLight),
+                headingRowColor: WidgetStateProperty.all(AppColors.blueLight),
                 columns: [
                   DataColumn(
                     label: Expanded(
@@ -313,7 +313,7 @@ class _CustomTableAddEditState extends State<CustomTableAddEdit> {
                 dataRowMinHeight: 50,
                 dataRowMaxHeight: 50,
                 headingRowHeight: 35,
-                headingRowColor: MaterialStateProperty.all(AppColors.blueLight),
+                headingRowColor: WidgetStateProperty.all(AppColors.blueLight),
                 columns: [
                   DataColumn(
                     label: Expanded(

@@ -462,7 +462,7 @@ class _BuildAlertAddDetailsState extends State<BuildAlertAddDetails> {
                         color: Colors.red,
                         size: 10,
                       ),
-                    SizedBox(
+                    const SizedBox(
                       width: 12,
                     ),
                     if (dropPage != null)
@@ -485,7 +485,7 @@ class _BuildAlertAddDetailsState extends State<BuildAlertAddDetails> {
                           size: 24,
                         ),
                       ),
-                    SizedBox(
+                    const SizedBox(
                       width: 5,
                     ),
                     // if (dropPage != null)
@@ -632,6 +632,7 @@ class _BuildAlertAddDetailsState extends State<BuildAlertAddDetails> {
         return page;
       }
     }
+    return null;
   }
 
   Future<bool> getPermissions(int? pageId) async {

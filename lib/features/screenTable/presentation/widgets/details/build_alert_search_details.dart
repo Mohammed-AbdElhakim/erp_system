@@ -607,7 +607,7 @@ class _BuildAlertSearchDetailsState extends State<BuildAlertSearchDetails> {
                       title,
                       style: AppStyles.textStyle14.copyWith(color: Colors.grey),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 12,
                     ),
                     if (dropPage != null)
@@ -630,7 +630,7 @@ class _BuildAlertSearchDetailsState extends State<BuildAlertSearchDetails> {
                           size: 24,
                         ),
                       ),
-                    SizedBox(
+                    const SizedBox(
                       width: 5,
                     ),
                     // if (dropPage != null)
@@ -926,6 +926,7 @@ class _BuildAlertSearchDetailsState extends State<BuildAlertSearchDetails> {
         return page;
       }
     }
+    return null;
   }
 
   Future<bool> getPermissions(int? pageId) async {

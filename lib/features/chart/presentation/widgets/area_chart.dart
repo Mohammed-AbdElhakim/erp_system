@@ -28,11 +28,11 @@ class _AreaChartState extends State<AreaChart> {
         labelRotation: -50,
         edgeLabelPlacement: EdgeLabelPlacement.shift,
       ),
-      primaryYAxis: NumericAxis(
+      primaryYAxis: const NumericAxis(
         edgeLabelPlacement: EdgeLabelPlacement.shift,
       ),
       tooltipBehavior: _tooltip,
-      legend: Legend(
+      legend: const Legend(
         isVisible: true,
         overflowMode: LegendItemOverflowMode.wrap,
         shouldAlwaysShowScrollbar: true,
@@ -45,7 +45,7 @@ class _AreaChartState extends State<AreaChart> {
           yValueMapper: (XY data, _) => data.y,
           name: widget.chartDataModel.chartMasterData.arName,
           color: const Color.fromRGBO(255, 193, 206, 1.0),
-          dataLabelSettings: DataLabelSettings(isVisible: true),
+          dataLabelSettings: const DataLabelSettings(isVisible: true),
           enableTooltip: true,
         ),
       ],

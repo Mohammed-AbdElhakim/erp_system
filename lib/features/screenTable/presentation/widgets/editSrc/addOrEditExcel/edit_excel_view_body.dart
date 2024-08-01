@@ -656,7 +656,7 @@ class _EditExcelViewBodyState extends State<EditExcelViewBody> {
                         color: Colors.red,
                         size: 10,
                       ),
-                    SizedBox(
+                    const SizedBox(
                       width: 12,
                     ),
                     if (dropPage != null)
@@ -679,7 +679,7 @@ class _EditExcelViewBodyState extends State<EditExcelViewBody> {
                           size: 24,
                         ),
                       ),
-                    SizedBox(
+                    const SizedBox(
                       width: 5,
                     ),
                     // if (dropPage != null)
@@ -818,6 +818,7 @@ class _EditExcelViewBodyState extends State<EditExcelViewBody> {
         return page;
       }
     }
+    return null;
   }
 
   Future<bool> getPermissions(int? pageId) async {

@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, avoid_print
+
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -488,7 +490,7 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
                       title,
                       style: AppStyles.textStyle14.copyWith(color: Colors.grey),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 12,
                     ),
                     if (dropPage != null)
@@ -511,7 +513,7 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
                           size: 24,
                         ),
                       ),
-                    SizedBox(
+                    const SizedBox(
                       width: 5,
                     ),
                     // if (dropPage != null)

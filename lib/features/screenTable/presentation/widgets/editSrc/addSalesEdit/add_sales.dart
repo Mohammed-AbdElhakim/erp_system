@@ -551,10 +551,6 @@ class _AddSalesState extends State<AddSales> {
                                           // "DiscountDetailTotal":double.parse(),
                                         });
 
-                                        print(
-                                            "=======lat=======$lat==================");
-                                        print(
-                                            "=======long=======$long==================");
                                         bool? customerClose =
                                             getCustomer(AddSales.userId);
 
@@ -818,7 +814,7 @@ class _AddSalesState extends State<AddSales> {
                         color: Colors.red,
                         size: 10,
                       ),
-                    SizedBox(
+                    const SizedBox(
                       width: 12,
                     ),
                     if (dropPage != null)
@@ -841,7 +837,7 @@ class _AddSalesState extends State<AddSales> {
                           size: 24,
                         ),
                       ),
-                    SizedBox(
+                    const SizedBox(
                       width: 5,
                     ),
                     // if (dropPage != null)
@@ -1833,6 +1829,7 @@ class _AddSalesState extends State<AddSales> {
         return page;
       }
     }
+    return null;
   }
 
   Future<bool> getPermissions(int? pageId) async {
@@ -1891,6 +1888,7 @@ class _AddSalesState extends State<AddSales> {
         return item['Closelocation'];
       }
     }
+    return null;
   }
 
   Future<void> getCustomerLocation(int userId) async {

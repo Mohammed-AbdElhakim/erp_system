@@ -80,8 +80,7 @@ class _TablePageDetailsWidgetState extends State<TablePageDetailsWidget> {
                   dataRowMinHeight: 35,
                   dataRowMaxHeight: 35,
                   headingRowHeight: 35,
-                  headingRowColor:
-                      MaterialStateProperty.all(AppColors.blueLight),
+                  headingRowColor: WidgetStateProperty.all(AppColors.blueLight),
                   columns: [
                     ...List.generate(
                       widget.listHeader.length,
@@ -179,7 +178,7 @@ class _TablePageDetailsWidgetState extends State<TablePageDetailsWidget> {
                     dataRowMaxHeight: 50,
                     headingRowHeight: 35,
                     headingRowColor:
-                        MaterialStateProperty.all(AppColors.blueLight),
+                        WidgetStateProperty.all(AppColors.blueLight),
                     columns: [
                       DataColumn(
                         label: Expanded(
@@ -247,7 +246,7 @@ class _TablePageDetailsWidgetState extends State<TablePageDetailsWidget> {
             dataRowMinHeight: 50,
             dataRowMaxHeight: 50,
             headingRowHeight: 35,
-            headingRowColor: MaterialStateProperty.all(AppColors.blueLight),
+            headingRowColor: WidgetStateProperty.all(AppColors.blueLight),
             columns: [
               DataColumn(
                 label: Expanded(

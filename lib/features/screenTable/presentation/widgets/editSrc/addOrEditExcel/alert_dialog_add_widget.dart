@@ -326,7 +326,7 @@ class _AlertDialogAddWidgetState extends State<AlertDialogAddWidget> {
                         color: Colors.red,
                         size: 10,
                       ),
-                    SizedBox(
+                    const SizedBox(
                       width: 12,
                     ),
                     if (dropPage != null)
@@ -349,7 +349,7 @@ class _AlertDialogAddWidgetState extends State<AlertDialogAddWidget> {
                           size: 24,
                         ),
                       ),
-                    SizedBox(
+                    const SizedBox(
                       width: 5,
                     ),
                     // if (dropPage != null)
@@ -486,6 +486,7 @@ class _AlertDialogAddWidgetState extends State<AlertDialogAddWidget> {
         return page;
       }
     }
+    return null;
   }
 
   Future<bool> getPermissions(int? pageId) async {

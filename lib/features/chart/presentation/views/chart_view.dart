@@ -65,7 +65,7 @@ class _ChartViewState extends State<ChartView> {
                     : const SizedBox(
                         height: 25,
                       ),
-                ChartViewBody(),
+                const ChartViewBody(),
               ],
             ),
           ),

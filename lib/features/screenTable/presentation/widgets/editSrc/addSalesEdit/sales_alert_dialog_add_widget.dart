@@ -52,17 +52,17 @@ class _SalesAlertDialogAddWidgetState extends State<SalesAlertDialogAddWidget> {
   @override
   void initState() {
     if (widget.typeView == "Add") {
-      print(AddSales.userId);
       customerCategoryID = AddSales.listCustomerAccount.firstWhere(
-        (element) => element['CustomerAccountID'] == AddSales.userId,
-        orElse: () => {"CategoryID": -1},
-      )['CategoryID']??-1;
+            (element) => element['CustomerAccountID'] == AddSales.userId,
+            orElse: () => {"CategoryID": -1},
+          )['CategoryID'] ??
+          -1;
     } else {
-      print(EditSales.userId);
-      customerCategoryID = EditSales.listCustomerAccount.firstWhere((element) =>
-          element['CustomerAccountID'] == EditSales.userId,
-        orElse: () => {"CategoryID": -1},
-      )['CategoryID']??-1;
+      customerCategoryID = EditSales.listCustomerAccount.firstWhere(
+            (element) => element['CustomerAccountID'] == EditSales.userId,
+            orElse: () => {"CategoryID": -1},
+          )['CategoryID'] ??
+          -1;
     }
 
     super.initState();

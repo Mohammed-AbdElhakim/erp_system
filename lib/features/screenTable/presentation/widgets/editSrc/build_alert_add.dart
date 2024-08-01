@@ -405,7 +405,7 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                         color: Colors.red,
                         size: 10,
                       ),
-                    SizedBox(
+                    const SizedBox(
                       width: 12,
                     ),
                     if (dropPage != null)
@@ -428,7 +428,7 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                           size: 24,
                         ),
                       ),
-                    SizedBox(
+                    const SizedBox(
                       width: 5,
                     ),
                     // if (dropPage != null)
@@ -626,6 +626,7 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
         return page;
       }
     }
+    return null;
   }
 
   Future<bool> getPermissions(int? pageId) async {
@@ -645,7 +646,6 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
       PermissionModel permissionModel = PermissionModel.fromJson(data);
       return permissionModel.showNew;
     } catch (e) {
-      print(e);
       return false;
     }
   }

@@ -313,7 +313,7 @@ class _SalesTableAddEditState extends State<SalesTableAddEdit> {
                 dataRowMinHeight: 50,
                 dataRowMaxHeight: 50,
                 headingRowHeight: 35,
-                headingRowColor: MaterialStateProperty.all(AppColors.blueLight),
+                headingRowColor: WidgetStateProperty.all(AppColors.blueLight),
                 columns: [
                   DataColumn(
                     label: Expanded(
@@ -428,7 +428,7 @@ class _SalesTableAddEditState extends State<SalesTableAddEdit> {
                 dataRowMinHeight: 50,
                 dataRowMaxHeight: 50,
                 headingRowHeight: 35,
-                headingRowColor: MaterialStateProperty.all(AppColors.blueLight),
+                headingRowColor: WidgetStateProperty.all(AppColors.blueLight),
                 columns: [
                   DataColumn(
                     label: Expanded(
@@ -567,7 +567,6 @@ class _SalesTableAddEditState extends State<SalesTableAddEdit> {
         orElse: () => {"ProductId": -1},
       )['ProductId'];
 
-      print(AddSales.userId);
       customerCategoryID = AddSales.listCustomerAccount.firstWhere((element) =>
           element['CustomerAccountID'] == AddSales.userId)['CategoryID'];
 
@@ -579,7 +578,6 @@ class _SalesTableAddEditState extends State<SalesTableAddEdit> {
           )['Price'] ??
           0.0;
       if (productPrice != 0.0) {
-        print(productPrice);
         proPrice = productPrice;
         proName = AddSales.listProduct.firstWhere(
               (element) => element["ProID"] == productId,
@@ -593,7 +591,6 @@ class _SalesTableAddEditState extends State<SalesTableAddEdit> {
             )['ProPrice'] ??
             -1;
         if (price != -1) {
-          print(productPrice);
           proPrice = price;
           proName = AddSales.listProduct.firstWhere(
                 (element) => element["ProID"] == productId,
@@ -619,7 +616,6 @@ class _SalesTableAddEditState extends State<SalesTableAddEdit> {
           )['Price'] ??
           0.0;
       if (productPrice != 0.0) {
-        print(productPrice);
         proPrice = productPrice;
         proName = EditSales.listProduct.firstWhere(
               (element) => element["ProID"] == productId,
@@ -633,7 +629,6 @@ class _SalesTableAddEditState extends State<SalesTableAddEdit> {
             )['ProPrice'] ??
             -1;
         if (price != -1) {
-          print(productPrice);
           proPrice = price;
           proName = EditSales.listProduct.firstWhere(
                 (element) => element["ProID"] == productId,
