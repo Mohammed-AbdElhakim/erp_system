@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:erp_system/features/trialBalance/data/repositories/trial_balance_repo_impl.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../features/attendance/data/repositories/attendance_repo_impl.dart';
@@ -28,6 +29,12 @@ void setupServiceLocator() {
 
   getIt.registerSingleton<ScreenRepoImpl>(
     ScreenRepoImpl(
+      getIt.get<ApiService>(),
+    ),
+  );
+
+  getIt.registerSingleton<TrialBalanceRepoImpl>(
+    TrialBalanceRepoImpl(
       getIt.get<ApiService>(),
     ),
   );
