@@ -54,7 +54,9 @@
   "task": "Task: " ,
   "start_date": "Start Date: ",
   "end_date": "End Date: ",
-  "select_client": "Please select a client."
+  "select_client": "Please select a client.",
+  "date_from": "Date From: ",
+  "date_to": "Date To: "
 
 
 
