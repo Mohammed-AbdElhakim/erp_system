@@ -21,4 +21,5 @@ class AppStrings {
   static const String addOrEditDefault = "addOrEditDefault";
   static const String addOrEditExcel = "addOrEditExcel";
   static const String addSalesEdit = "addSalesEdit";
+  static const String trialBalance = "trialBalance";
 }

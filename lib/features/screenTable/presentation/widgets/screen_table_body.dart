@@ -10,16 +10,28 @@ class ScreenTableBody extends StatelessWidget {
   final Pages pageData;
   @override
   Widget build(BuildContext context) {
-    if (pageData.tableSrc == AppStrings.tableGroup) {
-      return TableGroup(
-        pageData: pageData,
-      );
-    } else if (pageData.tableSrc == "") {
-      return TableGeneral(
-        pageData: pageData,
-      );
-    } else {
-      return Text("tableSrc   ==>   ${pageData.tableSrc}");
+    switch (pageData.tableSrc) {
+      case AppStrings.tableGroup:
+        return TableGroup(
+          pageData: pageData,
+        );
+      case "":
+        return TableGeneral(
+          pageData: pageData,
+        );
+      default:
+        return Text("tableSrc   ==>   ${pageData.tableSrc}");
     }
+    // if (pageData.tableSrc == AppStrings.tableGroup) {
+    //   return TableGroup(
+    //     pageData: pageData,
+    //   );
+    // } else if (pageData.tableSrc == "") {
+    //   return TableGeneral(
+    //     pageData: pageData,
+    //   );
+    // } else {
+    //   return Text("tableSrc   ==>   ${pageData.tableSrc}");
+    // }
   }
 }

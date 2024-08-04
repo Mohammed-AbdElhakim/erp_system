@@ -4,6 +4,7 @@ import '../../features/attendance/presentation/views/attendance_view.dart';
 import '../../features/chart/presentation/views/chart_view.dart';
 import '../../features/screenTable/presentation/views/screen_table.dart';
 import '../../features/tasks/presentation/views/tasks_view.dart';
+import '../../features/trialBalance/presentation/views/trial_balance.dart';
 import '../models/menu_model/pages.dart';
 
 class ScreenView extends StatelessWidget {
@@ -24,6 +25,8 @@ class ScreenView extends StatelessWidget {
         return TasksView(pageData: pageData);
       case "general":
         return ScreenTable(pageData: pageData);
+      case "generel":
+        return TrialBalance(pageData: pageData);
       case "chart":
         return ChartView(pageData: pageData);
     }
