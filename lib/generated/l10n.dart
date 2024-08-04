@@ -609,6 +609,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Date From: `
+  String get date_from {
+    return Intl.message(
+      'Date From: ',
+      name: 'date_from',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Date To: `
+  String get date_to {
+    return Intl.message(
+      'Date To: ',
+      name: 'date_to',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

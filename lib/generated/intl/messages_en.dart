@@ -41,6 +41,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "clean": MessageLookupByLibrary.simpleMessage("Clean"),
         "company_identifier":
             MessageLookupByLibrary.simpleMessage("Company Identifier"),
+        "date_from": MessageLookupByLibrary.simpleMessage("Date From: "),
+        "date_to": MessageLookupByLibrary.simpleMessage("Date To: "),
         "description_task":
             MessageLookupByLibrary.simpleMessage("Description: "),
         "distance": MessageLookupByLibrary.simpleMessage("Distance: "),

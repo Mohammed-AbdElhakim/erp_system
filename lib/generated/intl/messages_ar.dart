@@ -39,6 +39,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "change_language": MessageLookupByLibrary.simpleMessage("تغير اللغة"),
         "clean": MessageLookupByLibrary.simpleMessage("مسح"),
         "company_identifier": MessageLookupByLibrary.simpleMessage("معرف شركة"),
+        "date_from": MessageLookupByLibrary.simpleMessage("تاريخ من: "),
+        "date_to": MessageLookupByLibrary.simpleMessage("تاريخ إلى: "),
         "description_task": MessageLookupByLibrary.simpleMessage("توصيف: "),
         "distance": MessageLookupByLibrary.simpleMessage("المسافة: "),
         "dynamic_pro": MessageLookupByLibrary.simpleMessage("Dynamic Pro"),
