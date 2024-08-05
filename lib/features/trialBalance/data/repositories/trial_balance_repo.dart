@@ -5,7 +5,7 @@ import 'package:erp_system/features/trialBalance/data/models/trial_balance_model
 import '../../../../core/errors/failures.dart';
 
 abstract class TrialBalanceRepo {
-  Future<Either<Failure, TrialBalanceModel>> getTrialBalance({
+  Future<Either<Failure, List<TrialBalanceModel>>> getTrialBalance({
     required TrialBalanceBodyModel trialBalanceBody,
   });
 }

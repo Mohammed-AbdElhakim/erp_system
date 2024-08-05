@@ -17,7 +17,7 @@ final class TrialBalanceFailure extends TrialBalanceState {
 }
 
 final class TrialBalanceSuccess extends TrialBalanceState {
-  final TrialBalanceModel trialBalanceModel;
+  final List<TrialBalanceModel> trialBalanceModel;
 
   const TrialBalanceSuccess(this.trialBalanceModel);
 }

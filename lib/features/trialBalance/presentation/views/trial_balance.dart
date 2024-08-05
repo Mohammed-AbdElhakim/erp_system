@@ -43,28 +43,30 @@ class _TrialBalanceState extends State<TrialBalance> {
                 ? widget.pageData.nameEn
                 : widget.pageData.nameAr,
           ),
-          body: Column(
-            children: [
-              isOrientationPortrait(context)
-                  ? CustomContainer(
-                      height: 120,
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 12),
-                        child: Text(
-                          lang == AppStrings.enLangKey
-                              ? widget.pageData.nameEn
-                              : widget.pageData.nameAr,
-                          maxLines: 1,
-                          textAlign: TextAlign.center,
-                          style: AppStyles.textStyle26,
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                isOrientationPortrait(context)
+                    ? CustomContainer(
+                        height: 120,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 12),
+                          child: Text(
+                            lang == AppStrings.enLangKey
+                                ? widget.pageData.nameEn
+                                : widget.pageData.nameAr,
+                            maxLines: 1,
+                            textAlign: TextAlign.center,
+                            style: AppStyles.textStyle26,
+                          ),
                         ),
+                      )
+                    : const SizedBox(
+                        height: 25,
                       ),
-                    )
-                  : const SizedBox(
-                      height: 25,
-                    ),
-              const TrialBalanceBody(),
-            ],
+                const TrialBalanceBody(),
+              ],
+            ),
           ),
         ),
       ),

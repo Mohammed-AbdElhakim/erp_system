@@ -15,7 +15,7 @@ class TrialBalanceRepoImpl implements TrialBalanceRepo {
   TrialBalanceRepoImpl(this.apiService);
 
   @override
-  Future<Either<Failure, TrialBalanceModel>> getTrialBalance({
+  Future<Either<Failure, List<TrialBalanceModel>>> getTrialBalance({
     required TrialBalanceBodyModel trialBalanceBody,
   }) async {
     try {
@@ -24,17 +24,21 @@ class TrialBalanceRepoImpl implements TrialBalanceRepo {
               "";
       String token =
           await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
-      Map<String, dynamic> data = await apiService.post(
-        endPoint: "home/getGeneralTable",
+      // var rrr = jsonEncode(trialBalanceBody.toJson());
+      List<dynamic> data = await apiService.post(
+        endPoint: "web/trialBalance",
         data: trialBalanceBody.toJson(),
         headers: {
           "Authorization": "Bearer $token",
           "CompanyKey": companyKey,
         },
       );
-      TrialBalanceModel trialBalanceModel = TrialBalanceModel.fromJson(data);
+      List<TrialBalanceModel> dataList = [];
+      for (var i in data) {
+        dataList.add(TrialBalanceModel.fromJson(i));
+      }
 
-      return right(trialBalanceModel);
+      return right(dataList);
     } catch (e) {
       if (e is DioException) {
         return left(

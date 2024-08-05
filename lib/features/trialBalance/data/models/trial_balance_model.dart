@@ -5,7 +5,7 @@ class TrialBalanceModel {
   int? level;
   bool? beforCorD;
   double? beformony;
-  int? creditmony;
+  double? creditmony;
   double? depitmony;
   bool? creditORDepit;
   double? mony;

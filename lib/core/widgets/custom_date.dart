@@ -28,7 +28,7 @@ class _CustomDateState extends State<CustomDate> {
           setState(() {
             date = DateFormat("yyyy-MM-dd", 'en').format(dateTime);
           });
-          widget.onSelect(date);
+          widget.onSelect(dateTime.toString());
         }
       },
       child: Container(

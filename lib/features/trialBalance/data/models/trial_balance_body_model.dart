@@ -1,26 +1,26 @@
 class TrialBalanceBodyModel {
-  String? datefrom;
-  String? dateto;
-  int? product;
-  int? comID;
-  bool? iszero;
-  int? currancy;
-  int? customer;
-  int? supplier;
-  int? cost;
-  bool? iscompany;
+  late final String datefrom;
+  late final String dateto;
+  late final int product;
+  late final int comID;
+  late final bool iszero;
+  late final int currancy;
+  late final int customer;
+  late final int supplier;
+  late final int cost;
+  late final bool iscompany;
 
   TrialBalanceBodyModel(
-      {this.datefrom,
-      this.dateto,
-      this.product,
-      this.comID,
-      this.iszero,
-      this.currancy,
-      this.customer,
-      this.supplier,
-      this.cost,
-      this.iscompany});
+      {required this.datefrom,
+      required this.dateto,
+      required this.product,
+      required this.comID,
+      required this.iszero,
+      required this.currancy,
+      required this.customer,
+      required this.supplier,
+      required this.cost,
+      required this.iscompany});
 
   TrialBalanceBodyModel.fromJson(Map<String, dynamic> json) {
     datefrom = json['datefrom'];
