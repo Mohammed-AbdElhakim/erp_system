@@ -52,32 +52,31 @@ class _TrialBalanceTableState extends State<TrialBalanceTable> {
       height: MediaQuery.of(context).size.height - 317.4,
       child: Stack(
         children: [
-          SfDataGridTheme(
-            data: SfDataGridThemeData(
-              headerColor: AppColors.blueLight,
-              selectionColor: Colors.blueGrey.shade100,
-              indentColumnWidth: 0,
-              // gridLineColor: Colors.transparent,
-            ),
-            child: SfDataGrid(
-              gridLinesVisibility: GridLinesVisibility.both,
-              headerGridLinesVisibility: GridLinesVisibility.both,
-              source: trialBalanceDataSource,
-              headerRowHeight: 40,
-              controller: dataGridController,
-              rowHeight: 40,
-              horizontalScrollController: dataScrollController,
-              showHorizontalScrollbar: false,
-              showVerticalScrollbar: false,
-              columns: buildColumnsTable(),
-              stackedHeaderRows: <StackedHeaderRow>[
-                buildCustomStackedHeaderRow()
-              ],
-              footerHeight: 45,
-              footer: const SizedBox(
-                height: 45,
+          Padding(
+            padding: const EdgeInsets.only(bottom: 45),
+            child: SfDataGridTheme(
+              data: SfDataGridThemeData(
+                headerColor: AppColors.blueLight,
+                selectionColor: Colors.blueGrey.shade100,
+                indentColumnWidth: 0,
+                // gridLineColor: Colors.transparent,
               ),
-              selectionMode: SelectionMode.singleDeselect,
+              child: SfDataGrid(
+                gridLinesVisibility: GridLinesVisibility.both,
+                headerGridLinesVisibility: GridLinesVisibility.both,
+                source: trialBalanceDataSource,
+                headerRowHeight: 40,
+                controller: dataGridController,
+                rowHeight: 40,
+                horizontalScrollController: dataScrollController,
+                showHorizontalScrollbar: false,
+                showVerticalScrollbar: false,
+                columns: buildColumnsTable(),
+                stackedHeaderRows: <StackedHeaderRow>[
+                  buildCustomStackedHeaderRow()
+                ],
+                selectionMode: SelectionMode.singleDeselect,
+              ),
             ),
           ),
           FooterTable(
