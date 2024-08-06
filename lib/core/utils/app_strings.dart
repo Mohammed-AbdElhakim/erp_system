@@ -22,4 +22,8 @@ class AppStrings {
   static const String addOrEditExcel = "addOrEditExcel";
   static const String addSalesEdit = "addSalesEdit";
   static const String trialBalance = "trialBalance";
+  static const String openingBalances = "الأرصدة الافتتاحية";
+  static const String movement = "الحركة";
+  static const String totals = "مجاميع";
+  static const String closingBalances = "الأرصدة الختامية";
 }

@@ -4,16 +4,20 @@ import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../../../core/utils/app_colors.dart';
+import '../../../../core/utils/app_strings.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/widgets/custom_text_form_field.dart';
 import '../../data/models/trial_balance_model.dart';
-import 'build_custom_stacked_header_row.dart';
 import 'footer_table.dart';
 import 'trial_balance_data_source.dart';
 
 class TrialBalanceTable extends StatefulWidget {
-  const TrialBalanceTable({super.key, required this.trialBalanceList});
+  const TrialBalanceTable(
+      {super.key,
+      required this.trialBalanceList,
+      required this.selectionItemsShow});
   final List<TrialBalanceModel> trialBalanceList;
+  final List<String> selectionItemsShow;
 
   @override
   State<TrialBalanceTable> createState() => _TrialBalanceTableState();
@@ -36,49 +40,53 @@ class _TrialBalanceTableState extends State<TrialBalanceTable> {
     dataScrollController = controllerGroup.addAndGet();
     sumScrollController = controllerGroup.addAndGet();
     trialBalanceDataSource = TrialBalanceDataSource(
-      trialBalance: widget.trialBalanceList,
-      controllerLevel: controllerLevel.text,
-      controllerSearch: controllerSearch.text,
-    );
+        trialBalance: widget.trialBalanceList,
+        controllerLevel: controllerLevel.text,
+        controllerSearch: controllerSearch.text,
+        selectionItemsShow: widget.selectionItemsShow);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        SfDataGridTheme(
-          data: SfDataGridThemeData(
-            headerColor: AppColors.blueLight,
-            selectionColor: Colors.grey.shade400,
-            indentColumnWidth: 0,
-            // gridLineColor: Colors.transparent,
-          ),
-          child: SfDataGrid(
-            gridLinesVisibility: GridLinesVisibility.both,
-            headerGridLinesVisibility: GridLinesVisibility.both,
-            source: trialBalanceDataSource,
-            headerRowHeight: 40,
-            controller: dataGridController,
-            rowHeight: 40,
-            horizontalScrollController: dataScrollController,
-            showHorizontalScrollbar: false,
-            showVerticalScrollbar: false,
-            columns: buildColumnsTable(),
-            stackedHeaderRows: <StackedHeaderRow>[
-              buildCustomStackedHeaderRow()
-            ],
-            footerHeight: 45,
-            footer: const SizedBox(
-              height: 45,
+    return SizedBox(
+      height: MediaQuery.of(context).size.height - 317.4,
+      child: Stack(
+        children: [
+          SfDataGridTheme(
+            data: SfDataGridThemeData(
+              headerColor: AppColors.blueLight,
+              selectionColor: Colors.blueGrey.shade100,
+              indentColumnWidth: 0,
+              // gridLineColor: Colors.transparent,
             ),
-            selectionMode: SelectionMode.singleDeselect,
+            child: SfDataGrid(
+              gridLinesVisibility: GridLinesVisibility.both,
+              headerGridLinesVisibility: GridLinesVisibility.both,
+              source: trialBalanceDataSource,
+              headerRowHeight: 40,
+              controller: dataGridController,
+              rowHeight: 40,
+              horizontalScrollController: dataScrollController,
+              showHorizontalScrollbar: false,
+              showVerticalScrollbar: false,
+              columns: buildColumnsTable(),
+              stackedHeaderRows: <StackedHeaderRow>[
+                buildCustomStackedHeaderRow()
+              ],
+              footerHeight: 45,
+              footer: const SizedBox(
+                height: 45,
+              ),
+              selectionMode: SelectionMode.singleDeselect,
+            ),
           ),
-        ),
-        FooterTable(
-          sumScrollController: sumScrollController,
-          trialBalanceList: widget.trialBalanceList,
-        ),
-      ],
+          FooterTable(
+            sumScrollController: sumScrollController,
+            trialBalanceList: widget.trialBalanceList,
+            selectionItemsShow: widget.selectionItemsShow,
+          ),
+        ],
+      ),
     );
   }
 
@@ -100,10 +108,10 @@ class _TrialBalanceTableState extends State<TrialBalanceTable> {
                     onChanged: (value) {
                       setState(() {
                         trialBalanceDataSource = TrialBalanceDataSource(
-                          trialBalance: widget.trialBalanceList,
-                          controllerLevel: controllerLevel.text,
-                          controllerSearch: value,
-                        );
+                            trialBalance: widget.trialBalanceList,
+                            controllerLevel: controllerLevel.text,
+                            controllerSearch: value,
+                            selectionItemsShow: widget.selectionItemsShow);
                       });
                     },
                   ),
@@ -121,10 +129,10 @@ class _TrialBalanceTableState extends State<TrialBalanceTable> {
                     onChanged: (value) {
                       setState(() {
                         trialBalanceDataSource = TrialBalanceDataSource(
-                          trialBalance: widget.trialBalanceList,
-                          controllerLevel: value,
-                          controllerSearch: controllerSearch.text,
-                        );
+                            trialBalance: widget.trialBalanceList,
+                            controllerLevel: value,
+                            controllerSearch: controllerSearch.text,
+                            selectionItemsShow: widget.selectionItemsShow);
                       });
                     },
                   ),
@@ -133,46 +141,81 @@ class _TrialBalanceTableState extends State<TrialBalanceTable> {
         ),
         width: 300,
       ),
-      GridColumn(
-        width: 120,
-        columnName: 'depitBefor',
-        label: Center(child: Text('مدين', style: AppStyles.textStyle14)),
-      ),
-      GridColumn(
-        width: 120,
-        columnName: 'creditBefor',
-        label: Center(child: Text('دائن', style: AppStyles.textStyle14)),
-      ),
-      GridColumn(
-        width: 120,
-        columnName: 'depitMony',
-        label: Center(child: Text('مدين', style: AppStyles.textStyle14)),
-      ),
-      GridColumn(
-        width: 120,
-        columnName: 'creditMony',
-        label: Center(child: Text('دائن', style: AppStyles.textStyle14)),
-      ),
-      GridColumn(
-        width: 120,
-        columnName: 'depitSum',
-        label: Center(child: Text('مدين', style: AppStyles.textStyle14)),
-      ),
-      GridColumn(
-        width: 120,
-        columnName: 'creditSum',
-        label: Center(child: Text('دائن', style: AppStyles.textStyle14)),
-      ),
-      GridColumn(
-        width: 120,
-        columnName: 'depitAfter',
-        label: Center(child: Text('مدين', style: AppStyles.textStyle14)),
-      ),
-      GridColumn(
-        width: 120,
-        columnName: 'creditAfter',
-        label: Center(child: Text('دائن', style: AppStyles.textStyle14)),
-      ),
+      if (widget.selectionItemsShow.contains(AppStrings.openingBalances))
+        GridColumn(
+          width: 120,
+          columnName: 'depitBefor',
+          label: Center(child: Text('مدين', style: AppStyles.textStyle14)),
+        ),
+      if (widget.selectionItemsShow.contains(AppStrings.openingBalances))
+        GridColumn(
+          width: 120,
+          columnName: 'creditBefor',
+          label: Center(child: Text('دائن', style: AppStyles.textStyle14)),
+        ),
+      if (widget.selectionItemsShow.contains(AppStrings.movement))
+        GridColumn(
+          width: 120,
+          columnName: 'depitMony',
+          label: Center(child: Text('مدين', style: AppStyles.textStyle14)),
+        ),
+      if (widget.selectionItemsShow.contains(AppStrings.movement))
+        GridColumn(
+          width: 120,
+          columnName: 'creditMony',
+          label: Center(child: Text('دائن', style: AppStyles.textStyle14)),
+        ),
+      if (widget.selectionItemsShow.contains(AppStrings.totals))
+        GridColumn(
+          width: 120,
+          columnName: 'depitSum',
+          label: Center(child: Text('مدين', style: AppStyles.textStyle14)),
+        ),
+      if (widget.selectionItemsShow.contains(AppStrings.totals))
+        GridColumn(
+          width: 120,
+          columnName: 'creditSum',
+          label: Center(child: Text('دائن', style: AppStyles.textStyle14)),
+        ),
+      if (widget.selectionItemsShow.contains(AppStrings.closingBalances))
+        GridColumn(
+          width: 120,
+          columnName: 'depitAfter',
+          label: Center(child: Text('مدين', style: AppStyles.textStyle14)),
+        ),
+      if (widget.selectionItemsShow.contains(AppStrings.closingBalances))
+        GridColumn(
+          width: 120,
+          columnName: 'creditAfter',
+          label: Center(child: Text('دائن', style: AppStyles.textStyle14)),
+        ),
     ];
+  }
+
+  StackedHeaderRow buildCustomStackedHeaderRow() {
+    return StackedHeaderRow(cells: [
+      StackedHeaderCell(
+          columnNames: ['acName'],
+          child: Center(child: Text('الحساب', style: AppStyles.textStyle14))),
+      if (widget.selectionItemsShow.contains(AppStrings.openingBalances))
+        StackedHeaderCell(
+            columnNames: ['depitBefor', 'creditBefor'],
+            child: Center(
+                child:
+                    Text('الأرصدة الافتتاحية', style: AppStyles.textStyle14))),
+      if (widget.selectionItemsShow.contains(AppStrings.movement))
+        StackedHeaderCell(
+            columnNames: ['depitMony', 'creditMony'],
+            child: Center(child: Text('الحركة', style: AppStyles.textStyle14))),
+      if (widget.selectionItemsShow.contains(AppStrings.totals))
+        StackedHeaderCell(
+            columnNames: ['depitSum', 'creditSum'],
+            child: Center(child: Text('مجاميع', style: AppStyles.textStyle14))),
+      if (widget.selectionItemsShow.contains(AppStrings.closingBalances))
+        StackedHeaderCell(
+            columnNames: ['depitAfter', 'creditAfter'],
+            child: Center(
+                child: Text('الأرصدة الختامية', style: AppStyles.textStyle14))),
+    ]);
   }
 }

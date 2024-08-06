@@ -2,17 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/utils/app_colors.dart';
+import '../../../../core/utils/app_strings.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../data/models/trial_balance_model.dart';
 
 class FooterTable extends StatelessWidget {
-  const FooterTable({super.key,required this.sumScrollController, required this.trialBalanceList});
+  const FooterTable(
+      {super.key,
+      required this.sumScrollController,
+      required this.trialBalanceList,
+      required this.selectionItemsShow});
   final ScrollController? sumScrollController;
   final List<TrialBalanceModel> trialBalanceList;
+  final List<String> selectionItemsShow;
 
   @override
   Widget build(BuildContext context) {
-    return  Positioned(
+    return Positioned(
       bottom: 0,
       left: 0,
       right: 0,
@@ -27,122 +33,118 @@ class FooterTable extends StatelessWidget {
               color: AppColors.blueLight,
               child: Center(
                   child: Text(
-                    "الإجمالى",
+                "الإجمالى",
+                style: AppStyles.textStyle14,
+              )),
+            ),
+            if (selectionItemsShow.contains(AppStrings.openingBalances))
+              Container(
+                width: 120,
+                height: 45,
+                color: AppColors.blueLight,
+                child: Center(
+                  child: Text(
+                    getSum(listData: trialBalanceList, columnName: "depitBefor")
+                        .toString(),
                     style: AppStyles.textStyle14,
-                  )),
-            ),
-            Container(
-              width: 120,
-              height: 45,
-              color: AppColors.blueLight,
-              child: Center(
-                child: Text(
-                  getSum(
-                      listData: trialBalanceList,
-                      columnName: "depitBefor")
-                      .toString(),
-                  style: AppStyles.textStyle14,
+                  ),
                 ),
               ),
-            ),
-            Container(
-              width: 120,
-              height: 45,
-              color: AppColors.blueLight,
-              child: Center(
-                child: Text(
-                  getSum(
-                      listData: trialBalanceList,
-                      columnName: "creditBefor")
-                      .toString(),
-                  style: AppStyles.textStyle14,
+            if (selectionItemsShow.contains(AppStrings.openingBalances))
+              Container(
+                width: 120,
+                height: 45,
+                color: AppColors.blueLight,
+                child: Center(
+                  child: Text(
+                    getSum(
+                            listData: trialBalanceList,
+                            columnName: "creditBefor")
+                        .toString(),
+                    style: AppStyles.textStyle14,
+                  ),
                 ),
               ),
-            ),
-            Container(
-              width: 120,
-              height: 45,
-              color: AppColors.blueLight,
-              child: Center(
-                child: Text(
-                  getSum(
-                      listData:trialBalanceList,
-                      columnName: "depitMony")
-                      .toString(),
-                  style: AppStyles.textStyle14,
+            if (selectionItemsShow.contains(AppStrings.movement))
+              Container(
+                width: 120,
+                height: 45,
+                color: AppColors.blueLight,
+                child: Center(
+                  child: Text(
+                    getSum(listData: trialBalanceList, columnName: "depitMony")
+                        .toString(),
+                    style: AppStyles.textStyle14,
+                  ),
                 ),
               ),
-            ),
-            Container(
-              width: 120,
-              height: 45,
-              color: AppColors.blueLight,
-              child: Center(
-                child: Text(
-                  getSum(
-                      listData: trialBalanceList,
-                      columnName: "creditMony")
-                      .toString(),
-                  style: AppStyles.textStyle14,
+            if (selectionItemsShow.contains(AppStrings.movement))
+              Container(
+                width: 120,
+                height: 45,
+                color: AppColors.blueLight,
+                child: Center(
+                  child: Text(
+                    getSum(listData: trialBalanceList, columnName: "creditMony")
+                        .toString(),
+                    style: AppStyles.textStyle14,
+                  ),
                 ),
               ),
-            ),
-            Container(
-              width: 120,
-              height: 45,
-              color: AppColors.blueLight,
-              child: Center(
-                child: Text(
-                  getSum(
-                      listData: trialBalanceList,
-                      columnName: "depitSum")
-                      .toString(),
-                  style: AppStyles.textStyle14,
+            if (selectionItemsShow.contains(AppStrings.totals))
+              Container(
+                width: 120,
+                height: 45,
+                color: AppColors.blueLight,
+                child: Center(
+                  child: Text(
+                    getSum(listData: trialBalanceList, columnName: "depitSum")
+                        .toString(),
+                    style: AppStyles.textStyle14,
+                  ),
                 ),
               ),
-            ),
-            Container(
-              width: 120,
-              height: 45,
-              color: AppColors.blueLight,
-              child: Center(
-                child: Text(
-                  getSum(
-                      listData: trialBalanceList,
-                      columnName: "creditSum")
-                      .toString(),
-                  style: AppStyles.textStyle14,
+            if (selectionItemsShow.contains(AppStrings.totals))
+              Container(
+                width: 120,
+                height: 45,
+                color: AppColors.blueLight,
+                child: Center(
+                  child: Text(
+                    getSum(listData: trialBalanceList, columnName: "creditSum")
+                        .toString(),
+                    style: AppStyles.textStyle14,
+                  ),
                 ),
               ),
-            ),
-            Container(
-              width: 120,
-              height: 45,
-              color: AppColors.blueLight,
-              child: Center(
-                child: Text(
-                  getSum(
-                      listData: trialBalanceList,
-                      columnName: "depitAfter")
-                      .toString(),
-                  style: AppStyles.textStyle14,
+            if (selectionItemsShow.contains(AppStrings.closingBalances))
+              Container(
+                width: 120,
+                height: 45,
+                color: AppColors.blueLight,
+                child: Center(
+                  child: Text(
+                    getSum(listData: trialBalanceList, columnName: "depitAfter")
+                        .toString(),
+                    style: AppStyles.textStyle14,
+                  ),
                 ),
               ),
-            ),
-            Container(
-              width: 120,
-              height: 45,
-              color: AppColors.blueLight,
-              child: Center(
-                child: Text(
-                  getSum(
-                      listData: trialBalanceList,
-                      columnName: "creditAfter")
-                      .toString(),
-                  style: AppStyles.textStyle14,
+            if (selectionItemsShow.contains(AppStrings.closingBalances))
+              Container(
+                width: 120,
+                height: 45,
+                color: AppColors.blueLight,
+                child: Center(
+                  child: Text(
+                    getSum(
+                            listData: trialBalanceList,
+                            columnName: "creditAfter")
+                        .toString(),
+                    style: AppStyles.textStyle14,
+                  ),
                 ),
               ),
-            ),
           ],
         ),
       ),

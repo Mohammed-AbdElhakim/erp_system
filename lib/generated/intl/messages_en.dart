@@ -85,6 +85,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "search": MessageLookupByLibrary.simpleMessage("Search....."),
         "select_client":
             MessageLookupByLibrary.simpleMessage("Please select a client."),
+        "show": MessageLookupByLibrary.simpleMessage("Show"),
         "show_less": MessageLookupByLibrary.simpleMessage("Show less"),
         "show_more": MessageLookupByLibrary.simpleMessage("Show more"),
         "start_date": MessageLookupByLibrary.simpleMessage("Start Date: "),
