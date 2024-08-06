@@ -188,10 +188,6 @@ class _TrialBalanceBodyState extends State<TrialBalanceBody> {
         return MultiSelect(
           items: items,
           selectionItems: selectionItems,
-          checkboxValue: checkboxValue,
-          dateFrom: dateFrom,
-          dateTo: dateTo,
-          context: context,
         );
       },
     );
@@ -199,6 +195,21 @@ class _TrialBalanceBodyState extends State<TrialBalanceBody> {
       setState(() {
         selectionItems = results;
       });
+      if (dateFrom.isNotEmpty && dateTo.isNotEmpty) {
+        BlocProvider.of<TrialBalanceCubit>(context).getTrialBalance(
+          trialBalanceBody: TrialBalanceBodyModel(
+              datefrom: dateFrom,
+              dateto: dateTo,
+              product: 0,
+              comID: 0,
+              iszero: checkboxValue,
+              currancy: 0,
+              customer: 0,
+              supplier: 0,
+              cost: 0,
+              iscompany: true),
+        );
+      }
     }
   }
 }

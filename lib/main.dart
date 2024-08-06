@@ -16,8 +16,6 @@ import 'features/screenTable/presentation/manager/getAllDropdownList/get_all_dro
 import 'features/screenTable/presentation/manager/getPageDetailsTable/get_page_details_table_cubit.dart';
 import 'features/screenTable/presentation/manager/getPermissions/get_permissions_cubit.dart';
 import 'features/screenTable/presentation/manager/getTable/get_table_cubit.dart';
-import 'features/trialBalance/data/repositories/trial_balance_repo_impl.dart';
-import 'features/trialBalance/presentation/manager/trialBalance/trial_balance_cubit.dart';
 import 'generated/l10n.dart';
 
 void main() async {
@@ -63,11 +61,6 @@ class _ERPSystemState extends State<ERPSystem> {
         BlocProvider(
           create: (context) => GetTableCubit(
             getIt.get<ScreenRepoImpl>(),
-          ),
-        ),
-        BlocProvider(
-          create: (context) => TrialBalanceCubit(
-            getIt.get<TrialBalanceRepoImpl>(),
           ),
         ),
         BlocProvider(

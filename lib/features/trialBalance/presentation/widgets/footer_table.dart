@@ -44,8 +44,7 @@ class FooterTable extends StatelessWidget {
                 color: AppColors.blueLight,
                 child: Center(
                   child: Text(
-                    getSum(listData: trialBalanceList, columnName: "depitBefor")
-                        .toString(),
+                    getSumDepitBefor(),
                     style: AppStyles.textStyle14,
                   ),
                 ),
@@ -57,10 +56,7 @@ class FooterTable extends StatelessWidget {
                 color: AppColors.blueLight,
                 child: Center(
                   child: Text(
-                    getSum(
-                            listData: trialBalanceList,
-                            columnName: "creditBefor")
-                        .toString(),
+                    getSumCreditBefor(),
                     style: AppStyles.textStyle14,
                   ),
                 ),
@@ -72,8 +68,7 @@ class FooterTable extends StatelessWidget {
                 color: AppColors.blueLight,
                 child: Center(
                   child: Text(
-                    getSum(listData: trialBalanceList, columnName: "depitMony")
-                        .toString(),
+                    getSumDepitMony(),
                     style: AppStyles.textStyle14,
                   ),
                 ),
@@ -85,8 +80,7 @@ class FooterTable extends StatelessWidget {
                 color: AppColors.blueLight,
                 child: Center(
                   child: Text(
-                    getSum(listData: trialBalanceList, columnName: "creditMony")
-                        .toString(),
+                    getSumCreditMony(),
                     style: AppStyles.textStyle14,
                   ),
                 ),
@@ -98,8 +92,7 @@ class FooterTable extends StatelessWidget {
                 color: AppColors.blueLight,
                 child: Center(
                   child: Text(
-                    getSum(listData: trialBalanceList, columnName: "depitSum")
-                        .toString(),
+                    getSumDepitSum(),
                     style: AppStyles.textStyle14,
                   ),
                 ),
@@ -111,8 +104,7 @@ class FooterTable extends StatelessWidget {
                 color: AppColors.blueLight,
                 child: Center(
                   child: Text(
-                    getSum(listData: trialBalanceList, columnName: "creditSum")
-                        .toString(),
+                    getSumCreditSum(),
                     style: AppStyles.textStyle14,
                   ),
                 ),
@@ -124,8 +116,7 @@ class FooterTable extends StatelessWidget {
                 color: AppColors.blueLight,
                 child: Center(
                   child: Text(
-                    getSum(listData: trialBalanceList, columnName: "depitAfter")
-                        .toString(),
+                    getSumDepitAfter(),
                     style: AppStyles.textStyle14,
                   ),
                 ),
@@ -137,10 +128,7 @@ class FooterTable extends StatelessWidget {
                 color: AppColors.blueLight,
                 child: Center(
                   child: Text(
-                    getSum(
-                            listData: trialBalanceList,
-                            columnName: "creditAfter")
-                        .toString(),
+                    getSumCreditAfter(),
                     style: AppStyles.textStyle14,
                   ),
                 ),
@@ -151,62 +139,73 @@ class FooterTable extends StatelessWidget {
     );
   }
 
-  getSum(
-      {required List<TrialBalanceModel> listData, required String columnName}) {
-    switch (columnName) {
-      case "depitBefor":
-        double sum = 0;
-        for (var item in listData) {
-          sum = sum + (item.beforCorD == true ? item.beformony! : 0);
-        }
-
-        return double.parse(NumberFormat("#0.00").format(sum));
-      case "creditBefor":
-        double sum = 0;
-        for (var item in listData) {
-          sum = sum + (item.beforCorD == false ? item.beformony! : 0);
-        }
-        return double.parse(NumberFormat("#0.00").format(sum));
-      case "depitMony":
-        double sum = 0;
-        for (var item in listData) {
-          sum = sum + (item.depitmony!);
-        }
-        return double.parse(NumberFormat("#0.00").format(sum));
-      case "creditMony":
-        double sum = 0;
-        for (var item in listData) {
-          sum = sum + (item.creditmony!);
-        }
-        return double.parse(NumberFormat("#0.00").format(sum));
-      case "depitSum":
-        double sum = 0;
-        for (var item in listData) {
-          sum = sum +
-              ((item.depitmony! +
-                  (item.beforCorD == true ? item.beformony! : 0)));
-        }
-        return double.parse(NumberFormat("#0.00").format(sum));
-      case "creditSum":
-        double sum = 0;
-        for (var item in listData) {
-          sum = sum +
-              ((item.depitmony! +
-                  (item.beforCorD == false ? item.beformony! : 0)));
-        }
-        return double.parse(NumberFormat("#0.00").format(sum));
-      case "depitAfter":
-        double sum = 0;
-        for (var item in listData) {
-          sum = sum + (item.creditORDepit == true ? item.mony! : 0);
-        }
-        return double.parse(NumberFormat("#0.00").format(sum));
-      case "creditAfter":
-        double sum = 0;
-        for (var item in listData) {
-          sum = sum + (item.creditORDepit == false ? item.mony! : 0);
-        }
-        return double.parse(NumberFormat("#0.00").format(sum));
+  String getSumDepitBefor() {
+    double sum = 0;
+    for (var item in trialBalanceList) {
+      sum = sum + (item.beforCorD == true ? item.beformony! : 0);
     }
+
+    return NumberFormat("#0.00").format(sum);
+  }
+
+  String getSumCreditBefor() {
+    double sum = 0;
+    for (var item in trialBalanceList) {
+      sum = sum + (item.beforCorD == false ? item.beformony! : 0);
+    }
+    return NumberFormat("#0.00").format(sum);
+  }
+
+  String getSumDepitMony() {
+    double sum = 0;
+    for (var item in trialBalanceList) {
+      sum = sum + (item.depitmony!);
+    }
+
+    return NumberFormat("#0.00").format(sum);
+  }
+
+  String getSumCreditMony() {
+    double sum = 0;
+    for (var item in trialBalanceList) {
+      sum = sum + (item.creditmony!);
+    }
+    return NumberFormat("#0.00").format(sum);
+  }
+
+  String getSumDepitSum() {
+    double sum = 0;
+    for (var item in trialBalanceList) {
+      sum = sum +
+          ((item.depitmony! + (item.beforCorD == true ? item.beformony! : 0)));
+    }
+
+    return NumberFormat("#0.00").format(sum);
+  }
+
+  String getSumCreditSum() {
+    double sum = 0;
+    for (var item in trialBalanceList) {
+      sum = sum +
+          ((item.depitmony! + (item.beforCorD == false ? item.beformony! : 0)));
+    }
+    return NumberFormat("#0.00").format(sum);
+  }
+
+  String getSumDepitAfter() {
+    double sum = 0;
+    for (var item in trialBalanceList) {
+      sum = sum + (item.creditORDepit == true ? item.mony! : 0);
+    }
+
+    return NumberFormat("#0.00").format(sum);
+  }
+
+  String getSumCreditAfter() {
+    double sum = 0;
+    for (var item in trialBalanceList) {
+      sum = sum + (item.creditORDepit == false ? item.mony! : 0);
+    }
+    return NumberFormat("#0.00").format(sum);
   }
 }

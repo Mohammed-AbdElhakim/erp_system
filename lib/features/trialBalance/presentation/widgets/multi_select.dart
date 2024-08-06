@@ -1,25 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../generated/l10n.dart';
-import '../../data/models/trial_balance_body_model.dart';
-import '../manager/trialBalance/trial_balance_cubit.dart';
 
 class MultiSelect extends StatefulWidget {
-  const MultiSelect(
-      {super.key,
-      required this.items,
-      required this.selectionItems,
-      required this.dateFrom,
-      required this.dateTo,
-      required this.checkboxValue,
-      required this.context});
+  const MultiSelect({
+    super.key,
+    required this.items,
+    required this.selectionItems,
+  });
   final List<String> items;
   final List<String> selectionItems;
-  final String dateFrom;
-  final String dateTo;
-  final bool checkboxValue;
-  final BuildContext context;
 
   @override
   State<MultiSelect> createState() => _MultiSelectState();
@@ -48,20 +38,6 @@ class _MultiSelectState extends State<MultiSelect> {
   }
 
   void okButton() {
-    BlocProvider.of<TrialBalanceCubit>(widget.context).getTrialBalance(
-      trialBalanceBody: TrialBalanceBodyModel(
-          datefrom: widget.dateFrom,
-          dateto: widget.dateTo,
-          product: 0,
-          comID: 0,
-          iszero: widget.checkboxValue,
-          currancy: 0,
-          customer: 0,
-          supplier: 0,
-          cost: 0,
-          iscompany: true),
-    );
-
     Navigator.pop(context, selectedItems);
   }
 
