@@ -59,7 +59,8 @@ class _TrialBalanceTableState extends State<TrialBalanceTable> {
                 headerColor: AppColors.blueLight,
                 selectionColor: Colors.blueGrey.shade100,
                 indentColumnWidth: 0,
-                // gridLineColor: Colors.transparent,
+                // gridLineColor: Colors.red,
+                // gridLineStrokeWidth: 1,
               ),
               child: SfDataGrid(
                 gridLinesVisibility: GridLinesVisibility.both,
@@ -138,53 +139,53 @@ class _TrialBalanceTableState extends State<TrialBalanceTable> {
                 )),
           ],
         ),
-        width: 300,
+        width: MediaQuery.of(context).size.width * .5,
       ),
       if (widget.selectionItemsShow.contains(AppStrings.openingBalances))
         GridColumn(
-          width: 120,
+          width: MediaQuery.of(context).size.width * .25,
           columnName: 'depitBefor',
           label: Center(child: Text('مدين', style: AppStyles.textStyle14)),
         ),
       if (widget.selectionItemsShow.contains(AppStrings.openingBalances))
         GridColumn(
-          width: 120,
+          width: MediaQuery.of(context).size.width * .25,
           columnName: 'creditBefor',
           label: Center(child: Text('دائن', style: AppStyles.textStyle14)),
         ),
       if (widget.selectionItemsShow.contains(AppStrings.movement))
         GridColumn(
-          width: 120,
+          width: MediaQuery.of(context).size.width * .25,
           columnName: 'depitMony',
           label: Center(child: Text('مدين', style: AppStyles.textStyle14)),
         ),
       if (widget.selectionItemsShow.contains(AppStrings.movement))
         GridColumn(
-          width: 120,
+          width: MediaQuery.of(context).size.width * .25,
           columnName: 'creditMony',
           label: Center(child: Text('دائن', style: AppStyles.textStyle14)),
         ),
       if (widget.selectionItemsShow.contains(AppStrings.totals))
         GridColumn(
-          width: 120,
+          width: MediaQuery.of(context).size.width * .25,
           columnName: 'depitSum',
           label: Center(child: Text('مدين', style: AppStyles.textStyle14)),
         ),
       if (widget.selectionItemsShow.contains(AppStrings.totals))
         GridColumn(
-          width: 120,
+          width: MediaQuery.of(context).size.width * .25,
           columnName: 'creditSum',
           label: Center(child: Text('دائن', style: AppStyles.textStyle14)),
         ),
       if (widget.selectionItemsShow.contains(AppStrings.closingBalances))
         GridColumn(
-          width: 120,
+          width: MediaQuery.of(context).size.width * .25,
           columnName: 'depitAfter',
           label: Center(child: Text('مدين', style: AppStyles.textStyle14)),
         ),
       if (widget.selectionItemsShow.contains(AppStrings.closingBalances))
         GridColumn(
-          width: 120,
+          width: MediaQuery.of(context).size.width * .25,
           columnName: 'creditAfter',
           label: Center(child: Text('دائن', style: AppStyles.textStyle14)),
         ),

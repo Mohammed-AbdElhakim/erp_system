@@ -25,115 +25,192 @@ class FooterTable extends StatelessWidget {
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         controller: sumScrollController,
-        child: Row(
-          children: [
-            Container(
-              width: 300,
-              height: 45,
-              color: AppColors.blueLight,
-              child: Center(
-                  child: Text(
-                "الإجمالى",
-                style: AppStyles.textStyle14,
-              )),
-            ),
-            if (selectionItemsShow.contains(AppStrings.openingBalances))
-              Container(
-                width: 120,
+        child: Container(
+          decoration: BoxDecoration(
+            color: AppColors.blueLight,
+            // border: Border.all(color: Colors.grey.shade100, width: 1),
+          ),
+          child: Row(
+            children: [
+              SizedBox(
+                width: MediaQuery.of(context).size.width * .5,
                 height: 45,
-                color: AppColors.blueLight,
                 child: Center(
-                  child: Text(
-                    getSumDepitBefor(),
-                    style: AppStyles.textStyle14,
+                    child: Text(
+                  "الإجمالى",
+                  style: AppStyles.textStyle14,
+                )),
+              ),
+              if (selectionItemsShow.contains(AppStrings.openingBalances))
+                Container(
+                  width: MediaQuery.of(context).size.width * .25,
+                  height: 45,
+                  decoration: const BoxDecoration(
+                    border: BorderDirectional(
+                        start: BorderSide(color: Colors.black12, width: 1)),
+                  ),
+                  child: Center(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Text(
+                          getSumDepitBefor(),
+                          style: AppStyles.textStyle14,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            if (selectionItemsShow.contains(AppStrings.openingBalances))
-              Container(
-                width: 120,
-                height: 45,
-                color: AppColors.blueLight,
-                child: Center(
-                  child: Text(
-                    getSumCreditBefor(),
-                    style: AppStyles.textStyle14,
+              if (selectionItemsShow.contains(AppStrings.openingBalances))
+                Container(
+                  width: MediaQuery.of(context).size.width * .25,
+                  height: 45,
+                  decoration: const BoxDecoration(
+                    border: BorderDirectional(
+                        start: BorderSide(color: Colors.black12, width: 1)),
+                  ),
+                  child: Center(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Text(
+                          getSumCreditBefor(),
+                          style: AppStyles.textStyle14,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            if (selectionItemsShow.contains(AppStrings.movement))
-              Container(
-                width: 120,
-                height: 45,
-                color: AppColors.blueLight,
-                child: Center(
-                  child: Text(
-                    getSumDepitMony(),
-                    style: AppStyles.textStyle14,
+              if (selectionItemsShow.contains(AppStrings.movement))
+                Container(
+                  width: MediaQuery.of(context).size.width * .25,
+                  height: 45,
+                  decoration: const BoxDecoration(
+                    border: BorderDirectional(
+                        start: BorderSide(color: Colors.black12, width: 1)),
+                  ),
+                  child: Center(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Text(
+                          getSumDepitMony(),
+                          style: AppStyles.textStyle14,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            if (selectionItemsShow.contains(AppStrings.movement))
-              Container(
-                width: 120,
-                height: 45,
-                color: AppColors.blueLight,
-                child: Center(
-                  child: Text(
-                    getSumCreditMony(),
-                    style: AppStyles.textStyle14,
+              if (selectionItemsShow.contains(AppStrings.movement))
+                Container(
+                  width: MediaQuery.of(context).size.width * .25,
+                  height: 45,
+                  decoration: const BoxDecoration(
+                    border: BorderDirectional(
+                        start: BorderSide(color: Colors.black12, width: 1)),
+                  ),
+                  child: Center(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Text(
+                          getSumCreditMony(),
+                          style: AppStyles.textStyle14,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            if (selectionItemsShow.contains(AppStrings.totals))
-              Container(
-                width: 120,
-                height: 45,
-                color: AppColors.blueLight,
-                child: Center(
-                  child: Text(
-                    getSumDepitSum(),
-                    style: AppStyles.textStyle14,
+              if (selectionItemsShow.contains(AppStrings.totals))
+                Container(
+                  width: MediaQuery.of(context).size.width * .25,
+                  height: 45,
+                  decoration: const BoxDecoration(
+                    border: BorderDirectional(
+                        start: BorderSide(color: Colors.black12, width: 1)),
+                  ),
+                  child: Center(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Text(
+                          getSumDepitSum(),
+                          style: AppStyles.textStyle14,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            if (selectionItemsShow.contains(AppStrings.totals))
-              Container(
-                width: 120,
-                height: 45,
-                color: AppColors.blueLight,
-                child: Center(
-                  child: Text(
-                    getSumCreditSum(),
-                    style: AppStyles.textStyle14,
+              if (selectionItemsShow.contains(AppStrings.totals))
+                Container(
+                  width: MediaQuery.of(context).size.width * .25,
+                  height: 45,
+                  decoration: const BoxDecoration(
+                    border: BorderDirectional(
+                        start: BorderSide(color: Colors.black12, width: 1)),
+                  ),
+                  child: Center(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Text(
+                          getSumCreditSum(),
+                          style: AppStyles.textStyle14,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            if (selectionItemsShow.contains(AppStrings.closingBalances))
-              Container(
-                width: 120,
-                height: 45,
-                color: AppColors.blueLight,
-                child: Center(
-                  child: Text(
-                    getSumDepitAfter(),
-                    style: AppStyles.textStyle14,
+              if (selectionItemsShow.contains(AppStrings.closingBalances))
+                Container(
+                  width: MediaQuery.of(context).size.width * .25,
+                  height: 45,
+                  decoration: const BoxDecoration(
+                    border: BorderDirectional(
+                        start: BorderSide(color: Colors.black12, width: 1)),
+                  ),
+                  child: Center(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Text(
+                          getSumDepitAfter(),
+                          style: AppStyles.textStyle14,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            if (selectionItemsShow.contains(AppStrings.closingBalances))
-              Container(
-                width: 120,
-                height: 45,
-                color: AppColors.blueLight,
-                child: Center(
-                  child: Text(
-                    getSumCreditAfter(),
-                    style: AppStyles.textStyle14,
+              if (selectionItemsShow.contains(AppStrings.closingBalances))
+                Container(
+                  width: MediaQuery.of(context).size.width * .25,
+                  height: 45,
+                  decoration: const BoxDecoration(
+                    border: BorderDirectional(
+                        start: BorderSide(color: Colors.black12, width: 1)),
+                  ),
+                  child: Center(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Text(
+                          getSumCreditAfter(),
+                          style: AppStyles.textStyle14,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-              ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -204,7 +281,12 @@ class FooterTable extends StatelessWidget {
   String getSumCreditAfter() {
     double sum = 0;
     for (var item in trialBalanceList) {
-      sum = sum + (item.creditORDepit == false ? item.mony! : 0);
+      sum = sum +
+          (item.creditORDepit == true
+              ? item.mony! < 0
+                  ? item.mony! * -1
+                  : 0
+              : 0);
     }
     return NumberFormat("#0.00").format(sum);
   }
