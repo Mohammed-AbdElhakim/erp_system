@@ -1,10 +1,10 @@
 class ProfitModel {
   int? acID;
   int? level;
-  int? mony;
+  double? mony;
   bool? creditORDepit;
   String? description;
-  int? acIndex;
+  double? acIndex;
   bool? isLast;
 
   ProfitModel(
