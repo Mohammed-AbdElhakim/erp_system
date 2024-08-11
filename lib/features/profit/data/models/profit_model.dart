@@ -6,6 +6,7 @@ class ProfitModel {
   String? description;
   double? acIndex;
   bool? isLast;
+  int? acParent;
 
   ProfitModel(
       {this.acID,
@@ -14,7 +15,8 @@ class ProfitModel {
       this.creditORDepit,
       this.description,
       this.acIndex,
-      this.isLast});
+      this.isLast,
+      this.acParent});
 
   ProfitModel.fromJson(Map<String, dynamic> json) {
     acID = json['AcID'];
@@ -24,6 +26,7 @@ class ProfitModel {
     description = json['description'];
     acIndex = json['AcIndex'];
     isLast = json['IsLast'];
+    acParent = json['AcParent'];
   }
 
   Map<String, dynamic> toJson() {
@@ -35,6 +38,7 @@ class ProfitModel {
     data['description'] = description;
     data['AcIndex'] = acIndex;
     data['IsLast'] = isLast;
+    data['AcParent'] = acParent;
     return data;
   }
 }

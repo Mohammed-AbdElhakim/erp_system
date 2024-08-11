@@ -21,7 +21,7 @@ class ProfitViewBody extends StatefulWidget {
 class _ProfitViewBodyState extends State<ProfitViewBody> {
   String dateFrom = "", dateTo = "";
   bool checkboxValue = false;
-  // List<String> selectionItems = [AppStrings.closingBalances];
+  TextEditingController controllerLevel = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -42,21 +42,17 @@ class _ProfitViewBodyState extends State<ProfitViewBody> {
                             setState(() {
                               dateFrom = date;
                             });
-                            if (dateTo.isNotEmpty) {
-                              BlocProvider.of<ProfitCubit>(context).getProfit(
-                                profitBodyModel: ProfitBodyModel(
-                                    datefrom: dateFrom,
-                                    dateto: dateTo,
-                                    product: 0,
-                                    comID: 0,
-                                    iszero: checkboxValue,
-                                    currancy: 0,
-                                    customer: 0,
-                                    supplier: 0,
-                                    cost: 0,
-                                    iscompany: true),
-                              );
-                            }
+
+                            BlocProvider.of<ProfitCubit>(context).getProfit(
+                              profitBodyModel: ProfitBodyModel(
+                                  datefrom: dateFrom,
+                                  dateto: dateTo,
+                                  comID: 0,
+                                  iszero: checkboxValue,
+                                  accName: "",
+                                  accName2: "",
+                                  iscompany: true),
+                            );
                           },
                         )
                       ],
@@ -75,21 +71,17 @@ class _ProfitViewBodyState extends State<ProfitViewBody> {
                             setState(() {
                               dateTo = date;
                             });
-                            if (dateFrom.isNotEmpty) {
-                              BlocProvider.of<ProfitCubit>(context).getProfit(
-                                profitBodyModel: ProfitBodyModel(
-                                    datefrom: dateFrom,
-                                    dateto: dateTo,
-                                    product: 0,
-                                    comID: 0,
-                                    iszero: checkboxValue,
-                                    currancy: 0,
-                                    customer: 0,
-                                    supplier: 0,
-                                    cost: 0,
-                                    iscompany: true),
-                              );
-                            }
+
+                            BlocProvider.of<ProfitCubit>(context).getProfit(
+                              profitBodyModel: ProfitBodyModel(
+                                  datefrom: dateFrom,
+                                  dateto: dateTo,
+                                  comID: 0,
+                                  iszero: checkboxValue,
+                                  accName: "",
+                                  accName2: "",
+                                  iscompany: true),
+                            );
                           },
                         )
                       ],
@@ -120,28 +112,16 @@ class _ProfitViewBodyState extends State<ProfitViewBody> {
                                 profitBodyModel: ProfitBodyModel(
                                     datefrom: dateFrom,
                                     dateto: dateTo,
-                                    product: 0,
                                     comID: 0,
                                     iszero: checkboxValue,
-                                    currancy: 0,
-                                    customer: 0,
-                                    supplier: 0,
-                                    cost: 0,
+                                    accName: "",
+                                    accName2: "",
                                     iscompany: true),
                               );
                             });
                       },
                     ),
                   ),
-                  // if (dateTo.isNotEmpty && dateFrom.isNotEmpty)
-                  //   IconButton(
-                  //     onPressed: _showMultiSelectDialog,
-                  //     icon: const Icon(
-                  //       Icons.settings,
-                  //       size: 30,
-                  //       color: Colors.blue,
-                  //     ),
-                  //   ),
                 ],
               ),
             ],
@@ -150,7 +130,19 @@ class _ProfitViewBodyState extends State<ProfitViewBody> {
         BlocBuilder<ProfitCubit, ProfitState>(
           builder: (context, state) {
             if (state is ProfitSuccess) {
-              List<ProfitModel> profitList = state.profitModel;
+              List<ProfitModel> profit = state.profitModel;
+              List<ProfitModel> profitList = [];
+              for (var i in profit) {
+                if (i.creditORDepit != true) {
+                  profitList.add(i);
+                }
+              }
+              for (var i in profit) {
+                if (i.creditORDepit == true) {
+                  profitList.add(i);
+                }
+              }
+
               return ProfitTable(
                 profitList: profitList,
                 // selectionItemsShow: selectionItems,
