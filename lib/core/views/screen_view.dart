@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../features/attendance/presentation/views/attendance_view.dart';
 import '../../features/chart/presentation/views/chart_view.dart';
+import '../../features/generalBalance/presentation/views/general_balance_view.dart';
 import '../../features/profit/presentation/views/profit_view.dart';
 import '../../features/screenTable/presentation/views/screen_table.dart';
 import '../../features/tasks/presentation/views/tasks_view.dart';
@@ -30,6 +31,8 @@ class ScreenView extends StatelessWidget {
         switch (pageData.tableSrc) {
           case "profit":
             return ProfitView(pageData: pageData);
+          case "genralBalance":
+            return GeneralBalanceView(pageData: pageData);
           case "trialBalance":
             return TrialBalance(pageData: pageData);
           default:

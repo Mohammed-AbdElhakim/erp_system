@@ -2,72 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-import '../../data/models/profit_model.dart';
+import '../../data/models/general_balance_model.dart';
 
-class ProfitDataSource extends DataGridSource {
-  final List<ProfitModel> profit;
+class GeneralBalanceDataSource extends DataGridSource {
+  final List<GeneralBalanceModel> generalBalance;
   final String controllerLevel;
-  ProfitDataSource({
-    required this.profit,
+  GeneralBalanceDataSource({
+    required this.generalBalance,
     required this.controllerLevel,
   }) {
-    late List<ProfitModel> profitFinallyList;
+    late List<GeneralBalanceModel> generalBalanceFinallyList;
     if (controllerLevel.isNotEmpty) {
-      profitFinallyList = profit
+      generalBalanceFinallyList = generalBalance
           .where((element) => element.level! <= int.parse(controllerLevel))
           .toList();
     } else {
-      profitFinallyList = profit;
+      generalBalanceFinallyList = generalBalance;
     }
-    for (var dataGridRow in profitFinallyList) {
-      if (dataGridRow.creditORDepit != true) {
-        dataGridRows.add(DataGridRow(cells: [
-          DataGridCell<String>(
-              columnName: 'description', value: getMyString(dataGridRow)),
-          DataGridCell<double>(
-              columnName: 'Mony',
-              value: !(dataGridRow.level.toString() == controllerLevel ||
-                      dataGridRow.isLast == true)
-                  ? dataGridRow.mony
-                  : 0),
-          DataGridCell<double>(
-              columnName: 'Subamount',
-              value: (dataGridRow.level.toString() == controllerLevel ||
-                      dataGridRow.isLast == true)
-                  ? dataGridRow.mony
-                  : 0),
-        ]));
-      }
-    }
-
-    if (getWin(profit) - getLoss(profit) > 0) {
-      dataGridRows.add(DataGridRow(cells: [
-        const DataGridCell<String>(
-            columnName: 'description', value: "صافي الخسارة"),
-        DataGridCell<double>(
-          columnName: 'Mony',
-          value: controllerLevel != "1"
-              ? double.parse(NumberFormat("#0.00")
-                  .format(getWin(profit) - getLoss(profit)))
-              : 0,
-        ),
-        DataGridCell<double>(
-            columnName: 'Subamount',
-            value: controllerLevel == "1"
-                ? double.parse(NumberFormat("#0.00")
-                    .format(getWin(profit) - getLoss(profit)))
-                : 0),
-      ]));
-    }
-    dataGridRows.add(DataGridRow(cells: [
-      const DataGridCell<String>(
-          columnName: 'description', value: "إجمالى ايراد"),
-      const DataGridCell<String>(columnName: 'Mony', value: ""),
-      DataGridCell<String>(
-          columnName: 'Subamount', value: "${getLoss(profit)}"),
-    ]));
-
-    for (var dataGridRow in profitFinallyList) {
+    for (var dataGridRow in generalBalanceFinallyList) {
       if (dataGridRow.creditORDepit == true) {
         dataGridRows.add(DataGridRow(cells: [
           DataGridCell<String>(
@@ -87,7 +39,54 @@ class ProfitDataSource extends DataGridSource {
         ]));
       }
     }
-    if (getWin(profit) - getLoss(profit) < 0) {
+
+    if (getWin(generalBalance) - getLoss(generalBalance) < 0) {
+      dataGridRows.add(DataGridRow(cells: [
+        const DataGridCell<String>(
+            columnName: 'description', value: "صافي الخسارة"),
+        DataGridCell<double>(
+            columnName: 'Mony',
+            value: controllerLevel != "1"
+                ? double.parse(NumberFormat("#0.00").format(
+                    (getWin(generalBalance) - getLoss(generalBalance)) * -1))
+                : 0),
+        DataGridCell<double>(
+            columnName: 'Subamount',
+            value: controllerLevel == "1"
+                ? double.parse(NumberFormat("#0.00").format(
+                    (getWin(generalBalance) - getLoss(generalBalance)) * -1))
+                : 0),
+      ]));
+    }
+    dataGridRows.add(DataGridRow(cells: [
+      const DataGridCell<String>(
+          columnName: 'description', value: "إجمالى الأصول"),
+      const DataGridCell<String>(columnName: 'Mony', value: ""),
+      DataGridCell<String>(
+          columnName: 'Subamount', value: "${getWin(generalBalance)}"),
+    ]));
+
+    for (var dataGridRow in generalBalanceFinallyList) {
+      if (dataGridRow.creditORDepit != true) {
+        dataGridRows.add(DataGridRow(cells: [
+          DataGridCell<String>(
+              columnName: 'description', value: getMyString(dataGridRow)),
+          DataGridCell<double>(
+              columnName: 'Mony',
+              value: !(dataGridRow.level.toString() == controllerLevel ||
+                      dataGridRow.isLast == true)
+                  ? dataGridRow.mony
+                  : 0),
+          DataGridCell<double>(
+              columnName: 'Subamount',
+              value: (dataGridRow.level.toString() == controllerLevel ||
+                      dataGridRow.isLast == true)
+                  ? dataGridRow.mony
+                  : 0),
+        ]));
+      }
+    }
+    if (getWin(generalBalance) - getLoss(generalBalance) > 0) {
       dataGridRows.add(DataGridRow(cells: [
         const DataGridCell<String>(
             columnName: 'description', value: "صافي الربح"),
@@ -95,22 +94,22 @@ class ProfitDataSource extends DataGridSource {
             columnName: 'Mony',
             value: controllerLevel != "1"
                 ? double.parse(NumberFormat("#0.00")
-                    .format((getWin(profit) - getLoss(profit)) * -1))
+                    .format(getWin(generalBalance) - getLoss(generalBalance)))
                 : 0),
         DataGridCell<double>(
             columnName: 'Subamount',
             value: controllerLevel == "1"
                 ? double.parse(NumberFormat("#0.00")
-                    .format((getWin(profit) - getLoss(profit)) * -1))
+                    .format(getWin(generalBalance) - getLoss(generalBalance)))
                 : 0),
       ]));
     }
     dataGridRows.add(DataGridRow(cells: [
       const DataGridCell<String>(
-          columnName: 'description', value: "إجمالى المصروفات"),
+          columnName: 'description', value: "إجمالى الخصوم"),
       const DataGridCell<String>(columnName: 'Mony', value: ""),
       DataGridCell<String>(
-          columnName: 'Subamount', value: "${getLoss(profit)}"),
+          columnName: 'Subamount', value: "${getWin(generalBalance)}"),
     ]));
   }
 
@@ -125,8 +124,8 @@ class ProfitDataSource extends DataGridSource {
         cells: row.getCells().map<Widget>((dataGridCell) {
       return dataGridCell.columnName == "description"
           ? Container(
-              color: dataGridCell.value == "إجمالى ايراد" ||
-                      dataGridCell.value == "إجمالى المصروفات"
+              color: dataGridCell.value == "إجمالى الأصول" ||
+                      dataGridCell.value == "إجمالى الخصوم"
                   ? Colors.lightBlueAccent
                   : null,
               alignment: AlignmentDirectional.centerStart,
@@ -139,7 +138,7 @@ class ProfitDataSource extends DataGridSource {
             )
           : Container(
               color: dataGridCell.value == "" ||
-                      dataGridCell.value == "${getLoss(profit)}"
+                      dataGridCell.value == "${getWin(generalBalance)}"
                   ? Colors.lightBlueAccent
                   : null,
               child: Center(
@@ -157,7 +156,7 @@ class ProfitDataSource extends DataGridSource {
     }).toList());
   }
 
-  getMyString(ProfitModel dataGridRow) {
+  getMyString(GeneralBalanceModel dataGridRow) {
     String levelSpace;
     int numberOfSpaces;
     for (int i = 1;; i++) {
@@ -169,7 +168,7 @@ class ProfitDataSource extends DataGridSource {
     }
   }
 
-  getWin(List<ProfitModel> profit) {
+  getWin(List<GeneralBalanceModel> profit) {
     double sum = 0;
     for (var i in profit) {
       if (i.acParent == null && i.creditORDepit == true) {
@@ -180,7 +179,7 @@ class ProfitDataSource extends DataGridSource {
     return sum;
   }
 
-  getLoss(List<ProfitModel> profit) {
+  getLoss(List<GeneralBalanceModel> profit) {
     double sum = 0;
     for (var i in profit) {
       if (i.acParent == null && i.creditORDepit != true) {
