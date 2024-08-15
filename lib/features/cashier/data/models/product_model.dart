@@ -27,7 +27,7 @@ class ProductModel {
 class ProductItem {
   int? proID;
   String? proName;
-  int? proPrice;
+  double? proPrice;
   double? proCost;
   String? description;
   int? modality;
@@ -36,11 +36,11 @@ class ProductItem {
   int? secoundUnit;
   bool? isSize;
   bool? isDimantion;
-  int? glassSecoretPrice;
-  int? glassRawPrice;
-  int? glassRentPrice;
-  int? secPrice;
-  int? unitsInMasterUnit;
+  double? glassSecoretPrice;
+  double? glassRawPrice;
+  double? glassRentPrice;
+  double? secPrice;
+  double? unitsInMasterUnit;
   bool? isColor;
   String? barCode;
   int? proParent;
@@ -49,10 +49,10 @@ class ProductItem {
   String? purchCode;
   int? colorID;
   int? sizeID;
-  int? uQuntity;
+  double? uQuntity;
   String? delvarydate;
   String? startDate;
-  int? profitMargin;
+  double? profitMargin;
 
   ProductItem(
       {this.proID,
