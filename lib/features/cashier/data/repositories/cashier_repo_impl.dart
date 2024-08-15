@@ -49,7 +49,7 @@ class CashierRepoImpl implements CashierRepo {
   }
 
   @override
-  Future<Either<Failure, PRoCompanyModel>> getProCompany() async {
+  Future<Either<Failure, ProCompanyModel>> getProCompany() async {
     try {
       String companyKey =
           await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
@@ -65,7 +65,7 @@ class CashierRepoImpl implements CashierRepo {
           "CompanyKey": companyKey,
         },
       );
-      PRoCompanyModel proCompanyModel = PRoCompanyModel.fromJson(data);
+      ProCompanyModel proCompanyModel = ProCompanyModel.fromJson(data);
       return right(proCompanyModel);
     } catch (e) {
       if (e is DioException) {

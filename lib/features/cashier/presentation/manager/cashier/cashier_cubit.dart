@@ -1,9 +1,9 @@
-import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:erp_system/features/cashier/data/models/modality_model.dart';
 import 'package:erp_system/features/cashier/data/models/pro_company_model.dart';
 import 'package:erp_system/features/cashier/data/models/product_model.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/errors/failures.dart';
 import '../../../data/repositories/cashier_repo.dart';
@@ -19,7 +19,7 @@ class CashierCubit extends Cubit<CashierState> {
   }
 
   void getProCompany() async {
-    Either<Failure, PRoCompanyModel> proCompanyModel =
+    Either<Failure, ProCompanyModel> proCompanyModel =
         await cashierRepo.getProCompany();
 
     proCompanyModel.fold((failure) {
@@ -32,7 +32,7 @@ class CashierCubit extends Cubit<CashierState> {
   }
 
   void getModality({
-    required List<PRoCompanyItem> proCompanyList,
+    required List<ProCompanyItem> proCompanyList,
   }) async {
     Either<Failure, ModalityModel> modalityModel =
         await cashierRepo.getModality();
@@ -48,7 +48,7 @@ class CashierCubit extends Cubit<CashierState> {
   }
 
   void getProduct({
-    required List<PRoCompanyItem> proCompanyList,
+    required List<ProCompanyItem> proCompanyList,
     required List<ModalityItem> modalityList,
   }) async {
     Either<Failure, ProductModel> productModel = await cashierRepo.getProduct();

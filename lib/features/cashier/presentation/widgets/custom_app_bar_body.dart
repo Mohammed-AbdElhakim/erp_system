@@ -1,3 +1,4 @@
+import 'package:erp_system/core/utils/methods.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/utils/app_colors.dart';
@@ -31,7 +32,7 @@ class CustomAppBarBody extends StatelessWidget implements PreferredSizeWidget {
       actionsIconTheme: IconThemeData(color: AppColors.white),
       backgroundColor: AppColors.blueDark,
       title: Text(
-        title,
+        isOrientationPortrait(context) ? title : "",
         textAlign: TextAlign.center,
         style: AppStyles.textStyle20,
       ),

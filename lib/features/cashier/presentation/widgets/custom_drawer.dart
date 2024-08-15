@@ -11,7 +11,7 @@ class CustomDrawer extends StatefulWidget {
       required this.proCompanyList,
       required this.modalityList,
       required this.onTap});
-  final List<PRoCompanyItem> proCompanyList;
+  final List<ProCompanyItem> proCompanyList;
   final List<ModalityItem> modalityList;
   final void Function(int modalityId) onTap;
 
@@ -28,7 +28,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
         shrinkWrap: true,
         // physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) {
-          PRoCompanyItem proCompanyItem = widget.proCompanyList[index];
+          ProCompanyItem proCompanyItem = widget.proCompanyList[index];
           List<ModalityItem> modalityList = [];
           for (var i in widget.modalityList) {
             if (i.companyID == proCompanyItem.companyID) {

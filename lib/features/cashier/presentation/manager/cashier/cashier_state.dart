@@ -17,7 +17,7 @@ final class CashierFailure extends CashierState {
 }
 
 final class CashierSuccess extends CashierState {
-  final List<PRoCompanyItem> pRoCompanyList;
+  final List<ProCompanyItem> pRoCompanyList;
   final List<ModalityItem> modalityList;
   final List<ProductItem> productList;
 

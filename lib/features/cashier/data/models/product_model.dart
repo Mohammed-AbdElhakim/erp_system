@@ -8,7 +8,7 @@ class ProductModel {
     if (json['dynamicList'] != null) {
       productList = <ProductItem>[];
       json['dynamicList'].forEach((v) {
-        productList!.add(new ProductItem.fromJson(v));
+        productList!.add(ProductItem.fromJson(v));
       });
     }
     numberofrecords = json['numberofrecords'];

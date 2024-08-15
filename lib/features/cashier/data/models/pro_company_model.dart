@@ -1,14 +1,14 @@
-class PRoCompanyModel {
-  List<PRoCompanyItem>? proCompanyList;
+class ProCompanyModel {
+  List<ProCompanyItem>? proCompanyList;
   int? numberofrecords;
 
-  PRoCompanyModel({this.proCompanyList, this.numberofrecords});
+  ProCompanyModel({this.proCompanyList, this.numberofrecords});
 
-  PRoCompanyModel.fromJson(Map<String, dynamic> json) {
+  ProCompanyModel.fromJson(Map<String, dynamic> json) {
     if (json['dynamicList'] != null) {
-      proCompanyList = <PRoCompanyItem>[];
+      proCompanyList = <ProCompanyItem>[];
       json['dynamicList'].forEach((v) {
-        proCompanyList!.add(PRoCompanyItem.fromJson(v));
+        proCompanyList!.add(ProCompanyItem.fromJson(v));
       });
     }
     numberofrecords = json['numberofrecords'];
@@ -24,7 +24,7 @@ class PRoCompanyModel {
   }
 }
 
-class PRoCompanyItem {
+class ProCompanyItem {
   int? companyID;
   String? companyName;
   int? comID;
@@ -37,7 +37,7 @@ class PRoCompanyItem {
   bool? iSContractSale;
   bool? iSPrimary;
 
-  PRoCompanyItem(
+  ProCompanyItem(
       {this.companyID,
       this.companyName,
       this.comID,
@@ -50,7 +50,7 @@ class PRoCompanyItem {
       this.iSContractSale,
       this.iSPrimary});
 
-  PRoCompanyItem.fromJson(Map<String, dynamic> json) {
+  ProCompanyItem.fromJson(Map<String, dynamic> json) {
     companyID = json['CompanyID'];
     companyName = json['CompanyName'];
     comID = json['ComID'];
