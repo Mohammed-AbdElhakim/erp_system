@@ -61,17 +61,21 @@ class _CashierViewState extends State<CashierView> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: List.generate(3, (index) {
                   return AnimatedContainer(
-                    duration: Duration(milliseconds: 300),
-                    margin: EdgeInsets.symmetric(horizontal: 5),
-                    width: _currentIndex == index ? 12 : 8,
-                    height: _currentIndex == index ? 12 : 8,
+                    duration: const Duration(milliseconds: 300),
+                    margin: const EdgeInsets.symmetric(horizontal: 4),
+                    width: _currentIndex == index ? 10 : 6,
+                    height: _currentIndex == index ? 10 : 6,
                     decoration: BoxDecoration(
-                      color: _currentIndex == index ? Colors.blue : Colors.grey,
+                      color:
+                          _currentIndex == index ? Colors.white : Colors.grey,
                       shape: BoxShape.circle,
                     ),
                   );
                 }),
-              )
+              ),
+              const SizedBox(
+                width: 15,
+              ),
             ],
           ),
           body: BlocBuilder<CashierCubit, CashierState>(
