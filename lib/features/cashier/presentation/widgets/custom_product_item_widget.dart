@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:erp_system/core/utils/app_colors.dart';
 import 'package:erp_system/core/utils/app_styles.dart';
 import 'package:flutter/material.dart';
@@ -12,60 +11,37 @@ class CustomProductItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      child: Stack(
-        alignment: AlignmentDirectional.topEnd,
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: AppColors.blueGreyLight,
-              borderRadius: BorderRadius.circular(20),
+      child: Container(
+        width: 100,
+        height: 100,
+        decoration: BoxDecoration(
+            color: AppColors.blueGreyLight,
+            borderRadius: BorderRadius.circular(12)),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              productItem.proPrice == null
+                  ? "Free"
+                  : "${productItem.proPrice} E.G",
+              style: AppStyles.textStyle12.copyWith(color: AppColors.blueLight),
             ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: Container(
-                    margin: const EdgeInsets.only(top: 10, right: 10, left: 10),
-                    child: Image.asset("assets/images/logo.png"),
-                  ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Center(
-                      child: AutoSizeText(
-                        productItem.proName!,
-                        textAlign: TextAlign.center,
-                        maxFontSize: 12,
-                        minFontSize: 8,
-                        style: TextStyle(color: AppColors.blueGreyDark),
-                      ),
-                    ),
-                  ),
-                )
-              ],
+            Image.asset(
+              "assets/images/logo.png",
+              height: 55,
             ),
-          ),
-          Container(
-            width: 80,
-            height: 30,
-            decoration: const BoxDecoration(
-                color: Colors.black26,
-                borderRadius: BorderRadiusDirectional.only(
-                    bottomStart: Radius.circular(20),
-                    topEnd: Radius.circular(20))),
-            child: Center(
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 5),
               child: Text(
-                productItem.proPrice == null
-                    ? "Free"
-                    : "${productItem.proPrice} E.G",
-                style:
-                    AppStyles.textStyle14.copyWith(color: AppColors.blueLight),
+                productItem.proName!,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: AppStyles.textStyle12
+                    .copyWith(color: AppColors.blueGreyDark),
               ),
             ),
-          )
-        ],
+          ],
+        ),
       ),
       onTap: () {
         // GoRouter.of(context).push(AppRouter.kScreenView, extra: widget.page);

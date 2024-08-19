@@ -52,9 +52,9 @@ class _CashierViewState extends State<CashierView> {
                   title: lang == AppStrings.enLangKey
                       ? widget.pageData.nameEn
                       : widget.pageData.nameAr,
-                  modalityList: state.modalityList,
-                  proCompanyList: state.pRoCompanyList,
-                  productList: state.productList,
+                  allModalityList: state.modalityList,
+                  allProCompanyList: state.pRoCompanyList,
+                  allProductList: state.productList,
                 );
               } else if (state is CashierFailure) {
                 return CustomErrorMassage(errorMassage: state.errorMassage);

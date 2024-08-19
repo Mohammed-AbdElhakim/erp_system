@@ -1,156 +1,222 @@
 import 'package:erp_system/features/cashier/data/models/product_model.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../core/utils/methods.dart';
-import '../../../../core/widgets/custom_text_form_field_search.dart';
-import '../../../../generated/l10n.dart';
+import '../../../../core/utils/app_colors.dart';
 import '../../data/models/modality_model.dart';
 import '../../data/models/pro_company_model.dart';
-import 'custom_app_bar_body.dart';
-import 'custom_drawer.dart';
 import 'custom_product_item_widget.dart';
+import 'custom_search.dart';
 
 class CashierViewBody extends StatefulWidget {
   const CashierViewBody(
       {super.key,
       required this.title,
-      required this.proCompanyList,
-      required this.modalityList,
-      required this.productList});
+      required this.allProCompanyList,
+      required this.allModalityList,
+      required this.allProductList});
   final String title;
-  final List<ProCompanyItem> proCompanyList;
-  final List<ModalityItem> modalityList;
-  final List<ProductItem> productList;
+  final List<ProCompanyItem> allProCompanyList;
+  final List<ModalityItem> allModalityList;
+  final List<ProductItem> allProductList;
 
   @override
   State<CashierViewBody> createState() => _CashierViewBodyState();
 }
 
 class _CashierViewBodyState extends State<CashierViewBody> {
-  int modalityIdChoose = -1;
-  List<ProductItem> myProductList = [];
-  List<ProductItem> myProductListSearch = [];
-  TextEditingController controllerSearch = TextEditingController();
+  late int companyId;
+  List<ModalityItem> modalityList = [];
+  List<ProductItem> productList = [];
+  late int modalityId;
   @override
-  void dispose() {
-    controllerSearch.dispose();
-    super.dispose();
+  void initState() {
+    companyId = widget.allProCompanyList[0].companyID!;
+    for (var i in widget.allModalityList) {
+      if (i.companyID == companyId) {
+        modalityList.add(i);
+      }
+    }
+    modalityId = modalityList[0].modalityID!;
+    for (var i in widget.allProductList) {
+      if (i.modality == modalityId) {
+        productList.add(i);
+      }
+    }
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBarBody(title: widget.title),
-      drawer: CustomDrawer(
-        proCompanyList: widget.proCompanyList,
-        modalityList: widget.modalityList,
-        onTap: (modalityId) {
-          modalityIdChoose = modalityId;
-          myProductList.clear();
-          controllerSearch.text = "";
-          for (var i in widget.productList) {
-            if (i.modality == modalityId) {
-              myProductList.add(i);
-            }
-          }
-          setState(() {});
-        },
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding:
-                const EdgeInsets.only(left: 16, right: 16, bottom: 16, top: 16),
-            child: CustomTextFormFieldSearch(
-              hintText: S.of(context).search,
-              controller: controllerSearch,
-              onChanged: (value) {
-                myProductListSearch.clear();
-
-                for (var i in widget.productList) {
-                  if (i.proName != null) {
-                    if (i.proName!.contains(value)) {
-                      myProductListSearch.add(i);
-                    }
-                  }
-                }
-
-                setState(() {});
-              },
+    return Column(
+      children: [
+        Expanded(
+            child: Row(
+          children: [
+            Expanded(
+                child: Container(
+              decoration: const BoxDecoration(
+                  border: BorderDirectional(
+                      end: BorderSide(color: Colors.black26))),
+              padding: const EdgeInsets.all(5),
+              child: Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: ListView.separated(
+                  itemCount: modalityList.length,
+                  itemBuilder: (context, index) {
+                    return InkWell(
+                      onTap: () {
+                        productList.clear();
+                        setState(() {
+                          modalityId = modalityList[index].modalityID!;
+                          for (var i in widget.allProductList) {
+                            if (i.modality == modalityId) {
+                              productList.add(i);
+                            }
+                          }
+                        });
+                      },
+                      child: Container(
+                        width: 100,
+                        height: 35,
+                        padding: const EdgeInsets.all(5),
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            color: modalityId == modalityList[index].modalityID
+                                ? AppColors.blueGreyDark
+                                : Colors.white,
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(color: Colors.black)),
+                        child: Text(
+                          modalityList[index].modalityName ?? "",
+                          textAlign: TextAlign.center,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: modalityId == modalityList[index].modalityID
+                                ? AppColors.white
+                                : Colors.black,
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(height: 5),
+                ),
+              ),
+            )),
+            Expanded(
+                flex: 2,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          top: 5, right: 16, left: 16, bottom: 10),
+                      child: InkWell(
+                        onTap: () {
+                          showSearch(
+                            context: context,
+                            delegate: CustomSearch(
+                              productList: widget.allProductList,
+                            ),
+                          );
+                        },
+                        child: CircleAvatar(
+                            backgroundColor: AppColors.blueGreyLight,
+                            child: const Icon(Icons.search)),
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(5),
+                        child: Center(
+                          child: SingleChildScrollView(
+                            child: Wrap(
+                              runSpacing: 5.0,
+                              spacing: 5,
+                              children: productList
+                                  .map(
+                                    (e) => CustomProductItemWidget(
+                                      productItem: e,
+                                    ),
+                                  )
+                                  .toList(),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                )),
+          ],
+        )),
+        Container(
+          height: 86,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+              color: Colors.grey.shade300,
+              border: const Border(top: BorderSide(color: Colors.black))),
+          padding: const EdgeInsets.all(5),
+          child: Center(
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Wrap(
+                runSpacing: 5.0,
+                spacing: 5,
+                direction: Axis.vertical,
+                children: widget.allProCompanyList
+                    .map(
+                      (item) => InkWell(
+                        onTap: () {
+                          modalityList.clear();
+                          productList.clear();
+                          setState(() {
+                            companyId = item.companyID!;
+                            for (var i in widget.allModalityList) {
+                              if (i.companyID == companyId) {
+                                modalityList.add(i);
+                              }
+                            }
+                            modalityId = modalityList[0].modalityID!;
+                            for (var i in widget.allProductList) {
+                              if (i.modality == modalityId) {
+                                productList.add(i);
+                              }
+                            }
+                          });
+                        },
+                        child: Container(
+                          width: 100,
+                          height: 35,
+                          padding: const EdgeInsets.all(5),
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                              color: companyId == item.companyID
+                                  ? AppColors.blueGreyDark
+                                  : Colors.white,
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(color: Colors.black)),
+                          child: Text(
+                            item.companyName ?? "",
+                            textAlign: TextAlign.center,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: companyId == item.companyID
+                                  ? AppColors.white
+                                  : Colors.black,
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                    .toList(),
+              ),
             ),
           ),
-          if (modalityIdChoose == -1 && controllerSearch.text.isEmpty)
-            const Center(
-              child: Text("برجاء اختيار القسم"),
-            ),
-          if (controllerSearch.text.isNotEmpty)
-            Expanded(
-              child: GridView.builder(
-                shrinkWrap: true,
-                itemCount: myProductListSearch.length,
-                // physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: isOrientationPortrait(context) ? 2 : 5,
-                    mainAxisSpacing: 35,
-                    crossAxisSpacing: 35,
-                    childAspectRatio: 1.2
-                    // mainAxisExtent: MediaQuery.of(context).size.width * .25,
-                    // childAspectRatio: MediaQuery.of(context).size.width * .5,
-                    ),
-                padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
-                itemBuilder: (BuildContext context, int index) {
-                  return CustomProductItemWidget(
-                    productItem: myProductListSearch[index],
-                  );
-                },
-              ),
-            ),
-          // if (myProductList.isEmpty && modalityIdChoose != -1 ||
-          //     controllerSearch.text.isNotEmpty)
-          //   const Center(
-          //     child: Text("لا يوجد منتاجات"),
-          //   ),
-          if (controllerSearch.text.isEmpty)
-            Expanded(
-              child: GridView.builder(
-                shrinkWrap: true,
-                itemCount: myProductList.length,
-                // physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: isOrientationPortrait(context) ? 2 : 5,
-                    mainAxisSpacing: 35,
-                    crossAxisSpacing: 35,
-                    childAspectRatio: 1.2
-                    // mainAxisExtent: MediaQuery.of(context).size.width * .25,
-                    // childAspectRatio: MediaQuery.of(context).size.width * .5,
-                    ),
-                padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
-                itemBuilder: (BuildContext context, int index) {
-                  return CustomProductItemWidget(
-                    productItem: myProductList[index],
-                  );
-                },
-              ),
-            ),
-        ],
-      ),
-      /* body: modalityIdChoose == -1
-          ? const Center(
-              child: Text("برجاء اختيار القسم"),
-            )
-          : myProductList.isEmpty
-              ? const Center(
-                  child: Text("لا يوجد منتاجات"),
-                )
-              : ListView.separated(
-                  itemBuilder: (context, index) {
-                    return Text(myProductList[index].proName!);
-                  },
-                  separatorBuilder: (context, index) {
-                    return const SizedBox(height: 15);
-                  },
-                  itemCount: myProductList.length,
-                ),*/
+        )
+      ],
     );
   }
 }
