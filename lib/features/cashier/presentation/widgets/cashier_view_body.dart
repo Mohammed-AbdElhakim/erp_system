@@ -1328,27 +1328,27 @@ class _CashierViewBodyState extends State<CashierViewBody> {
     );
   }
 
-  void _nextPage() {
-    if (CashierViewBody.userId != -1) {
-      _pageController.nextPage(
-          duration: const Duration(milliseconds: 300), curve: Curves.ease);
-    } else {
-      CustomAlertDialog.alertWithButton(
-          context: context,
-          type: AlertType.warning,
-          title: S.of(context).warning,
-          textButton: S.of(context).ok,
-          desc: S.of(context).select_client,
-          onPressed: () {
-            Navigator.of(context).pop();
-          });
-    }
-  }
-
-  void _previousPage() {
-    _pageController.previousPage(
-        duration: const Duration(milliseconds: 300), curve: Curves.ease);
-  }
+  // void _nextPage() {
+  //   if (CashierViewBody.userId != -1) {
+  //     _pageController.nextPage(
+  //         duration: const Duration(milliseconds: 300), curve: Curves.ease);
+  //   } else {
+  //     CustomAlertDialog.alertWithButton(
+  //         context: context,
+  //         type: AlertType.warning,
+  //         title: S.of(context).warning,
+  //         textButton: S.of(context).ok,
+  //         desc: S.of(context).select_client,
+  //         onPressed: () {
+  //           Navigator.of(context).pop();
+  //         });
+  //   }
+  // }
+  //
+  // void _previousPage() {
+  //   _pageController.previousPage(
+  //       duration: const Duration(milliseconds: 300), curve: Curves.ease);
+  // }
 
   getWidgetSales({
     required String title,
