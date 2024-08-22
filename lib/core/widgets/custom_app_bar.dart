@@ -37,18 +37,31 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       title: isPortrait
-          ? Row(
-              mainAxisAlignment: isTitleInPortrait ?? false
-                  ? MainAxisAlignment.spaceBetween
-                  : MainAxisAlignment.center,
-              children: [
-                if (isTitleInPortrait ?? false)
-                  Text(
-                    title,
-                    textAlign: TextAlign.center,
-                    style: style ?? AppStyles.textStyle20,
-                  ),
-                Column(
+          ? isTitleInPortrait ?? false
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      title,
+                      textAlign: TextAlign.center,
+                      style: style ?? AppStyles.textStyle20,
+                    ),
+                    Column(
+                      children: [
+                        Image.asset(
+                          AppAssets.logo,
+                          height: 25,
+                        ),
+                        Text(
+                          S.of(context).dynamic_pro,
+                          textAlign: TextAlign.center,
+                          style: AppStyles.textStyle14,
+                        ),
+                      ],
+                    )
+                  ],
+                )
+              : Column(
                   children: [
                     Image.asset(
                       AppAssets.logo,
@@ -60,9 +73,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                       style: AppStyles.textStyle14,
                     ),
                   ],
-                ),
-              ],
-            )
+                )
           : Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
