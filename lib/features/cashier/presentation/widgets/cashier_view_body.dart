@@ -39,17 +39,17 @@ import 'custom_search.dart';
 import 'sales_table_add_edit_.dart';
 
 class CashierViewBody extends StatefulWidget {
-  const CashierViewBody(
-      {super.key,
-      required this.allProCompanyList,
-      required this.allModalityList,
-      required this.allProductList,
-      required this.listSetup,
-      required this.pageData,
-      required this.tapData,
-      required this.listColumn,
-      required this.listHeader,
-      required this.onPageChange});
+  const CashierViewBody({
+    super.key,
+    required this.allProCompanyList,
+    required this.allModalityList,
+    required this.allProductList,
+    required this.listSetup,
+    required this.pageData,
+    required this.tapData,
+    required this.listColumn,
+    required this.listHeader,
+  });
   final Pages pageData;
   final List<ProCompanyItem> allProCompanyList;
   final List<ModalityItem> allModalityList;
@@ -58,7 +58,6 @@ class CashierViewBody extends StatefulWidget {
   final ListTaps? tapData;
   final List<ItemListSetupModel> listColumn;
   final List<String> listHeader;
-  final void Function(int currentPage) onPageChange;
   static int userId = -1;
   static List<dynamic> listProduct = [];
   static List<dynamic> listCustomerAccount = [];
@@ -151,7 +150,6 @@ class _CashierViewBodyState extends State<CashierViewBody> {
               setState(() {
                 _currentPage = index;
               });
-              widget.onPageChange(_currentPage);
               if (_currentPage != 0) {
                 if (CashierViewBody.userId == -1) {
                   CustomAlertDialog.alertWithButton(
@@ -1253,58 +1251,80 @@ class _CashierViewBodyState extends State<CashierViewBody> {
   }
 
   navigationPageView() {
-    return SizedBox(
-      height: 0,
-      child: Row(
-        children: [
-          Padding(
-            padding:
-                const EdgeInsetsDirectional.only(bottom: 8, top: 8, start: 16),
-            child: InkWell(
-              onTap: _currentPage != 0 ? _previousPage : null,
-              child: CircleAvatar(
-                backgroundColor: _currentPage != 0
-                    ? AppColors.blueGreyLight
-                    : Colors.transparent,
-                child: Icon(
-                  Icons.arrow_back,
-                  color: _currentPage != 0 ? null : Colors.transparent,
-                ),
-              ),
-            ),
-          ),
-          const Spacer(),
-          ...List.generate(3, (index) {
-            return AnimatedContainer(
+    // return SizedBox(
+    //   height: 0,
+    //   child: Row(
+    //     children: [
+    //       Padding(
+    //         padding:
+    //             const EdgeInsetsDirectional.only(bottom: 8, top: 8, start: 16),
+    //         child: InkWell(
+    //           onTap: _currentPage != 0 ? _previousPage : null,
+    //           child: CircleAvatar(
+    //             backgroundColor: _currentPage != 0
+    //                 ? AppColors.blueGreyLight
+    //                 : Colors.transparent,
+    //             child: Icon(
+    //               Icons.arrow_back,
+    //               color: _currentPage != 0 ? null : Colors.transparent,
+    //             ),
+    //           ),
+    //         ),
+    //       ),
+    //       const Spacer(),
+    //       ...List.generate(3, (index) {
+    //         return AnimatedContainer(
+    //           duration: const Duration(milliseconds: 300),
+    //           margin: const EdgeInsets.symmetric(horizontal: 4),
+    //           width: _currentPage == index ? 10 : 6,
+    //           height: _currentPage == index ? 10 : 6,
+    //           decoration: BoxDecoration(
+    //             color: _currentPage == index ? Colors.blue : Colors.grey,
+    //             shape: BoxShape.circle,
+    //           ),
+    //         );
+    //       }),
+    //       const Spacer(),
+    //       Padding(
+    //         padding:
+    //             const EdgeInsetsDirectional.only(bottom: 8, top: 8, end: 16),
+    //         child: InkWell(
+    //           onTap: _nextPage,
+    //           child: CircleAvatar(
+    //             backgroundColor: _currentPage != 2
+    //                 ? AppColors.blueGreyLight
+    //                 : Colors.transparent,
+    //             child: Icon(
+    //               Icons.arrow_forward,
+    //               color: _currentPage != 2 ? null : Colors.transparent,
+    //             ),
+    //           ),
+    //         ),
+    //       )
+    //     ],
+    //   ),
+    // );
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        ...List.generate(3, (index) {
+          return InkWell(
+            onTap: () {
+              _pageController.jumpToPage(index);
+            },
+            child: AnimatedContainer(
               duration: const Duration(milliseconds: 300),
-              margin: const EdgeInsets.symmetric(horizontal: 4),
-              width: _currentPage == index ? 10 : 6,
-              height: _currentPage == index ? 10 : 6,
+              margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 5),
+              width: _currentPage == index ? 13 : 7,
+              height: _currentPage == index ? 13 : 7,
               decoration: BoxDecoration(
                 color: _currentPage == index ? Colors.blue : Colors.grey,
                 shape: BoxShape.circle,
               ),
-            );
-          }),
-          const Spacer(),
-          Padding(
-            padding:
-                const EdgeInsetsDirectional.only(bottom: 8, top: 8, end: 16),
-            child: InkWell(
-              onTap: _nextPage,
-              child: CircleAvatar(
-                backgroundColor: _currentPage != 2
-                    ? AppColors.blueGreyLight
-                    : Colors.transparent,
-                child: Icon(
-                  Icons.arrow_forward,
-                  color: _currentPage != 2 ? null : Colors.transparent,
-                ),
-              ),
             ),
-          )
-        ],
-      ),
+          );
+        }),
+      ],
     );
   }
 

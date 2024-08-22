@@ -35,7 +35,6 @@ class CashierView extends StatefulWidget {
 
 class _CashierViewState extends State<CashierView> {
   String? lang;
-  int _currentPage = 0;
   @override
   void didChangeDependencies() {
     lang = Localizations.localeOf(context).toString();
@@ -54,22 +53,6 @@ class _CashierViewState extends State<CashierView> {
             title: lang == AppStrings.enLangKey
                 ? widget.pageData.nameEn
                 : widget.pageData.nameAr,
-            actions: [
-              const SizedBox(width: 20),
-              ...List.generate(3, (index) {
-                return AnimatedContainer(
-                  duration: const Duration(milliseconds: 300),
-                  margin: const EdgeInsets.symmetric(horizontal: 4),
-                  width: _currentPage == index ? 10 : 6,
-                  height: _currentPage == index ? 10 : 6,
-                  decoration: BoxDecoration(
-                    color: _currentPage == index ? Colors.white : Colors.grey,
-                    shape: BoxShape.circle,
-                  ),
-                );
-              }),
-              const SizedBox(width: 20),
-            ],
           ),
           body: BlocProvider(
             create: (context) =>
@@ -133,11 +116,6 @@ class _CashierViewState extends State<CashierView> {
                                           List<ProductItem> allProductList =
                                               state.productList;
                                           return CashierViewBody(
-                                            onPageChange: (currentPage) {
-                                              setState(() {
-                                                _currentPage = currentPage;
-                                              });
-                                            },
                                             allModalityList: allModalityList,
                                             allProCompanyList:
                                                 allProCompanyList,
