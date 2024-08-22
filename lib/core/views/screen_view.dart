@@ -36,7 +36,7 @@ class ScreenView extends StatelessWidget {
             return GeneralBalanceView(pageData: pageData);
           case "trialBalance":
             return TrialBalance(pageData: pageData);
-          case "":
+          case "cashier":
             return CashierView(pageData: pageData);
           default:
             return ScreenTable(pageData: pageData);
