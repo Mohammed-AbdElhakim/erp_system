@@ -512,34 +512,11 @@ class _SalesTableAddEditState extends State<SalesTableAddEdit> {
 
       case "dropdown":
         String val = '';
-        // if (columnList.columnName == columnList.searchName) {
-        List<ListDrop>? listDrop = [];
-        List<ItemDrop>? myListDrop = [];
-        for (var ii in widget.allDropdownModelList) {
-          if (widget.tapData == null) {
-            if (ii.listName == widget.pageData.listName) {
-              listDrop = ii.list;
-            }
-          } else {
-            if (ii.listName == widget.tapData!.listName) {
-              listDrop = ii.list;
-            }
+        for (var element in AddSales.listProduct) {
+          if (element["ProID"].toString() == data) {
+            val = element["ProName"] ?? "";
           }
         }
-
-        for (var item in listDrop!) {
-          if (item.columnName == columnList.columnName) {
-            myListDrop = item.list;
-          }
-        }
-        for (var item in myListDrop!) {
-          if (item.id.toString() == data) {
-            val = item.text ?? "";
-          }
-        }
-        // } else {
-        //   val = data;
-        // }
         return Text(
           textAlign: TextAlign.center,
           maxLines: 1,
