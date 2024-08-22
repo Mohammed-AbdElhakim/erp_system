@@ -212,37 +212,42 @@ class _CashierViewBodyState extends State<CashierViewBody> {
     );
   }
 
-  Column buildCategoryChildren(
+  Widget buildCategoryChildren(
       MapEntry<String, List<Map<String, dynamic>>> entry) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        ...List.generate(
-          entry.value.length,
-          (index) {
-            final widgetData = entry.value[index];
-            ItemListSetupModel itemListSetupModel = widgetData['widget'];
-            String title = lang == AppStrings.arLangKey
-                ? itemListSetupModel.arColumnLabel!
-                : itemListSetupModel.enColumnLabel!;
-            if (itemListSetupModel.insertType == "text") {
-              return buildTextAndNumberWidget(
-                  title, itemListSetupModel, widgetData, TextInputType.text);
-            } else if (itemListSetupModel.insertType == "number") {
-              return buildTextAndNumberWidget(
-                  title, itemListSetupModel, widgetData, TextInputType.number);
-            } else if (itemListSetupModel.insertType == "checkbox") {
-              return buildCheckBoxWidget(widgetData, title, itemListSetupModel);
-            } else if (itemListSetupModel.insertType == "date") {
-              return buildDateWidget(title, itemListSetupModel, widgetData);
-            } else if (itemListSetupModel.insertType == "dropdown") {
-              return buildDropdownWidget(title, itemListSetupModel, widgetData);
-            } else {
-              return Text("${itemListSetupModel.insertType}");
-            }
-          },
-        )
-      ],
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ...List.generate(
+            entry.value.length,
+            (index) {
+              final widgetData = entry.value[index];
+              ItemListSetupModel itemListSetupModel = widgetData['widget'];
+              String title = lang == AppStrings.arLangKey
+                  ? itemListSetupModel.arColumnLabel!
+                  : itemListSetupModel.enColumnLabel!;
+              if (itemListSetupModel.insertType == "text") {
+                return buildTextAndNumberWidget(
+                    title, itemListSetupModel, widgetData, TextInputType.text);
+              } else if (itemListSetupModel.insertType == "number") {
+                return buildTextAndNumberWidget(title, itemListSetupModel,
+                    widgetData, TextInputType.number);
+              } else if (itemListSetupModel.insertType == "checkbox") {
+                return buildCheckBoxWidget(
+                    widgetData, title, itemListSetupModel);
+              } else if (itemListSetupModel.insertType == "date") {
+                return buildDateWidget(title, itemListSetupModel, widgetData);
+              } else if (itemListSetupModel.insertType == "dropdown") {
+                return buildDropdownWidget(
+                    title, itemListSetupModel, widgetData);
+              } else {
+                return Text("${itemListSetupModel.insertType}");
+              }
+            },
+          )
+        ],
+      ),
     );
   }
 
