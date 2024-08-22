@@ -13,9 +13,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     required this.isPortrait,
     required this.title,
     this.style,
+    this.isTitleInPortrait,
   });
   final List<Widget>? actions;
   final bool isPortrait;
+  final bool? isTitleInPortrait;
   final String title;
   final TextStyle? style;
   @override
@@ -35,16 +37,29 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       title: isPortrait
-          ? Column(
+          ? Row(
+              mainAxisAlignment: isTitleInPortrait ?? false
+                  ? MainAxisAlignment.spaceBetween
+                  : MainAxisAlignment.center,
               children: [
-                Image.asset(
-                  AppAssets.logo,
-                  height: 25,
-                ),
-                Text(
-                  S.of(context).dynamic_pro,
-                  textAlign: TextAlign.center,
-                  style: AppStyles.textStyle14,
+                if (isTitleInPortrait ?? false)
+                  Text(
+                    title,
+                    textAlign: TextAlign.center,
+                    style: style ?? AppStyles.textStyle20,
+                  ),
+                Column(
+                  children: [
+                    Image.asset(
+                      AppAssets.logo,
+                      height: 25,
+                    ),
+                    Text(
+                      S.of(context).dynamic_pro,
+                      textAlign: TextAlign.center,
+                      style: AppStyles.textStyle14,
+                    ),
+                  ],
                 ),
               ],
             )

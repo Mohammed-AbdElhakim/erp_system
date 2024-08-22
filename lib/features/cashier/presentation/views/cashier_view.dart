@@ -50,10 +50,12 @@ class _CashierViewState extends State<CashierView> {
         child: Scaffold(
           appBar: CustomAppBar(
             isPortrait: isOrientationPortrait(context),
+            isTitleInPortrait: true,
             title: lang == AppStrings.enLangKey
                 ? widget.pageData.nameEn
                 : widget.pageData.nameAr,
             actions: [
+              const SizedBox(width: 20),
               ...List.generate(3, (index) {
                 return AnimatedContainer(
                   duration: const Duration(milliseconds: 300),
