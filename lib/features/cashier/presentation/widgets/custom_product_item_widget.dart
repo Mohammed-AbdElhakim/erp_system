@@ -36,7 +36,7 @@ class _CustomProductItemWidgetState extends State<CustomProductItemWidget> {
           children: [
             Text(
               widget.productItem.proPrice == null
-                  ? "Free"
+                  ? "0.0 E.G"
                   : "${widget.productItem.proPrice} E.G",
               style: AppStyles.textStyle12.copyWith(color: AppColors.blueLight),
             ),
