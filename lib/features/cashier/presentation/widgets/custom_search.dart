@@ -2,13 +2,20 @@ import 'package:erp_system/core/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/utils/app_styles.dart';
+import '../../data/models/item_list_setup_model.dart';
 import '../../data/models/product_model.dart';
+import 'cashier_view_body.dart';
 import 'custom_product_item_widget.dart';
 
 class CustomSearch extends SearchDelegate {
   final List<ProductItem> productList;
+  final List<ItemListSetupModel> listColumn;
+  final void Function(Map<String, dynamic>) onTapAdd;
 
-  CustomSearch({required this.productList});
+  CustomSearch(
+      {required this.productList,
+      required this.listColumn,
+      required this.onTapAdd});
 
   @override
   List<Widget>? buildActions(BuildContext context) {
@@ -51,6 +58,10 @@ class CustomSearch extends SearchDelegate {
                 .map(
                   (e) => CustomProductItemWidget(
                     productItem: e,
+                    listColumn: listColumn,
+                    onTapAdd: (data) {
+                      CashierViewBody.tableList.add(data);
+                    },
                   ),
                 )
                 .toList(),
@@ -81,6 +92,10 @@ class CustomSearch extends SearchDelegate {
                 .map(
                   (e) => CustomProductItemWidget(
                     productItem: e,
+                    listColumn: listColumn,
+                    onTapAdd: (data) {
+                      onTapAdd(data);
+                    },
                   ),
                 )
                 .toList(),

@@ -94,6 +94,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "under_revision": MessageLookupByLibrary.simpleMessage("تحت المراجعة"),
         "username_or_email": MessageLookupByLibrary.simpleMessage(
             "اسم المستخدم او البريد الإلكتروني"),
+        "warning": MessageLookupByLibrary.simpleMessage("تحذير"),
         "welcome": MessageLookupByLibrary.simpleMessage("مرحباً !"),
         "welcome_in": MessageLookupByLibrary.simpleMessage("مرحبا بك في ")
       };

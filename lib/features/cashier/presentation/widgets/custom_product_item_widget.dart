@@ -2,12 +2,26 @@ import 'package:erp_system/core/utils/app_colors.dart';
 import 'package:erp_system/core/utils/app_styles.dart';
 import 'package:flutter/material.dart';
 
+import '../../data/models/item_list_setup_model.dart';
 import '../../data/models/product_model.dart';
+import 'sales_fast_alert_dialog_add_widget.dart';
 
-class CustomProductItemWidget extends StatelessWidget {
-  const CustomProductItemWidget({super.key, required this.productItem});
+class CustomProductItemWidget extends StatefulWidget {
+  const CustomProductItemWidget(
+      {super.key,
+      required this.productItem,
+      required this.listColumn,
+      required this.onTapAdd});
   final ProductItem productItem;
+  final List<ItemListSetupModel> listColumn;
+  final void Function(Map<String, dynamic>) onTapAdd;
 
+  @override
+  State<CustomProductItemWidget> createState() =>
+      _CustomProductItemWidgetState();
+}
+
+class _CustomProductItemWidgetState extends State<CustomProductItemWidget> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -21,9 +35,9 @@ class CustomProductItemWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              productItem.proPrice == null
+              widget.productItem.proPrice == null
                   ? "Free"
-                  : "${productItem.proPrice} E.G",
+                  : "${widget.productItem.proPrice} E.G",
               style: AppStyles.textStyle12.copyWith(color: AppColors.blueLight),
             ),
             Image.asset(
@@ -33,7 +47,7 @@ class CustomProductItemWidget extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 5),
               child: Text(
-                productItem.proName!,
+                widget.productItem.proName!,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: AppStyles.textStyle12
@@ -44,7 +58,23 @@ class CustomProductItemWidget extends StatelessWidget {
         ),
       ),
       onTap: () {
-        // GoRouter.of(context).push(AppRouter.kScreenView, extra: widget.page);
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              content: SalesFastAlertDialogAddWidget(
+                listColumn: widget.listColumn,
+                proName: widget.productItem.proName,
+                proId: widget.productItem.proID,
+                onTapAdd: (data) {
+                  print(data);
+                  // tableListInAddView.add(data);
+                  widget.onTapAdd(data);
+                },
+              ),
+            );
+          },
+        );
       },
     );
   }

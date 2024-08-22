@@ -190,6 +190,16 @@ class S {
     );
   }
 
+  /// `Warning`
+  String get warning {
+    return Intl.message(
+      'Warning',
+      name: 'warning',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Cancel`
   String get cancel {
     return Intl.message(
