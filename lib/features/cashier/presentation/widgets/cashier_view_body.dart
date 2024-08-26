@@ -841,9 +841,14 @@ class _CashierViewBodyState extends State<CashierViewBody> {
                                                     .add(data);
                                               });
                                             } else {
-                                              itemSearch['Qty'] =
-                                                  (int.parse(data['Qty']) + 1)
-                                                      .toString();
+                                              print(
+                                                  "=============${itemSearch['Qty']}=========");
+
+                                              itemSearch['Qty'] = (int.parse(
+                                                          itemSearch['Qty']) +
+                                                      1)
+                                                  .toString();
+                                              tSetState(() {});
                                             }
                                           }
 
