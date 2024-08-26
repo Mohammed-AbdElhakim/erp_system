@@ -578,7 +578,7 @@ class _SalesTableAddEditState extends State<SalesTableAddEdit> {
       }
     } else {
       productId = EditSales.listBarcodeData.firstWhere(
-        (element) => element['BarcodeProc'] == "11961",
+        (element) => element['BarcodeProc'] == resultScanner,
         orElse: () => {"ProductId": -1},
       )['ProductId'];
 
