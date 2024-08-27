@@ -36,7 +36,10 @@ class AddExcelViewBody extends StatefulWidget {
   final ListTaps? tapData;
   final Pages pageData;
   final List<dynamic> listKey;
-
+  static List<dynamic> listCustomerAccount = [];
+  static List<dynamic> listBarcodeData = [];
+  static List<dynamic> listProduct = [];
+  static List<dynamic> listProductPrices = [];
   @override
   State<AddExcelViewBody> createState() => _AddExcelViewBodyState();
 }
@@ -58,6 +61,7 @@ class _AddExcelViewBodyState extends State<AddExcelViewBody> {
   @override
   void initState() {
     myAllDropdownModelList = ScreenTable.myAllDropdownModelList;
+    getDataList();
     super.initState();
   }
 
@@ -79,7 +83,7 @@ class _AddExcelViewBodyState extends State<AddExcelViewBody> {
           List<String> category = [];
           List<String> listHeader = [];
           for (var item in state.listSetupModel) {
-            category.add(item.categoryTitle!);
+            category.add(item.categoryTitle ?? "");
             if (item.insertVisable == true &&
                 item.cvisable == true &&
                 item.visible == true &&
@@ -690,6 +694,57 @@ class _AddExcelViewBodyState extends State<AddExcelViewBody> {
       setState(() {
         myAllDropdownModelList = dataList;
       });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void getDataList() async {
+    try {
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
+              "";
+      String token =
+          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      Map<String, dynamic> dataProduct = await ApiService(Dio()).post(
+        endPoint: "web/Structure/getDataGlobal",
+        data: {"TableName": "Product"},
+        headers: {
+          "Authorization": "Bearer $token",
+          "CompanyKey": companyKey,
+        },
+      );
+
+      Map<String, dynamic> dataProductPrices = await ApiService(Dio()).post(
+        endPoint: "web/Structure/getDataGlobal",
+        data: {"TableName": "ProductPrices"},
+        headers: {
+          "Authorization": "Bearer $token",
+          "CompanyKey": companyKey,
+        },
+      );
+      Map<String, dynamic> dataCustomerAccount = await ApiService(Dio()).post(
+        endPoint: "web/Structure/getDataGlobal",
+        data: {"TableName": "CustomerAccount"},
+        headers: {
+          "Authorization": "Bearer $token",
+          "CompanyKey": companyKey,
+        },
+      );
+
+      Map<String, dynamic> barcodeData = await ApiService(Dio()).post(
+        endPoint: "web/Structure/getDataGlobal",
+        data: {"TableName": "BarcodeData"},
+        headers: {
+          "Authorization": "Bearer $token",
+          "CompanyKey": companyKey,
+        },
+      );
+
+      AddExcelViewBody.listProduct = dataProduct['dynamicList'];
+      AddExcelViewBody.listProductPrices = dataProductPrices['dynamicList'];
+      AddExcelViewBody.listCustomerAccount = dataCustomerAccount['dynamicList'];
+      AddExcelViewBody.listBarcodeData = barcodeData['dynamicList'];
     } catch (e) {
       print(e);
     }

@@ -165,53 +165,65 @@ class _SalesTableAddEditState extends State<SalesTableAddEdit> {
                   //   ));
 
                   getDataPro(widget.typeView, resultScanner);
+                  print(
+                      "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n==========$productId================\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 
-                  Map<String, dynamic> proData = {
-                    "ProductID": productId,
-                    "Qty": "1",
-                    "PriceCurrancy": "$proPrice",
-                    "systemDescription": "",
-                    "BatchNumber": "",
-                  };
-                  if (widget.typeView == "Add") {
-                    if (tableListInAddView.isEmpty) {
-                      tableListInAddView.add(proData);
-                      widget.onTapAction(tableListInAddView);
-                    } else {
-                      Map<String, dynamic> data = tableListInAddView.firstWhere(
-                        (element) =>
-                            element['ProductID'] == proData['ProductID'],
-                        orElse: () => {},
-                      );
-                      if (data.isEmpty) {
+                  if (productId == -1) {
+                    ScaffoldMessenger.of(context)
+                      ..removeCurrentSnackBar()
+                      ..showSnackBar(SnackBar(
+                        content: Text(S.of(context).product_not_available),
+                        duration: const Duration(seconds: 5),
+                      ));
+                  } else {
+                    Map<String, dynamic> proData = {
+                      "ProductID": productId,
+                      "Qty": "1",
+                      "PriceCurrancy": "$proPrice",
+                      "systemDescription": "",
+                      "BatchNumber": "",
+                    };
+                    if (widget.typeView == "Add") {
+                      if (tableListInAddView.isEmpty) {
                         tableListInAddView.add(proData);
                         widget.onTapAction(tableListInAddView);
                       } else {
-                        data['Qty'] = (int.parse(data['Qty']) + 1).toString();
-                        // element['PriceCurrancy'] =
-                        //     (proPrice * int.parse(element['Qty'])).toString();
-                        widget.onTapAction(tableListInAddView);
+                        Map<String, dynamic> data =
+                            tableListInAddView.firstWhere(
+                          (element) =>
+                              element['ProductID'] == proData['ProductID'],
+                          orElse: () => {},
+                        );
+                        if (data.isEmpty) {
+                          tableListInAddView.add(proData);
+                          widget.onTapAction(tableListInAddView);
+                        } else {
+                          data['Qty'] = (int.parse(data['Qty']) + 1).toString();
+                          // element['PriceCurrancy'] =
+                          //     (proPrice * int.parse(element['Qty'])).toString();
+                          widget.onTapAction(tableListInAddView);
+                        }
                       }
-                    }
-                  } else if (widget.typeView == "Edit") {
-                    if (tableListInEditView.isEmpty) {
-                      tableListInEditView.add(proData);
-                      widget.onTapAction(tableListInEditView);
-                    } else {
-                      Map<String, dynamic> data =
-                          tableListInEditView.firstWhere(
-                        (element) =>
-                            element['ProductID'] == proData['ProductID'],
-                        orElse: () => {},
-                      );
-                      if (data.isEmpty) {
+                    } else if (widget.typeView == "Edit") {
+                      if (tableListInEditView.isEmpty) {
                         tableListInEditView.add(proData);
                         widget.onTapAction(tableListInEditView);
                       } else {
-                        data['Qty'] = (int.parse(data['Qty']) + 1).toString();
-                        // element['PriceCurrancy'] =
-                        //     (proPrice * int.parse(element['Qty'])).toString();
-                        widget.onTapAction(tableListInEditView);
+                        Map<String, dynamic> data =
+                            tableListInEditView.firstWhere(
+                          (element) =>
+                              element['ProductID'] == proData['ProductID'],
+                          orElse: () => {},
+                        );
+                        if (data.isEmpty) {
+                          tableListInEditView.add(proData);
+                          widget.onTapAction(tableListInEditView);
+                        } else {
+                          data['Qty'] = (int.parse(data['Qty']) + 1).toString();
+                          // element['PriceCurrancy'] =
+                          //     (proPrice * int.parse(element['Qty'])).toString();
+                          widget.onTapAction(tableListInEditView);
+                        }
                       }
                     }
                   }

@@ -649,6 +649,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Product is not available.`
+  String get product_not_available {
+    return Intl.message(
+      'Product is not available.',
+      name: 'product_not_available',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

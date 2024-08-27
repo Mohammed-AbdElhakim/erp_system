@@ -58,7 +58,8 @@
   "select_client": "من فضلك اختر العميل.",
   "date_from": "تاريخ من: ",
   "date_to": "تاريخ إلى: ",
-  "show": "عرض"
+  "show": "عرض",
+  "product_not_available": "المنتج غير متوفر."
 
 
 

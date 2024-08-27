@@ -729,28 +729,38 @@ class _CashierViewBodyState extends State<CashierViewBody> {
 
                                 getDataPro(resultScanner);
 
-                                Map<String, dynamic> proData = {
-                                  "ProductID": productId,
-                                  "Qty": "1",
-                                  "PriceCurrancy": "$proPrice",
-                                  "systemDescription": "",
-                                  "BatchNumber": "",
-                                };
-                                if (CashierViewBody.tableList.isEmpty) {
-                                  CashierViewBody.tableList.add(proData);
+                                if (productId == -1) {
+                                  ScaffoldMessenger.of(context)
+                                    ..removeCurrentSnackBar()
+                                    ..showSnackBar(SnackBar(
+                                      content: Text(
+                                          S.of(context).product_not_available),
+                                      duration: const Duration(seconds: 5),
+                                    ));
                                 } else {
-                                  Map<String, dynamic> data =
-                                      CashierViewBody.tableList.firstWhere(
-                                    (element) =>
-                                        element['ProductID'] ==
-                                        proData['ProductID'],
-                                    orElse: () => {},
-                                  );
-                                  if (data.isEmpty) {
+                                  Map<String, dynamic> proData = {
+                                    "ProductID": productId,
+                                    "Qty": "1",
+                                    "PriceCurrancy": "$proPrice",
+                                    "systemDescription": "",
+                                    "BatchNumber": "",
+                                  };
+                                  if (CashierViewBody.tableList.isEmpty) {
                                     CashierViewBody.tableList.add(proData);
                                   } else {
-                                    data['Qty'] =
-                                        (int.parse(data['Qty']) + 1).toString();
+                                    Map<String, dynamic> data =
+                                        CashierViewBody.tableList.firstWhere(
+                                      (element) =>
+                                          element['ProductID'] ==
+                                          proData['ProductID'],
+                                      orElse: () => {},
+                                    );
+                                    if (data.isEmpty) {
+                                      CashierViewBody.tableList.add(proData);
+                                    } else {
+                                      data['Qty'] = (int.parse(data['Qty']) + 1)
+                                          .toString();
+                                    }
                                   }
                                 }
                               },

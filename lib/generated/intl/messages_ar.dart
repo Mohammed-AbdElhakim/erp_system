@@ -77,6 +77,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "on_progress":
             MessageLookupByLibrary.simpleMessage("تم بدأالعمل عليها"),
         "password": MessageLookupByLibrary.simpleMessage("كلمة المرور"),
+        "product_not_available":
+            MessageLookupByLibrary.simpleMessage("المنتج غير متوفر."),
         "refresh": MessageLookupByLibrary.simpleMessage("تحديث"),
         "revision": MessageLookupByLibrary.simpleMessage("تم المراجعة"),
         "search": MessageLookupByLibrary.simpleMessage("بحث....."),

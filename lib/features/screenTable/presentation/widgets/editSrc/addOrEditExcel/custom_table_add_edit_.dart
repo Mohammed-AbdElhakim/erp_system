@@ -6,10 +6,13 @@ import '../../../../../../core/models/menu_model/pages.dart';
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_styles.dart';
 import '../../../../../../core/utils/methods.dart';
+import '../../../../../../generated/l10n.dart';
 import '../../../../data/models/dropdown_model/all_dropdown_model.dart';
 import '../../../../data/models/item_list_setup_model.dart';
 import '../../../../data/models/tap_model.dart';
+import '../../../views/barcode_view.dart';
 import '../../../views/screen_table.dart';
+import 'add_excel_view_body.dart';
 import 'alert_dialog_add_widget.dart';
 import 'alert_dialog_edit_widget.dart';
 
@@ -49,7 +52,7 @@ class _CustomTableAddEditState extends State<CustomTableAddEdit> {
   Map<String, dynamic> myObject = {};
   List<Map<String, dynamic>> tableListInAddView = [];
   late List<Map<String, dynamic>> tableListInEditView;
-
+  late int productId;
   int indexSelect = -1;
   bool select = false;
   @override
@@ -111,6 +114,94 @@ class _CustomTableAddEditState extends State<CustomTableAddEdit> {
                 backgroundColor: AppColors.blue,
               ),
             ),
+            if (widget.tapData!.tableSrc == "ProductProcess" ||
+                widget.tapData!.tableSrc == "ProductProcessOut")
+              IconButton(
+                onPressed: () async {
+                  final resultScanner = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const BarcodeView(),
+                      ));
+                  // final result = "11961";
+                  if (!context.mounted) return;
+
+                  // ScaffoldMessenger.of(context)
+                  //   ..removeCurrentSnackBar()
+                  //   ..showSnackBar(SnackBar(
+                  //     content: Text('$resultScanner'),
+                  //     duration: const Duration(seconds: 2),
+                  //   ));
+
+                  getDataPro(widget.typeView, resultScanner);
+
+                  if (productId == -1) {
+                    ScaffoldMessenger.of(context)
+                      ..removeCurrentSnackBar()
+                      ..showSnackBar(SnackBar(
+                        content: Text(S.of(context).product_not_available),
+                        duration: const Duration(seconds: 5),
+                      ));
+                  } else {
+                    Map<String, dynamic> proData = {
+                      "ProductID": productId,
+                      "PQuntity": "1",
+                    };
+                    if (widget.typeView == "Add") {
+                      if (tableListInAddView.isEmpty) {
+                        tableListInAddView.add(proData);
+                        widget.onTapAction(tableListInAddView);
+                      } else {
+                        Map<String, dynamic> data =
+                            tableListInAddView.firstWhere(
+                          (element) =>
+                              element['ProductID'] == proData['ProductID'],
+                          orElse: () => {},
+                        );
+                        if (data.isEmpty) {
+                          tableListInAddView.add(proData);
+                          widget.onTapAction(tableListInAddView);
+                        } else {
+                          data['PQuntity'] =
+                              (int.parse(data['PQuntity']) + 1).toString();
+                          // element['PriceCurrancy'] =
+                          //     (proPrice * int.parse(element['Qty'])).toString();
+                          widget.onTapAction(tableListInAddView);
+                        }
+                      }
+                    } else if (widget.typeView == "Edit") {
+                      if (tableListInEditView.isEmpty) {
+                        tableListInEditView.add(proData);
+                        widget.onTapAction(tableListInEditView);
+                      } else {
+                        Map<String, dynamic> data =
+                            tableListInEditView.firstWhere(
+                          (element) =>
+                              element['ProductID'] == proData['ProductID'],
+                          orElse: () => {},
+                        );
+                        if (data.isEmpty) {
+                          tableListInEditView.add(proData);
+                          widget.onTapAction(tableListInEditView);
+                        } else {
+                          data['PQuntity'] =
+                              (int.parse(data['PQuntity']) + 1).toString();
+                          // element['PriceCurrancy'] =
+                          //     (proPrice * int.parse(element['Qty'])).toString();
+                          widget.onTapAction(tableListInEditView);
+                        }
+                      }
+                    }
+                  }
+                },
+                icon: const Icon(
+                  Icons.barcode_reader,
+                  color: Colors.white,
+                ),
+                style: IconButton.styleFrom(
+                  backgroundColor: AppColors.green,
+                ),
+              ),
             IconButton(
               onPressed: () {
                 if (indexSelect != -1) {
@@ -442,6 +533,21 @@ class _CustomTableAddEditState extends State<CustomTableAddEdit> {
           style: TextStyle(
               color: indexSelect == indexRow ? Colors.white : Colors.black),
         );
+    }
+  }
+
+  void getDataPro(String type, String resultScanner) {
+    if (type == "Add") {
+      productId = AddExcelViewBody.listBarcodeData.firstWhere(
+        (element) => element['BarcodeProc'] == resultScanner /*"11961"*/,
+        orElse: () => {"ProductId": -1},
+      )['ProductId'];
+    } else {
+      //edit
+      productId = AddExcelViewBody.listBarcodeData.firstWhere(
+        (element) => element['BarcodeProc'] == resultScanner,
+        orElse: () => {"ProductId": -1},
+      )['ProductId'];
     }
   }
 }

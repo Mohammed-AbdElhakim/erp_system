@@ -58,7 +58,8 @@
   "select_client": "Please select a client.",
   "date_from": "Date From: ",
   "date_to": "Date To: ",
-  "show": "Show"
+  "show": "Show",
+  "product_not_available": "Product is not available."
 
 
 

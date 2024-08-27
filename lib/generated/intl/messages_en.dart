@@ -80,6 +80,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "on_progress":
             MessageLookupByLibrary.simpleMessage("Work has begun on it"),
         "password": MessageLookupByLibrary.simpleMessage("Password"),
+        "product_not_available":
+            MessageLookupByLibrary.simpleMessage("Product is not available."),
         "refresh": MessageLookupByLibrary.simpleMessage("Refresh"),
         "revision": MessageLookupByLibrary.simpleMessage("Reviewed"),
         "search": MessageLookupByLibrary.simpleMessage("Search....."),
