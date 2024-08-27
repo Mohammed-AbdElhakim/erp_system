@@ -205,12 +205,19 @@ class _AlertDialogAddWidgetState extends State<AlertDialogAddWidget> {
                   isValidator: item.isRquired!,
                   keyboardType: TextInputType.number,
                   onSaved: (newValue) {
-                    if (newValue!.isNotEmpty) {
-                      setState(() {
+                    // if (newValue!.isNotEmpty) {
+                    setState(() {
+                      if (item.columnName == "PQuntity") {
+                        newRowData.addAll({
+                          item.columnName!.toString():
+                              newValue!.isEmpty ? "1" : newValue
+                        });
+                      } else {
                         newRowData
                             .addAll({item.columnName!.toString(): newValue});
-                      });
-                    }
+                      }
+                    });
+                    // }
                   },
                 ),
               ],
