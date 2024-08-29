@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 
+import '../../features/Reports/data/repositories/reports_repo_impl.dart';
 import '../../features/attendance/data/repositories/attendance_repo_impl.dart';
 import '../../features/auth/data/repositories/login/login_repo_impl.dart';
 import '../../features/cashier/data/repositories/cashier_repo_impl.dart';
@@ -54,6 +55,12 @@ void setupServiceLocator() {
   );
   getIt.registerSingleton<CashierRepoImpl>(
     CashierRepoImpl(
+      getIt.get<ApiService>(),
+    ),
+  );
+
+  getIt.registerSingleton<ReportsRepoImpl>(
+    ReportsRepoImpl(
       getIt.get<ApiService>(),
     ),
   );
