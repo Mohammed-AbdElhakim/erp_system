@@ -12,13 +12,13 @@ class ReportsCubit extends Cubit<ReportsState> {
   ReportsCubit(this.reportsRepo) : super(ReportsInitial());
   final ReportsRepo reportsRepo;
 
-  Future<void> getAllDropdownList({
+  Future<void> getReports({
     required int pageId,
   }) async {
     emit(ReportsLoading());
 
     Either<Failure, List<ReportModel>> result =
-        await reportsRepo.getReports(pageId);
+        await reportsRepo.getReports(pageId: pageId);
     result.fold((failure) {
       emit(ReportsFailure(failure.errorMassage));
     }, (reports) {

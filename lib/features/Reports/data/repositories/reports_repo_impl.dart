@@ -15,7 +15,8 @@ class ReportsRepoImpl implements ReportsRepo {
   ReportsRepoImpl(this.apiService);
 
   @override
-  Future<Either<Failure, List<ReportModel>>> getReports(int pageId) async {
+  Future<Either<Failure, List<ReportModel>>> getReports(
+      {required int pageId}) async {
     try {
       String companyKey =
           await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
@@ -50,7 +51,8 @@ class ReportsRepoImpl implements ReportsRepo {
   }
 
   @override
-  Future<Either<Failure, TableModel>> getTableReports(int reportId) async {
+  Future<Either<Failure, TableModel>> getTableReports(
+      {required int reportId}) async {
     try {
       String companyKey =
           await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??

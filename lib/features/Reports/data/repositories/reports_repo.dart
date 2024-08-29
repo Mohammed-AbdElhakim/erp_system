@@ -5,6 +5,6 @@ import '../models/report_model.dart';
 import '../models/table_model.dart';
 
 abstract class ReportsRepo {
-  Future<Either<Failure, List<ReportModel>>> getReports(int pageId);
-  Future<Either<Failure, TableModel>> getTableReports(int reportId);
+  Future<Either<Failure, List<ReportModel>>> getReports({required int pageId});
+  Future<Either<Failure, TableModel>> getTableReports({required int reportId});
 }
