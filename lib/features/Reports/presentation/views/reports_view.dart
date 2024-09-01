@@ -14,7 +14,7 @@ import '../../../../core/widgets/custom_app_bar.dart';
 import '../../../../core/widgets/custom_container.dart';
 import '../../data/repositories/reports_repo_impl.dart';
 import '../manager/reports/reports_cubit.dart';
-import 'reports_view_body.dart';
+import '../widgets/reports_view_body.dart';
 
 class ReportsView extends StatefulWidget {
   const ReportsView({super.key, required this.pageData});

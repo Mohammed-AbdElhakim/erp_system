@@ -1,6 +1,7 @@
 import 'package:erp_system/features/screenTable/presentation/views/edit_view.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/Reports/presentation/views/table_reports_view.dart';
 import '../../features/auth/presentation/views/login_view.dart';
 import '../../features/bottomNavigationBar/presentation/views/bottom_navigatiaon_bar_view.dart';
 import '../../features/home/presentation/views/home_view.dart';
@@ -27,6 +28,7 @@ abstract class AppRouter {
   static const String kDetailsRowView = "/detailsRowView";
   static const String kAddView = "/addView";
   static const String kEditView = "/editView";
+  static const String kTableReportsView = "/tableReportsView";
   static final router = GoRouter(
     routes: [
       GoRoute(
@@ -96,6 +98,15 @@ abstract class AppRouter {
             columnList: data.columnList,
             pageData: data.pageData,
             listKey: data.listKey,
+          );
+        },
+      ),
+      GoRoute(
+        path: kTableReportsView,
+        builder: (context, state) {
+          int reportId = state.extra as int;
+          return TableReportsView(
+            reportId: reportId,
           );
         },
       ),
