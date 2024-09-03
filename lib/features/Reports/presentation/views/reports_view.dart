@@ -12,7 +12,9 @@ import '../../../../core/utils/methods.dart';
 import '../../../../core/utils/service_locator.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
 import '../../../../core/widgets/custom_container.dart';
+import '../../data/models/all_dropdown_model.dart';
 import '../../data/repositories/reports_repo_impl.dart';
+import '../manager/getAllDropdownList/get_all_dropdown_list_cubit.dart';
 import '../manager/reports/reports_cubit.dart';
 import '../widgets/reports_view_body.dart';
 
@@ -20,6 +22,7 @@ class ReportsView extends StatefulWidget {
   const ReportsView({super.key, required this.pageData});
 
   final Pages pageData;
+  static List<AllDropdownModel> myAllDropdownModelList = [];
 
   @override
   State<ReportsView> createState() => _ReportsViewState();
@@ -36,10 +39,19 @@ class _ReportsViewState extends State<ReportsView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => ReportsCubit(
-        getIt.get<ReportsRepoImpl>(),
-      )..getReports(pageId: widget.pageData.pageId),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => ReportsCubit(
+            getIt.get<ReportsRepoImpl>(),
+          )..getReports(pageId: widget.pageData.pageId),
+        ),
+        BlocProvider(
+          create: (context) => GetAllDropdownListCubit(
+            getIt.get<ReportsRepoImpl>(),
+          )..getAllDropdownList(pageId: widget.pageData.pageId),
+        ),
+      ],
       child: ChangeStatusBarColor(
         child: Scaffold(
           appBar: CustomAppBar(
@@ -68,14 +80,27 @@ class _ReportsViewState extends State<ReportsView> {
                   : const SizedBox(
                       height: 25,
                     ),
-              BlocBuilder<ReportsCubit, ReportsState>(
+              BlocBuilder<GetAllDropdownListCubit, GetAllDropdownListState>(
                 builder: (context, state) {
-                  if (state is ReportsSuccess) {
-                    List<ReportModel> reportsList = state.reportsList;
-                    return ReportsViewBody(
-                      reportsList: reportsList,
+                  if (state is GetAllDropdownListSuccess) {
+                    ReportsView.myAllDropdownModelList =
+                        state.allDropdownModelList;
+                    return BlocBuilder<ReportsCubit, ReportsState>(
+                      builder: (context, state) {
+                        if (state is ReportsSuccess) {
+                          List<ReportModel> reportsList = state.reportsList;
+                          return ReportsViewBody(
+                            reportsList: reportsList,
+                          );
+                        } else if (state is ReportsFailure) {
+                          return CustomErrorMassage(
+                              errorMassage: state.errorMassage);
+                        } else {
+                          return const CustomLoadingWidget();
+                        }
+                      },
                     );
-                  } else if (state is ReportsFailure) {
+                  } else if (state is GetAllDropdownListFailure) {
                     return CustomErrorMassage(errorMassage: state.errorMassage);
                   } else {
                     return const CustomLoadingWidget();

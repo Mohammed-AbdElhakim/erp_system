@@ -1,5 +1,5 @@
 class TableModel {
-  List<Map<String, dynamic>>? dynamicList;
+  List? dynamicList;
   int? numberofrecords;
   List<Listes>? listes;
   Data? data;
@@ -14,7 +14,7 @@ class TableModel {
 
   TableModel.fromJson(Map<String, dynamic> json) {
     if (json['dynamicList'] != null) {
-      dynamicList = <Map<String, dynamic>>[];
+      dynamicList = [];
       json['dynamicList'].forEach((v) {
         dynamicList!.add(v);
       });

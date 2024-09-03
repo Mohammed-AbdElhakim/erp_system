@@ -24,7 +24,7 @@ class _ReportsViewBodyState extends State<ReportsViewBody> {
               return InkWell(
                 onTap: () {
                   GoRouter.of(context).push(AppRouter.kTableReportsView,
-                      extra: widget.reportsList[index].id);
+                      extra: widget.reportsList[index]);
                 },
                 child: Card(
                   color: Colors.grey.shade200,
