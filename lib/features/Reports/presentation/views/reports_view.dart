@@ -91,6 +91,7 @@ class _ReportsViewState extends State<ReportsView> {
                           List<ReportModel> reportsList = state.reportsList;
                           return ReportsViewBody(
                             reportsList: reportsList,
+                            pageData: widget.pageData,
                           );
                         } else if (state is ReportsFailure) {
                           return CustomErrorMassage(

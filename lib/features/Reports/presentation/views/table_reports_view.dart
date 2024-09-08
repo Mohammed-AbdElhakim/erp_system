@@ -2,6 +2,7 @@ import 'package:erp_system/features/Reports/data/models/table_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/models/menu_model/pages.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/methods.dart';
 import '../../../../core/utils/service_locator.dart';
@@ -16,8 +17,10 @@ import '../manager/tableReport/table_report_cubit.dart';
 import '../widgets/table_reports_view_body.dart';
 
 class TableReportsView extends StatefulWidget {
-  const TableReportsView({super.key, required this.reportModel});
+  const TableReportsView(
+      {super.key, required this.reportModel, required this.pageData});
   final ReportModel reportModel;
+  final Pages pageData;
 
   @override
   State<TableReportsView> createState() => _TableReportsViewState();
@@ -60,6 +63,7 @@ class _TableReportsViewState extends State<TableReportsView> {
                     TableModel tableModel = state.tableModel;
                     return TableReportsViewBody(
                       tableModel: tableModel,
+                      pageData: widget.pageData,
                     );
                   } else if (state is TableReportFailure) {
                     return CustomErrorMassage(errorMassage: state.errorMassage);

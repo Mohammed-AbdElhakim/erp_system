@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
+import '../../../../core/models/menu_model/pages.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../../../../core/utils/app_styles.dart';
@@ -10,8 +11,10 @@ import 'pagination_widget.dart';
 import 'report_data_source.dart';
 
 class TableReportsViewBody extends StatefulWidget {
-  const TableReportsViewBody({super.key, required this.tableModel});
+  const TableReportsViewBody(
+      {super.key, required this.tableModel, required this.pageData});
   final TableModel tableModel;
+  final Pages pageData;
 
   @override
   State<TableReportsViewBody> createState() => _TableReportsViewBodyState();
@@ -38,9 +41,15 @@ class _TableReportsViewBodyState extends State<TableReportsViewBody> {
     super.initState();
     // dataScrollController = controllerGroup.addAndGet();
     reportDataSource = ReportDataSource(
-        tableModel: widget.tableModel,
-        itemsInPage: dropdownValue,
-        numberPage: numberPage);
+      tableModel: widget.tableModel,
+      itemsInPage: dropdownValue,
+      numberPage: numberPage,
+      context: context,
+      pageData: widget.pageData,
+      title: lang == AppStrings.enLangKey
+          ? widget.pageData.nameEn
+          : widget.pageData.nameAr,
+    );
     allPages = (widget.tableModel.numberofrecords! % dropdownValue) == 0
         ? (widget.tableModel.numberofrecords! ~/ dropdownValue)
         : (widget.tableModel.numberofrecords! ~/ dropdownValue) + 1;
@@ -118,9 +127,15 @@ class _TableReportsViewBodyState extends State<TableReportsViewBody> {
                     ? (widget.tableModel.numberofrecords! ~/ dropdownValue)
                     : (widget.tableModel.numberofrecords! ~/ dropdownValue) + 1;
                 reportDataSource = ReportDataSource(
-                    tableModel: widget.tableModel,
-                    itemsInPage: dropdownValue,
-                    numberPage: numberPage);
+                  tableModel: widget.tableModel,
+                  itemsInPage: dropdownValue,
+                  numberPage: numberPage,
+                  context: context,
+                  pageData: widget.pageData,
+                  title: lang == AppStrings.enLangKey
+                      ? widget.pageData.nameEn
+                      : widget.pageData.nameAr,
+                );
                 horizontalScrollController.jumpTo(0.0);
                 verticalScrollController.jumpTo(0.0);
               });
@@ -129,9 +144,15 @@ class _TableReportsViewBodyState extends State<TableReportsViewBody> {
               setState(() {
                 numberPage = numberPage - 1;
                 reportDataSource = ReportDataSource(
-                    tableModel: widget.tableModel,
-                    itemsInPage: dropdownValue,
-                    numberPage: numberPage);
+                  tableModel: widget.tableModel,
+                  itemsInPage: dropdownValue,
+                  numberPage: numberPage,
+                  context: context,
+                  pageData: widget.pageData,
+                  title: lang == AppStrings.enLangKey
+                      ? widget.pageData.nameEn
+                      : widget.pageData.nameAr,
+                );
                 horizontalScrollController.jumpTo(0.0);
                 verticalScrollController.jumpTo(0.0);
               });
@@ -140,9 +161,15 @@ class _TableReportsViewBodyState extends State<TableReportsViewBody> {
               setState(() {
                 numberPage = numberPage + 1;
                 reportDataSource = ReportDataSource(
-                    tableModel: widget.tableModel,
-                    itemsInPage: dropdownValue,
-                    numberPage: numberPage);
+                  tableModel: widget.tableModel,
+                  itemsInPage: dropdownValue,
+                  numberPage: numberPage,
+                  context: context,
+                  pageData: widget.pageData,
+                  title: lang == AppStrings.enLangKey
+                      ? widget.pageData.nameEn
+                      : widget.pageData.nameAr,
+                );
                 horizontalScrollController.jumpTo(0.0);
                 verticalScrollController.jumpTo(0.0);
               });
@@ -151,15 +178,6 @@ class _TableReportsViewBodyState extends State<TableReportsViewBody> {
         ],
       ),
     );
-  }
-
-  double getTotal(Map<String, dynamic> data) {
-    // تصفية القيم من نوع double فقط وجمعها
-    double sum = data.values
-        .whereType<double>() // تصفية القيم التي تكون من نوع double
-        .fold(0.0, (previous, current) => previous + current); // جمع القيم
-
-    return sum;
   }
 
   buildColumnsTable() {

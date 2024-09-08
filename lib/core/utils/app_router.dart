@@ -1,6 +1,7 @@
 import 'package:erp_system/features/screenTable/presentation/views/edit_view.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/Reports/data/models/pass_data_table_report_view.dart';
 import '../../features/Reports/data/models/report_model.dart';
 import '../../features/Reports/presentation/views/table_reports_view.dart';
 import '../../features/auth/presentation/views/login_view.dart';
@@ -105,9 +106,10 @@ abstract class AppRouter {
       GoRoute(
         path: kTableReportsView,
         builder: (context, state) {
-          ReportModel data = state.extra as ReportModel;
+          PassDataTableReportView data = state.extra as PassDataTableReportView;
           return TableReportsView(
-            reportModel: data,
+            reportModel: data.reportModel,
+            pageData: data.pageData,
           );
         },
       ),

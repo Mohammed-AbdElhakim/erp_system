@@ -1,21 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
+import '../../../../core/models/menu_model/pages.dart';
 import '../../../../core/utils/app_styles.dart';
+import '../../../../generated/l10n.dart';
 import '../../data/models/all_dropdown_model.dart';
 import '../../data/models/table_model.dart';
 import '../views/reports_view.dart';
+import 'build_report_alert_dialog.dart';
 
 class ReportDataSource extends DataGridSource {
   final TableModel tableModel;
   final int numberPage;
   final int itemsInPage;
+  final BuildContext context;
+  final Pages pageData;
+  final String title;
 
-  ReportDataSource(
-      {required this.numberPage,
-      required this.itemsInPage,
-      required this.tableModel}) {
+  ReportDataSource({
+    required this.numberPage,
+    required this.itemsInPage,
+    required this.tableModel,
+    required this.context,
+    required this.pageData,
+    required this.title,
+  }) {
     int start = (numberPage - 1) * itemsInPage;
     int end = numberPage * itemsInPage;
     List allData = tableModel.dynamicList![0];
@@ -69,8 +80,58 @@ class ReportDataSource extends DataGridSource {
           child: Center(
             child: GestureDetector(
               onTap: () {
-                print("=========================");
-                print(dataGridCell.value.toString());
+                String myTailCondition = "";
+                String finalTailCondition = "";
+                String name = "";
+                int start = (numberPage - 1) * itemsInPage;
+                int end = numberPage * itemsInPage;
+                List allData = tableModel.dynamicList![0];
+                List dataShow = allData.sublist(
+                    start, end > allData.length ? allData.length : end);
+
+                for (Map<String, dynamic> i in dataShow) {
+                  for (var j in tableModel.listes!) {
+                    double total = getTotal(i);
+                    if (total == dataGridCell.value) {
+                      name = i[j.columnName].toString();
+                      myTailCondition =
+                          "$myTailCondition and ${j.columnName}=N'$name'";
+                    }
+                  }
+                }
+
+                String original = tableModel.data!.tailCondition!;
+                List<String> characters = original.split('');
+                characters.removeRange(0, 3); // إزالة الحروف بين الفهرس 0 و 2
+                String modified = characters.join('');
+                finalTailCondition = "$modified$myTailCondition";
+                // "${tableModel.data!.tailCondition}$myTailCondition";
+
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: Text(
+                        "$title - ${tableModel.data!.reportName!}",
+                        style: const TextStyle(fontSize: 14),
+                      ),
+                      content: BuildReportAlertDialog(
+                        tableModel: tableModel,
+                        tailCondition: finalTailCondition,
+                        pageData: pageData,
+                      ),
+                      contentPadding: const EdgeInsets.only(top: 12),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            GoRouter.of(context).pop();
+                          },
+                          child: Text(S.of(context).cancel),
+                        ),
+                      ],
+                    );
+                  },
+                );
               },
               child: Text(
                 dataGridCell.value.toString(),
@@ -100,8 +161,60 @@ class ReportDataSource extends DataGridSource {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      print("=========================");
-                      print(dataGridCell.value.toString());
+                      String myTailCondition = "";
+                      String finalTailCondition = "";
+                      String name = "";
+                      int start = (numberPage - 1) * itemsInPage;
+                      int end = numberPage * itemsInPage;
+                      List allData = tableModel.dynamicList![0];
+                      List dataShow = allData.sublist(
+                          start, end > allData.length ? allData.length : end);
+
+                      for (Map<String, dynamic> i in dataShow) {
+                        for (var n in tableModel.dynamicList![1]) {
+                          for (var j in tableModel.listes!) {
+                            double value = (i[n['Coulumn']]) ?? 0;
+                            if (value == dataGridCell.value) {
+                              name = i[j.columnName].toString();
+                              myTailCondition =
+                                  "$myTailCondition and ${j.columnName}=N'$name'";
+                            }
+                          }
+                        }
+                      }
+                      String original = tableModel.data!.tailCondition!;
+                      List<String> characters = original.split('');
+                      characters.removeRange(
+                          0, 3); // إزالة الحروف بين الفهرس 0 و 2
+                      String modified = characters.join('');
+                      finalTailCondition =
+                          "$modified and ${tableModel.data!.pivotRepeat}=N'${dataGridCell.columnName}'$myTailCondition";
+                      // "${tableModel.data!.tailCondition} and ${tableModel.data!.pivotRepeat}=N'${dataGridCell.columnName}'$myTailCondition";
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Text(
+                              "$title - ${tableModel.data!.reportName!}",
+                              style: const TextStyle(fontSize: 14),
+                            ),
+                            content: BuildReportAlertDialog(
+                              tableModel: tableModel,
+                              tailCondition: finalTailCondition,
+                              pageData: pageData,
+                            ),
+                            contentPadding: const EdgeInsets.only(top: 12),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  GoRouter.of(context).pop();
+                                },
+                                child: Text(S.of(context).cancel),
+                              ),
+                            ],
+                          );
+                        },
+                      );
                     },
                     child: Text(
                       dataGridCell.value == 0
@@ -162,13 +275,93 @@ class ReportDataSource extends DataGridSource {
       GridSummaryColumn? summaryColumn,
       RowColumnIndex rowColumnIndex,
       String summaryValue) {
+    double sum = 0;
+    for (var i in tableModel.dynamicList![0]) {
+      if (summaryColumn!.columnName == 'total') {
+        sum = sum + getTotal(i);
+      } else {
+        sum = sum + (i[summaryColumn.columnName] ?? 0);
+      }
+    }
     return Container(
       alignment: Alignment.center,
       decoration: const BoxDecoration(
           border: Border.symmetric(
               vertical: BorderSide(color: Colors.grey, width: .8))),
       padding: const EdgeInsets.all(5),
-      child: Text(NumberFormat('##0.00').format(double.parse(summaryValue))),
+      // child: Text(NumberFormat('##0.00').format(double.parse(summaryValue))),
+      child: GestureDetector(
+          onTap: () {
+            String finalTailCondition;
+            if (summaryColumn!.columnName == 'total') {
+              // finalTailCondition = "${tableModel.data!.tailCondition}";
+              String original = tableModel.data!.tailCondition!;
+              List<String> characters = original.split('');
+              characters.removeRange(0, 3); // إزالة الحروف بين الفهرس 0 و 2
+              String modified = characters.join('');
+              finalTailCondition = modified;
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Text(
+                      "$title - ${tableModel.data!.reportName!}",
+                      style: const TextStyle(fontSize: 14),
+                    ),
+                    content: BuildReportAlertDialog(
+                      tableModel: tableModel,
+                      tailCondition: finalTailCondition,
+                      pageData: pageData,
+                    ),
+                    contentPadding: const EdgeInsets.only(top: 12),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          GoRouter.of(context).pop();
+                        },
+                        child: Text(S.of(context).cancel),
+                      ),
+                    ],
+                  );
+                },
+              );
+            } else {
+              // finalTailCondition =
+              //     "${tableModel.data!.tailCondition} and ${tableModel.data!.pivotRepeat}=N'${summaryColumn.columnName}'";
+              String original = tableModel.data!.tailCondition!;
+              List<String> characters = original.split('');
+              characters.removeRange(0, 3); // إزالة الحروف بين الفهرس 0 و 2
+              String modified = characters.join('');
+              finalTailCondition =
+                  "$modified and ${tableModel.data!.pivotRepeat}=N'${summaryColumn.columnName}'";
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Text(
+                      "$title - ${tableModel.data!.reportName!}",
+                      style: const TextStyle(fontSize: 14),
+                    ),
+                    content: BuildReportAlertDialog(
+                      tableModel: tableModel,
+                      tailCondition: finalTailCondition,
+                      pageData: pageData,
+                    ),
+                    contentPadding: const EdgeInsets.only(top: 12),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          GoRouter.of(context).pop();
+                        },
+                        child: Text(S.of(context).cancel),
+                      ),
+                    ],
+                  );
+                },
+              );
+            }
+          },
+          child: Text(NumberFormat('##0.00').format(sum))),
     );
   }
 
