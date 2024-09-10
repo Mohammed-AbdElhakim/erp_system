@@ -174,7 +174,16 @@ class _CustomFloatingActionButtonState
           if (widget.pageData.tableSrc == AppStrings.tableGroup) {
             listId.add(item.toString());
           } else {
-            listId.add(item[widget.pageData.primary].toString());
+            String primary = "";
+            for (var i in columnList) {
+              if (i.columnName == widget.pageData.primary) {
+                primary = (lang == AppStrings.enLangKey
+                    ? i.enColumnLabel
+                    : i.arColumnLabel)!;
+              }
+            }
+            listId.add(item[primary].toString());
+            // listId.add(item[widget.pageData.primary].toString());
           }
         }
         CustomAlertDialog.alertDelete(
