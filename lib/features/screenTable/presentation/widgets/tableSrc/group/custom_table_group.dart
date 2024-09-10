@@ -318,9 +318,10 @@ class TableDataSource extends DataGridSource {
   @override
   Widget? buildGroupCaptionCellWidget(
       RowColumnIndex rowColumnIndex, String summaryValue) {
-    String titleGroup = summaryValue.split(":")[1].trim().split('-')[0].trim();
+    String? titleGroup = RegExp(r'\d+').firstMatch(summaryValue)?.group(0);
+    // String titleGroup = summaryValue.split(":")[1].trim().split('-')[0].trim();
     Map<String, dynamic> item = data.firstWhere(
-        (element) => element['PaymentAutoNumber'] == int.parse(titleGroup));
+        (element) => element['PaymentAutoNumber'] == int.parse(titleGroup!));
     bool select = false;
     return StatefulBuilder(
       builder: (context, ssetState) {
@@ -346,7 +347,7 @@ class TableDataSource extends DataGridSource {
                       onTapRowGroup(item['PaymentID']);
                     }),
                 Text(
-                  titleGroup,
+                  titleGroup!,
                   style: TextStyle(color: select == true ? Colors.white : null),
                 ),
               ],
