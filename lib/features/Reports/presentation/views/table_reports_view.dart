@@ -64,6 +64,7 @@ class _TableReportsViewState extends State<TableReportsView> {
                     return TableReportsViewBody(
                       tableModel: tableModel,
                       pageData: widget.pageData,
+                      reportModel: widget.reportModel,
                     );
                   } else if (state is TableReportFailure) {
                     return CustomErrorMassage(errorMassage: state.errorMassage);

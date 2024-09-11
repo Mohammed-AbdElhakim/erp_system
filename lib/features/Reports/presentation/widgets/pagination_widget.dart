@@ -104,31 +104,34 @@ class _PaginationWidgetState extends State<PaginationWidget> {
               ],
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Text(
-                  "${S.of(context).Total_number_of_entries}  ${widget.numberOfRecords}"),
-              SizedBox(
-                  height: 50.0,
-                  width: 110.0,
-                  child: DropdownButton(
-                    value: widget.dropdownValue,
-                    elevation: 16,
-                    isExpanded: true,
-                    underline: const SizedBox(),
-                    onChanged: (int? newValue) {
-                      widget.onChangeLimit(newValue!);
-                    },
-                    items: widget.listNumberItemInList
-                        .map<DropdownMenuItem<int>>((int value) {
-                      return DropdownMenuItem<int>(
-                        value: value,
-                        child: Center(child: Text(value.toString())),
-                      );
-                    }).toList(),
-                  )),
-            ],
+          Padding(
+            padding: const EdgeInsetsDirectional.only(end: 55),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Text(
+                    "${S.of(context).Total_number_of_entries}  ${widget.numberOfRecords}"),
+                SizedBox(
+                    height: 50.0,
+                    width: 110.0,
+                    child: DropdownButton(
+                      value: widget.dropdownValue,
+                      elevation: 16,
+                      isExpanded: true,
+                      underline: const SizedBox(),
+                      onChanged: (int? newValue) {
+                        widget.onChangeLimit(newValue!);
+                      },
+                      items: widget.listNumberItemInList
+                          .map<DropdownMenuItem<int>>((int value) {
+                        return DropdownMenuItem<int>(
+                          value: value,
+                          child: Center(child: Text(value.toString())),
+                        );
+                      }).toList(),
+                    )),
+              ],
+            ),
           )
         ],
       ),
