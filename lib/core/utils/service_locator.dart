@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
+import 'package:erp_system/features/accountProf/data/repositories/account_prof_repo_impl.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../features/Reports/data/repositories/reports_repo_impl.dart';
 import '../../features/attendance/data/repositories/attendance_repo_impl.dart';
-import '../../features/auth/data/repositories/login/login_repo_impl.dart';
-import '../../features/cashier/data/repositories/cashier_repo_impl.dart';
+import '../../features/auth/data/repositories/login/logincashier_repo_impl.dart';
 import '../../features/chart/data/repositories/chart_repo_impl.dart';
 import '../../features/generalBalance/data/repositories/general_balance_repo_impl.dart';
 import '../../features/profit/data/repositories/profit_repo_impl.dart';
@@ -53,8 +53,13 @@ void setupServiceLocator() {
       getIt.get<ApiService>(),
     ),
   );
-  getIt.registerSingleton<CashierRepoImpl>(
-    CashierRepoImpl(
+  getIt.registerSingleton<GeneralBalanceRepoImpl>(
+    GeneralBalanceRepoImpl(
+      getIt.get<ApiService>(),
+    ),
+  );
+  getIt.registerSingleton<AccountProfRepoImpl>(
+    AccountProfRepoImpl(
       getIt.get<ApiService>(),
     ),
   );
