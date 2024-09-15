@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../features/Reports/presentation/views/reports_view.dart';
+import '../../features/accountProf/presentation/views/account_prof_view.dart';
 import '../../features/attendance/presentation/views/attendance_view.dart';
 import '../../features/cashier/presentation/views/cashier_view.dart';
 import '../../features/chart/presentation/views/chart_view.dart';
@@ -41,6 +42,8 @@ class ScreenView extends StatelessWidget {
             return CashierView(pageData: pageData);
           case "PivotTable":
             return ReportsView(pageData: pageData);
+          case "profAccount":
+            return AccountProfView(pageData: pageData);
           default:
             return ScreenTable(pageData: pageData);
         }
