@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/errors/failures.dart';
+import '../models/account_prof_model.dart';
 import '../models/all_dropdown_model.dart';
 import '../models/screen_model.dart';
 
@@ -21,5 +22,14 @@ abstract class AccountProfRepo {
   });
   Future<Either<Failure, List<AllDropdownModel>>> getAllDropdownList({
     required int pageID,
+  });
+
+  Future<Either<Failure, String>> add({
+    required String controllerName,
+    required Map<String, dynamic> body,
+  });
+
+  Future<Either<Failure, AccountProfModel>> getTableAccountProf({
+    required Map<String, dynamic> objectData,
   });
 }

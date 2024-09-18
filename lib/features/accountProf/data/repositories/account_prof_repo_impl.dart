@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:erp_system/core/errors/failures.dart';
+import 'package:erp_system/features/accountProf/data/models/account_prof_model.dart';
 import 'package:erp_system/features/accountProf/data/models/all_dropdown_model.dart';
 import 'package:erp_system/features/accountProf/data/models/screen_model.dart';
 
@@ -96,6 +97,75 @@ class AccountProfRepoImpl implements AccountProfRepo {
       ScreenModel screenModel = ScreenModel.fromJson(data);
 
       return right(screenModel);
+    } catch (e) {
+      if (e is DioException) {
+        return left(
+          ServerFailure.fromDioException(e),
+        );
+      }
+      return left(
+        ServerFailure(
+          e.toString(),
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> add({
+    required String controllerName,
+    required Map<String, dynamic> body,
+  }) async {
+    try {
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
+              "";
+      String token =
+          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+
+      var data = await apiService.post(
+        endPoint: "home/AddEdit?controllerName=$controllerName",
+        data: body,
+        headers: {
+          "Authorization": "Bearer $token",
+          "CompanyKey": companyKey,
+        },
+      );
+      return right(data.toString());
+    } catch (e) {
+      if (e is DioException) {
+        return left(
+          ServerFailure.fromDioException(e),
+        );
+      }
+      return left(
+        ServerFailure(
+          e.toString(),
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<Failure, AccountProfModel>> getTableAccountProf(
+      {required Map<String, dynamic> objectData}) async {
+    try {
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
+              "";
+      String token =
+          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      Map<String, dynamic> data = await apiService.post(
+        endPoint: "web/ProfAccount/getDataGlobal",
+        data: objectData,
+        headers: {
+          "Authorization": "Bearer $token",
+          "CompanyKey": companyKey,
+        },
+      );
+      AccountProfModel accountProfModel = AccountProfModel.fromJson(data);
+
+      return right(accountProfModel);
     } catch (e) {
       if (e is DioException) {
         return left(
