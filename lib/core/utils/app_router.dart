@@ -2,7 +2,6 @@ import 'package:erp_system/features/screenTable/presentation/views/edit_view.dar
 import 'package:go_router/go_router.dart';
 
 import '../../features/Reports/data/models/pass_data_table_report_view.dart';
-import '../../features/Reports/data/models/report_model.dart';
 import '../../features/Reports/presentation/views/table_reports_view.dart';
 import '../../features/auth/presentation/views/login_view.dart';
 import '../../features/bottomNavigationBar/presentation/views/bottom_navigatiaon_bar_view.dart';

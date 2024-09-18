@@ -1740,7 +1740,7 @@ class _AddSalesState extends State<AddSales> {
       AddSales.listCustomerAccount = dataCustomerAccount['dynamicList'];
       AddSales.listBarcodeData = barcodeData['dynamicList'];
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -1819,7 +1819,7 @@ class _AddSalesState extends State<AddSales> {
         ),
       );
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -1849,7 +1849,6 @@ class _AddSalesState extends State<AddSales> {
       PermissionModel permissionModel = PermissionModel.fromJson(data);
       return permissionModel.showNew;
     } catch (e) {
-      print(e);
       return false;
     }
   }
@@ -1878,7 +1877,7 @@ class _AddSalesState extends State<AddSales> {
         myAllDropdownModelList = dataList;
       });
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -1919,7 +1918,7 @@ class _AddSalesState extends State<AddSales> {
         isGetLocationAndListLocation = false;
       });
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 

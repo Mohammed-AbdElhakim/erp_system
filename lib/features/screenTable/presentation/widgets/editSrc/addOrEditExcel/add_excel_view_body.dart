@@ -636,7 +636,7 @@ class _AddExcelViewBodyState extends State<AddExcelViewBody> {
         ),
       );
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -666,7 +666,6 @@ class _AddExcelViewBodyState extends State<AddExcelViewBody> {
       PermissionModel permissionModel = PermissionModel.fromJson(data);
       return permissionModel.showNew;
     } catch (e) {
-      print(e);
       return false;
     }
   }
@@ -695,7 +694,7 @@ class _AddExcelViewBodyState extends State<AddExcelViewBody> {
         myAllDropdownModelList = dataList;
       });
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -746,7 +745,7 @@ class _AddExcelViewBodyState extends State<AddExcelViewBody> {
       AddExcelViewBody.listCustomerAccount = dataCustomerAccount['dynamicList'];
       AddExcelViewBody.listBarcodeData = barcodeData['dynamicList'];
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 }

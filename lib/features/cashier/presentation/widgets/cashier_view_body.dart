@@ -582,7 +582,7 @@ class _CashierViewBodyState extends State<CashierViewBody> {
         ),
       );
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -610,7 +610,7 @@ class _CashierViewBodyState extends State<CashierViewBody> {
         myAllDropdownModelList = dataList;
       });
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -640,7 +640,6 @@ class _CashierViewBodyState extends State<CashierViewBody> {
       PermissionModel permissionModel = PermissionModel.fromJson(data);
       return permissionModel.showNew;
     } catch (e) {
-      print(e);
       return false;
     }
   }
@@ -851,9 +850,6 @@ class _CashierViewBodyState extends State<CashierViewBody> {
                                                     .add(data);
                                               });
                                             } else {
-                                              print(
-                                                  "=============${itemSearch['Qty']}=========");
-
                                               itemSearch['Qty'] = (int.parse(
                                                           itemSearch['Qty']) +
                                                       1)
@@ -2181,7 +2177,7 @@ class _CashierViewBodyState extends State<CashierViewBody> {
       CashierViewBody.listCustomerAccount = dataCustomerAccount['dynamicList'];
       CashierViewBody.listBarcodeData = barcodeData['dynamicList'];
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -2299,7 +2295,7 @@ class _CashierViewBodyState extends State<CashierViewBody> {
         isGetLocationAndListLocation = false;
       });
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 

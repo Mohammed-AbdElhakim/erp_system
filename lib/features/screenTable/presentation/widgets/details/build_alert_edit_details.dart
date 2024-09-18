@@ -752,7 +752,7 @@ class _BuildAlertEditDetailsState extends State<BuildAlertEditDetails> {
         ),
       );
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -782,7 +782,6 @@ class _BuildAlertEditDetailsState extends State<BuildAlertEditDetails> {
       PermissionModel permissionModel = PermissionModel.fromJson(data);
       return permissionModel.showNew;
     } catch (e) {
-      print(e);
       return false;
     }
   }
@@ -811,7 +810,7 @@ class _BuildAlertEditDetailsState extends State<BuildAlertEditDetails> {
         myAllDropdownModelList = dataList;
       });
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 }

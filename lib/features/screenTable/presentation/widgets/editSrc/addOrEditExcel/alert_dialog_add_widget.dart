@@ -483,7 +483,7 @@ class _AlertDialogAddWidgetState extends State<AlertDialogAddWidget> {
         ),
       );
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -513,7 +513,6 @@ class _AlertDialogAddWidgetState extends State<AlertDialogAddWidget> {
       PermissionModel permissionModel = PermissionModel.fromJson(data);
       return permissionModel.showNew;
     } catch (e) {
-      print(e);
       return false;
     }
   }
@@ -542,7 +541,7 @@ class _AlertDialogAddWidgetState extends State<AlertDialogAddWidget> {
         myAllDropdownModelList = dataList;
       });
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 }

@@ -165,9 +165,6 @@ class _SalesTableAddEditState extends State<SalesTableAddEdit> {
                   //   ));
 
                   getDataPro(widget.typeView, resultScanner);
-                  print(
-                      "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n==========$productId================\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-
                   if (productId == -1) {
                     ScaffoldMessenger.of(context)
                       ..removeCurrentSnackBar()

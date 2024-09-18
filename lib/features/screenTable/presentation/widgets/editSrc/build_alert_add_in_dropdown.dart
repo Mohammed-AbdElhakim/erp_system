@@ -559,7 +559,7 @@ class _BuildAlertAddInDropdownState extends State<BuildAlertAddInDropdown> {
         myAllDropdownModelList = dataList;
       });
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 }

@@ -67,7 +67,6 @@ class _CustomProductItemWidgetState extends State<CustomProductItemWidget> {
                 proName: widget.productItem.proName,
                 proId: widget.productItem.proID,
                 onTapAdd: (data) {
-                  print(data);
                   // tableListInAddView.add(data);
                   widget.onTapAdd(data);
                 },

@@ -616,7 +616,7 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
         ),
       );
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -674,7 +674,7 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
         myAllDropdownModelList = dataList;
       });
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 }

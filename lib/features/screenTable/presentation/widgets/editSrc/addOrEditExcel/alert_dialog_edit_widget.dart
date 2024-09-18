@@ -556,7 +556,7 @@ class _AlertDialogEditWidgetState extends State<AlertDialogEditWidget> {
         ),
       );
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -586,7 +586,6 @@ class _AlertDialogEditWidgetState extends State<AlertDialogEditWidget> {
       PermissionModel permissionModel = PermissionModel.fromJson(data);
       return permissionModel.showNew;
     } catch (e) {
-      print(e);
       return false;
     }
   }
@@ -615,7 +614,7 @@ class _AlertDialogEditWidgetState extends State<AlertDialogEditWidget> {
         myAllDropdownModelList = dataList;
       });
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 }

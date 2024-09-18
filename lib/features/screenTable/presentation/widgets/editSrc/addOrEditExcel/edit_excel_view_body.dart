@@ -79,7 +79,6 @@ class _EditExcelViewBodyState extends State<EditExcelViewBody> {
 
   @override
   Widget build(BuildContext context) {
-    print(id);
     return BlocProvider(
       create: (context) => GetExpensesMasterCubit(getIt.get<ScreenRepoImpl>())
         ..getExpensesMaster(
@@ -808,7 +807,7 @@ class _EditExcelViewBodyState extends State<EditExcelViewBody> {
         ),
       );
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -838,7 +837,6 @@ class _EditExcelViewBodyState extends State<EditExcelViewBody> {
       PermissionModel permissionModel = PermissionModel.fromJson(data);
       return permissionModel.showNew;
     } catch (e) {
-      print(e);
       return false;
     }
   }
@@ -867,7 +865,7 @@ class _EditExcelViewBodyState extends State<EditExcelViewBody> {
         myAllDropdownModelList = dataList;
       });
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 }

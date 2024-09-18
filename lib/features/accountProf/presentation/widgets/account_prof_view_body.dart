@@ -514,7 +514,6 @@ class _AccountProfViewBodyState extends State<AccountProfViewBody> {
       PermissionModel permissionModel = PermissionModel.fromJson(data);
       return permissionModel.showNew;
     } catch (e) {
-      print(e);
       return false;
     }
   }
@@ -567,7 +566,7 @@ class _AccountProfViewBodyState extends State<AccountProfViewBody> {
         ),
       );
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 
@@ -595,7 +594,7 @@ class _AccountProfViewBodyState extends State<AccountProfViewBody> {
         myAllDropdownModelList = dataList;
       });
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 
