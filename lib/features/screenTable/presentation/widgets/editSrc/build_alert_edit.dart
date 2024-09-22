@@ -59,17 +59,11 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
   void initState() {
     myListCategory = ScreenTable.listCategory;
     myAllDropdownModelList = ScreenTable.myAllDropdownModelList;
-    String primary = "";
-    for (var i in widget.columnList) {
-      if (i.columnName == widget.pageData.primary) {
-        primary =
-            (lang == AppStrings.enLangKey ? i.enColumnLabel : i.arColumnLabel)!;
-      }
-    }
-    id = widget.pageData.tableSrc == AppStrings.tableGroup
-        ? ScreenTable.rowData[0].toString()
-        : ScreenTable.rowData[0][primary].toString();
-    // : ScreenTable.rowData[0][widget.pageData.primary].toString();
+    // id = widget.pageData.tableSrc == AppStrings.tableGroup
+    //     ? ScreenTable.rowData[0].toString()
+    //     // : ScreenTable.rowData[0][primary].toString();
+    //     : ScreenTable.rowData[0][widget.pageData.primary].toString();
+    id = ScreenTable.rowData[0].toString();
     super.initState();
   }
 

@@ -81,18 +81,8 @@ class _TableGeneralState extends State<TableGeneral> {
                 List<String> listHeader = [];
                 List<dynamic> listKey = [];
                 List<ColumnList> listColumn = [];
-                List<String> listHeaderInTable = [];
-                List<dynamic> listKeyInTable = [];
-                List<ColumnList> listColumnInTable = [];
                 List<String> category = [];
                 for (var item in listColumns) {
-                  if (item.visible == true) {
-                    listHeaderInTable.add(lang == AppStrings.enLangKey
-                        ? item.enColumnLabel!
-                        : item.arColumnLabel!);
-                    listKeyInTable.add(item.columnName);
-                    listColumnInTable.add(item);
-                  }
                   listHeader.add(lang == AppStrings.enLangKey
                       ? item.enColumnLabel!
                       : item.arColumnLabel!);
@@ -109,10 +99,8 @@ class _TableGeneralState extends State<TableGeneral> {
                     : (numberOfRecords ~/ ScreenTable.dropdownValue) + 1;
                 return CustomTableGeneral(
                   pageData: widget.pageData,
-                  listHeader: listHeaderInTable,
-                  listKey: listKeyInTable,
                   listData: listData!,
-                  listColumn: listColumnInTable,
+                  listColumn: listColumn,
                   listSum: listSum,
                   allDropdownModelList: allDropdownModelList,
                   paginationWidget: PaginationWidget(
@@ -235,7 +223,11 @@ class _TableGeneralState extends State<TableGeneral> {
                     );
                   },
                   onTapRow: (rowData) {
-                    ScreenTable.rowData = rowData;
+                    List<String> idList = [];
+                    for (var i in rowData) {
+                      idList.add(i[widget.pageData.primary]);
+                    }
+                    ScreenTable.rowData = idList;
                   },
                 );
               } else if (state is GetTableFailure) {

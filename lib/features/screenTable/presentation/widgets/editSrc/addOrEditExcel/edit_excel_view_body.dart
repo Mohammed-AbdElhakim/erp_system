@@ -65,9 +65,10 @@ class _EditExcelViewBodyState extends State<EditExcelViewBody> {
   @override
   void initState() {
     myAllDropdownModelList = ScreenTable.myAllDropdownModelList;
-    id = widget.pageData.tableSrc == AppStrings.tableGroup
-        ? ScreenTable.rowData[0].toString()
-        : ScreenTable.rowData[0][widget.pageData.primary].toString();
+    // id = widget.pageData.tableSrc == AppStrings.tableGroup
+    //     ? ScreenTable.rowData[0].toString()
+    //     : ScreenTable.rowData[0][widget.pageData.primary].toString();
+    id = ScreenTable.rowData[0].toString();
     super.initState();
   }
 

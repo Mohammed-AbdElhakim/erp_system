@@ -19,8 +19,8 @@ class AppStrings {
   static const String longKey = "longKey";
   static const String tableGroup = "accountingParmentTable";
   static const String addOrEditDefault = "addOrEditDefault";
-  static const String addOrEditExcel = "addOrEditExcel";
-  static const String addSalesEdit = "addSalesEdit";
+  static const String addOrEditExcel = "entry";
+  static const String addSalesEdit = "salesDetails";
   static const String trialBalance = "trialBalance";
   static const String openingBalances = "الأرصدة الافتتاحية";
   static const String movement = "الحركة";

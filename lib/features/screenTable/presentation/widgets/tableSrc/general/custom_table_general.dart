@@ -8,7 +8,6 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import '../../../../../../core/models/menu_model/pages.dart';
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_router.dart';
-import '../../../../../../core/utils/methods.dart';
 import '../../../../data/models/dropdown_model/all_dropdown_model.dart';
 import '../../../../data/models/passData/pass_data_details_row.dart';
 import '../../../../data/models/screen_model.dart';
@@ -19,9 +18,7 @@ typedef OnTapRow<T> = void Function(T rowData);
 class CustomTableGeneral extends StatefulWidget {
   const CustomTableGeneral({
     super.key,
-    required this.listHeader,
     required this.listData,
-    required this.listKey,
     required this.paginationWidget,
     required this.onTapHeader,
     required this.listColumn,
@@ -31,10 +28,8 @@ class CustomTableGeneral extends StatefulWidget {
     required this.pageData,
   });
   final Pages pageData;
-  final List<String> listHeader;
   final List<dynamic> listData;
   final List<dynamic>? listSum;
-  final List<dynamic> listKey;
   final List<ColumnList> listColumn;
   final List<AllDropdownModel> allDropdownModelList;
   final Widget paginationWidget;
@@ -69,13 +64,10 @@ class _CustomTableGeneralState extends State<CustomTableGeneral> {
 
     tableDataSource = TableDataSource(
       data: widget.listData,
-      keys: widget.listKey,
       pageData: widget.pageData,
       context: context,
       listColumn: widget.listColumn,
       allDropdownModelList: widget.allDropdownModelList,
-      onTapRowGroup: (rowId) {},
-      listHeader: widget.listHeader,
       listSum: widget.listSum,
     );
     super.initState();
@@ -393,10 +385,11 @@ class _CustomTableGeneralState extends State<CustomTableGeneral> {
                       label: const Text(""),
                     ),
                   ...List.generate(
-                    widget.listHeader.length,
+                    widget.listColumn.length,
                     (index) => GridColumn(
-                      // minimumWidth: 120,
-                      columnName: widget.listHeader[index],
+                      minimumWidth: 120,
+                      maximumWidth: 320,
+                      columnName: widget.listColumn[index].columnName!,
                       label: InkWell(
                         onTap: () {
                           widget.onTapHeader(
@@ -404,15 +397,35 @@ class _CustomTableGeneralState extends State<CustomTableGeneral> {
                         },
                         child: Center(
                           child: Text(
-                            widget.listHeader[index],
+                            widget.listColumn[index].arColumnLabel!,
                             style: const TextStyle(color: Colors.white),
                           ),
                         ),
                       ),
+                      visible: widget.listColumn[index].visible!,
                     ),
                   )
                 ],
+                onCellLongPress: (DataGridCellLongPressDetails details) {
+                  final String text = tableDataSource
+                      .effectiveRows[details.rowColumnIndex.rowIndex - 1]
+                      .getCells()[details.rowColumnIndex.columnIndex - 1]
+                      .value;
 
+                  if (text.isNotEmpty) {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          content: Text(
+                            text,
+                            textAlign: TextAlign.center,
+                          ),
+                        );
+                      },
+                    );
+                  }
+                },
                 tableSummaryRows: [
                   if (widget.listSum!.isNotEmpty)
                     GridTableSummaryRow(
@@ -426,11 +439,11 @@ class _CustomTableGeneralState extends State<CustomTableGeneral> {
                             summaryType: GridSummaryType.sum,
                           ),
                         ...List.generate(
-                          widget.listHeader.length,
+                          widget.listColumn.length,
                           (index) {
                             return GridSummaryColumn(
                               name: 'Sum',
-                              columnName: widget.listHeader[index],
+                              columnName: widget.listColumn[index].columnName!,
                               summaryType: GridSummaryType.sum,
                             );
                           },
@@ -529,21 +542,15 @@ class TableDataSource extends DataGridSource {
   final List<ColumnList> listColumn;
   final BuildContext context;
   final List<dynamic> data;
-  final List<dynamic> keys;
-  final List<String> listHeader;
   final Pages pageData;
   final List<AllDropdownModel> allDropdownModelList;
-  final OnTapRow<int> onTapRowGroup;
   final List<dynamic>? listSum;
   TableDataSource({
     required this.listColumn,
     required this.context,
     required this.data,
-    required this.keys,
     required this.pageData,
     required this.allDropdownModelList,
-    required this.onTapRowGroup,
-    required this.listHeader,
     required this.listSum,
   }) {
     dataGridRows = data.map<DataGridRow>((e) {
@@ -551,11 +558,11 @@ class TableDataSource extends DataGridSource {
         if (pageData.master == true)
           const DataGridCell(columnName: "icon", value: ""),
         ...List.generate(
-          listHeader.length,
+          listColumn.length,
           (index) => DataGridCell(
-              columnName: listHeader[index],
-              value:
-                  getValue(listColumn, keys[index], "${e[keys[index]] ?? ""}")),
+              columnName: listColumn[index].columnName!,
+              value: getValue(listColumn, listColumn[index].columnName!,
+                  "${e[listColumn[index].columnName!] ?? ""}")),
           // columnName: listHeader[index], value: "${e[keys[index]] ?? ""}"),
         )
       ]);
@@ -579,9 +586,8 @@ class TableDataSource extends DataGridSource {
         if (e.columnName == "icon") {
           columnList = listColumn[0];
         } else {
-          columnList = listColumn.firstWhere((element) =>
-              ((element.enColumnLabel == e.columnName) ||
-                  (element.arColumnLabel == e.columnName)));
+          columnList = listColumn
+              .firstWhere((element) => element.columnName == e.columnName);
         }
       }
       if (e.columnName == "icon") {
@@ -607,27 +613,28 @@ class TableDataSource extends DataGridSource {
           ),
         );
       } else {
-        return InkWell(
-          onTap: columnList.insertType! != "date"
-              ? () {
-                  buildShowDialog(context,
-                      text: e.value.toString(),
-                      listName: pageData.listName,
-                      allDropdownModelList: allDropdownModelList,
-                      columnList: columnList);
-                }
-              : null,
-          child: Container(
-            alignment: Alignment.center,
-            padding: const EdgeInsets.all(8),
-            child: e.columnName.toString() == pageData.primary
-                ? Text(e.value.toString())
-                : buildMyWidget(
-                    value: e.value.toString(),
-                    columnList: columnList,
-                    // indexRow: ,
-                  ),
-          ),
+        // return InkWell(
+        //   onTap: columnList.insertType! != "date"
+        //       ? () {
+        //           buildShowDialog(context,
+        //               text: e.value.toString(),
+        //               listName: pageData.listName,
+        //               allDropdownModelList: allDropdownModelList,
+        //               columnList: columnList);
+        //         }
+        //       : null,
+        //   child: ,
+        // );
+        return Container(
+          alignment: Alignment.center,
+          padding: const EdgeInsets.all(8),
+          child: e.columnName.toString() == pageData.primary
+              ? Text(e.value.toString())
+              : buildMyWidget(
+                  value: e.value.toString(),
+                  columnList: columnList,
+                  // indexRow: ,
+                ),
         );
       }
     }).toList());
