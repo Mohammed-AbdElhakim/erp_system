@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/models/menu_model/pages.dart';
-import '../../../../core/utils/app_strings.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
 import '../../data/models/screen_model.dart';
 import '../widgets/editSrc/addOrEditExcel/add_excel_view_body.dart';
@@ -46,7 +45,7 @@ class AddView extends StatelessWidget {
                   create: (context) =>
                       GetListSetupsCubit(getIt.get<ScreenRepoImpl>())
                         ..getListSetups(listName),
-                  child: getMyWidget(pageData.editSrc, state),
+                  child: getMyWidget(state.tapModel.list[0].tableSrc, state),
                 );
               } else if (state is GetPageDetailsFailure) {
                 return CustomErrorMassage(errorMassage: state.errorMassage);
@@ -60,20 +59,22 @@ class AddView extends StatelessWidget {
     );
   }
 
-  getMyWidget(String editSrc, GetPageDetailsSuccess state) {
-    switch (editSrc) {
-      case AppStrings.addOrEditExcel:
+  getMyWidget(String tableSrc, GetPageDetailsSuccess state) {
+    switch (tableSrc) {
+      case "entry":
         return AddExcelViewBody(
           tapData: state.tapModel.list[0],
           pageData: pageData,
           listKey: listKey,
         );
-      case AppStrings.addSalesEdit:
+      case "salesDetails":
         return AddSales(
           tapData: state.tapModel.list[0],
           pageData: pageData,
           listKey: listKey,
         );
+      default:
+        return Center(child: Text("TableSrc Details =>$tableSrc"));
     }
   }
 }
