@@ -22,7 +22,7 @@ import '../../../data/models/screen_model.dart';
 import '../../../data/models/tap_model.dart';
 import '../../views/screen_table.dart';
 import '../build_alert_search.dart';
-import '../editSrc/build_alert_add_in_dropdown.dart';
+import '../tableSrcPageDetails/build_alert_add_in_dropdown.dart';
 import 'tap_details_widget_body.dart';
 
 typedef OnTapSearch<T> = void Function(T myStatement);

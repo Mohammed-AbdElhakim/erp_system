@@ -3,7 +3,7 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 
 import '../../../../core/utils/methods.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
-import '../widgets/editSrc/addSalesEdit/row_settings_scanner.dart';
+import '../widgets/tableSrcPageDetails/addSalesEdit/row_settings_scanner.dart';
 
 class BarcodeView extends StatefulWidget {
   const BarcodeView({super.key});

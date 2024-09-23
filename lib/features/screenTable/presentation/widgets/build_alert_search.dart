@@ -24,7 +24,7 @@ import '../../data/models/permission_model.dart';
 import '../../data/models/screen_model.dart';
 import '../manager/getTable/get_table_cubit.dart';
 import '../views/screen_table.dart';
-import 'editSrc/build_alert_add_in_dropdown.dart';
+import 'tableSrcPageDetails/build_alert_add_in_dropdown.dart';
 
 class BuildAlertSearch extends StatefulWidget {
   const BuildAlertSearch(

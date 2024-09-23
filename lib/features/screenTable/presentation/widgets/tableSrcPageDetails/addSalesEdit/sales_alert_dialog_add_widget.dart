@@ -1,5 +1,4 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
-import 'package:erp_system/features/screenTable/presentation/widgets/editSrc/addSalesEdit/add_sales.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../../core/models/menu_model/pages.dart';
@@ -12,6 +11,7 @@ import '../../../../../../generated/l10n.dart';
 import '../../../../data/models/dropdown_model/all_dropdown_model.dart';
 import '../../../../data/models/item_list_setup_model.dart';
 import '../../../../data/models/tap_model.dart';
+import 'add_sales.dart';
 import 'edit_sales.dart';
 
 typedef OnTapAdd<T> = void Function(T data);

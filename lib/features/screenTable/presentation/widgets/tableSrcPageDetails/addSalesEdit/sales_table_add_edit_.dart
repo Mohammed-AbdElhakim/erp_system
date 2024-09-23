@@ -1,4 +1,3 @@
-import 'package:erp_system/features/screenTable/presentation/widgets/editSrc/addSalesEdit/edit_sales.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:linked_scroll_controller/linked_scroll_controller.dart';
@@ -16,6 +15,7 @@ import '../../../../data/models/tap_model.dart';
 import '../../../views/barcode_view.dart';
 import '../../../views/screen_table.dart';
 import 'add_sales.dart';
+import 'edit_sales.dart';
 import 'sales_alert_dialog_add_widget.dart';
 import 'sales_alert_dialog_edit_widget.dart';
 

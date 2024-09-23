@@ -11,8 +11,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/models/menu_model/pages.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
 import '../../data/models/screen_model.dart';
-import '../widgets/editSrc/addOrEditExcel/add_excel_view_body.dart';
-import '../widgets/editSrc/addSalesEdit/add_sales.dart';
+import '../widgets/tableSrcPageDetails/addOrEditExcel/add_excel_view_body.dart';
+import '../widgets/tableSrcPageDetails/addSalesEdit/add_sales.dart';
 
 class AddView extends StatelessWidget {
   const AddView(

@@ -5,14 +5,14 @@ import 'package:erp_system/core/widgets/custom_loading_widget.dart';
 import 'package:erp_system/features/screenTable/data/repositories/screen_repo_impl.dart';
 import 'package:erp_system/features/screenTable/presentation/manager/getListSetups/get_list_setups_cubit.dart';
 import 'package:erp_system/features/screenTable/presentation/manager/getPageDetails/get_page_details_cubit.dart';
-import 'package:erp_system/features/screenTable/presentation/widgets/editSrc/addSalesEdit/edit_sales.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/models/menu_model/pages.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
 import '../../data/models/screen_model.dart';
-import '../widgets/editSrc/addOrEditExcel/edit_excel_view_body.dart';
+import '../widgets/tableSrcPageDetails/addOrEditExcel/edit_excel_view_body.dart';
+import '../widgets/tableSrcPageDetails/addSalesEdit/edit_sales.dart';
 
 class EditView extends StatefulWidget {
   const EditView(

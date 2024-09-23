@@ -24,7 +24,7 @@ import '../../../data/models/tap_model.dart';
 import '../../manager/addEdit/add_edit_cubit.dart';
 import '../../manager/getPageDetailsTable/get_page_details_table_cubit.dart';
 import '../../views/screen_table.dart';
-import '../editSrc/build_alert_add_in_dropdown.dart';
+import '../tableSrcPageDetails/build_alert_add_in_dropdown.dart';
 
 typedef OnTapAdd<T> = void Function(T newRowData);
 

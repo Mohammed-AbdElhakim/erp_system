@@ -5,7 +5,6 @@ import 'package:erp_system/core/widgets/custom_loading_widget.dart';
 import 'package:erp_system/features/screenTable/data/models/item_list_setup_model.dart';
 import 'package:erp_system/features/screenTable/presentation/manager/addEditExpenses/add_edit_expenses_cubit.dart';
 import 'package:erp_system/features/screenTable/presentation/manager/getListSetups/get_list_setups_cubit.dart';
-import 'package:erp_system/features/screenTable/presentation/widgets/editSrc/addSalesEdit/sales_table_add_edit_.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
@@ -31,6 +30,7 @@ import '../../../../data/models/tap_model.dart';
 import '../../../manager/getTable/get_table_cubit.dart';
 import '../../../views/screen_table.dart';
 import '../build_alert_add_in_dropdown.dart';
+import 'sales_table_add_edit_.dart';
 
 class AddSales extends StatefulWidget {
   const AddSales(
