@@ -364,11 +364,23 @@ class _SalesAlertDialogEditWidgetState
                                   priceController.text = "";
                                 }
                               }
-
-                              newRowData.addAll({
-                                widget.listColumn[3].searchName!.toString():
-                                    proID
-                              });
+                              if (widget.dataOld.containsKey(
+                                  widget.listColumn[3].searchName)) {
+                                // setState(() {
+                                widget.dataOld.updateAll((key, value) => key ==
+                                        widget.listColumn[3].searchName!
+                                            .toString()
+                                    ? value = proID
+                                    : value);
+                                newRowData = widget.dataOld;
+                                // });
+                              } else {
+                                // setState(() {
+                                widget.dataOld[widget.listColumn[3].searchName!
+                                    .toString()] = proID;
+                                newRowData = widget.dataOld;
+                                // });
+                              }
                             },
                           ),
                         ],

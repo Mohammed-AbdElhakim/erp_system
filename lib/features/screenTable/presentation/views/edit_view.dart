@@ -13,6 +13,7 @@ import '../../../../core/widgets/custom_app_bar.dart';
 import '../../data/models/screen_model.dart';
 import '../widgets/tableSrcPageDetails/addOrEditExcel/edit_excel_view_body.dart';
 import '../widgets/tableSrcPageDetails/addSalesEdit/edit_sales.dart';
+import '../widgets/tableSrcPageDetails/purchases/edit_purchases.dart';
 
 class EditView extends StatefulWidget {
   const EditView(
@@ -74,6 +75,12 @@ class _EditViewState extends State<EditView> {
         );
       case "salesDetails":
         return EditSales(
+          tapData: state.tapModel.list[0],
+          pageData: widget.pageData,
+          listKey: widget.listKey,
+        );
+      case "Purchases":
+        return EditPurchases(
           tapData: state.tapModel.list[0],
           pageData: widget.pageData,
           listKey: widget.listKey,

@@ -286,6 +286,21 @@ class _CustomFloatingActionButtonState
                       listKey: listKey,
                     ))
                 .then((value) {
+              BlocProvider.of<GetTableCubit>(context).getTable(
+                  pageId: widget.pageData.pageId,
+                  employee: false,
+                  isdesc: widget.pageData.isDesc,
+                  limit: 10,
+                  offset: 0,
+                  orderby: widget.pageData.orderBy,
+                  statment: '',
+                  selectcolumns: '',
+                  departmentName: widget.pageData.departmentName,
+                  isDepartment: widget.pageData.isDepartment,
+                  authorizationID: widget.pageData.authorizationID,
+                  viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
+                  numberOfPage: 1,
+                  dropdownValueOfLimit: 10);
               if (widget.pageData.tableSrc == AppStrings.tableGroup) {
                 ScreenTable.rowData.clear();
               }
@@ -312,12 +327,32 @@ class _CustomFloatingActionButtonState
           ),
         );
       } else {
-        GoRouter.of(context).push(AppRouter.kAddView,
-            extra: AddPassDataModel(
-              pageData: widget.pageData,
-              columnList: columnList,
-              listKey: listKey,
-            ));
+        GoRouter.of(context)
+            .push(AppRouter.kAddView,
+                extra: AddPassDataModel(
+                  pageData: widget.pageData,
+                  columnList: columnList,
+                  listKey: listKey,
+                ))
+            .then(
+          (value) {
+            BlocProvider.of<GetTableCubit>(context).getTable(
+                pageId: widget.pageData.pageId,
+                employee: false,
+                isdesc: widget.pageData.isDesc,
+                limit: 10,
+                offset: 0,
+                orderby: widget.pageData.orderBy,
+                statment: '',
+                selectcolumns: '',
+                departmentName: widget.pageData.departmentName,
+                isDepartment: widget.pageData.isDepartment,
+                authorizationID: widget.pageData.authorizationID,
+                viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
+                numberOfPage: 1,
+                dropdownValueOfLimit: 10);
+          },
+        );
       }
     }
   }

@@ -13,6 +13,7 @@ import '../../../../core/widgets/custom_app_bar.dart';
 import '../../data/models/screen_model.dart';
 import '../widgets/tableSrcPageDetails/addOrEditExcel/add_excel_view_body.dart';
 import '../widgets/tableSrcPageDetails/addSalesEdit/add_sales.dart';
+import '../widgets/tableSrcPageDetails/purchases/add_purchases.dart';
 
 class AddView extends StatelessWidget {
   const AddView(
@@ -73,46 +74,14 @@ class AddView extends StatelessWidget {
           pageData: pageData,
           listKey: listKey,
         );
+      case "Purchases":
+        return AddPurchases(
+          tapData: state.tapModel.list[0],
+          pageData: pageData,
+          listKey: listKey,
+        );
       default:
         return Center(child: Text("TableSrc Details =>$tableSrc"));
     }
   }
 }
-
-/*pageData.editSrc == AppStrings.addOrEditExcel
-              ? BlocProvider(
-                  create: (context) =>
-                      GetPageDetailsCubit(getIt.get<ScreenRepoImpl>())
-                        ..getPageDetails(pageData.pageId),
-                  child: BlocBuilder<GetPageDetailsCubit, GetPageDetailsState>(
-                    builder: (context, state) {
-                      if (state is GetPageDetailsSuccess) {
-                        String listName = state.tapModel.list[0].listName;
-                        return BlocProvider(
-                          create: (context) =>
-                              GetListSetupsCubit(getIt.get<ScreenRepoImpl>())
-                                ..getListSetups(listName),
-                          child: AddExcelViewBody(
-                            tapData: state.tapModel.list[0],
-                            pageData: pageData,
-                            listKey: listKey,
-                          ),
-                        );
-                      } else if (state is GetPageDetailsFailure) {
-                        return CustomErrorMassage(
-                            errorMassage: state.errorMassage);
-                      } else {
-                        return const CustomLoadingWidget();
-                      }
-                    },
-                  ),
-                )
-              : BlocProvider(
-                  create: (context) =>
-                      GetListSetupsCubit(getIt.get<ScreenRepoImpl>())
-                        ..getListSetups(pageData.listName),
-                  child: AddExcelViewBody(
-                    pageData: pageData,
-                    listKey: listKey,
-                  ),
-                )*/

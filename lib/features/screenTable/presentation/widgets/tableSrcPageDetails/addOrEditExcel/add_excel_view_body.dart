@@ -273,14 +273,10 @@ class _AddExcelViewBodyState extends State<AddExcelViewBody> {
       String title = lang == AppStrings.arLangKey
           ? item.arColumnLabel!
           : item.enColumnLabel!;
-      bool condition = widget.pageData.editSrc == AppStrings.addOrEditExcel
-          ? item.insertVisable == true &&
-              item.cvisable == false &&
-              item.visible == false &&
-              item.isGeneral == true
-          : item.insertVisable == true &&
-              item.cvisable == true &&
-              item.visible == true;
+      bool condition = item.insertVisable == true &&
+          item.cvisable == false &&
+          item.visible == false &&
+          item.isGeneral == true;
       //text
       if (item.insertType == "text" &&
           item.categoryTitle == categoryName &&
