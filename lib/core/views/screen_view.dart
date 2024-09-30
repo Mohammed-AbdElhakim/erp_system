@@ -5,6 +5,7 @@ import '../../features/accountProf/presentation/views/account_prof_view.dart';
 import '../../features/attendance/presentation/views/attendance_view.dart';
 import '../../features/cashier/presentation/views/cashier_view.dart';
 import '../../features/chart/presentation/views/chart_view.dart';
+import '../../features/customerAccount/presentation/views/customer_account_view.dart';
 import '../../features/generalBalance/presentation/views/general_balance_view.dart';
 import '../../features/profit/presentation/views/profit_view.dart';
 import '../../features/screenTable/presentation/views/screen_table.dart';
@@ -42,6 +43,8 @@ class ScreenView extends StatelessWidget {
             return CashierView(pageData: pageData);
           case "PivotTable":
             return ReportsView(pageData: pageData);
+          case "customerAccountReport":
+            return CustomerAccountView(pageData: pageData);
           case "profAccount":
             return AccountProfView(pageData: pageData);
           default:
