@@ -11,6 +11,7 @@ import '../../features/customerAccount/data/repositories/customer_account_repo_i
 import '../../features/generalBalance/data/repositories/general_balance_repo_impl.dart';
 import '../../features/profit/data/repositories/profit_repo_impl.dart';
 import '../../features/screenTable/data/repositories/screen_repo_impl.dart';
+import '../../features/supplierProcess/data/repositories/supplier_process_repo_impl.dart';
 import '../../features/tasks/data/repositories/task_repo_impl.dart';
 import '../../features/trialBalance/data/repositories/trial_balance_repo_impl.dart';
 import '../repositories/menu/menu_repo_impl.dart';
@@ -69,6 +70,12 @@ void setupServiceLocator() {
 
   getIt.registerSingleton<AccountProfRepoImpl>(
     AccountProfRepoImpl(
+      getIt.get<ApiService>(),
+    ),
+  );
+
+  getIt.registerSingleton<SupplierProcessRepoImpl>(
+    SupplierProcessRepoImpl(
       getIt.get<ApiService>(),
     ),
   );
