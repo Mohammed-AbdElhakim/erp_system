@@ -12,7 +12,6 @@ import '../../../../core/widgets/custom_error_massage.dart';
 import '../../../../core/widgets/custom_loading_widget.dart';
 import '../../data/models/all_dropdown_model.dart';
 import '../../data/models/screen_model.dart';
-import '../../data/models/supplier_process_model.dart';
 import '../../data/repositories/supplier_process_repo_impl.dart';
 import '../manager/supplierProcess/supplier_process_cubit.dart';
 import '../views/supplier_process_view.dart';
@@ -456,7 +455,22 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
             selectTab = 0;
             numberPage = 1;
             dropdownValue = listNumberItemInList[0];
-            createMyData(tableName: "[ProfAccount]", tailCondition: "");
+            createMyData(data: {
+              "pageId": widget.pageData.pageId,
+              "employee": false,
+              "limit": dropdownValue,
+              "offset": (numberPage * dropdownValue) - dropdownValue,
+              "statment": "",
+              "selectcolumns": "",
+              "IsDepartment": widget.pageData.isDepartment,
+              "DepartmentName": widget.pageData.departmentName,
+              "AuthorizationID": widget.pageData.authorizationID,
+              "ViewEmployeeColumn": widget.pageData.viewEmployeeColumn,
+              "OrderBy": widget.pageData.orderBy,
+              "IsDesc": widget.pageData.isDesc,
+              "tableName": "[ProfAccount]",
+              "tailcondition": "",
+            });
             _pageController.jumpToPage(2);
           },
         ),
@@ -473,14 +487,15 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                     selectTab: selectTab,
                     objectData: myData,
                     numberOfPage: numberPage,
+                    link: "ProfAccount",
                     dropdownValueOfLimit: dropdownValue,
                   ),
             child: BlocBuilder<SupplierProcessCubit, SupplierProcessState>(
               builder: (context, state) {
                 if (state is SupplierProcessSuccess) {
                   int? numberOfRecords = state.accountProfModel.numberofrecords;
-                  List<SupplierProcessItem>? listData =
-                      state.accountProfModel.dynamicList;
+
+                  List<dynamic>? listData = state.accountProfModel.dynamicList;
 
                   numberPage = state.numberPage;
                   selectTab = state.selectTap;
@@ -513,6 +528,11 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                             .getTableSupplierProcess(
                           selectTab: selectTab,
                           objectData: myData,
+                          link: selectTab == 0
+                              ? "ProfAccount"
+                              : selectTab == 5
+                                  ? "ProfAccount"
+                                  : "Structure",
                           numberOfPage: numberPage,
                           dropdownValueOfLimit: dropdownValue,
                         );
@@ -526,6 +546,11 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                             .getTableSupplierProcess(
                           selectTab: selectTab,
                           objectData: myData,
+                          link: selectTab == 0
+                              ? "ProfAccount"
+                              : selectTab == 5
+                                  ? "ProfAccount"
+                                  : "Structure",
                           numberOfPage: numberPage,
                           dropdownValueOfLimit: dropdownValue,
                         );
@@ -539,6 +564,11 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                             .getTableSupplierProcess(
                           selectTab: selectTab,
                           objectData: myData,
+                          link: selectTab == 0
+                              ? "ProfAccount"
+                              : selectTab == 5
+                                  ? "ProfAccount"
+                                  : "Structure",
                           numberOfPage: numberPage,
                           dropdownValueOfLimit: dropdownValue,
                         );
@@ -552,13 +582,31 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                         });
                         switch (index) {
                           case 0:
-                            createMyData(
-                                tableName: "[ProfAccount]", tailCondition: "");
+                            createMyData(data: {
+                              "pageId": widget.pageData.pageId,
+                              "employee": false,
+                              "limit": dropdownValue,
+                              "offset":
+                                  (numberPage * dropdownValue) - dropdownValue,
+                              "statment": "",
+                              "selectcolumns": "",
+                              "IsDepartment": widget.pageData.isDepartment,
+                              "DepartmentName": widget.pageData.departmentName,
+                              "AuthorizationID":
+                                  widget.pageData.authorizationID,
+                              "ViewEmployeeColumn":
+                                  widget.pageData.viewEmployeeColumn,
+                              "OrderBy": widget.pageData.orderBy,
+                              "IsDesc": widget.pageData.isDesc,
+                              "tableName": "[ProfAccount]",
+                              "tailcondition": "",
+                            });
 
                             BlocProvider.of<SupplierProcessCubit>(context)
                                 .getTableSupplierProcess(
                               selectTab: selectTab,
                               objectData: myData,
+                              link: "ProfAccount",
                               numberOfPage: numberPage,
                               dropdownValueOfLimit: dropdownValue,
                             );
@@ -578,14 +626,29 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                                   "${till}AND PODate <= CONVERT(DATETIME,'${widgetsData[3]['value']}', 102) ";
                             }
 
-                            createMyData(
-                                tableName: "[PurchaseDetialView]",
-                                tailCondition: till);
+                            createMyData(data: {
+                              "pageId": 289,
+                              "employee": false,
+                              "limit": dropdownValue,
+                              "offset":
+                                  (numberPage * dropdownValue) - dropdownValue,
+                              "statment": "",
+                              "selectcolumns": "",
+                              "IsDepartment": false,
+                              "DepartmentName": "",
+                              "AuthorizationID": 0,
+                              "ViewEmployeeColumn": "",
+                              "OrderBy": "POID",
+                              "IsDesc": true,
+                              "tableName": "[PurchaseDetialView]",
+                              "tailcondition": till,
+                            });
 
                             BlocProvider.of<SupplierProcessCubit>(context)
                                 .getTableSupplierProcess(
                               selectTab: selectTab,
                               objectData: myData,
+                              link: "Structure",
                               numberOfPage: numberPage,
                               dropdownValueOfLimit: dropdownValue,
                             );
@@ -605,15 +668,30 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                                   "${till}AND ActualPayDate <= CONVERT(DATETIME,'${widgetsData[3]['value']}', 102) ";
                             }
 
-                            createMyData(
-                                tableName: "[PaymentReciveView]",
-                                tailCondition: till);
+                            createMyData(data: {
+                              "pageId": 289,
+                              "employee": false,
+                              "limit": dropdownValue,
+                              "offset":
+                                  (numberPage * dropdownValue) - dropdownValue,
+                              "statment": "",
+                              "selectcolumns": "",
+                              "IsDepartment": false,
+                              "DepartmentName": "",
+                              "AuthorizationID": 0,
+                              "ViewEmployeeColumn": "",
+                              "OrderBy": "POID",
+                              "IsDesc": true,
+                              "tableName": "[PaymentReciveView]",
+                              "tailcondition": till,
+                            });
 
                             BlocProvider.of<SupplierProcessCubit>(context)
                                 .getTableSupplierProcess(
                               selectTab: selectTab,
                               objectData: myData,
                               numberOfPage: numberPage,
+                              link: "Structure",
                               dropdownValueOfLimit: dropdownValue,
                             );
                             break;
@@ -631,15 +709,33 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                               till =
                                   "${till}AND ExtractionDate <= CONVERT(DATETIME,'${widgetsData[3]['value']}', 102) ";
                             }
-                            createMyData(
-                                tableName: "[ExtractionDetailsReport]",
-                                tailCondition: till);
+
+                            createMyData(data: {
+                              "pageId": widget.pageData.pageId,
+                              "employee": false,
+                              "limit": dropdownValue,
+                              "offset":
+                                  (numberPage * dropdownValue) - dropdownValue,
+                              "statment": "",
+                              "selectcolumns": "",
+                              "IsDepartment": widget.pageData.isDepartment,
+                              "DepartmentName": widget.pageData.departmentName,
+                              "AuthorizationID":
+                                  widget.pageData.authorizationID,
+                              "ViewEmployeeColumn":
+                                  widget.pageData.viewEmployeeColumn,
+                              "OrderBy": widget.pageData.orderBy,
+                              "IsDesc": widget.pageData.isDesc,
+                              "tableName": "[ExtractionDetailsReport]",
+                              "tailcondition": till,
+                            });
 
                             BlocProvider.of<SupplierProcessCubit>(context)
                                 .getTableSupplierProcess(
                               selectTab: selectTab,
                               objectData: myData,
                               numberOfPage: numberPage,
+                              link: "Structure",
                               dropdownValueOfLimit: dropdownValue,
                             );
                             break;
@@ -657,27 +753,62 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                               till =
                                   "${till}AND ExtractionDate <= CONVERT(DATETIME,'${widgetsData[3]['value']}', 102) ";
                             }
-                            createMyData(
-                                tableName: "[ExtractionTotalReport]",
-                                tailCondition: till);
+
+                            createMyData(data: {
+                              "pageId": widget.pageData.pageId,
+                              "employee": false,
+                              "limit": dropdownValue,
+                              "offset":
+                                  (numberPage * dropdownValue) - dropdownValue,
+                              "statment": "",
+                              "selectcolumns": "",
+                              "IsDepartment": widget.pageData.isDepartment,
+                              "DepartmentName": widget.pageData.departmentName,
+                              "AuthorizationID":
+                                  widget.pageData.authorizationID,
+                              "ViewEmployeeColumn":
+                                  widget.pageData.viewEmployeeColumn,
+                              "OrderBy": widget.pageData.orderBy,
+                              "IsDesc": widget.pageData.isDesc,
+                              "tableName": "[ExtractionTotalReport]",
+                              "tailcondition": till,
+                            });
 
                             BlocProvider.of<SupplierProcessCubit>(context)
                                 .getTableSupplierProcess(
                               selectTab: selectTab,
                               objectData: myData,
+                              link: "Structure",
                               numberOfPage: numberPage,
                               dropdownValueOfLimit: dropdownValue,
                             );
                             break;
                           case 5:
-                            createMyData(
-                                tableName: "EntryWithPurchaseDetail",
-                                tailCondition: "");
+                            createMyData(data: {
+                              "pageId": widget.pageData.pageId,
+                              "employee": false,
+                              "limit": dropdownValue,
+                              "offset":
+                                  (numberPage * dropdownValue) - dropdownValue,
+                              "statment": "",
+                              "selectcolumns": "",
+                              "IsDepartment": widget.pageData.isDepartment,
+                              "DepartmentName": widget.pageData.departmentName,
+                              "AuthorizationID":
+                                  widget.pageData.authorizationID,
+                              "ViewEmployeeColumn":
+                                  widget.pageData.viewEmployeeColumn,
+                              "OrderBy": widget.pageData.orderBy,
+                              "IsDesc": widget.pageData.isDesc,
+                              "tableName": "EntryWithPurchaseDetail",
+                              "tailcondition": "",
+                            });
 
                             BlocProvider.of<SupplierProcessCubit>(context)
                                 .getTableSupplierProcess(
                               selectTab: selectTab,
                               objectData: myData,
+                              link: "ProfAccount",
                               numberOfPage: numberPage,
                               dropdownValueOfLimit: dropdownValue,
                             );
@@ -697,27 +828,11 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
         : const SizedBox();
   }
 
-  void createMyData(
-      {required String tableName, required String tailCondition}) {
+  void createMyData({required Map<String, dynamic> data}) {
     String tailCondition = "";
     Map<String, dynamic> params = {};
     myData = {};
-    myData.addAll({
-      "pageId": widget.pageData.pageId,
-      "employee": false,
-      "limit": dropdownValue,
-      "offset": (numberPage * dropdownValue) - dropdownValue,
-      "statment": "",
-      "selectcolumns": "",
-      "IsDepartment": widget.pageData.isDepartment,
-      "DepartmentName": widget.pageData.departmentName,
-      "AuthorizationID": widget.pageData.authorizationID,
-      "ViewEmployeeColumn": widget.pageData.viewEmployeeColumn,
-      "OrderBy": widget.pageData.orderBy,
-      "IsDesc": widget.pageData.isDesc,
-      "tableName": tableName,
-      "tailcondition": tailCondition,
-    });
+    myData.addAll(data);
 
     params["supplierID"] = widgetsData[0]['value'];
     params["CurrancyID"] = widgetsData[1]['value'];

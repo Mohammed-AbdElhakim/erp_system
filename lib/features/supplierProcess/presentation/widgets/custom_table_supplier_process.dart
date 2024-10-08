@@ -9,7 +9,6 @@ import '../../../../../../core/models/menu_model/pages.dart';
 import '../../../../../../core/utils/app_colors.dart';
 import '../../data/models/all_dropdown_model.dart';
 import '../../data/models/screen_model.dart';
-import '../../data/models/supplier_process_model.dart';
 
 class CustomTableSupplierProcess extends StatefulWidget {
   const CustomTableSupplierProcess({
@@ -22,7 +21,7 @@ class CustomTableSupplierProcess extends StatefulWidget {
     required this.tabsWidget,
   });
   final Pages pageData;
-  final List<SupplierProcessItem> listData;
+  final List<dynamic> listData;
   final List<ColumnList> listColumn;
   final List<AllDropdownModel> allDropdownModelList;
   final Widget paginationWidget;
@@ -164,7 +163,7 @@ class _CustomTableSupplierProcessState
 class TableDataSource extends DataGridSource {
   final List<ColumnList> listColumn;
   final BuildContext context;
-  final List<SupplierProcessItem> data;
+  final List<dynamic> data;
   final Pages pageData;
   final List<AllDropdownModel> allDropdownModelList;
   final String? lang;

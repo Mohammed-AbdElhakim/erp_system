@@ -7,7 +7,6 @@ import '../../../../core/utils/api_service.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../models/all_dropdown_model.dart';
 import '../models/screen_model.dart';
-import '../models/supplier_process_model.dart';
 import 'supplier_process_repo.dart';
 
 class SupplierProcessRepoImpl implements SupplierProcessRepo {
@@ -147,8 +146,8 @@ class SupplierProcessRepoImpl implements SupplierProcessRepo {
   }
 
   @override
-  Future<Either<Failure, SupplierProcessModel>> getTableSupplierProcess(
-      {required Map<String, dynamic> objectData}) async {
+  Future<Either<Failure, Map<String, dynamic>>> getTableSupplierProcess(
+      {required Map<String, dynamic> objectData, required String link}) async {
     try {
       String companyKey =
           await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
@@ -156,17 +155,15 @@ class SupplierProcessRepoImpl implements SupplierProcessRepo {
       String token =
           await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await apiService.post(
-        endPoint: "web/ProfAccount/getDataGlobal",
+        endPoint: "web/$link/getDataGlobal",
         data: objectData,
         headers: {
           "Authorization": "Bearer $token",
           "CompanyKey": companyKey,
         },
       );
-      SupplierProcessModel supplierProcessModel =
-          SupplierProcessModel.fromJson(data);
 
-      return right(supplierProcessModel);
+      return right(data);
     } catch (e) {
       if (e is DioException) {
         return left(

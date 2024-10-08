@@ -17,7 +17,7 @@ final class SupplierProcessFailure extends SupplierProcessState {
 }
 
 final class SupplierProcessSuccess extends SupplierProcessState {
-  final SupplierProcessModel accountProfModel;
+  final dynamic accountProfModel;
   final int numberPage;
   final int dropdownValue;
   final int selectTap;

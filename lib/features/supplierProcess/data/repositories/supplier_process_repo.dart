@@ -3,7 +3,6 @@ import 'package:dartz/dartz.dart';
 import '../../../../core/errors/failures.dart';
 import '../models/all_dropdown_model.dart';
 import '../models/screen_model.dart';
-import '../models/supplier_process_model.dart';
 
 abstract class SupplierProcessRepo {
   Future<Either<Failure, ScreenModel>> getTable({
@@ -29,7 +28,6 @@ abstract class SupplierProcessRepo {
     required Map<String, dynamic> body,
   });
 
-  Future<Either<Failure, SupplierProcessModel>> getTableSupplierProcess({
-    required Map<String, dynamic> objectData,
-  });
+  Future<Either<Failure, Map<String, dynamic>>> getTableSupplierProcess(
+      {required Map<String, dynamic> objectData, required String link});
 }
