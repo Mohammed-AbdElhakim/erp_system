@@ -37,6 +37,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "change_host_description": MessageLookupByLibrary.simpleMessage(
             "بمجرد النقر فوق \"حسناً\"، سيتم حذف المضيف الحالي ومعرف الشركة نهائيًا."),
         "change_language": MessageLookupByLibrary.simpleMessage("تغير اللغة"),
+        "choose_project":
+            MessageLookupByLibrary.simpleMessage("يرجى اختيار المشورع"),
         "clean": MessageLookupByLibrary.simpleMessage("مسح"),
         "company_identifier": MessageLookupByLibrary.simpleMessage("معرف شركة"),
         "date_from": MessageLookupByLibrary.simpleMessage("تاريخ من: "),
@@ -90,6 +92,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "start_date": MessageLookupByLibrary.simpleMessage("تاريخ البداية: "),
         "sure": MessageLookupByLibrary.simpleMessage("تأكيد"),
         "swipe_to": MessageLookupByLibrary.simpleMessage("اسحب الى"),
+        "tab1": MessageLookupByLibrary.simpleMessage("التشوينات"),
+        "tab2": MessageLookupByLibrary.simpleMessage("الاضافات"),
+        "tab3": MessageLookupByLibrary.simpleMessage("الاستقطاعات"),
         "task": MessageLookupByLibrary.simpleMessage("المهمة: "),
         "to": MessageLookupByLibrary.simpleMessage("إلى"),
         "to_do": MessageLookupByLibrary.simpleMessage("لم تبدأ"),

@@ -13,6 +13,8 @@ import '../../../../core/widgets/custom_app_bar.dart';
 import '../../data/models/screen_model.dart';
 import '../widgets/tableSrcPageDetails/addOrEditExcel/edit_excel_view_body.dart';
 import '../widgets/tableSrcPageDetails/addSalesEdit/edit_sales.dart';
+import '../widgets/tableSrcPageDetails/extractionSupplierTable/edit_extraction_supplier_table.dart';
+import '../widgets/tableSrcPageDetails/productProcess/edit_product_process.dart';
 import '../widgets/tableSrcPageDetails/purchases/edit_purchases.dart';
 
 class EditView extends StatefulWidget {
@@ -85,6 +87,16 @@ class _EditViewState extends State<EditView> {
           pageData: widget.pageData,
           listKey: widget.listKey,
         );
+      case "extractionSupplierTable":
+        return EditExtractionSupplierTable(
+            tapData: state.tapModel.list[0],
+            pageData: widget.pageData,
+            listKey: widget.listKey);
+      case "ProductProcess":
+        return EditProductProcess(
+            tapData: state.tapModel.list[0],
+            pageData: widget.pageData,
+            listKey: widget.listKey);
       default:
         return Center(child: Text("TableSrc Details =>$tableSrc"));
     }

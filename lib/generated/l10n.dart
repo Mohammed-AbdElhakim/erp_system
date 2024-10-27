@@ -659,6 +659,46 @@ class S {
       args: [],
     );
   }
+
+  /// `Choose Project`
+  String get choose_project {
+    return Intl.message(
+      'Choose Project',
+      name: 'choose_project',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Distortions`
+  String get tab1 {
+    return Intl.message(
+      'Distortions',
+      name: 'tab1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add-ons`
+  String get tab2 {
+    return Intl.message(
+      'Add-ons',
+      name: 'tab2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Deductions`
+  String get tab3 {
+    return Intl.message(
+      'Deductions',
+      name: 'tab3',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

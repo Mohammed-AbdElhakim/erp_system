@@ -56,6 +56,7 @@ class CustomTextFormField extends StatelessWidget {
         onSaved: onSaved,
         keyboardType: keyboardType,
         obscureText: obscureText,
+        textDirection: TextDirection.ltr,
         style: textStyle,
         readOnly: readOnly ?? false,
         decoration: InputDecoration(
@@ -63,7 +64,8 @@ class CustomTextFormField extends StatelessWidget {
           hintStyle: TextStyle(color: AppColors.grey),
           filled: filled,
           fillColor: fillColor,
-          contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
           border: buildBorder(isBorder: isBorder),
           enabledBorder:
               buildBorder(color: AppColors.blueDark, isBorder: isBorder),

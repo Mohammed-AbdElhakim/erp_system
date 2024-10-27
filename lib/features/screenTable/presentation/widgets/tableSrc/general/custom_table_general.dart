@@ -384,6 +384,11 @@ class _CustomTableGeneralState extends State<CustomTableGeneral> {
                       columnName: "icon",
                       label: const Text(""),
                     ),
+                  GridColumn(
+                    width: 0,
+                    columnName: widget.pageData.primary,
+                    label: const Center(child: Text("id")),
+                  ),
                   ...List.generate(
                     widget.listColumn.length,
                     (index) => GridColumn(
@@ -438,6 +443,11 @@ class _CustomTableGeneralState extends State<CustomTableGeneral> {
                             columnName: 'icon',
                             summaryType: GridSummaryType.sum,
                           ),
+                        GridSummaryColumn(
+                          name: 'SumId',
+                          columnName: widget.pageData.primary,
+                          summaryType: GridSummaryType.sum,
+                        ),
                         ...List.generate(
                           widget.listColumn.length,
                           (index) {
@@ -557,6 +567,9 @@ class TableDataSource extends DataGridSource {
       return DataGridRow(cells: [
         if (pageData.master == true)
           const DataGridCell(columnName: "icon", value: ""),
+        DataGridCell(
+            columnName: pageData.primary,
+            value: "${e[pageData.primary] ?? ""}"),
         ...List.generate(
           listColumn.length,
           (index) => DataGridCell(

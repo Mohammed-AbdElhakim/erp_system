@@ -59,8 +59,11 @@
   "date_from": "تاريخ من: ",
   "date_to": "تاريخ إلى: ",
   "show": "عرض",
-  "product_not_available": "المنتج غير متوفر."
-
+  "product_not_available": "المنتج غير متوفر.",
+  "choose_project": "يرجى اختيار المشورع",
+  "tab1": "التشوينات",
+  "tab2": "الاضافات",
+  "tab3": "الاستقطاعات"
 
 
 

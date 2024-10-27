@@ -171,20 +171,21 @@ class _CustomFloatingActionButtonState
       if (myRowData.isNotEmpty) {
         List<String> listId = [];
         for (var item in myRowData) {
-          if (widget.pageData.tableSrc == AppStrings.tableGroup) {
-            listId.add(item.toString());
-          } else {
-            String primary = "";
-            for (var i in columnList) {
-              if (i.columnName == widget.pageData.primary) {
-                primary = (lang == AppStrings.enLangKey
-                    ? i.enColumnLabel
-                    : i.arColumnLabel)!;
-              }
-            }
-            listId.add(item[primary].toString());
-            // listId.add(item[widget.pageData.primary].toString());
-          }
+          listId.add(item.toString());
+          // if (widget.pageData.tableSrc == AppStrings.tableGroup) {
+          //   listId.add(item.toString());
+          // } else {
+          //   String primary = "";
+          //   for (var i in columnList) {
+          //     if (i.columnName == widget.pageData.primary) {
+          //       primary = (lang == AppStrings.enLangKey
+          //           ? i.enColumnLabel
+          //           : i.arColumnLabel)!;
+          //     }
+          //   }
+          //   listId.add(item[primary].toString());
+          //   // listId.add(item[widget.pageData.primary].toString());
+          // }
         }
         CustomAlertDialog.alertDelete(
           context: context,

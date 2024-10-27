@@ -38,6 +38,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Once you click OK, your current host and company ID will be permanently deleted."),
         "change_language":
             MessageLookupByLibrary.simpleMessage("Change Language"),
+        "choose_project":
+            MessageLookupByLibrary.simpleMessage("Choose Project"),
         "clean": MessageLookupByLibrary.simpleMessage("Clean"),
         "company_identifier":
             MessageLookupByLibrary.simpleMessage("Company Identifier"),
@@ -93,6 +95,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "start_date": MessageLookupByLibrary.simpleMessage("Start Date: "),
         "sure": MessageLookupByLibrary.simpleMessage("sure"),
         "swipe_to": MessageLookupByLibrary.simpleMessage("Swipe To"),
+        "tab1": MessageLookupByLibrary.simpleMessage("Distortions"),
+        "tab2": MessageLookupByLibrary.simpleMessage("Add-ons"),
+        "tab3": MessageLookupByLibrary.simpleMessage("Deductions"),
         "task": MessageLookupByLibrary.simpleMessage("Task: "),
         "to": MessageLookupByLibrary.simpleMessage("TO"),
         "to_do": MessageLookupByLibrary.simpleMessage("Didn\'t start"),
