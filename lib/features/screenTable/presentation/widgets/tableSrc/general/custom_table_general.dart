@@ -726,6 +726,7 @@ class TableDataSource extends DataGridSource {
           //     color:
           //         selectedRows[indexRow] == true ? Colors.white : Colors.black),
         );
+
       case "checkbox":
         if (value == "true") {
           return const Icon(
@@ -792,6 +793,12 @@ class TableDataSource extends DataGridSource {
     if (columnList.insertType == "date") {
       String date = value.isNotEmpty
           ? DateFormat("yyyy-MM-dd", "en")
+              .format(DateTime.parse(value).toLocal())
+          : '';
+      return date;
+    } else if (columnList.insertType == "dateTime") {
+      String date = value.isNotEmpty
+          ? DateFormat('yyyy/MM/dd hh:mm a', "en")
               .format(DateTime.parse(value).toLocal())
           : '';
       return date;
