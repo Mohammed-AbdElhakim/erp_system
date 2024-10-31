@@ -81,7 +81,7 @@ class _EditExtractionSupplierTableState
       child: BlocBuilder<GetExpensesMasterCubit, GetExpensesMasterState>(
         builder: (context, state) {
           if (state is GetExpensesMasterSuccess) {
-            Map<String, dynamic> dataMaster = state.data;
+            // Map<String, dynamic> dataMaster = state.data;
 
             return BlocProvider(
               create: (context) =>
@@ -153,6 +153,8 @@ class _EditExtractionSupplierTableState
                   BlocBuilder<GetExpensesDetailsCubit, GetExpensesDetailsState>(
                 builder: (context, state) {
                   if (state is GetExpensesDetailsSuccess) {
+                    Map<String, dynamic> dataMaster =
+                        state.expensesDetailsModel.dynamicList![0];
                     List<Map<String, dynamic>> listDataInTable =
                         state.expensesDetailsModel.dynamicList!;
                     tableList = listDataInTable;
