@@ -8,18 +8,18 @@ class SupplierProcessModel1 {
     if (json['dynamicList'] != null) {
       dynamicList = <SupplierProcessItem1>[];
       json['dynamicList'].forEach((v) {
-        dynamicList!.add(new SupplierProcessItem1.fromJson(v));
+        dynamicList!.add(SupplierProcessItem1.fromJson(v));
       });
     }
     numberofrecords = json['numberofrecords'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.dynamicList != null) {
-      data['dynamicList'] = this.dynamicList!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (dynamicList != null) {
+      data['dynamicList'] = dynamicList!.map((v) => v.toJson()).toList();
     }
-    data['numberofrecords'] = this.numberofrecords;
+    data['numberofrecords'] = numberofrecords;
     return data;
   }
 }
@@ -170,53 +170,53 @@ class SupplierProcessItem1 {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['PDID'] = this.pDID;
-    data['PurchaseOrderID'] = this.purchaseOrderID;
-    data['ProductID'] = this.productID;
-    data['Cost'] = this.cost;
-    data['Quntity'] = this.quntity;
-    data['ProName'] = this.proName;
-    data['Modality'] = this.modality;
-    data['Total'] = this.total;
-    data['POID'] = this.pOID;
-    data['PONumber'] = this.pONumber;
-    data['PODate'] = this.pODate;
-    data['SupplierID'] = this.supplierID;
-    data['POPaid'] = this.pOPaid;
-    data['POSetting'] = this.pOSetting;
-    data['CurrancyID'] = this.currancyID;
-    data['purchtotal'] = this.purchtotal;
-    data['TotalOrder'] = this.totalOrder;
-    data['TotalCurrancy'] = this.totalCurrancy;
-    data['Discount'] = this.discount;
-    data['DiscountCurrancy'] = this.discountCurrancy;
-    data['POPaidCurrancy'] = this.pOPaidCurrancy;
-    data['CurrancyEX'] = this.currancyEX;
-    data['remind'] = this.remind;
-    data['remindCurrancy'] = this.remindCurrancy;
-    data['CostCurrancy'] = this.costCurrancy;
-    data['StoreID'] = this.storeID;
-    data['UName'] = this.uName;
-    data['CName'] = this.cName;
-    data['SName'] = this.sName;
-    data['PSName'] = this.pSName;
-    data['ComID'] = this.comID;
-    data['GuideWeight'] = this.guideWeight;
-    data['GuidePrice'] = this.guidePrice;
-    data['DifQty'] = this.difQty;
-    data['DifSupplierQty'] = this.difSupplierQty;
-    data['DifSupplierQtyPrice'] = this.difSupplierQtyPrice;
-    data['EmployeeId'] = this.employeeId;
-    data['Tax'] = this.tax;
-    data['AddTax'] = this.addTax;
-    data['finalTotal'] = this.finalTotal;
-    data['TotalCostExp'] = this.totalCostExp;
-    data['TotalCostWithExp'] = this.totalCostWithExp;
-    data['PODescription'] = this.pODescription;
-    data['SecQuntity'] = this.secQuntity;
-    data['CostItemId'] = this.costItemId;
-    data['TaxCurrancy'] = this.taxCurrancy;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['PDID'] = pDID;
+    data['PurchaseOrderID'] = purchaseOrderID;
+    data['ProductID'] = productID;
+    data['Cost'] = cost;
+    data['Quntity'] = quntity;
+    data['ProName'] = proName;
+    data['Modality'] = modality;
+    data['Total'] = total;
+    data['POID'] = pOID;
+    data['PONumber'] = pONumber;
+    data['PODate'] = pODate;
+    data['SupplierID'] = supplierID;
+    data['POPaid'] = pOPaid;
+    data['POSetting'] = pOSetting;
+    data['CurrancyID'] = currancyID;
+    data['purchtotal'] = purchtotal;
+    data['TotalOrder'] = totalOrder;
+    data['TotalCurrancy'] = totalCurrancy;
+    data['Discount'] = discount;
+    data['DiscountCurrancy'] = discountCurrancy;
+    data['POPaidCurrancy'] = pOPaidCurrancy;
+    data['CurrancyEX'] = currancyEX;
+    data['remind'] = remind;
+    data['remindCurrancy'] = remindCurrancy;
+    data['CostCurrancy'] = costCurrancy;
+    data['StoreID'] = storeID;
+    data['UName'] = uName;
+    data['CName'] = cName;
+    data['SName'] = sName;
+    data['PSName'] = pSName;
+    data['ComID'] = comID;
+    data['GuideWeight'] = guideWeight;
+    data['GuidePrice'] = guidePrice;
+    data['DifQty'] = difQty;
+    data['DifSupplierQty'] = difSupplierQty;
+    data['DifSupplierQtyPrice'] = difSupplierQtyPrice;
+    data['EmployeeId'] = employeeId;
+    data['Tax'] = tax;
+    data['AddTax'] = addTax;
+    data['finalTotal'] = finalTotal;
+    data['TotalCostExp'] = totalCostExp;
+    data['TotalCostWithExp'] = totalCostWithExp;
+    data['PODescription'] = pODescription;
+    data['SecQuntity'] = secQuntity;
+    data['CostItemId'] = costItemId;
+    data['TaxCurrancy'] = taxCurrancy;
     return data;
   }
 }

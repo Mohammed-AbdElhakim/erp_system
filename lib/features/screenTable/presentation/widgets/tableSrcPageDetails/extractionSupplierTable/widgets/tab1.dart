@@ -56,7 +56,7 @@ class _Tab1State extends State<Tab1> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text("التشوينات"),
+        const Text("التشوينات"),
         Row(
           children: [
             IconButton(

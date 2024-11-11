@@ -829,7 +829,7 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
   }
 
   void createMyData({required Map<String, dynamic> data}) {
-    String tailCondition = "";
+    // String tailCondition = "";
     Map<String, dynamic> params = {};
     myData = {};
     myData.addAll(data);

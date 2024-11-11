@@ -12,6 +12,7 @@ import '../../../../../data/models/item_list_setup_model.dart';
 import '../../../../../data/models/tap_model.dart';
 import '../../../../views/barcode_view.dart';
 import '../../../../views/screen_table.dart';
+import '../add_production_prosecc.dart';
 import 'production_prosecc_alert_dialog_add_widget.dart';
 import 'production_prosecc_alert_dialog_edit_widget.dart';
 
@@ -172,7 +173,7 @@ class _ProductionProseccTableAddEditState
                 //     duration: const Duration(seconds: 2),
                 //   ));
 
-                // getDataPro(widget.typeView, resultScanner);
+                getDataPro(widget.typeView, resultScanner);
 
                 if (productId == -1) {
                   ScaffoldMessenger.of(context)
@@ -573,19 +574,19 @@ class _ProductionProseccTableAddEditState
         );
     }
   }
-  //
-  // void getDataPro(String type, String resultScanner) {
-  //   if (type == "Add") {
-  //     productId = AddProductionProsecc.listBarcodeData.firstWhere(
-  //       (element) => element['BarcodeProc'] == resultScanner /*"11961"*/,
-  //       orElse: () => {"ProductId": -1},
-  //     )['ProductId'];
-  //   } else {
-  //     //edit
-  //     productId = AddProductProcess.listBarcodeData.firstWhere(
-  //       (element) => element['BarcodeProc'] == resultScanner,
-  //       orElse: () => {"ProductId": -1},
-  //     )['ProductId'];
-  //   }
-  // }
+
+  void getDataPro(String type, String resultScanner) {
+    if (type == "Add") {
+      productId = AddProductionProsecc.listBarcodeData.firstWhere(
+        (element) => element['BarcodeProc'] == resultScanner /*"11961"*/,
+        orElse: () => {"ProductId": -1},
+      )['ProductId'];
+    } else {
+      //edit
+      productId = AddProductionProsecc.listBarcodeData.firstWhere(
+        (element) => element['BarcodeProc'] == resultScanner,
+        orElse: () => {"ProductId": -1},
+      )['ProductId'];
+    }
+  }
 }

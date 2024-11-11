@@ -36,6 +36,7 @@ class AddProductionProsecc extends StatefulWidget {
   final ListTaps? tapData;
   final Pages pageData;
   final List<dynamic> listKey;
+  static List<dynamic> listBarcodeData = [];
 
   @override
   State<AddProductionProsecc> createState() => _AddProductionProseccState();

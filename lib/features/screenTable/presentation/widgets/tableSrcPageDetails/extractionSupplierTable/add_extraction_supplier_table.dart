@@ -345,13 +345,7 @@ class _AddExtractionSupplierTableState
                                         "adds": tableListTab2,
                                         "deductions": tableListTab3,
                                       });
-                                      print(
-                                          "==================================");
-                                      print(singleObject);
-                                      print("------------------------");
-                                      print(tableList);
-                                      print("------------------------");
-                                      print(widget.tapData!.controllerName);
+
                                       BlocProvider.of<AddEditExpensesCubit>(
                                               context)
                                           .add(

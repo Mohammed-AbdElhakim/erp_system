@@ -57,7 +57,7 @@ class SubNotificationsViewBody extends StatelessWidget {
                 );
               },
             )
-          : Center(
+          : const Center(
               child: Text("لا يوجد اشعارات"),
             ),
     );
