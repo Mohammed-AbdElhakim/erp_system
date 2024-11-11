@@ -78,6 +78,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Multiple choices"),
         "no_location": MessageLookupByLibrary.simpleMessage(
             "Not available at this location."),
+        "notifications": MessageLookupByLibrary.simpleMessage("Notifications"),
         "ok": MessageLookupByLibrary.simpleMessage("Ok"),
         "on_progress":
             MessageLookupByLibrary.simpleMessage("Work has begun on it"),

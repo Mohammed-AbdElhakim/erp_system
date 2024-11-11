@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/helper/SharedPreferences/pref.dart';
-import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/methods.dart';
@@ -37,25 +36,25 @@ class _HomeViewState extends State<HomeView> {
           title:
               "${S.of(context).hi} $userName \n${S.of(context).welcome_in}$companyName",
           style: AppStyles.textStyle16,
-          actions: [
-            Stack(
-              children: [
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.notifications_none_sharp),
-                ),
-                Positioned(
-                  right: 12,
-                  top: 15,
-                  child: Icon(
-                    Icons.circle,
-                    color: AppColors.orange,
-                    size: 12,
-                  ),
-                )
-              ],
-            ),
-          ],
+          // actions: [
+          //   Stack(
+          //     children: [
+          //       IconButton(
+          //         onPressed: () {},
+          //         icon: const Icon(Icons.notifications_none_sharp),
+          //       ),
+          //       Positioned(
+          //         right: 12,
+          //         top: 15,
+          //         child: Icon(
+          //           Icons.circle,
+          //           color: AppColors.orange,
+          //           size: 12,
+          //         ),
+          //       )
+          //     ],
+          //   ),
+          // ],
         ),
         body: HomeViewBody(
           isPortrait: isOrientationPortrait(context),

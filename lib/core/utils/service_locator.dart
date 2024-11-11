@@ -9,6 +9,7 @@ import '../../features/cashier/data/repositories/cashier_repo_impl.dart';
 import '../../features/chart/data/repositories/chart_repo_impl.dart';
 import '../../features/customerAccount/data/repositories/customer_account_repo_impl.dart';
 import '../../features/generalBalance/data/repositories/general_balance_repo_impl.dart';
+import '../../features/notifications/data/repositories/notifications_repo_impl.dart';
 import '../../features/profit/data/repositories/profit_repo_impl.dart';
 import '../../features/screenTable/data/repositories/screen_repo_impl.dart';
 import '../../features/supplierProcess/data/repositories/supplier_process_repo_impl.dart';
@@ -100,6 +101,12 @@ void setupServiceLocator() {
 
   getIt.registerSingleton<TaskRepoImpl>(
     TaskRepoImpl(
+      getIt.get<ApiService>(),
+    ),
+  );
+
+  getIt.registerSingleton<NotificationsRepoImpl>(
+    NotificationsRepoImpl(
       getIt.get<ApiService>(),
     ),
   );

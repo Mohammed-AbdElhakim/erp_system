@@ -13,11 +13,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     required this.isPortrait,
     required this.title,
     this.style,
-    this.isTitleInPortrait,
+    this.isTitleInPortrait = false,
+    this.isTitleInLandscape = true,
   });
   final List<Widget>? actions;
   final bool isPortrait;
-  final bool? isTitleInPortrait;
+  final bool isTitleInPortrait;
+  final bool isTitleInLandscape;
   final String title;
   final TextStyle? style;
   @override
@@ -37,7 +39,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       title: isPortrait
-          ? isTitleInPortrait ?? false
+          ? isTitleInPortrait
               ? Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -74,15 +76,31 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                     ),
                   ],
                 )
-          : Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  title,
-                  textAlign: TextAlign.center,
-                  style: style ?? AppStyles.textStyle20,
-                ),
-                Column(
+          : isTitleInLandscape
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      title,
+                      textAlign: TextAlign.center,
+                      style: style ?? AppStyles.textStyle20,
+                    ),
+                    Column(
+                      children: [
+                        Image.asset(
+                          AppAssets.logo,
+                          height: 25,
+                        ),
+                        Text(
+                          S.of(context).dynamic_pro,
+                          textAlign: TextAlign.center,
+                          style: AppStyles.textStyle14,
+                        ),
+                      ],
+                    )
+                  ],
+                )
+              : Column(
                   children: [
                     Image.asset(
                       AppAssets.logo,
@@ -94,9 +112,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                       style: AppStyles.textStyle14,
                     ),
                   ],
-                )
-              ],
-            ),
+                ),
       centerTitle: true,
       elevation: 0.0,
       actions: actions,
