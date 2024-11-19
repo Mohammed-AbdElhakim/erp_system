@@ -94,6 +94,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "show_less": MessageLookupByLibrary.simpleMessage("Show less"),
         "show_more": MessageLookupByLibrary.simpleMessage("Show more"),
         "start_date": MessageLookupByLibrary.simpleMessage("Start Date: "),
+        "statistics": MessageLookupByLibrary.simpleMessage("Statistics"),
         "sure": MessageLookupByLibrary.simpleMessage("sure"),
         "swipe_to": MessageLookupByLibrary.simpleMessage("Swipe To"),
         "tab1": MessageLookupByLibrary.simpleMessage("Distortions"),

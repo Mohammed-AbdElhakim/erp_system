@@ -13,6 +13,8 @@ class NavigationHelper {
       case 2:
         return const StatisticsView();
       case 3:
+        return const StatisticsView();
+      case 4:
         return const NotificationsView();
       default:
         return const Information();

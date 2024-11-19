@@ -17,9 +17,10 @@ class NavigationMenu extends StatefulWidget {
 class _NavigationMenuState extends State<NavigationMenu> {
   List<NavigationModel> listNavigation = [
     NavigationModel(id: 1, icon: Icons.home_outlined),
-    NavigationModel(id: 2, icon: Icons.dashboard),
-    NavigationModel(id: 3, icon: Icons.notifications),
-    NavigationModel(id: 4, icon: Icons.person_outline),
+    NavigationModel(id: 2, icon: Icons.show_chart),
+    NavigationModel(id: 3, icon: Icons.dashboard),
+    NavigationModel(id: 4, icon: Icons.notifications),
+    NavigationModel(id: 5, icon: Icons.person_outline),
   ];
   int selectIndex = 1;
   @override
@@ -58,7 +59,7 @@ class _NavigationMenuState extends State<NavigationMenu> {
                   ),
                 ),
               ),
-              if (e.id == 4 || e.id == 3)
+              if (e.id == 4 || e.id == 5)
                 Positioned(
                   right: selectIndex == e.id ? 10 : 13,
                   top: selectIndex == e.id ? 12 : 15,
