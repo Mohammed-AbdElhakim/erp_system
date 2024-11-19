@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import '../../../../core/utils/methods.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
 import '../../../bottomNavigationBar/presentation/widgets/my_drawer.dart';
-import '../widgets/dashboard_view_body.dart';
+import '../widgets/statistics_view_body.dart';
 
-class DashboardView extends StatelessWidget {
-  const DashboardView({super.key});
+class StatisticsView extends StatelessWidget {
+  const StatisticsView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class DashboardView extends StatelessWidget {
         isPortrait: isOrientationPortrait(context),
         title: "Dashboard",
       ),
-      body: DashboardViewBody(
+      body: StatisticsViewBody(
         isPortrait: isOrientationPortrait(context),
       ),
     );

@@ -9,14 +9,14 @@ import '../../../../core/widgets/custom_text_form_field_search.dart';
 import '../../../../core/widgets/page_item_grid_view.dart';
 import '../../../../generated/l10n.dart';
 
-class DashboardViewBody extends StatefulWidget {
-  const DashboardViewBody({super.key, required this.isPortrait});
+class StatisticsViewBody extends StatefulWidget {
+  const StatisticsViewBody({super.key, required this.isPortrait});
   final bool isPortrait;
   @override
-  State<DashboardViewBody> createState() => _DashboardViewBodyState();
+  State<StatisticsViewBody> createState() => _StatisticsViewBodyState();
 }
 
-class _DashboardViewBodyState extends State<DashboardViewBody> {
+class _StatisticsViewBodyState extends State<StatisticsViewBody> {
   // @override
   // void initState() {
   //   BlocProvider.of<DashboardCubit>(context).getDashboardData();

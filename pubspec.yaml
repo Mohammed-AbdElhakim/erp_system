@@ -75,6 +75,8 @@ dependencies:
   syncfusion_flutter_datagrid: ^26.2.14
   syncfusion_flutter_core: ^26.2.14
 
+#  device_preview: ^1.2.0
+
 
 dev_dependencies:
   flutter_test:
