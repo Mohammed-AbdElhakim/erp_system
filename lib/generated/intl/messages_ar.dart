@@ -41,6 +41,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("يرجى اختيار المشورع"),
         "clean": MessageLookupByLibrary.simpleMessage("مسح"),
         "company_identifier": MessageLookupByLibrary.simpleMessage("معرف شركة"),
+        "dashboard": MessageLookupByLibrary.simpleMessage("لوحة التحكم"),
         "date_from": MessageLookupByLibrary.simpleMessage("تاريخ من: "),
         "date_to": MessageLookupByLibrary.simpleMessage("تاريخ إلى: "),
         "description_task": MessageLookupByLibrary.simpleMessage("توصيف: "),
