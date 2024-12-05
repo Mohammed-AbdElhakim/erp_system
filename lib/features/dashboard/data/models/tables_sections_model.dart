@@ -1,5 +1,5 @@
-class NewsSectionsModel {
-  List<NewsSectionItems>? newsSectionItems;
+class TablesSectionsModel {
+  List<TablesSectionItems>? tablesSectionItems;
   int? sectionId;
   String? nameAr;
   String? nameEn;
@@ -11,8 +11,8 @@ class NewsSectionsModel {
   List<dynamic>? dashboardPercentages;
   List<dynamic>? dashboardTables;
 
-  NewsSectionsModel(
-      {this.newsSectionItems,
+  TablesSectionsModel(
+      {this.tablesSectionItems,
       this.sectionId,
       this.nameAr,
       this.nameEn,
@@ -24,11 +24,11 @@ class NewsSectionsModel {
       this.dashboardPercentages,
       this.dashboardTables});
 
-  NewsSectionsModel.fromJson(Map<String, dynamic> json) {
+  TablesSectionsModel.fromJson(Map<String, dynamic> json) {
     if (json['SectionItems'] != null) {
-      newsSectionItems = <NewsSectionItems>[];
+      tablesSectionItems = <TablesSectionItems>[];
       json['SectionItems'].forEach((v) {
-        newsSectionItems!.add(NewsSectionItems.fromJson(v));
+        tablesSectionItems!.add(TablesSectionItems.fromJson(v));
       });
     }
     sectionId = json['SectionId'];
@@ -36,7 +36,7 @@ class NewsSectionsModel {
     nameEn = json['NameEn'];
     sectionOrder = json['SectionOrder'];
     type = json['Type'];
-
+    type = json['Type'];
     if (json['DashboardAuth'] != null) {
       dashboardAuth = <dynamic>[];
       json['DashboardAuth'].forEach((v) {
@@ -71,8 +71,9 @@ class NewsSectionsModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    if (newsSectionItems != null) {
-      data['SectionItems'] = newsSectionItems!.map((v) => v.toJson()).toList();
+    if (tablesSectionItems != null) {
+      data['SectionItems'] =
+          tablesSectionItems!.map((v) => v.toJson()).toList();
     }
     data['SectionId'] = sectionId;
     data['NameAr'] = nameAr;
@@ -102,21 +103,42 @@ class NewsSectionsModel {
   }
 }
 
-class NewsSectionItems {
-  String? newsText;
-  String? date;
+class TablesSectionItems {
+  List<Map<String, dynamic>>? columnList;
+  List<Map<String, dynamic>>? dataList;
+  String? nameAr;
+  String? nameEn;
 
-  NewsSectionItems({this.newsText, this.date});
+  TablesSectionItems(
+      {this.columnList, this.dataList, this.nameAr, this.nameEn});
 
-  NewsSectionItems.fromJson(Map<String, dynamic> json) {
-    newsText = json['NewsText'];
-    date = json['Date'];
+  TablesSectionItems.fromJson(Map<String, dynamic> json) {
+    if (json['columnList'] != null) {
+      columnList = <Map<String, dynamic>>[];
+      json['columnList'].forEach((v) {
+        columnList!.add(v);
+      });
+    }
+    if (json['dataList'] != null) {
+      dataList = <Map<String, dynamic>>[];
+      json['dataList'].forEach((v) {
+        dataList!.add(v);
+      });
+    }
+    nameAr = json['NameAr'];
+    nameEn = json['NameEn'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['NewsText'] = newsText;
-    data['Date'] = date;
+    if (columnList != null) {
+      data['columnList'] = columnList!.map((v) => v).toList();
+    }
+    if (dataList != null) {
+      data['dataList'] = dataList!.map((v) => v).toList();
+    }
+    data['NameAr'] = nameAr;
+    data['NameEn'] = nameEn;
     return data;
   }
 }

@@ -6,19 +6,23 @@ class PercentageSectionsModel {
   int? sectionOrder;
   String? type;
   List<dynamic>? dashboardAuth;
+  List<dynamic>? dashboardGraphs;
   List<dynamic>? dashboardNumbers;
   List<dynamic>? dashboardPercentages;
+  List<dynamic>? dashboardTables;
 
   PercentageSectionsModel(
       {this.percentageSectionItems,
-        this.sectionId,
-        this.nameAr,
-        this.nameEn,
-        this.sectionOrder,
-        this.type,
-        this.dashboardAuth,
-        this.dashboardNumbers,
-        this.dashboardPercentages});
+      this.sectionId,
+      this.nameAr,
+      this.nameEn,
+      this.sectionOrder,
+      this.type,
+      this.dashboardAuth,
+      this.dashboardGraphs,
+      this.dashboardNumbers,
+      this.dashboardPercentages,
+      this.dashboardTables});
 
   PercentageSectionsModel.fromJson(Map<String, dynamic> json) {
     if (json['SectionItems'] != null) {
@@ -33,11 +37,16 @@ class PercentageSectionsModel {
     sectionOrder = json['SectionOrder'];
     type = json['Type'];
 
-
     if (json['DashboardAuth'] != null) {
       dashboardAuth = <dynamic>[];
       json['DashboardAuth'].forEach((v) {
         dashboardAuth!.add(v);
+      });
+    }
+    if (json['DashboardGraphs'] != null) {
+      dashboardGraphs = <dynamic>[];
+      json['DashboardGraphs'].forEach((v) {
+        dashboardGraphs!.add(v);
       });
     }
     if (json['DashboardNumbers'] != null) {
@@ -52,12 +61,19 @@ class PercentageSectionsModel {
         dashboardPercentages!.add(v);
       });
     }
+    if (json['DashboardTables'] != null) {
+      dashboardTables = <dynamic>[];
+      json['DashboardTables'].forEach((v) {
+        dashboardTables!.add(v);
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     if (percentageSectionItems != null) {
-      data['SectionItems'] = percentageSectionItems!.map((v) => v.toJson()).toList();
+      data['SectionItems'] =
+          percentageSectionItems!.map((v) => v.toJson()).toList();
     }
     data['SectionId'] = sectionId;
     data['NameAr'] = nameAr;
@@ -65,8 +81,11 @@ class PercentageSectionsModel {
     data['SectionOrder'] = sectionOrder;
     data['Type'] = type;
     if (dashboardAuth != null) {
-      data['DashboardAuth'] =
-          dashboardAuth!.map((v) => v.toJson()).toList();
+      data['DashboardAuth'] = dashboardAuth!.map((v) => v.toJson()).toList();
+    }
+    if (dashboardGraphs != null) {
+      data['DashboardGraphs'] =
+          dashboardGraphs!.map((v) => v.toJson()).toList();
     }
     if (dashboardNumbers != null) {
       data['DashboardNumbers'] =
@@ -75,6 +94,10 @@ class PercentageSectionsModel {
     if (dashboardPercentages != null) {
       data['DashboardPercentages'] =
           dashboardPercentages!.map((v) => v.toJson()).toList();
+    }
+    if (dashboardTables != null) {
+      data['DashboardTables'] =
+          dashboardTables!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -86,7 +109,8 @@ class PercentageSectionItems {
   String? nameAr;
   String? nameEn;
 
-  PercentageSectionItems({this.totalNumber, this.number, this.nameAr, this.nameEn});
+  PercentageSectionItems(
+      {this.totalNumber, this.number, this.nameAr, this.nameEn});
 
   PercentageSectionItems.fromJson(Map<String, dynamic> json) {
     totalNumber = json['TotalNumber'];

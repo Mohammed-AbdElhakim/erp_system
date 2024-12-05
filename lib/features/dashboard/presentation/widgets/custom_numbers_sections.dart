@@ -19,6 +19,8 @@ class CustomNumbersSections extends StatefulWidget {
 class _CustomNumbersSectionsState extends State<CustomNumbersSections> {
   final ScrollController controller = ScrollController();
   String? lang;
+  bool isPlay = true;
+  Timer? _scrollTimer;
   @override
   void didChangeDependencies() {
     lang = Localizations.localeOf(context).toString();
@@ -28,7 +30,13 @@ class _CustomNumbersSectionsState extends State<CustomNumbersSections> {
   @override
   void initState() {
     super.initState();
-    _autoScroll(controller);
+    _autoScroll(controller, true);
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -36,17 +44,40 @@ class _CustomNumbersSectionsState extends State<CustomNumbersSections> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        BuildSectionTitle(
-            title: lang == AppStrings.enLangKey
-                ? widget.numbersSectionsModel.nameEn!
-                : widget.numbersSectionsModel.nameAr!),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            BuildSectionTitle(
+                title: lang == AppStrings.enLangKey
+                    ? widget.numbersSectionsModel.nameEn!
+                    : widget.numbersSectionsModel.nameAr!),
+            Padding(
+              padding: const EdgeInsetsDirectional.only(end: 15),
+              child: IconButton(
+                onPressed: () {
+                  setState(() {
+                    if (isPlay == true) {
+                      stopScrolling();
+                    }
+                    isPlay = !isPlay;
+                    _autoScroll(controller, isPlay);
+                  });
+                },
+                icon: Icon(
+                  isPlay ? Icons.stop_circle : Icons.play_circle,
+                  size: 25,
+                ),
+              ),
+            ),
+          ],
+        ),
         BuildScrollingBar(
             controller: controller,
             items: List.generate(
               widget.numbersSectionsModel.numbersSectionItems!.length,
               (index) {
-                NumbersSectionItems numberItem = widget
-                    .numbersSectionsModel.numbersSectionItems![index];
+                NumbersSectionItems numberItem =
+                    widget.numbersSectionsModel.numbersSectionItems![index];
                 return BuildNumberCard(
                   title: lang == AppStrings.enLangKey
                       ? numberItem.nameEn!
@@ -61,8 +92,14 @@ class _CustomNumbersSectionsState extends State<CustomNumbersSections> {
     );
   }
 
-  void _autoScroll(ScrollController controller) {
-    Timer.periodic(const Duration(seconds: 3), (timer) {
+  void _autoScroll(ScrollController controller, bool isPlay) {
+    if (!isPlay) {
+      _scrollTimer?.cancel();
+      _scrollTimer = null;
+      return;
+    }
+
+    _scrollTimer = Timer.periodic(const Duration(seconds: 3), (timer) {
       if (controller.hasClients) {
         final maxScroll = controller.position.maxScrollExtent;
         final currentScroll = controller.offset;
@@ -81,5 +118,10 @@ class _CustomNumbersSectionsState extends State<CustomNumbersSections> {
         }
       }
     });
+  }
+
+  void stopScrolling() {
+    _scrollTimer?.cancel();
+    _scrollTimer = null;
   }
 }

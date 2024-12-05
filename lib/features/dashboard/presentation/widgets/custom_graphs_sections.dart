@@ -1,36 +1,22 @@
 import 'dart:async';
 
-import 'package:erp_system/core/utils/app_strings.dart';
-import 'package:erp_system/features/dashboard/presentation/widgets/build_scrolling_bar.dart';
 import 'package:flutter/material.dart';
 
-import '../../data/models/percentage_sections_model.dart';
-import 'build_percentage_card.dart';
+import '../../../../core/utils/app_strings.dart';
+import '../../data/models/graph_sections_model.dart';
+import 'build_graph_card.dart';
+import 'build_scrolling_bar.dart';
 import 'build_section_title.dart';
 
-class CustomPercentageSections extends StatefulWidget {
-  const CustomPercentageSections(
-      {super.key, required this.percentageSectionsModel});
-  final PercentageSectionsModel percentageSectionsModel;
+class CustomGraphsSections extends StatefulWidget {
+  const CustomGraphsSections({super.key, required this.graphSectionsModel});
+  final GraphSectionsModel graphSectionsModel;
 
   @override
-  State<CustomPercentageSections> createState() =>
-      _CustomPercentageSectionsState();
+  State<CustomGraphsSections> createState() => _CustomGraphsSectionsState();
 }
 
-class _CustomPercentageSectionsState extends State<CustomPercentageSections> {
-  List<Color> colorPalette = [
-    Colors.red,
-    Colors.green,
-    Colors.blue,
-    Colors.orange,
-    Colors.purple,
-    Colors.yellow,
-    Colors.pink,
-    Colors.brown,
-    Colors.cyan,
-    Colors.indigo,
-  ];
+class _CustomGraphsSectionsState extends State<CustomGraphsSections> {
   final ScrollController controller = ScrollController();
   String? lang;
   bool isPlay = true;
@@ -63,8 +49,8 @@ class _CustomPercentageSectionsState extends State<CustomPercentageSections> {
           children: [
             BuildSectionTitle(
                 title: lang == AppStrings.enLangKey
-                    ? widget.percentageSectionsModel.nameEn!
-                    : widget.percentageSectionsModel.nameAr!),
+                    ? widget.graphSectionsModel.nameEn!
+                    : widget.graphSectionsModel.nameAr!),
             Padding(
               padding: const EdgeInsetsDirectional.only(end: 15),
               child: IconButton(
@@ -88,21 +74,19 @@ class _CustomPercentageSectionsState extends State<CustomPercentageSections> {
         BuildScrollingBar(
             controller: controller,
             items: List.generate(
-              widget.percentageSectionsModel.percentageSectionItems!.length,
+              widget.graphSectionsModel.graphSectionItems!.length,
               (index) {
-                PercentageSectionItems percentageItem = widget
-                    .percentageSectionsModel.percentageSectionItems![index];
-                return BuildPercentageCard(
-                  title: lang == AppStrings.enLangKey
-                      ? percentageItem.nameEn!
-                      : percentageItem.nameAr!,
-                  // color: getColor(index,widget.percentageSectionsModel.percentageSectionItems!.length*5),
-                  color: colorPalette[index % colorPalette.length],
-                  value: percentageItem.number! / percentageItem.totalNumber!,
+                GraphSectionItems graphItem =
+                    widget.graphSectionsModel.graphSectionItems![index];
+                return BuildGraphCard(
+                  graphName: lang == AppStrings.enLangKey
+                      ? graphItem.nameEn!
+                      : graphItem.nameAr!,
+                  graphValues: graphItem.graphValues!,
                 );
               },
             ),
-            height: 120)
+            height: 350)
       ],
     );
   }
@@ -139,32 +123,4 @@ class _CustomPercentageSectionsState extends State<CustomPercentageSections> {
     _scrollTimer?.cancel();
     _scrollTimer = null;
   }
-
-  // getColor(int index, int i) {
-  //   // عدد الألوان المطلوبة
-  //   int colorCount = i;
-  //
-  //   // قائمة لتخزين الألوان الفريدة
-  //   List<Color> uniqueColors = [];
-  //
-  //   // مولّد عشوائي
-  //   Random random = Random();
-  //
-  //   // توليد ألوان عشوائية بدون تكرار
-  //   while (uniqueColors.length < colorCount) {
-  //     Color color = Color.fromARGB(
-  //       255,
-  //       random.nextInt(256),
-  //       random.nextInt(256),
-  //       random.nextInt(256),
-  //     );
-  //
-  //     if (!uniqueColors.contains(color)) {
-  //       uniqueColors.add(color);
-  //     }
-  //   }
-  //
-  //   // طباعة الألوان
-  //   return uniqueColors[index];
-  // }
 }
