@@ -53,6 +53,10 @@ class ScreenView extends StatelessWidget {
           default:
             return ScreenTable(pageData: pageData);
         }
+      default:
+        return Scaffold(
+          body: Center(child: Text("Url => ${pageData.url}")),
+        );
     }
   }
 }

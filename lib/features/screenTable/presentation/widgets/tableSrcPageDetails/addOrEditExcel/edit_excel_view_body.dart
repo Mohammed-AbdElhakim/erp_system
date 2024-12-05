@@ -172,7 +172,7 @@ class _EditExcelViewBodyState extends State<EditExcelViewBody> {
                           List<String> category = [];
                           List<String> listHeader = [];
                           for (var item in state.listSetupModel) {
-                            category.add(item.categoryTitle!);
+                            category.add(item.categoryTitle ?? "");
                             if (item.insertVisable == true &&
                                 item.cvisable == true &&
                                 item.visible == true &&
