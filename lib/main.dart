@@ -1,5 +1,4 @@
 import 'package:erp_system/features/screenTable/presentation/manager/addEditExpenses/add_edit_expenses_cubit.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,6 +17,7 @@ import 'features/screenTable/presentation/manager/getPageDetailsTable/get_page_d
 import 'features/screenTable/presentation/manager/getPermissions/get_permissions_cubit.dart';
 import 'features/screenTable/presentation/manager/getTable/get_table_cubit.dart';
 import 'generated/l10n.dart';
+
 // import 'package:device_preview/device_preview.dart';
 void main() async {
   SystemChrome.setSystemUIOverlayStyle(

@@ -41,7 +41,7 @@ class BuildGraphCard extends StatelessWidget {
         children: [
           Text(
             graphName,
-            style: TextStyle(color: Colors.blue),
+            style: const TextStyle(color: Colors.blue),
           ),
           Expanded(
             child: Padding(
