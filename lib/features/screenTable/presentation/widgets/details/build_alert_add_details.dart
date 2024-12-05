@@ -90,17 +90,22 @@ class _BuildAlertAddDetailsState extends State<BuildAlertAddDetails> {
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 12, vertical: 8),
-                              decoration: BoxDecoration(
-                                  color: AppColors.grey.withOpacity(.4),
-                                  borderRadius: BorderRadius.circular(15)),
-                              child: Text(
-                                categoryName,
-                                style: AppStyles.textStyle18
-                                    .copyWith(color: Colors.black),
-                              )),
+                          if (getMyWidgetList(
+                                  columnList: widget.columnList,
+                                  categoryName: categoryName,
+                                  show: true)
+                              .isNotEmpty)
+                            Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 12, vertical: 8),
+                                decoration: BoxDecoration(
+                                    color: AppColors.grey.withOpacity(.4),
+                                    borderRadius: BorderRadius.circular(15)),
+                                child: Text(
+                                  categoryName,
+                                  style: AppStyles.textStyle18
+                                      .copyWith(color: Colors.black),
+                                )),
                           ...getMyWidgetList(
                               columnList: widget.columnList,
                               categoryName: categoryName,
