@@ -456,7 +456,7 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
             numberPage = 1;
             dropdownValue = listNumberItemInList[0];
             createMyData(data: {
-              "pageId": widget.pageData.pageId,
+              // "pageId": widget.pageData.pageId,
               "employee": false,
               "limit": dropdownValue,
               "offset": (numberPage * dropdownValue) - dropdownValue,
@@ -469,6 +469,7 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
               "OrderBy": widget.pageData.orderBy,
               "IsDesc": widget.pageData.isDesc,
               "tableName": "[ProfAccount]",
+              "listName": "ExtractionTotalReportList",
               "tailcondition": "",
             });
             _pageController.jumpToPage(2);
@@ -583,7 +584,7 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                         switch (index) {
                           case 0:
                             createMyData(data: {
-                              "pageId": widget.pageData.pageId,
+                              // "pageId": widget.pageData.pageId,
                               "employee": false,
                               "limit": dropdownValue,
                               "offset":
@@ -599,6 +600,7 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                               "OrderBy": widget.pageData.orderBy,
                               "IsDesc": widget.pageData.isDesc,
                               "tableName": "[ProfAccount]",
+                              "listName": "ExtractionTotalReportList",
                               "tailcondition": "",
                             });
 
@@ -627,7 +629,7 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                             }
 
                             createMyData(data: {
-                              "pageId": 289,
+                              // "pageId": 289,
                               "employee": false,
                               "limit": dropdownValue,
                               "offset":
@@ -641,6 +643,7 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                               "OrderBy": "POID",
                               "IsDesc": true,
                               "tableName": "[PurchaseDetialView]",
+                              "listName": "PurchaseDetailReport",
                               "tailcondition": till,
                             });
 
@@ -669,7 +672,7 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                             }
 
                             createMyData(data: {
-                              "pageId": 289,
+                              // "pageId": 289,
                               "employee": false,
                               "limit": dropdownValue,
                               "offset":
@@ -682,6 +685,7 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                               "ViewEmployeeColumn": "",
                               "OrderBy": "POID",
                               "IsDesc": true,
+                              "listName": "SupplierPaymentReport",
                               "tableName": "[PaymentReciveView]",
                               "tailcondition": till,
                             });
@@ -711,7 +715,7 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                             }
 
                             createMyData(data: {
-                              "pageId": widget.pageData.pageId,
+                              // "pageId": widget.pageData.pageId,
                               "employee": false,
                               "limit": dropdownValue,
                               "offset":
@@ -726,6 +730,7 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                                   widget.pageData.viewEmployeeColumn,
                               "OrderBy": widget.pageData.orderBy,
                               "IsDesc": widget.pageData.isDesc,
+                              "listName": "ExtractionDetailsReportList",
                               "tableName": "[ExtractionDetailsReport]",
                               "tailcondition": till,
                             });
@@ -755,7 +760,7 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                             }
 
                             createMyData(data: {
-                              "pageId": widget.pageData.pageId,
+                              // "pageId": widget.pageData.pageId,
                               "employee": false,
                               "limit": dropdownValue,
                               "offset":
@@ -770,6 +775,7 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                                   widget.pageData.viewEmployeeColumn,
                               "OrderBy": widget.pageData.orderBy,
                               "IsDesc": widget.pageData.isDesc,
+                              "listName": "ExtractionTotalReportList",
                               "tableName": "[ExtractionTotalReport]",
                               "tailcondition": till,
                             });
@@ -800,6 +806,7 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                                   widget.pageData.viewEmployeeColumn,
                               "OrderBy": widget.pageData.orderBy,
                               "IsDesc": widget.pageData.isDesc,
+                              "listName": "ProfAccountDetails",
                               "tableName": "EntryWithPurchaseDetail",
                               "tailcondition": "",
                             });

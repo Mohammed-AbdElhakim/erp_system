@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:erp_system/core/errors/failures.dart';
@@ -154,6 +156,7 @@ class SupplierProcessRepoImpl implements SupplierProcessRepo {
               "";
       String token =
           await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      var rrr = jsonEncode(objectData);
       Map<String, dynamic> data = await apiService.post(
         endPoint: "web/$link/getDataGlobal",
         data: objectData,
