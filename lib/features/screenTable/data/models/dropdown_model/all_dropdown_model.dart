@@ -26,12 +26,14 @@ class AllDropdownModel {
 
 class ListDrop {
   String? columnName;
+  String? nameAr;
   List<ItemDrop>? list;
 
-  ListDrop({this.columnName, this.list});
+  ListDrop({this.columnName, this.nameAr, this.list});
 
   ListDrop.fromJson(Map<String, dynamic> json) {
     columnName = json['ColumnName'];
+    nameAr = json['NameAr'];
     if (json['List'] != null) {
       list = <ItemDrop>[];
       json['List'].forEach((v) {
@@ -43,6 +45,7 @@ class ListDrop {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['ColumnName'] = columnName;
+    data['NameAr'] = nameAr;
     if (list != null) {
       data['List'] = list!.map((v) => v.toJson()).toList();
     }

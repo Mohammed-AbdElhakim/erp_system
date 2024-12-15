@@ -753,7 +753,8 @@ class TableDataSource extends DataGridSource {
           }
 
           for (var item in listDrop!) {
-            if (item.columnName == columnList.columnName) {
+            if (item.columnName == columnList.columnName &&
+                item.nameAr == columnList.arColumnLabel) {
               myListDrop = item.list;
             }
           }

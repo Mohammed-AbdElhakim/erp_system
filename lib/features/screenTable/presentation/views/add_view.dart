@@ -15,6 +15,7 @@ import '../widgets/tableSrcPageDetails/addOrEditExcel/add_excel_view_body.dart';
 import '../widgets/tableSrcPageDetails/addSalesEdit/add_sales.dart';
 import '../widgets/tableSrcPageDetails/extractionSupplierTable/add_extraction_supplier_table.dart';
 import '../widgets/tableSrcPageDetails/productProcess/add_product_process.dart';
+import '../widgets/tableSrcPageDetails/productProcessOut/add_product_process_out.dart';
 import '../widgets/tableSrcPageDetails/productionProsecc/add_production_prosecc.dart';
 import '../widgets/tableSrcPageDetails/purchases/add_purchases.dart';
 
@@ -90,6 +91,11 @@ class AddView extends StatelessWidget {
             listKey: listKey);
       case "ProductProcess":
         return AddProductProcess(
+            tapData: state.tapModel.list[0],
+            pageData: pageData,
+            listKey: listKey);
+      case "ProductProcessOut":
+        return AddProductProcessOut(
             tapData: state.tapModel.list[0],
             pageData: pageData,
             listKey: listKey);
