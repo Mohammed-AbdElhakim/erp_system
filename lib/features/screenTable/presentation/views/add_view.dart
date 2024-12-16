@@ -45,12 +45,18 @@ class AddView extends StatelessWidget {
           child: BlocBuilder<GetPageDetailsCubit, GetPageDetailsState>(
             builder: (context, state) {
               if (state is GetPageDetailsSuccess) {
-                String listName = state.tapModel.list[0].listName;
+                String listName = state.tapModel.list.isEmpty
+                    ? ""
+                    : state.tapModel.list[0].listName;
                 return BlocProvider(
                   create: (context) =>
                       GetListSetupsCubit(getIt.get<ScreenRepoImpl>())
                         ..getListSetups(listName),
-                  child: getMyWidget(state.tapModel.list[0].tableSrc, state),
+                  child: getMyWidget(
+                      state.tapModel.list.isEmpty
+                          ? ""
+                          : state.tapModel.list[0].tableSrc,
+                      state),
                 );
               } else if (state is GetPageDetailsFailure) {
                 return CustomErrorMassage(errorMassage: state.errorMassage);
