@@ -77,6 +77,7 @@ class _EditViewState extends State<EditView> {
 
   getMyWidget(String tableSrc, GetPageDetailsSuccess state) {
     switch (tableSrc) {
+      case "tableExcel":
       case "entry":
         return EditExcelViewBody(
           tapData: state.tapModel.list[0],

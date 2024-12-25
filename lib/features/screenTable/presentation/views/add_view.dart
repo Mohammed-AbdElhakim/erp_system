@@ -72,6 +72,7 @@ class AddView extends StatelessWidget {
 
   getMyWidget(String tableSrc, GetPageDetailsSuccess state) {
     switch (tableSrc) {
+      case "tableExcel":
       case "entry":
         return AddExcelViewBody(
           tapData: state.tapModel.list[0],
