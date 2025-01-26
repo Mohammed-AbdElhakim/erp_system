@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/helper/SharedPreferences/pref.dart';
+import '../../../../core/utils/methods.dart';
 import '../../../../core/utils/service_locator.dart';
 import '../../../../core/widgets/change_status_bar_color.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
@@ -75,28 +76,30 @@ class _SubTaskViewState extends State<SubTaskView> {
                 return ListView(
                   children: [
                     CustomExpansionTile(
-                      color: Colors.redAccent.withOpacity(.7),
+                      color: colorWithOpacity(
+                          color: Colors.redAccent, opacity: .7),
                       title: S.of(context).to_do,
                       children: noDoList,
                       stepIndex: 1,
                       idMainTask: widget.taskData.parent!.tID!.toString(),
                     ),
                     CustomExpansionTile(
-                      color: Colors.orange.withOpacity(.7),
+                      color:
+                          colorWithOpacity(color: Colors.orange, opacity: .7),
                       title: S.of(context).on_progress,
                       children: doList,
                       stepIndex: 2,
                       idMainTask: widget.taskData.parent!.tID!.toString(),
                     ),
                     CustomExpansionTile(
-                      color: Colors.green.withOpacity(.7),
+                      color: colorWithOpacity(color: Colors.green, opacity: .7),
                       title: S.of(context).under_revision,
                       children: underRevisionList,
                       stepIndex: 3,
                       idMainTask: widget.taskData.parent!.tID!.toString(),
                     ),
                     CustomExpansionTile(
-                      color: Colors.teal.withOpacity(.7),
+                      color: colorWithOpacity(color: Colors.teal, opacity: .7),
                       title: S.of(context).revision,
                       children: revisionList,
                       stepIndex: 4,

@@ -1,3 +1,4 @@
+import 'package:erp_system/core/utils/methods.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/utils/app_colors.dart';
@@ -38,7 +39,7 @@ class _NavigationMenuState extends State<NavigationMenu> {
                 margin: const EdgeInsets.symmetric(vertical: 8),
                 decoration: BoxDecoration(
                   color: selectIndex == e.id
-                      ? AppColors.white.withOpacity(0.10)
+                      ? colorWithOpacity(color: AppColors.white, opacity: .10)
                       : Colors.transparent,
                   borderRadius: BorderRadius.circular(15),
                 ),
@@ -55,7 +56,7 @@ class _NavigationMenuState extends State<NavigationMenu> {
                     size: selectIndex == e.id ? 30 : 20,
                     color: selectIndex == e.id
                         ? AppColors.white
-                        : AppColors.white.withOpacity(0.8),
+                        : colorWithOpacity(color: AppColors.white, opacity: .8),
                   ),
                 ),
               ),
@@ -67,7 +68,8 @@ class _NavigationMenuState extends State<NavigationMenu> {
                     Icons.circle,
                     color: selectIndex == e.id
                         ? AppColors.orange
-                        : AppColors.orange.withOpacity(0.8),
+                        : colorWithOpacity(
+                            color: AppColors.orange, opacity: .8),
                     size: selectIndex == e.id ? 12 : 10,
                   ),
                 )

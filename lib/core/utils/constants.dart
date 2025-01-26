@@ -1,3 +1,4 @@
+import 'package:erp_system/core/utils/methods.dart';
 import 'package:flutter/material.dart';
 
 import 'app_colors.dart';
@@ -17,7 +18,7 @@ LinearGradient gradientButtonCancel = LinearGradient(
   end: AlignmentDirectional.bottomCenter,
   colors: [
     AppColors.grey,
-    AppColors.grey.withOpacity(.2),
+    colorWithOpacity(color: AppColors.grey, opacity: .2),
   ],
 );
 

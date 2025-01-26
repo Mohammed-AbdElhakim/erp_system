@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../core/models/menu_model/pages.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_styles.dart';
+import '../../../../../core/utils/methods.dart';
 import '../../../data/repositories/screen_repo_impl.dart';
 import 'tap_details_widget_body.dart';
 
@@ -29,7 +30,8 @@ class TapDetailsWidget extends StatelessWidget {
         tap.displayArabic,
         style: AppStyles.textStyle18.copyWith(color: Colors.black),
       ),
-      backgroundColor: AppColors.blueGreyLight.withOpacity(.3),
+      backgroundColor:
+          colorWithOpacity(color: AppColors.blueGreyLight, opacity: .3),
       collapsedBackgroundColor: AppColors.blueGreyLight,
       children: [
         BlocProvider(

@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_router.dart';
 import '../../../../core/utils/app_styles.dart';
+import '../../../../core/utils/methods.dart';
 import '../../../../generated/l10n.dart';
 import '../../data/models/task_model.dart';
 import '../manager/task/task_cubit.dart';
@@ -27,10 +28,10 @@ class ItemTaskGridView extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
             color: taskData.parent!.progress == 0.0
-                ? Colors.redAccent.withOpacity(.7)
+                ? colorWithOpacity(color: Colors.redAccent, opacity: .7)
                 : taskData.parent!.progress == 100.0
-                    ? Colors.green.withOpacity(.7)
-                    : Colors.orange.withOpacity(.7),
+                    ? colorWithOpacity(color: Colors.green, opacity: .7)
+                    : colorWithOpacity(color: Colors.orange, opacity: .7),
             borderRadius: BorderRadius.circular(15)),
         child: Column(
           children: [

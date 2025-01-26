@@ -1,5 +1,6 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:dio/dio.dart';
+import 'package:erp_system/core/utils/methods.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -93,7 +94,9 @@ class _BuildAlertAddInDropdownState extends State<BuildAlertAddInDropdown> {
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 12, vertical: 8),
                                       decoration: BoxDecoration(
-                                          color: AppColors.grey.withOpacity(.4),
+                                          color: colorWithOpacity(
+                                              color: AppColors.grey,
+                                              opacity: .4),
                                           borderRadius:
                                               BorderRadius.circular(15)),
                                       child: Text(

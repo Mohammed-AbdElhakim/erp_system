@@ -318,3 +318,16 @@ buildShowDialogText(
     );
   }
 }
+
+colorWithOpacity({
+  required Color color,
+  required double opacity,
+}) {
+  //color.withOpacity(opacity)
+  return color.withValues(
+    red: color.r,
+    blue: color.b,
+    green: color.g,
+    alpha: (1 - opacity) * 255,
+  );
+}

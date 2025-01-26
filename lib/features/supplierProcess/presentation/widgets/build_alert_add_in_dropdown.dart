@@ -16,6 +16,7 @@ import '../../../../../core/widgets/custom_button.dart';
 import '../../../../../core/widgets/custom_loading_widget.dart';
 import '../../../../../core/widgets/custom_text_form_field.dart';
 import '../../../../../generated/l10n.dart';
+import '../../../../core/utils/methods.dart';
 import '../../data/models/all_dropdown_model.dart';
 import '../../data/models/header_model.dart';
 import '../manager/addEdit/add_edit_cubit.dart';
@@ -93,7 +94,9 @@ class _BuildAlertAddInDropdownState extends State<BuildAlertAddInDropdown> {
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 12, vertical: 8),
                                       decoration: BoxDecoration(
-                                          color: AppColors.grey.withOpacity(.4),
+                                          color: colorWithOpacity(
+                                              color: AppColors.grey,
+                                              opacity: .4),
                                           borderRadius:
                                               BorderRadius.circular(15)),
                                       child: Text(

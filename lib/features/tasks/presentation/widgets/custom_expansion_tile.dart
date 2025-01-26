@@ -1,9 +1,9 @@
-
 import 'package:erp_system/features/tasks/presentation/widgets/sub_task_item.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/helper/SharedPreferences/pref.dart';
 import '../../../../core/utils/app_styles.dart';
+import '../../../../core/utils/methods.dart';
 import '../../data/models/task_model.dart';
 
 class CustomExpansionTile extends StatefulWidget {
@@ -58,7 +58,7 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
       padding: const EdgeInsets.all(8.0),
       child: ExpansionTile(
         initiallyExpanded: widget.stepIndex == open ? true : false,
-        backgroundColor: widget.color.withOpacity(0.5),
+        backgroundColor: colorWithOpacity(color: widget.color, opacity: .5),
         collapsedBackgroundColor: widget.color,
         title: Row(
           children: [

@@ -1,7 +1,7 @@
-import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:erp_system/features/supplierProcess/data/models/header_model.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/errors/failures.dart';
 import '../../../data/repositories/supplier_process_repo.dart';

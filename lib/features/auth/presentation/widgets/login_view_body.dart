@@ -1,3 +1,4 @@
+import 'package:erp_system/core/utils/methods.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -41,7 +42,9 @@ class LoginViewBody extends StatelessWidget {
               },
               child: Text(
                 S.of(context).change_host,
-                style: TextStyle(color: AppColors.blueDark.withOpacity(.7)),
+                style: TextStyle(
+                    color: colorWithOpacity(
+                        color: AppColors.blueDark, opacity: .7)),
               ),
             ),
           ),

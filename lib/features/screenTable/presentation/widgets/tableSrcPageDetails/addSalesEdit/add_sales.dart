@@ -19,6 +19,7 @@ import '../../../../../../core/utils/api_service.dart';
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_strings.dart';
 import '../../../../../../core/utils/app_styles.dart';
+import '../../../../../../core/utils/methods.dart';
 import '../../../../../../core/widgets/custom_button.dart';
 import '../../../../../../core/widgets/custom_text_form_field.dart';
 import '../../../../../../generated/l10n.dart';
@@ -171,8 +172,9 @@ class _AddSalesState extends State<AddSales> {
                                                       horizontal: 12,
                                                       vertical: 8),
                                               decoration: BoxDecoration(
-                                                  color: AppColors.grey
-                                                      .withOpacity(.4),
+                                                  color: colorWithOpacity(
+                                                      color: AppColors.grey,
+                                                      opacity: .4),
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                           15)),
