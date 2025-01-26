@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../../generated/l10n.dart';
 import '../../utils/app_colors.dart';
-import '../../utils/methods.dart';
 
 buildShowModalBottomSheet({
   required BuildContext context,
@@ -14,8 +13,7 @@ buildShowModalBottomSheet({
   return showModalBottomSheet(
     context: context,
     barrierColor: Colors.black38,
-    // backgroundColor: AppColors.white.withOpacity(.01),
-    backgroundColor: colorWithOpacity(color: AppColors.white, opacity: .01),
+    backgroundColor: AppColors.white.withOpacity(.01),
     enableDrag: false,
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
     isDismissible: false,
@@ -42,10 +40,7 @@ buildShowModalBottomSheet({
             ),
           ),
           Divider(
-              color: colorWithOpacity(
-                color: AppColors.blueGreyDark,
-                opacity: .7,
-              ),
+              color: AppColors.blueGreyDark.withOpacity(.7),
               height: 1,
               thickness: 1.5),
           GestureDetector(

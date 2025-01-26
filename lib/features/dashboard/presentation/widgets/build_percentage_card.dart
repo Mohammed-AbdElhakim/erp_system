@@ -1,4 +1,3 @@
-import 'package:erp_system/core/utils/methods.dart';
 import 'package:flutter/material.dart';
 
 class BuildPercentageCard extends StatelessWidget {
@@ -39,7 +38,7 @@ class BuildPercentageCard extends StatelessWidget {
                 child: CircularProgressIndicator(
                   value: value,
                   color: color,
-                  backgroundColor: colorWithOpacity(color: color, opacity: .2),
+                  backgroundColor: color.withOpacity(.2),
                   strokeWidth: 6,
                 ),
               ),

@@ -1,6 +1,5 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:dio/dio.dart';
-import 'package:erp_system/core/utils/methods.dart';
 import 'package:erp_system/features/accountProf/data/models/account_prof_model.dart';
 import 'package:erp_system/features/accountProf/data/repositories/account_prof_repo_impl.dart';
 import 'package:erp_system/features/accountProf/presentation/views/account_prof_view.dart';
@@ -604,7 +603,7 @@ class _AccountProfViewBodyState extends State<AccountProfViewBody> {
     return Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
-            color: colorWithOpacity(color: AppColors.grey, opacity: .4),
+            color: AppColors.grey.withOpacity(.4),
             borderRadius: BorderRadius.circular(15)),
         child: Text(
           entry.key,

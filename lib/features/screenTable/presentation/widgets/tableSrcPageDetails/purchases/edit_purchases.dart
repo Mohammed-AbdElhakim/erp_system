@@ -17,7 +17,6 @@ import '../../../../../../core/utils/api_service.dart';
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_strings.dart';
 import '../../../../../../core/utils/app_styles.dart';
-import '../../../../../../core/utils/methods.dart';
 import '../../../../../../core/utils/service_locator.dart';
 import '../../../../../../core/widgets/custom_button.dart';
 import '../../../../../../core/widgets/custom_text_form_field.dart';
@@ -242,11 +241,9 @@ class _EditPurchasesState extends State<EditPurchases> {
                                                                     vertical:
                                                                         8),
                                                             decoration: BoxDecoration(
-                                                                color: colorWithOpacity(
-                                                                    color:
-                                                                        AppColors
-                                                                            .grey,
-                                                                    opacity:
+                                                                color: AppColors
+                                                                    .grey
+                                                                    .withOpacity(
                                                                         .4),
                                                                 borderRadius:
                                                                     BorderRadius

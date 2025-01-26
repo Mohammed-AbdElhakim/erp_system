@@ -12,7 +12,6 @@ import '../../../../../../core/utils/api_service.dart';
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_strings.dart';
 import '../../../../../../core/utils/app_styles.dart';
-import '../../../../../../core/utils/methods.dart';
 import '../../../../../../core/widgets/custom_button.dart';
 import '../../../../../../core/widgets/custom_error_massage.dart';
 import '../../../../../../core/widgets/custom_loading_widget.dart';
@@ -118,9 +117,8 @@ class _AddProductionProseccState extends State<AddProductionProsecc> {
                                             padding: const EdgeInsets.symmetric(
                                                 horizontal: 12, vertical: 8),
                                             decoration: BoxDecoration(
-                                                color: colorWithOpacity(
-                                                    color: AppColors.grey,
-                                                    opacity: .4),
+                                                color: AppColors.grey
+                                                    .withOpacity(.4),
                                                 borderRadius:
                                                     BorderRadius.circular(15)),
                                             child: Text(
@@ -140,8 +138,7 @@ class _AddProductionProseccState extends State<AddProductionProsecc> {
                                   horizontal: 12, vertical: 8),
                               margin: const EdgeInsets.symmetric(vertical: 8),
                               decoration: BoxDecoration(
-                                  color: colorWithOpacity(
-                                      color: AppColors.grey, opacity: .4),
+                                  color: AppColors.grey.withOpacity(.4),
                                   borderRadius: BorderRadius.circular(15)),
                               child: Text(
                                 "المواد المصنعة",
@@ -179,8 +176,7 @@ class _AddProductionProseccState extends State<AddProductionProsecc> {
                                   horizontal: 12, vertical: 8),
                               margin: const EdgeInsets.symmetric(vertical: 8),
                               decoration: BoxDecoration(
-                                  color: colorWithOpacity(
-                                      color: AppColors.grey, opacity: .4),
+                                  color: AppColors.grey.withOpacity(.4),
                                   borderRadius: BorderRadius.circular(15)),
                               child: Text(
                                 "المواد الخام",

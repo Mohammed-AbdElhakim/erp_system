@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/utils/app_colors.dart';
-import '../../../../core/utils/methods.dart';
 import 'custom_tap_widget.dart';
 
 class TabsWidget extends StatefulWidget {
@@ -25,7 +24,7 @@ class _TabsWidgetState extends State<TabsWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: colorWithOpacity(color: AppColors.blueLight, opacity: .3),
+      color: AppColors.blueLight.withOpacity(.3),
       width: double.infinity,
       child: Wrap(
         children: [

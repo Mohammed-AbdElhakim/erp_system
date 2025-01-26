@@ -1,4 +1,3 @@
-import 'package:erp_system/core/utils/methods.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -185,9 +184,8 @@ class _BuildTablesCardState extends State<BuildTablesCard> {
                                     alignment: Alignment.center,
                                     decoration: BoxDecoration(
                                       color: selectedRowIndex == rowIndex
-                                          ? colorWithOpacity(
-                                              color: AppColors.blueGreyDark,
-                                              opacity: .8)
+                                          ? AppColors.blueGreyDark
+                                              .withOpacity(.8)
                                           : (rowIndex % 2 == 0
                                               ? Colors.white
                                               : Colors.white),

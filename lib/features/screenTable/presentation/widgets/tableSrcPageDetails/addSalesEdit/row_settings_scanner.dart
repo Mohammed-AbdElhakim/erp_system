@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
-import '../../../../../../core/utils/methods.dart';
-
 class RowSettingsScanner extends StatelessWidget {
   const RowSettingsScanner({super.key, required this.cameraController});
   final MobileScannerController cameraController;
@@ -18,7 +16,7 @@ class RowSettingsScanner extends StatelessWidget {
               color: const Color(0xff393939),
               boxShadow: [
                 BoxShadow(
-                  color: colorWithOpacity(color: Colors.black, opacity: .5),
+                  color: Colors.black.withOpacity(0.5),
                   spreadRadius: 4,
                   blurRadius: 7,
                   offset: const Offset(0, 3), // changes position of shadow
@@ -50,7 +48,7 @@ class RowSettingsScanner extends StatelessWidget {
               color: const Color(0xff393939),
               boxShadow: [
                 BoxShadow(
-                  color: colorWithOpacity(color: Colors.black, opacity: .5),
+                  color: Colors.black.withOpacity(0.5),
                   spreadRadius: 4,
                   blurRadius: 7,
                   offset: const Offset(0, 3), // changes position of shadow

@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/utils/app_colors.dart';
-import '../../../../core/utils/methods.dart';
 import '../../data/models/pages_for_notifications_model.dart';
 
 class NotificationsViewBody extends StatefulWidget {
@@ -84,8 +83,7 @@ class _NotificationsViewBodyState extends State<NotificationsViewBody> {
                                 border: Border.all(color: AppColors.blueLight),
                                 boxShadow: [
                                   BoxShadow(
-                                      color: colorWithOpacity(
-                                          color: AppColors.grey, opacity: .8),
+                                      color: AppColors.grey.withOpacity(.8),
                                       offset: const Offset(-2, 2),
                                       blurRadius: 2,
                                       spreadRadius: 1)

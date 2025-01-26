@@ -16,7 +16,6 @@ import '../../../../core/models/menu_model/pages.dart';
 import '../../../../core/utils/api_service.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../../../../core/utils/app_styles.dart';
-import '../../../../core/utils/methods.dart';
 import '../../../../core/utils/service_locator.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_text_form_field.dart';
@@ -257,7 +256,7 @@ class _CashierViewBodyState extends State<CashierViewBody> {
     return Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
-            color: colorWithOpacity(color: AppColors.grey, opacity: .4),
+            color: AppColors.grey.withOpacity(.4),
             borderRadius: BorderRadius.circular(15)),
         child: Text(
           entry.key,

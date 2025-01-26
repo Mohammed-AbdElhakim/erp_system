@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/utils/app_colors.dart';
-import '../../../../core/utils/methods.dart';
 
 class NotificationListItem extends StatelessWidget {
   const NotificationListItem({
@@ -23,7 +22,7 @@ class NotificationListItem extends StatelessWidget {
           border: Border.all(color: AppColors.blueLight),
           boxShadow: [
             BoxShadow(
-                color: colorWithOpacity(color: AppColors.grey, opacity: .8),
+                color: AppColors.grey.withOpacity(.8),
                 offset: const Offset(-2, 2),
                 blurRadius: 2,
                 spreadRadius: 1)
