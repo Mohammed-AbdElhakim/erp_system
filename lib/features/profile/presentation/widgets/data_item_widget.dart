@@ -8,7 +8,7 @@ class DataItemWidget extends StatelessWidget {
     required this.number,
     required this.title,
   });
-  final int number;
+  final num number;
   final String title;
   @override
   Widget build(BuildContext context) {

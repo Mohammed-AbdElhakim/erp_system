@@ -12,7 +12,7 @@ class ProfileDataCubit extends Cubit<ProfileDataState> {
   ProfileDataCubit(this.profileRepo) : super(ProfileDataInitial());
 
   final ProfileRepo profileRepo;
-  Future<void> getPagesNotifications() async {
+  Future<void> getProfileData() async {
     emit(ProfileDataLoading());
     Either<Failure, ProfileModel> result = await profileRepo.getProfileData();
     result.fold((failure) {
