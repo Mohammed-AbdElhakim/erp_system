@@ -11,6 +11,7 @@ import '../../features/customerAccount/data/repositories/customer_account_repo_i
 import '../../features/dashboard/data/repositories/dashboard_repo_impl.dart';
 import '../../features/generalBalance/data/repositories/general_balance_repo_impl.dart';
 import '../../features/notifications/data/repositories/notifications_repo_impl.dart';
+import '../../features/profile/data/repositories/profile_repo_impl.dart';
 import '../../features/profit/data/repositories/profit_repo_impl.dart';
 import '../../features/screenTable/data/repositories/screen_repo_impl.dart';
 import '../../features/supplierProcess/data/repositories/supplier_process_repo_impl.dart';
@@ -114,6 +115,12 @@ void setupServiceLocator() {
 
   getIt.registerSingleton<DashboardRepoImpl>(
     DashboardRepoImpl(
+      getIt.get<ApiService>(),
+    ),
+  );
+
+  getIt.registerSingleton<ProfileRepoImpl>(
+    ProfileRepoImpl(
       getIt.get<ApiService>(),
     ),
   );
