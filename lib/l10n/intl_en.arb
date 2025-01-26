@@ -70,7 +70,11 @@
   "dashboard": "Dashboard",
 
 
-  "profile": "Profile"
+  "profile": "Profile",
+  "advance_balance": "Advance Balance",
+  "vacation_balance":"Vacation Balance",
+  "attendance_days": "Attendance Days",
+  "salary_items":"Salary Items"
 
 
 

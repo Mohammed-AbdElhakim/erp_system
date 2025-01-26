@@ -509,6 +509,46 @@ class S {
   String get profile {
     return Intl.message('Profile', name: 'profile', desc: '', args: []);
   }
+
+  /// `Advance Balance`
+  String get advance_balance {
+    return Intl.message(
+      'Advance Balance',
+      name: 'advance_balance',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Vacation Balance`
+  String get vacation_balance {
+    return Intl.message(
+      'Vacation Balance',
+      name: 'vacation_balance',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Attendance Days`
+  String get attendance_days {
+    return Intl.message(
+      'Attendance Days',
+      name: 'attendance_days',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Salary Items`
+  String get salary_items {
+    return Intl.message(
+      'Salary Items',
+      name: 'salary_items',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

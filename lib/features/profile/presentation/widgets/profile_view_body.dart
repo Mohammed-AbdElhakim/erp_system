@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/widgets/custom_loading_widget.dart';
+import '../../../../generated/l10n.dart';
 import '../../data/models/profile_model.dart';
 
 class ProfileViewBody extends StatelessWidget {
@@ -25,24 +26,10 @@ class ProfileViewBody extends StatelessWidget {
               child: CircleAvatar(
                 radius: 75,
                 backgroundColor: Colors.white,
-                /* backgroundImage: CachedNetworkImageProvider(
-                  // "http://161.97.161.180:805/assets/images/icons/pages/637635156668156648CustomerPayment.png",
-                  "http://${profileModel.userImageURL}",
-                  errorListener: (p0) => const Icon(
-                    Icons.error,
-                    size: 35,
-                  ),
-
-                  // placeholder: (context, url) => const CustomLoadingWidget(),
-                ),*/
-                // child: Image.asset(AppAssets.logo),
                 child: ClipOval(
                   child: AspectRatio(
                     aspectRatio: 1,
                     child: CachedNetworkImage(
-                      // fit: BoxFit.cover,
-                      // imageUrl:
-                      //     "http://161.97.161.180:805/assets/images/icons/pages/637635156668156648CustomerPayment.png",
                       imageUrl: "http://${profileModel.userImageURL}",
                       placeholder: (context, url) =>
                           const CustomLoadingWidget(),
@@ -80,7 +67,7 @@ class ProfileViewBody extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   DataItemWidget(
-                    title: "رصيد السلف",
+                    title: S.of(context).advance_balance,
                     number: profileModel.loansBalance!,
                   ),
                   const VerticalDivider(
@@ -88,7 +75,7 @@ class ProfileViewBody extends StatelessWidget {
                     thickness: 1,
                   ),
                   DataItemWidget(
-                    title: "رصيد الاجازات",
+                    title: S.of(context).vacation_balance,
                     number: profileModel.daysOffBalance!,
                   ),
                 ],
@@ -104,7 +91,7 @@ class ProfileViewBody extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   DataItemWidget(
-                    title: "أيام الحضور",
+                    title: S.of(context).attendance_days,
                     number: profileModel.attendedDays!,
                   ),
                   const VerticalDivider(
@@ -112,7 +99,7 @@ class ProfileViewBody extends StatelessWidget {
                     thickness: 1,
                   ),
                   DataItemWidget(
-                    title: "مفرادات المرتب",
+                    title: S.of(context).salary_items,
                     number: profileModel.salary!,
                   ),
                 ],

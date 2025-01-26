@@ -69,7 +69,14 @@
   "statistics": "الإحصائيات",
   "dashboard": "لوحة التحكم",
 
-  "profile": "الملف الشخصي"
+  "profile": "الملف الشخصي",
+  "advance_balance": "رصيد السلف",
+  "vacation_balance":"رصيد الاجازات",
+  "attendance_days": "أيام الحضور",
+  "salary_items":"مفرادات المرتب"
+
+
+
 
 
 

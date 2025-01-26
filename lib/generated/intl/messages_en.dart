@@ -25,8 +25,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "Total_number_of_entries": MessageLookupByLibrary.simpleMessage(
       "Total number of entries : ",
     ),
+    "advance_balance": MessageLookupByLibrary.simpleMessage("Advance Balance"),
     "arabic": MessageLookupByLibrary.simpleMessage("عربي "),
     "attend": MessageLookupByLibrary.simpleMessage("Attend"),
+    "attendance_days": MessageLookupByLibrary.simpleMessage("Attendance Days"),
     "back": MessageLookupByLibrary.simpleMessage("Back"),
     "basic_data": MessageLookupByLibrary.simpleMessage("Basic data"),
     "btn_add": MessageLookupByLibrary.simpleMessage("Add"),
@@ -99,6 +101,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "profile": MessageLookupByLibrary.simpleMessage("Profile"),
     "refresh": MessageLookupByLibrary.simpleMessage("Refresh"),
     "revision": MessageLookupByLibrary.simpleMessage("Reviewed"),
+    "salary_items": MessageLookupByLibrary.simpleMessage("Salary Items"),
     "search": MessageLookupByLibrary.simpleMessage("Search....."),
     "select_client": MessageLookupByLibrary.simpleMessage(
       "Please select a client.",
@@ -119,6 +122,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "under_revision": MessageLookupByLibrary.simpleMessage("Under revision"),
     "username_or_email": MessageLookupByLibrary.simpleMessage(
       "Username or Email",
+    ),
+    "vacation_balance": MessageLookupByLibrary.simpleMessage(
+      "Vacation Balance",
     ),
     "warning": MessageLookupByLibrary.simpleMessage("Warning"),
     "welcome": MessageLookupByLibrary.simpleMessage("WELCOME !"),

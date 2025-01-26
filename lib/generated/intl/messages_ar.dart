@@ -25,8 +25,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "Total_number_of_entries": MessageLookupByLibrary.simpleMessage(
       "إجمالي عدد الإدخالات : ",
     ),
+    "advance_balance": MessageLookupByLibrary.simpleMessage("رصيد السلف"),
     "arabic": MessageLookupByLibrary.simpleMessage("عربي"),
     "attend": MessageLookupByLibrary.simpleMessage("حضور"),
+    "attendance_days": MessageLookupByLibrary.simpleMessage("أيام الحضور"),
     "back": MessageLookupByLibrary.simpleMessage("رجوع"),
     "basic_data": MessageLookupByLibrary.simpleMessage("بيانات أساسية"),
     "btn_add": MessageLookupByLibrary.simpleMessage("إضافة"),
@@ -97,6 +99,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "profile": MessageLookupByLibrary.simpleMessage("الملف الشخصي"),
     "refresh": MessageLookupByLibrary.simpleMessage("تحديث"),
     "revision": MessageLookupByLibrary.simpleMessage("تم المراجعة"),
+    "salary_items": MessageLookupByLibrary.simpleMessage("مفرادات المرتب"),
     "search": MessageLookupByLibrary.simpleMessage("بحث....."),
     "select_client": MessageLookupByLibrary.simpleMessage(
       "من فضلك اختر العميل.",
@@ -118,6 +121,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "username_or_email": MessageLookupByLibrary.simpleMessage(
       "اسم المستخدم او البريد الإلكتروني",
     ),
+    "vacation_balance": MessageLookupByLibrary.simpleMessage("رصيد الاجازات"),
     "warning": MessageLookupByLibrary.simpleMessage("تحذير"),
     "welcome": MessageLookupByLibrary.simpleMessage("مرحباً !"),
     "welcome_in": MessageLookupByLibrary.simpleMessage("مرحبا بك في "),
