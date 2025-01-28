@@ -25,8 +25,8 @@ class ProductCardModel {
 }
 
 class ProductCardItem {
-  int? input;
-  int? output;
+  double? input;
+  double? output;
   String? proName;
   int? productID;
   String? eDate;
@@ -37,19 +37,19 @@ class ProductCardItem {
   double? total;
   int? pIndex;
   double? pCost;
-  int? balance;
+  double? balance;
   String? pRTName;
   int? code;
   String? customerAccountName;
   int? autoNumber;
   String? orderNote;
-  int? proPrice;
+  double? proPrice;
   String? colorName;
   String? sizeName;
   int? supplierID;
   String? supName;
   int? pONumber;
-  int? purchTotal;
+  double? purchTotal;
   int? unitID;
   String? uName;
 
