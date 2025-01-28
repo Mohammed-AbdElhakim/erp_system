@@ -89,7 +89,9 @@ class _ProductCardViewState extends State<ProductCardView> {
                             listColumnInTable.add(item);
                           }
                         }
-
+                        listColumnInTable.sort(
+                          (a, b) => a.sort!.compareTo(b.sort!),
+                        );
                         return ProductCardViewBody(
                           listColumn: listColumn,
                           listColumnInTable: listColumnInTable,
