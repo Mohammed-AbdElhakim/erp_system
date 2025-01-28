@@ -81,6 +81,9 @@ class _ProductCardViewState extends State<ProductCardView> {
                       if (state is GetTableSuccess) {
                         List<ColumnList> listColumn = [];
                         List<ColumnList> listColumnInTable = [];
+                        state.screenModel.columnList!.sort(
+                          (a, b) => a.sort!.compareTo(b.sort!),
+                        );
                         for (var item in state.screenModel.columnList!) {
                           if (item.insertVisable == true) {
                             listColumn.add(item);
@@ -89,9 +92,7 @@ class _ProductCardViewState extends State<ProductCardView> {
                             listColumnInTable.add(item);
                           }
                         }
-                        listColumnInTable.sort(
-                          (a, b) => a.sort!.compareTo(b.sort!),
-                        );
+
                         return ProductCardViewBody(
                           listColumn: listColumn,
                           listColumnInTable: listColumnInTable,
