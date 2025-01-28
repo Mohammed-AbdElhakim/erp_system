@@ -7,6 +7,7 @@ import '../../features/cashier/presentation/views/cashier_view.dart';
 import '../../features/chart/presentation/views/chart_view.dart';
 import '../../features/customerAccount/presentation/views/customer_account_view.dart';
 import '../../features/generalBalance/presentation/views/general_balance_view.dart';
+import '../../features/productCard/presentation/views/product_card_view.dart';
 import '../../features/profit/presentation/views/profit_view.dart';
 import '../../features/screenTable/presentation/views/screen_table.dart';
 import '../../features/supplierProcess/presentation/views/supplier_process_view.dart';
@@ -50,6 +51,8 @@ class ScreenView extends StatelessWidget {
             return AccountProfView(pageData: pageData);
           case "supplierProccess":
             return SupplierProcessView(pageData: pageData);
+          case "prodCard":
+            return ProductCardView(pageData: pageData);
           default:
             return ScreenTable(pageData: pageData);
         }

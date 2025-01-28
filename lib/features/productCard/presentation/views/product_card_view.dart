@@ -14,6 +14,7 @@ import '../../data/models/screen_model.dart';
 import '../../data/repositories/product_card_repo_impl.dart';
 import '../manager/getAllDropdownList/get_all_dropdown_list_cubit.dart';
 import '../manager/getTable/get_table_cubit.dart';
+import '../widgets/product_card_view_body.dart';
 
 class ProductCardView extends StatefulWidget {
   const ProductCardView({super.key, required this.pageData});
@@ -89,7 +90,11 @@ class _ProductCardViewState extends State<ProductCardView> {
                           }
                         }
 
-                        return SizedBox();
+                        return ProductCardViewBody(
+                          listColumn: listColumn,
+                          listColumnInTable: listColumnInTable,
+                          pageData: widget.pageData,
+                        );
                       } else if (state is GetTableFailure) {
                         return CustomErrorMassage(
                             errorMassage: state.errorMassage);
