@@ -397,6 +397,15 @@ class _ProductCardViewBodyState extends State<ProductCardViewBody> {
                     ? CustomDropdown<String>.search(
                         hintText: '',
                         initialItem: dropValue,
+                        validator: itemColumnList.isRquired!
+                            ? (value) {
+                                if (value?.isEmpty ?? true) {
+                                  return S.of(context).field_is_required;
+                                } else {
+                                  return null;
+                                }
+                              }
+                            : null,
                         closedHeaderPadding: const EdgeInsets.symmetric(
                             horizontal: 15, vertical: 8),
                         decoration: CustomDropdownDecoration(
@@ -421,6 +430,15 @@ class _ProductCardViewBodyState extends State<ProductCardViewBody> {
                     : CustomDropdown<String>.multiSelectSearch(
                         hintText: '',
                         initialItems: dropValueList,
+                        listValidator: itemColumnList.isRquired!
+                            ? (value) {
+                                if (value.isEmpty) {
+                                  return S.of(context).field_is_required;
+                                } else {
+                                  return null;
+                                }
+                              }
+                            : null,
                         onListChanged: (valueList) {
                           dropSetState(() {
                             widgetData['value'] = [];
@@ -612,6 +630,7 @@ class _ProductCardViewBodyState extends State<ProductCardViewBody> {
   }
 
   _buildPage1() {
+    GlobalKey<FormState> formKey = GlobalKey();
     //تقسيم ال list  الى مجموعات
     final Map<String, List<Map<String, dynamic>>> groupData = {};
     for (var item in widgetsData) {
@@ -626,12 +645,15 @@ class _ProductCardViewBodyState extends State<ProductCardViewBody> {
         body: ListView(
           children: [
             ...groupData.entries.map((entry) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  buildCategoryName(entry),
-                  buildCategoryChildren(entry),
-                ],
+              return Form(
+                key: formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    buildCategoryName(entry),
+                    buildCategoryChildren(entry),
+                  ],
+                ),
               );
             }).toList(),
             const SizedBox(height: 80),
@@ -645,10 +667,12 @@ class _ProductCardViewBodyState extends State<ProductCardViewBody> {
             color: AppColors.white,
           ),
           onPressed: () {
-            numberPage = 1;
-            dropdownValue = listNumberItemInList[0];
-            createMyData();
-            _pageController.jumpToPage(2);
+            if (formKey.currentState!.validate()) {
+              numberPage = 1;
+              dropdownValue = listNumberItemInList[0];
+              createMyData();
+              _pageController.jumpToPage(2);
+            }
           },
         ),
       ),
