@@ -1,14 +1,14 @@
 class StoreShowModel {
-  List<DynamicList>? dynamicList;
+  List<StoreShowItem>? dynamicList;
   int? numberofrecords;
 
   StoreShowModel({this.dynamicList, this.numberofrecords});
 
   StoreShowModel.fromJson(Map<String, dynamic> json) {
     if (json['dynamicList'] != null) {
-      dynamicList = <DynamicList>[];
+      dynamicList = <StoreShowItem>[];
       json['dynamicList'].forEach((v) {
-        dynamicList!.add(DynamicList.fromJson(v));
+        dynamicList!.add(StoreShowItem.fromJson(v));
       });
     }
     numberofrecords = json['numberofrecords'];
@@ -24,7 +24,7 @@ class StoreShowModel {
   }
 }
 
-class DynamicList {
+class StoreShowItem {
   int? eDMXID;
   int? outquntity;
   String? sName;
@@ -55,7 +55,7 @@ class DynamicList {
   int? colorID;
   int? sizeID;
 
-  DynamicList(
+  StoreShowItem(
       {this.eDMXID,
       this.outquntity,
       this.sName,
@@ -86,7 +86,7 @@ class DynamicList {
       this.colorID,
       this.sizeID});
 
-  DynamicList.fromJson(Map<String, dynamic> json) {
+  StoreShowItem.fromJson(Map<String, dynamic> json) {
     eDMXID = json['EDMXID'];
     outquntity = json['outquntity'];
     sName = json['SName'];
