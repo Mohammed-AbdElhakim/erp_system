@@ -783,6 +783,7 @@ class _StoreShowViewBodyState extends State<StoreShowViewBody> {
       "orderby": widget.pageData.orderBy,
       "selectFromCash": true,
       "statment": "",
+      //التاريخ متكرر مرتين فهنا انا عمله على انه يجب اخر واحد
       "tableName":
           "GetCurrentInventoryDateTo('${DateFormat("MM-d-yyyy", 'en').format(DateTime.parse(widgetsData.where(
                 (element) =>
