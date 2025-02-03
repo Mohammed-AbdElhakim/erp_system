@@ -26,26 +26,26 @@ class StoreShowModel {
 
 class StoreShowItem {
   int? eDMXID;
-  int? outquntity;
+  double? outquntity;
   String? sName;
   int? storeID;
-  int? total;
-  int? totalcost;
+  double? total;
+  double? totalcost;
   String? proName;
   int? proID;
   String? modalityName;
   String? companyName;
   int? comID;
-  int? inquntity;
+  double? inquntity;
   double? proCost;
   int? modality;
   int? unitID;
   String? uName;
   int? companyID;
   String? showPerm;
-  int? proPrice;
-  int? totalprice;
-  int? expr1;
+  double? proPrice;
+  double? totalprice;
+  double? expr1;
   int? secoundUnit;
   int? proParent;
   String? note;
