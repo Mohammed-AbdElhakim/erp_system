@@ -15,6 +15,7 @@ import '../../features/productCard/data/repositories/product_card_repo_impl.dart
 import '../../features/profile/data/repositories/profile_repo_impl.dart';
 import '../../features/profit/data/repositories/profit_repo_impl.dart';
 import '../../features/screenTable/data/repositories/screen_repo_impl.dart';
+import '../../features/storeShow/data/repositories/store_show_repo_impl.dart';
 import '../../features/supplierProcess/data/repositories/supplier_process_repo_impl.dart';
 import '../../features/tasks/data/repositories/task_repo_impl.dart';
 import '../../features/trialBalance/data/repositories/trial_balance_repo_impl.dart';
@@ -128,6 +129,12 @@ void setupServiceLocator() {
 
   getIt.registerSingleton<ProductCardRepoImpl>(
     ProductCardRepoImpl(
+      getIt.get<ApiService>(),
+    ),
+  );
+
+  getIt.registerSingleton<StoreShowRepoImpl>(
+    StoreShowRepoImpl(
       getIt.get<ApiService>(),
     ),
   );
