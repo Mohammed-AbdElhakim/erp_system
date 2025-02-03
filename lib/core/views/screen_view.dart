@@ -10,6 +10,7 @@ import '../../features/generalBalance/presentation/views/general_balance_view.da
 import '../../features/productCard/presentation/views/product_card_view.dart';
 import '../../features/profit/presentation/views/profit_view.dart';
 import '../../features/screenTable/presentation/views/screen_table.dart';
+import '../../features/storeShow/presentation/views/store_show_view.dart';
 import '../../features/supplierProcess/presentation/views/supplier_process_view.dart';
 import '../../features/tasks/presentation/views/tasks_view.dart';
 import '../../features/trialBalance/presentation/views/trial_balance.dart';
@@ -53,6 +54,8 @@ class ScreenView extends StatelessWidget {
             return SupplierProcessView(pageData: pageData);
           case "prodCard":
             return ProductCardView(pageData: pageData);
+          case "storeshow":
+            return StoreShowView(pageData: pageData);
           default:
             return ScreenTable(pageData: pageData);
         }
