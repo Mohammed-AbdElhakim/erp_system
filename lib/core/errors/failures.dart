@@ -43,10 +43,10 @@ class ServerFailure extends Failure {
   }
 
   factory ServerFailure.fromResponse(int statusCode, dynamic response) {
-    if (statusCode == 400 || statusCode == 403) {
+    if (statusCode == 400) {
       return ServerFailure(response);
-    } else if (statusCode == 401) {
-      return const ServerFailure("There was a problem with Authentication!");
+    } else if (statusCode == 401 || statusCode == 403) {
+      return const ServerFailure("The problem is related to authentication!");
     } else if (statusCode == 404) {
       return const ServerFailure("Your request not found, Please try later!");
     } else if (statusCode == 500) {
