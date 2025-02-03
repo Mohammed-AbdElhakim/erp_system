@@ -769,18 +769,27 @@ class _StoreShowViewBodyState extends State<StoreShowViewBody> {
     myData = {};
     myData.addAll({
       "pageId": widget.pageData.pageId,
+      "arrayToSum": null,
+      "authorizationID": widget.pageData.authorizationID,
+      "company": true,
+      "companyname": "ComID",
       "employee": false,
+      "isCashed": false,
+      "isDepartment": widget.pageData.isDepartment,
+      "IsDesc": widget.pageData.isDesc,
       "limit": dropdownValue,
       "offset": (numberPage * dropdownValue) - dropdownValue,
+      "listName": widget.pageData.listName,
+      "orderby": widget.pageData.orderBy,
+      "selectFromCash": true,
       "statment": "",
-      "selectcolumns": "",
-      "IsDepartment": widget.pageData.isDepartment,
-      "DepartmentName": widget.pageData.departmentName,
-      "AuthorizationID": widget.pageData.authorizationID,
+      "tableName":
+          "GetCurrentInventoryDateTo('${DateFormat("MM-d-yyyy", 'en').format(DateTime.parse(widgetsData.where(
+                (element) =>
+                    (element['widget'] as ColumnList).columnName == "dateto",
+              ).last['value']))}')",
       "ViewEmployeeColumn": widget.pageData.viewEmployeeColumn,
-      "OrderBy": widget.pageData.orderBy,
-      "IsDesc": widget.pageData.isDesc,
-      "tableName": widget.pageData.tableName,
+      "DepartmentName": widget.pageData.departmentName,
     });
     for (var i in widgetsData) {
       params["${(i['widget'] as ColumnList).columnName}"] = i['value'];
