@@ -75,256 +75,6 @@ class _CustomTableGeneralState extends State<CustomTableGeneral> {
 
   @override
   Widget build(BuildContext context) {
-    // return Expanded(
-    //   child: Stack(
-    //     alignment: Alignment.topCenter,
-    //     children: [
-    //       //*********************** data **************************
-    //       SingleChildScrollView(
-    //         child: Column(
-    //           children: [
-    //             //********************** data rows ********************
-    //             SingleChildScrollView(
-    //               scrollDirection: Axis.horizontal,
-    //               controller: dataScrollController,
-    //               child: DataTable(
-    //                 columnSpacing: 0,
-    //                 horizontalMargin: 15,
-    //                 dataRowMinHeight: 35,
-    //                 dataRowMaxHeight: 35,
-    //                 headingRowHeight: 35,
-    //                 headingRowColor:
-    //                     WidgetStateProperty.all(AppColors.blueLight),
-    //                 columns: [
-    //                   if (widget.pageData.master == true)
-    //                     DataColumn(
-    //                       label: Expanded(
-    //                         child: SizedBox(
-    //                           width: 30,
-    //                           child: Text(
-    //                             '',
-    //                             textAlign: TextAlign.center,
-    //                             style: AppStyles.textStyle14,
-    //                           ),
-    //                         ),
-    //                       ),
-    //                     ),
-    //                   ...List.generate(
-    //                     widget.listHeader.length,
-    //                     (index) {
-    //                       return DataColumn(
-    //                         label: Expanded(
-    //                           child: SizedBox(
-    //                             width: 130,
-    //                             child: Text(
-    //                               widget.listHeader[index],
-    //                               textAlign: TextAlign.center,
-    //                               style: AppStyles.textStyle14,
-    //                             ),
-    //                           ),
-    //                         ),
-    //                       );
-    //                     },
-    //                   )
-    //                 ],
-    //                 rows: List.generate(
-    //                   widget.listData.length,
-    //                   (index) => DataRow(
-    //                     selected: selectedRows[index],
-    //                     onSelectChanged: (value) {
-    //                       setState(() {
-    //                         selectedRows[index] =
-    //                             value ?? false; // Update selectedRows list
-    //                       });
-    //                       if (selectedRows[index] == true) {
-    //                         rowsData.add(widget.listData[index]);
-    //
-    //                         widget.onTapRow(rowsData);
-    //                       } else {
-    //                         rowsData.remove(widget.listData[index]);
-    //
-    //                         widget.onTapRow(rowsData);
-    //                       }
-    //                     },
-    //                     cells: [
-    //                       if (widget.pageData.master == true)
-    //                         DataCell(
-    //                           SizedBox(
-    //                             width: 30,
-    //                             child: InkWell(
-    //                               onTap: () {
-    //                                 GoRouter.of(context)
-    //                                     .push(AppRouter.kDetailsRowView,
-    //                                         extra: PassDataDetailsRow(
-    //                                           pageData: widget.pageData,
-    //                                           rowData: widget.listData[index],
-    //                                         ));
-    //                               },
-    //                               child: Container(
-    //                                 color: selectedRows[index] == true
-    //                                     ? AppColors.blueGreyDark
-    //                                     : Colors.transparent,
-    //                                 alignment: Alignment.center,
-    //                                 child: const Icon(Icons.add),
-    //                               ),
-    //                             ),
-    //                           ),
-    //                         ),
-    //                       ...List.generate(
-    //                         widget.listHeader.length,
-    //                         (i) => DataCell(
-    //                           SizedBox(
-    //                             width: 130,
-    //                             child: InkWell(
-    //                               onTap: widget.listColumn[i].insertType! !=
-    //                                       "date"
-    //                                   ? () {
-    //                                       buildShowDialog(context,
-    //                                           text:
-    //                                               "${widget.listData[index][widget.listKey[i]]}",
-    //                                           allDropdownModelList:
-    //                                               widget.allDropdownModelList,
-    //                                           listName:
-    //                                               widget.pageData.listName,
-    //                                           columnList: widget.listColumn[i]);
-    //                                     }
-    //                                   : null,
-    //                               child: Container(
-    //                                 color: selectedRows[index] == true
-    //                                     ? AppColors.blueGreyDark
-    //                                     : Colors.transparent,
-    //                                 width: widget.listData[index]
-    //                                                 ['${widget.listKey[i]}']
-    //                                             .toString()
-    //                                             .length >
-    //                                         12
-    //                                     ? 100
-    //                                     : null,
-    //                                 alignment: Alignment.center,
-    //                                 child: buildMyWidget(
-    //                                     "${widget.listData[index][widget.listKey[i]] ?? ""}",
-    //                                     widget.listColumn[i],
-    //                                     index),
-    //                               ),
-    //                             ),
-    //                           ),
-    //                         ),
-    //                       )
-    //                     ],
-    //                   ),
-    //                 ),
-    //               ),
-    //             ),
-    //             //********************* Sum ***********************
-    //             if (widget.listSum!.isNotEmpty)
-    //               SingleChildScrollView(
-    //                 scrollDirection: Axis.horizontal,
-    //                 controller: sumScrollController,
-    //                 child: DataTable(
-    //                   columnSpacing: 0,
-    //                   horizontalMargin: 48,
-    //                   dataRowMinHeight: 50,
-    //                   dataRowMaxHeight: 50,
-    //                   headingRowHeight: 35,
-    //                   headingRowColor:
-    //                       WidgetStateProperty.all(AppColors.blueLight),
-    //                   columns: List.generate(
-    //                     widget.listHeader.length,
-    //                     (index) {
-    //                       return DataColumn(
-    //                         label: InkWell(
-    //                           onTap: () {
-    //                             buildShowDialog(
-    //                               context,
-    //                               text: widget.listSum![0]
-    //                                       [widget.listKey[index]]
-    //                                   .toString(),
-    //                               listName: widget.pageData.listName,
-    //                               allDropdownModelList:
-    //                                   widget.allDropdownModelList,
-    //                             );
-    //                           },
-    //                           child: SizedBox(
-    //                             width: 130,
-    //                             child: Text(
-    //                               widget.listSum![0][widget.listKey[index]] ==
-    //                                       null
-    //                                   ? ""
-    //                                   : widget.listSum![0]
-    //                                           [widget.listKey[index]]
-    //                                       .toString(),
-    //                               // widget.listHeader[index],
-    //                               textAlign: TextAlign.center,
-    //                               style: AppStyles.textStyle14,
-    //                               overflow: TextOverflow.ellipsis,
-    //                             ),
-    //                           ),
-    //                         ),
-    //                       );
-    //                     },
-    //                   ),
-    //                   rows: const [],
-    //                 ),
-    //               ),
-    //             //********************* pages *********************
-    //             widget.paginationWidget,
-    //           ],
-    //         ),
-    //       ),
-    //       //********************* header **********************
-    //       SingleChildScrollView(
-    //         scrollDirection: Axis.horizontal,
-    //         controller: headerScrollController,
-    //         child: DataTable(
-    //           columnSpacing: 0,
-    //           horizontalMargin: 48,
-    //           dataRowMinHeight: 50,
-    //           dataRowMaxHeight: 50,
-    //           headingRowHeight: 35,
-    //           headingRowColor: WidgetStateProperty.all(AppColors.blueLight),
-    //           columns: [
-    //             if (widget.pageData.master == true)
-    //               DataColumn(
-    //                 label: Expanded(
-    //                   child: SizedBox(
-    //                     width: 30,
-    //                     child: Text(
-    //                       '',
-    //                       textAlign: TextAlign.center,
-    //                       style: AppStyles.textStyle14,
-    //                     ),
-    //                   ),
-    //                 ),
-    //               ),
-    //             ...List.generate(
-    //               widget.listHeader.length,
-    //               (index) {
-    //                 return DataColumn(
-    //                   label: InkWell(
-    //                     onTap: () {
-    //                       widget.onTapHeader(
-    //                           widget.listColumn[index].columnName!);
-    //                     },
-    //                     child: SizedBox(
-    //                       width: 130,
-    //                       child: Text(
-    //                         widget.listHeader[index],
-    //                         textAlign: TextAlign.center,
-    //                         style: AppStyles.textStyle14,
-    //                       ),
-    //                     ),
-    //                   ),
-    //                 );
-    //               },
-    //             )
-    //           ],
-    //           rows: const [],
-    //         ),
-    //       )
-    //     ],
-    //   ),
-    // );
-
     return Expanded(
       child: Column(
         children: [
@@ -392,18 +142,36 @@ class _CustomTableGeneralState extends State<CustomTableGeneral> {
                   ...List.generate(
                     widget.listColumn.length,
                     (index) => GridColumn(
-                      minimumWidth: 120,
-                      maximumWidth: 320,
+                      minimumWidth: 90,
+                      maximumWidth: 150,
                       columnName: widget.listColumn[index].columnName!,
-                      label: InkWell(
-                        onTap: () {
-                          widget.onTapHeader(
-                              widget.listColumn[index].columnName!);
-                        },
-                        child: Center(
-                          child: Text(
-                            widget.listColumn[index].arColumnLabel!,
-                            style: const TextStyle(color: Colors.white),
+                      label: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: InkWell(
+                          onTap: () {
+                            widget.onTapHeader(
+                                widget.listColumn[index].columnName!);
+                          },
+                          onLongPress: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  content: Text(
+                                    widget.listColumn[index].arColumnLabel!,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                          child: Center(
+                            child: Text(
+                              widget.listColumn[index].arColumnLabel!,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(color: Colors.white),
+                            ),
                           ),
                         ),
                       ),
@@ -418,63 +186,17 @@ class _CustomTableGeneralState extends State<CustomTableGeneral> {
                       .value;
 
                   if (value.isNotEmpty) {
-                    final String columnName = tableDataSource
-                        .effectiveRows[details.rowColumnIndex.rowIndex - 1]
-                        .getCells()[details.rowColumnIndex.columnIndex - 1]
-                        .columnName;
-                    final ColumnList columnList = tableDataSource.listColumn
-                        .firstWhere(
-                            (element) => element.columnName == columnName);
-
-                    if (columnList.insertType == "dropdown") {
-                      String val = '';
-                      if (columnList.columnName == columnList.searchName) {
-                        List<ListDrop>? listDrop = [];
-                        List<ItemDrop>? myListDrop = [];
-                        for (var item in widget.allDropdownModelList) {
-                          if (item.listName == widget.pageData.listName) {
-                            listDrop = item.list;
-                          }
-                        }
-
-                        for (var item in listDrop!) {
-                          if (item.columnName == columnList.columnName &&
-                              item.nameAr == columnList.arColumnLabel) {
-                            myListDrop = item.list;
-                          }
-                        }
-                        for (var item in myListDrop!) {
-                          if (item.id.toString() == value) {
-                            val = item.text ?? "";
-                          }
-                        }
-                      } else {
-                        val = value;
-                      }
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            content: Text(
-                              val,
-                              textAlign: TextAlign.center,
-                            ),
-                          );
-                        },
-                      );
-                    } else {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            content: Text(
-                              value,
-                              textAlign: TextAlign.center,
-                            ),
-                          );
-                        },
-                      );
-                    }
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          content: Text(
+                            value,
+                            textAlign: TextAlign.center,
+                          ),
+                        );
+                      },
+                    );
                   }
                 },
                 tableSummaryRows: [
@@ -516,82 +238,6 @@ class _CustomTableGeneralState extends State<CustomTableGeneral> {
       ),
     );
   }
-
-  // buildMyWidget(String value, ColumnList columnList, int indexRow) {
-  //   switch (columnList.insertType) {
-  //     case "date":
-  //       String date = value.isNotEmpty
-  //           ? DateFormat("yyyy-MM-dd", "en")
-  //               .format(DateTime.parse(value).toLocal())
-  //           : '';
-  //       return Text(
-  //         textAlign: TextAlign.center,
-  //         maxLines: 1,
-  //         overflow: TextOverflow.ellipsis,
-  //         date == "0001-12-31" || date == "0000-12-31" ? '' : date,
-  //         style: TextStyle(
-  //             color:
-  //                 selectedRows[indexRow] == true ? Colors.white : Colors.black),
-  //       );
-  //     case "checkbox":
-  //       if (value == "true" || value == "1") {
-  //         return const Icon(
-  //           Icons.check,
-  //           size: 20,
-  //           color: Colors.green,
-  //         );
-  //       } else {
-  //         return const Icon(
-  //           Icons.close,
-  //           size: 20,
-  //           color: Colors.red,
-  //         );
-  //       }
-  //     case "dropdown":
-  //       String val = '';
-  //       if (columnList.columnName == columnList.searchName) {
-  //         List<ListDrop>? listDrop = [];
-  //         List<ItemDrop>? myListDrop = [];
-  //         for (var item in widget.allDropdownModelList) {
-  //           if (item.listName == widget.pageData.listName) {
-  //             listDrop = item.list;
-  //           }
-  //         }
-  //
-  //         for (var item in listDrop!) {
-  //           if (item.columnName == columnList.columnName) {
-  //             myListDrop = item.list;
-  //           }
-  //         }
-  //         for (var item in myListDrop!) {
-  //           if (item.id.toString() == value) {
-  //             val = item.text ?? "";
-  //           }
-  //         }
-  //       } else {
-  //         val = value;
-  //       }
-  //       return Text(
-  //         textAlign: TextAlign.center,
-  //         maxLines: 1,
-  //         overflow: TextOverflow.ellipsis,
-  //         val,
-  //         style: TextStyle(
-  //             color:
-  //                 selectedRows[indexRow] == true ? Colors.white : Colors.black),
-  //       );
-  //     default:
-  //       return Text(
-  //         textAlign: TextAlign.center,
-  //         maxLines: 1,
-  //         overflow: TextOverflow.ellipsis,
-  //         value,
-  //         style: TextStyle(
-  //             color:
-  //                 selectedRows[indexRow] == true ? Colors.white : Colors.black),
-  //       );
-  //   }
-  // }
 }
 
 class TableDataSource extends DataGridSource {
@@ -783,30 +429,7 @@ class TableDataSource extends DataGridSource {
           );
         }
       case "dropdown":
-        String val = '';
-        if (columnList.columnName == columnList.searchName) {
-          List<ListDrop>? listDrop = [];
-          List<ItemDrop>? myListDrop = [];
-          for (var item in allDropdownModelList) {
-            if (item.listName == pageData.listName) {
-              listDrop = item.list;
-            }
-          }
-
-          for (var item in listDrop!) {
-            if (item.columnName == columnList.columnName &&
-                item.nameAr == columnList.arColumnLabel) {
-              myListDrop = item.list;
-            }
-          }
-          for (var item in myListDrop!) {
-            if (item.id.toString() == value) {
-              val = item.text ?? "";
-            }
-          }
-        } else {
-          val = value;
-        }
+        String val = value;
         return Text(
           textAlign: TextAlign.center,
           maxLines: 1,
@@ -838,6 +461,32 @@ class TableDataSource extends DataGridSource {
               .format(DateTime.parse(value).toLocal())
           : '';
       return date;
+    } else if (columnList.insertType == "dropdown") {
+      String val = '';
+      if (columnList.columnName == columnList.searchName) {
+        List<ListDrop>? listDrop = [];
+        List<ItemDrop>? myListDrop = [];
+        for (var item in allDropdownModelList) {
+          if (item.listName == pageData.listName) {
+            listDrop = item.list;
+          }
+        }
+
+        for (var item in listDrop!) {
+          if (item.columnName == columnList.columnName &&
+              item.nameAr == columnList.arColumnLabel) {
+            myListDrop = item.list;
+          }
+        }
+        for (var item in myListDrop!) {
+          if (item.id.toString() == value) {
+            val = item.text ?? "";
+          }
+        }
+      } else {
+        val = value;
+      }
+      return val;
     } else {
       return value;
     }
