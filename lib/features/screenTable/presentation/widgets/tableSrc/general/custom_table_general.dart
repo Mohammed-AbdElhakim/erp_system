@@ -412,23 +412,69 @@ class _CustomTableGeneralState extends State<CustomTableGeneral> {
                   )
                 ],
                 onCellLongPress: (DataGridCellLongPressDetails details) {
-                  final String text = tableDataSource
+                  final String value = tableDataSource
                       .effectiveRows[details.rowColumnIndex.rowIndex - 1]
                       .getCells()[details.rowColumnIndex.columnIndex - 1]
                       .value;
 
-                  if (text.isNotEmpty) {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          content: Text(
-                            text,
-                            textAlign: TextAlign.center,
-                          ),
-                        );
-                      },
-                    );
+                  if (value.isNotEmpty) {
+                    final String columnName = tableDataSource
+                        .effectiveRows[details.rowColumnIndex.rowIndex - 1]
+                        .getCells()[details.rowColumnIndex.columnIndex - 1]
+                        .columnName;
+                    final ColumnList columnList = tableDataSource.listColumn
+                        .firstWhere(
+                            (element) => element.columnName == columnName);
+
+                    if (columnList.insertType == "dropdown") {
+                      String val = '';
+                      if (columnList.columnName == columnList.searchName) {
+                        List<ListDrop>? listDrop = [];
+                        List<ItemDrop>? myListDrop = [];
+                        for (var item in widget.allDropdownModelList) {
+                          if (item.listName == widget.pageData.listName) {
+                            listDrop = item.list;
+                          }
+                        }
+
+                        for (var item in listDrop!) {
+                          if (item.columnName == columnList.columnName &&
+                              item.nameAr == columnList.arColumnLabel) {
+                            myListDrop = item.list;
+                          }
+                        }
+                        for (var item in myListDrop!) {
+                          if (item.id.toString() == value) {
+                            val = item.text ?? "";
+                          }
+                        }
+                      } else {
+                        val = value;
+                      }
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            content: Text(
+                              val,
+                              textAlign: TextAlign.center,
+                            ),
+                          );
+                        },
+                      );
+                    } else {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            content: Text(
+                              value,
+                              textAlign: TextAlign.center,
+                            ),
+                          );
+                        },
+                      );
+                    }
                   }
                 },
                 tableSummaryRows: [
@@ -574,8 +620,10 @@ class TableDataSource extends DataGridSource {
           listColumn.length,
           (index) => DataGridCell(
               columnName: listColumn[index].columnName!,
-              value: getValue(listColumn, listColumn[index].columnName!,
-                  "${e[listColumn[index].columnName!] ?? ""}")),
+              value: getValue(
+                  listColumn: listColumn,
+                  key: listColumn[index].columnName!,
+                  value: "${e[listColumn[index].columnName!] ?? ""}")),
           // columnName: listHeader[index], value: "${e[keys[index]] ?? ""}"),
         )
       ]);
@@ -712,19 +760,12 @@ class TableDataSource extends DataGridSource {
   }) {
     switch (columnList.insertType) {
       case "date":
-        // String date = value.isNotEmpty
-        //     ? DateFormat("yyyy-MM-dd", "en")
-        //         .format(DateTime.parse(value).toLocal())
-        //     : '';
         String date = value;
         return Text(
           textAlign: TextAlign.center,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           date == "0001-12-31" || date == "0000-12-31" ? '' : date,
-          // style: TextStyle(
-          //     color:
-          //         selectedRows[indexRow] == true ? Colors.white : Colors.black),
         );
 
       case "checkbox":
@@ -771,9 +812,6 @@ class TableDataSource extends DataGridSource {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           val,
-          // style: TextStyle(
-          //     color:
-          //         selectedRows[indexRow] == true ? Colors.white : Colors.black),
         );
       default:
         return Text(
@@ -781,14 +819,11 @@ class TableDataSource extends DataGridSource {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           value,
-          // style: TextStyle(
-          //     color:
-          //         selectedRows[indexRow] == true ? Colors.white : Colors.black),
         );
     }
   }
 
-  getValue(List<ColumnList> listColumn, key, String value) {
+  getValue({required List<ColumnList> listColumn, key, required String value}) {
     ColumnList columnList =
         listColumn.firstWhere((element) => (element.columnName == key));
     if (columnList.insertType == "date") {
