@@ -26,7 +26,6 @@ import '../../../data/models/tap_model.dart';
 import '../../../data/repositories/screen_repo_impl.dart';
 import '../../manager/addEdit/add_edit_cubit.dart';
 import '../../manager/getById/get_by_id_cubit.dart';
-import '../../manager/getPageDetailsTable/get_page_details_table_cubit.dart';
 import '../../views/screen_table.dart';
 import '../tableSrcPageDetails/build_alert_add_in_dropdown.dart';
 import 'tap_details_widget_body.dart';
@@ -167,6 +166,7 @@ class _BuildAlertEditDetailsState extends State<BuildAlertEditDetails> {
                             textStyle: AppStyles.textStyle16
                                 .copyWith(color: Colors.grey),
                             onTap: () {
+                              TapDetailsWidgetBody.rowData = [];
                               Navigator.pop(context);
                             },
                           ),
@@ -176,85 +176,86 @@ class _BuildAlertEditDetailsState extends State<BuildAlertEditDetails> {
                           BlocConsumer<AddEditCubit, AddEditState>(
                             listener: (context, state) {
                               if (state is AddEditSuccess) {
-                                BlocProvider.of<GetPageDetailsTableCubit>(
-                                        context)
-                                    .getPageDetailsTable(
-                                        tapData: ListTaps(
-                                          pageID: widget.tap.pageID,
-                                          pageDisplay: widget.tap.pageDisplay,
-                                          masterName: widget.tap.masterName,
-                                          modulName: widget.tap.modulName,
-                                          masterID: widget.tap.masterID,
-                                          modulID: widget.tap.modulID,
-                                          detailId: widget.tap.detailId,
-                                          listName: widget.tap.listName,
-                                          tableName: widget.tap.tableName,
-                                          primary: widget.tap.primary,
-                                          controllerName:
-                                              widget.tap.controllerName,
-                                          tableSrc: widget.tap.tableSrc,
-                                          editSrc: widget.tap.editSrc,
-                                          isCompany: widget.tap.isCompany,
-                                          companyName: widget.tap.companyName,
-                                          showPrint: widget.tap.showPrint,
-                                          showExport: widget.tap.showExport,
-                                          showSearch: widget.tap.showSearch,
-                                          showEdit: widget.tap.showEdit,
-                                          showDelete: widget.tap.showDelete,
-                                          showRowPrint: widget.tap.showRowPrint,
-                                          showNew: widget.tap.showNew,
-                                          searchFirst: widget.tap.searchFirst,
-                                          showSetting: widget.tap.showSetting,
-                                          showMasterButton:
-                                              widget.tap.showMasterButton,
-                                          canDrag: widget.tap.canDrag,
-                                          canGroup: widget.tap.canGroup,
-                                          showSum: widget.tap.showSum,
-                                          showColumnSetting:
-                                              widget.tap.showColumnSetting,
-                                          showRefersh: widget.tap.showRefersh,
-                                          canSort: widget.tap.canSort,
-                                          showPaging: widget.tap.showPaging,
-                                          showGroup: widget.tap.showGroup,
-                                          dataSourceApi:
-                                              widget.tap.dataSourceApi,
-                                          limit: 10,
-                                          orderBy: widget.tap.orderBy,
-                                          tailCondition:
-                                              widget.tap.tailCondition,
-                                          master: widget.tap.master,
-                                          foreignKey: widget.tap.foreignKey,
-                                          foreignKeyValue:
-                                              widget.tap.foreignKeyValue,
-                                          groupLayout: widget.tap.groupLayout,
-                                          groupColumn: widget.tap.groupColumn,
-                                          outSiderGroupColumn:
-                                              widget.tap.outSiderGroupColumn,
-                                          editOnly: widget.tap.editOnly,
-                                          listMaster: widget.tap.listMaster,
-                                          excel: widget.tap.excel,
-                                          excelNew: widget.tap.excelNew,
-                                          showInPopUp: widget.tap.showInPopUp,
-                                          pageAttributeId:
-                                              widget.tap.pageAttributeId,
-                                          displayArabic:
-                                              widget.tap.displayArabic,
-                                          displayEnglish:
-                                              widget.tap.displayEnglish,
-                                          displayChinese:
-                                              widget.tap.displayChinese,
-                                          columnColor: widget.tap.columnColor,
-                                          enName: widget.tap.enName,
-                                          isDesc: widget.tap.isDesc,
-                                          unaryColumn: widget.tap.unaryColumn,
-                                          numberOfEmptyRow:
-                                              widget.tap.numberOfEmptyRow,
-                                          offset: 0,
-                                          statment:
-                                              "and ${widget.tap.foreignKey}  =  ${widget.mainId} ",
-                                        ),
-                                        numberOfPage: 1,
-                                        dropdownValueOfLimit: 10);
+                                // BlocProvider.of<GetPageDetailsTableCubit>(
+                                //         context)
+                                //     .getPageDetailsTable(
+                                //         tapData: ListTaps(
+                                //           pageID: widget.tap.pageID,
+                                //           pageDisplay: widget.tap.pageDisplay,
+                                //           masterName: widget.tap.masterName,
+                                //           modulName: widget.tap.modulName,
+                                //           masterID: widget.tap.masterID,
+                                //           modulID: widget.tap.modulID,
+                                //           detailId: widget.tap.detailId,
+                                //           listName: widget.tap.listName,
+                                //           tableName: widget.tap.tableName,
+                                //           primary: widget.tap.primary,
+                                //           controllerName:
+                                //               widget.tap.controllerName,
+                                //           tableSrc: widget.tap.tableSrc,
+                                //           editSrc: widget.tap.editSrc,
+                                //           isCompany: widget.tap.isCompany,
+                                //           companyName: widget.tap.companyName,
+                                //           showPrint: widget.tap.showPrint,
+                                //           showExport: widget.tap.showExport,
+                                //           showSearch: widget.tap.showSearch,
+                                //           showEdit: widget.tap.showEdit,
+                                //           showDelete: widget.tap.showDelete,
+                                //           showRowPrint: widget.tap.showRowPrint,
+                                //           showNew: widget.tap.showNew,
+                                //           searchFirst: widget.tap.searchFirst,
+                                //           showSetting: widget.tap.showSetting,
+                                //           showMasterButton:
+                                //               widget.tap.showMasterButton,
+                                //           canDrag: widget.tap.canDrag,
+                                //           canGroup: widget.tap.canGroup,
+                                //           showSum: widget.tap.showSum,
+                                //           showColumnSetting:
+                                //               widget.tap.showColumnSetting,
+                                //           showRefersh: widget.tap.showRefersh,
+                                //           canSort: widget.tap.canSort,
+                                //           showPaging: widget.tap.showPaging,
+                                //           showGroup: widget.tap.showGroup,
+                                //           dataSourceApi:
+                                //               widget.tap.dataSourceApi,
+                                //           limit: 10,
+                                //           orderBy: widget.tap.orderBy,
+                                //           tailCondition:
+                                //               widget.tap.tailCondition,
+                                //           master: widget.tap.master,
+                                //           foreignKey: widget.tap.foreignKey,
+                                //           foreignKeyValue:
+                                //               widget.tap.foreignKeyValue,
+                                //           groupLayout: widget.tap.groupLayout,
+                                //           groupColumn: widget.tap.groupColumn,
+                                //           outSiderGroupColumn:
+                                //               widget.tap.outSiderGroupColumn,
+                                //           editOnly: widget.tap.editOnly,
+                                //           listMaster: widget.tap.listMaster,
+                                //           excel: widget.tap.excel,
+                                //           excelNew: widget.tap.excelNew,
+                                //           showInPopUp: widget.tap.showInPopUp,
+                                //           pageAttributeId:
+                                //               widget.tap.pageAttributeId,
+                                //           displayArabic:
+                                //               widget.tap.displayArabic,
+                                //           displayEnglish:
+                                //               widget.tap.displayEnglish,
+                                //           displayChinese:
+                                //               widget.tap.displayChinese,
+                                //           columnColor: widget.tap.columnColor,
+                                //           enName: widget.tap.enName,
+                                //           isDesc: widget.tap.isDesc,
+                                //           unaryColumn: widget.tap.unaryColumn,
+                                //           numberOfEmptyRow:
+                                //               widget.tap.numberOfEmptyRow,
+                                //           offset: 0,
+                                //           statment:
+                                //               "and ${widget.tap.foreignKey}  =  ${widget.mainId} ",
+                                //         ),
+                                //         numberOfPage: 1,
+                                //         dropdownValueOfLimit: 10);
+                                TapDetailsWidgetBody.rowData = [];
                                 widget.columnList.clear();
                                 Navigator.pop(context);
                               } else if (state is AddEditFailure) {
@@ -508,17 +509,13 @@ class _BuildAlertEditDetailsState extends State<BuildAlertEditDetails> {
           }
         }
         String? dropValue;
+        //كانت text  وعملتها id عشان اصلح ايرور اللى كان ظاهر فى صفحه بيانات الموردين
         for (var i in myListDrop!) {
-          if (i.text.toString() == rowData[item.searchName].toString()) {
+          if (i.id.toString() == rowData[item.searchName].toString()) {
             dropValue = i.text ?? '';
           }
-          if (i.text.toString() == rowData[item.searchName].toString()) {
-            dropValue = i.text ?? '';
-          }
-          if (i.text.toString() == rowData[item.columnName].toString()) {
-            dropValue = i.text ?? '';
-          }
-          if (i.text.toString() == rowData[item.columnName].toString()) {
+
+          if (i.id.toString() == rowData[item.columnName].toString()) {
             dropValue = i.text ?? '';
           }
         }

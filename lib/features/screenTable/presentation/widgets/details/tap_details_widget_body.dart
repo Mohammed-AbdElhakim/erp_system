@@ -1,4 +1,3 @@
-import 'package:erp_system/features/screenTable/presentation/widgets/details/build_alert_edit_details.dart';
 import 'package:erp_system/features/screenTable/presentation/widgets/details/build_alert_search_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,6 +23,7 @@ import '../../views/screen_table.dart';
 import '../pagination_widget.dart';
 import 'build_alert_add_details.dart';
 import 'build_alert_delete_details.dart';
+import 'build_alert_edit_details.dart';
 import 'table_page_details_widget.dart';
 
 class TapDetailsWidgetBody extends StatefulWidget {
@@ -50,6 +50,7 @@ class _TapDetailsWidgetBodyState extends State<TapDetailsWidgetBody> {
   late int allPages;
   List<int> listNumberItemInList = [10, 25, 50, 100];
   bool showSettings = false;
+  // String st = '';
   @override
   void didChangeDependencies() {
     lang = Localizations.localeOf(context).toString();
@@ -131,18 +132,332 @@ class _TapDetailsWidgetBodyState extends State<TapDetailsWidgetBody> {
                     if (widget.tap.showSearch != false && showSettings == true)
                       IconButton(
                         onPressed: () {
-                          CustomAlertDialog.alertWithCustomContent(
+                          showDialog(
                             context: context,
-                            title: S.of(context).btn_search,
-                            isOverlayTapDismiss: false,
-                            isCloseButton: false,
-                            content: BuildAlertSearchDetails(
-                              mainId: widget.id,
-                              columnList: listColumn,
-                              tap: widget.tap,
-                              oldStatement: BuildAlertSearchDetails.statement,
-                              pageData: widget.pageData,
-                              onTapClean: () {
+                            barrierDismissible: false,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: Center(
+                                  child: Text(
+                                    S.of(context).btn_search,
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: AppColors.blueLight),
+                                  ),
+                                ),
+                                content: BuildAlertSearchDetails(
+                                  mainId: widget.id,
+                                  columnList: listColumn,
+                                  tap: widget.tap,
+                                  oldStatement:
+                                      BuildAlertSearchDetails.statement,
+                                  pageData: widget.pageData,
+                                  onTapClean: () {
+                                    TapDetailsWidgetBody.isSearch = false;
+                                    BuildAlertSearchDetails.statement =
+                                        "and ${widget.tap.foreignKey}  =  ${widget.id} ";
+                                  },
+                                  onTapSearch: (myStatement) {
+                                    BuildAlertSearchDetails.statement =
+                                        myStatement;
+                                    TapDetailsWidgetBody.isSearch = true;
+                                  },
+                                ),
+                              );
+                            },
+                          ).then(
+                            (value) {
+                              BlocProvider.of<GetPageDetailsTableCubit>(context)
+                                  .getPageDetailsTable(
+                                      tapData: ListTaps(
+                                        pageID: widget.tap.pageID,
+                                        pageDisplay: widget.tap.pageDisplay,
+                                        masterName: widget.tap.masterName,
+                                        modulName: widget.tap.modulName,
+                                        masterID: widget.tap.masterID,
+                                        modulID: widget.tap.modulID,
+                                        detailId: widget.tap.detailId,
+                                        listName: widget.tap.listName,
+                                        tableName: widget.tap.tableName,
+                                        primary: widget.tap.primary,
+                                        controllerName:
+                                            widget.tap.controllerName,
+                                        tableSrc: widget.tap.tableSrc,
+                                        editSrc: widget.tap.editSrc,
+                                        isCompany: widget.tap.isCompany,
+                                        companyName: widget.tap.companyName,
+                                        showPrint: widget.tap.showPrint,
+                                        showExport: widget.tap.showExport,
+                                        showSearch: widget.tap.showSearch,
+                                        showEdit: widget.tap.showEdit,
+                                        showDelete: widget.tap.showDelete,
+                                        showRowPrint: widget.tap.showRowPrint,
+                                        showNew: widget.tap.showNew,
+                                        searchFirst: widget.tap.searchFirst,
+                                        showSetting: widget.tap.showSetting,
+                                        showMasterButton:
+                                            widget.tap.showMasterButton,
+                                        canDrag: widget.tap.canDrag,
+                                        canGroup: widget.tap.canGroup,
+                                        showSum: widget.tap.showSum,
+                                        showColumnSetting:
+                                            widget.tap.showColumnSetting,
+                                        showRefersh: widget.tap.showRefersh,
+                                        canSort: widget.tap.canSort,
+                                        showPaging: widget.tap.showPaging,
+                                        showGroup: widget.tap.showGroup,
+                                        dataSourceApi: widget.tap.dataSourceApi,
+                                        limit: 10,
+                                        orderBy: widget.tap.orderBy,
+                                        tailCondition: widget.tap.tailCondition,
+                                        master: widget.tap.master,
+                                        foreignKey: widget.tap.foreignKey,
+                                        foreignKeyValue:
+                                            widget.tap.foreignKeyValue,
+                                        groupLayout: widget.tap.groupLayout,
+                                        groupColumn: widget.tap.groupColumn,
+                                        outSiderGroupColumn:
+                                            widget.tap.outSiderGroupColumn,
+                                        editOnly: widget.tap.editOnly,
+                                        listMaster: widget.tap.listMaster,
+                                        excel: widget.tap.excel,
+                                        excelNew: widget.tap.excelNew,
+                                        showInPopUp: widget.tap.showInPopUp,
+                                        pageAttributeId:
+                                            widget.tap.pageAttributeId,
+                                        displayArabic: widget.tap.displayArabic,
+                                        displayEnglish:
+                                            widget.tap.displayEnglish,
+                                        displayChinese:
+                                            widget.tap.displayChinese,
+                                        columnColor: widget.tap.columnColor,
+                                        enName: widget.tap.enName,
+                                        isDesc: widget.tap.isDesc,
+                                        unaryColumn: widget.tap.unaryColumn,
+                                        numberOfEmptyRow:
+                                            widget.tap.numberOfEmptyRow,
+                                        offset: 0,
+                                        statment:
+                                            BuildAlertSearchDetails.statement,
+                                      ),
+                                      numberOfPage: 1,
+                                      dropdownValueOfLimit: 10);
+                            },
+                          );
+                        },
+                        icon: const Icon(
+                          Icons.search,
+                        ),
+                        color: AppColors.white,
+                        style: IconButton.styleFrom(
+                            backgroundColor: AppColors.blue),
+                      ),
+                    if (widget.tap.showEdit != false && showSettings == true)
+                      IconButton(
+                        onPressed: () {
+                          if (widget.pageData.tableSrc ==
+                              AppStrings.tableGroup) {
+                            GoRouter.of(context).push(AppRouter.kEditView,
+                                extra: AddPassDataModel(
+                                  pageData: widget.pageData,
+                                  columnList: listColumn,
+                                  listKey: listKey,
+                                ));
+                          } else {
+                            if (TapDetailsWidgetBody.rowData.isNotEmpty) {
+                              List<String> listId = [];
+                              for (var item in TapDetailsWidgetBody.rowData) {
+                                listId.add(item[widget.tap.primary].toString());
+                              }
+                              if (listId.length > 1) {
+                                CustomAlertDialog.alertWithButton(
+                                    context: context,
+                                    type: AlertType.error,
+                                    title: S.of(context).error,
+                                    desc: S.of(context).massage_no_edit);
+                              } else if (listId.length == 1) {
+                                showDialog(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: Center(
+                                        child: Text(
+                                          S.of(context).btn_edit,
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                              color: AppColors.blueLight),
+                                        ),
+                                      ),
+                                      content: BuildAlertEditDetails(
+                                        columnList: listColumn,
+                                        pageData: widget.pageData,
+                                        tap: widget.tap,
+                                        mainId: widget.id,
+                                        onTapEdit: (newRowData) {
+                                          BlocProvider.of<AddEditCubit>(context)
+                                              .edit(
+                                                  controllerName:
+                                                      widget.tap.controllerName,
+                                                  body: newRowData);
+                                        },
+                                      ),
+                                    );
+                                  },
+                                ).then(
+                                  (value) {
+                                    BlocProvider.of<GetPageDetailsTableCubit>(
+                                            context)
+                                        .getPageDetailsTable(
+                                            tapData: ListTaps(
+                                              pageID: widget.tap.pageID,
+                                              pageDisplay:
+                                                  widget.tap.pageDisplay,
+                                              masterName: widget.tap.masterName,
+                                              modulName: widget.tap.modulName,
+                                              masterID: widget.tap.masterID,
+                                              modulID: widget.tap.modulID,
+                                              detailId: widget.tap.detailId,
+                                              listName: widget.tap.listName,
+                                              tableName: widget.tap.tableName,
+                                              primary: widget.tap.primary,
+                                              controllerName:
+                                                  widget.tap.controllerName,
+                                              tableSrc: widget.tap.tableSrc,
+                                              editSrc: widget.tap.editSrc,
+                                              isCompany: widget.tap.isCompany,
+                                              companyName:
+                                                  widget.tap.companyName,
+                                              showPrint: widget.tap.showPrint,
+                                              showExport: widget.tap.showExport,
+                                              showSearch: widget.tap.showSearch,
+                                              showEdit: widget.tap.showEdit,
+                                              showDelete: widget.tap.showDelete,
+                                              showRowPrint:
+                                                  widget.tap.showRowPrint,
+                                              showNew: widget.tap.showNew,
+                                              searchFirst:
+                                                  widget.tap.searchFirst,
+                                              showSetting:
+                                                  widget.tap.showSetting,
+                                              showMasterButton:
+                                                  widget.tap.showMasterButton,
+                                              canDrag: widget.tap.canDrag,
+                                              canGroup: widget.tap.canGroup,
+                                              showSum: widget.tap.showSum,
+                                              showColumnSetting:
+                                                  widget.tap.showColumnSetting,
+                                              showRefersh:
+                                                  widget.tap.showRefersh,
+                                              canSort: widget.tap.canSort,
+                                              showPaging: widget.tap.showPaging,
+                                              showGroup: widget.tap.showGroup,
+                                              dataSourceApi:
+                                                  widget.tap.dataSourceApi,
+                                              limit: 10,
+                                              orderBy: widget.tap.orderBy,
+                                              tailCondition:
+                                                  widget.tap.tailCondition,
+                                              master: widget.tap.master,
+                                              foreignKey: widget.tap.foreignKey,
+                                              foreignKeyValue:
+                                                  widget.tap.foreignKeyValue,
+                                              groupLayout:
+                                                  widget.tap.groupLayout,
+                                              groupColumn:
+                                                  widget.tap.groupColumn,
+                                              outSiderGroupColumn: widget
+                                                  .tap.outSiderGroupColumn,
+                                              editOnly: widget.tap.editOnly,
+                                              listMaster: widget.tap.listMaster,
+                                              excel: widget.tap.excel,
+                                              excelNew: widget.tap.excelNew,
+                                              showInPopUp:
+                                                  widget.tap.showInPopUp,
+                                              pageAttributeId:
+                                                  widget.tap.pageAttributeId,
+                                              displayArabic:
+                                                  widget.tap.displayArabic,
+                                              displayEnglish:
+                                                  widget.tap.displayEnglish,
+                                              displayChinese:
+                                                  widget.tap.displayChinese,
+                                              columnColor:
+                                                  widget.tap.columnColor,
+                                              enName: widget.tap.enName,
+                                              isDesc: widget.tap.isDesc,
+                                              unaryColumn:
+                                                  widget.tap.unaryColumn,
+                                              numberOfEmptyRow:
+                                                  widget.tap.numberOfEmptyRow,
+                                              offset: 0,
+                                              statment:
+                                                  "and ${widget.tap.foreignKey}  =  ${widget.id} ",
+                                            ),
+                                            numberOfPage: 1,
+                                            dropdownValueOfLimit: 10);
+                                  },
+                                );
+                              }
+                            } else {
+                              CustomAlertDialog.alertWithButton(
+                                  context: context,
+                                  type: AlertType.error,
+                                  title: S.of(context).error,
+                                  desc: S.of(context).massage_choose_edit);
+                            }
+                          }
+                        },
+                        icon: const Icon(Icons.edit_note),
+                        color: AppColors.white,
+                        style: IconButton.styleFrom(
+                            backgroundColor: AppColors.blueGreyDark),
+                      ),
+                    if (widget.tap.showNew != false && showSettings == true)
+                      IconButton(
+                        onPressed: () {
+                          if (widget.pageData.tableSrc ==
+                              AppStrings.tableGroup) {
+                            GoRouter.of(context).push(AppRouter.kAddView,
+                                extra: AddPassDataModel(
+                                  pageData: widget.pageData,
+                                  columnList: listColumn,
+                                  listKey: listKey,
+                                ));
+                          } else {
+                            showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Center(
+                                    child: Text(
+                                      S.of(context).btn_add,
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          color: AppColors.blueLight),
+                                    ),
+                                  ),
+                                  content: BuildAlertAddDetails(
+                                    columnList: listColumn,
+                                    pageData: widget.pageData,
+                                    tap: widget.tap,
+                                    mainId: widget.id,
+                                    onTapAdd: (newRowData) {
+                                      BlocProvider.of<AddEditCubit>(context)
+                                          .add(
+                                              controllerName:
+                                                  widget.tap.controllerName,
+                                              body: newRowData);
+                                    },
+                                  ),
+                                );
+                              },
+                            ).then(
+                              (value) {
                                 BlocProvider.of<GetPageDetailsTableCubit>(
                                         context)
                                     .getPageDetailsTable(
@@ -223,358 +538,6 @@ class _TapDetailsWidgetBodyState extends State<TapDetailsWidgetBody> {
                                         numberOfPage: 1,
                                         dropdownValueOfLimit: 10);
                               },
-                              onTapSearch: (myStatement) {
-                                BlocProvider.of<GetPageDetailsTableCubit>(
-                                        context)
-                                    .getPageDetailsTable(
-                                        tapData: ListTaps(
-                                          pageID: widget.tap.pageID,
-                                          pageDisplay: widget.tap.pageDisplay,
-                                          masterName: widget.tap.masterName,
-                                          modulName: widget.tap.modulName,
-                                          masterID: widget.tap.masterID,
-                                          modulID: widget.tap.modulID,
-                                          detailId: widget.tap.detailId,
-                                          listName: widget.tap.listName,
-                                          tableName: widget.tap.tableName,
-                                          primary: widget.tap.primary,
-                                          controllerName:
-                                              widget.tap.controllerName,
-                                          tableSrc: widget.tap.tableSrc,
-                                          editSrc: widget.tap.editSrc,
-                                          isCompany: widget.tap.isCompany,
-                                          companyName: widget.tap.companyName,
-                                          showPrint: widget.tap.showPrint,
-                                          showExport: widget.tap.showExport,
-                                          showSearch: widget.tap.showSearch,
-                                          showEdit: widget.tap.showEdit,
-                                          showDelete: widget.tap.showDelete,
-                                          showRowPrint: widget.tap.showRowPrint,
-                                          showNew: widget.tap.showNew,
-                                          searchFirst: widget.tap.searchFirst,
-                                          showSetting: widget.tap.showSetting,
-                                          showMasterButton:
-                                              widget.tap.showMasterButton,
-                                          canDrag: widget.tap.canDrag,
-                                          canGroup: widget.tap.canGroup,
-                                          showSum: widget.tap.showSum,
-                                          showColumnSetting:
-                                              widget.tap.showColumnSetting,
-                                          showRefersh: widget.tap.showRefersh,
-                                          canSort: widget.tap.canSort,
-                                          showPaging: widget.tap.showPaging,
-                                          showGroup: widget.tap.showGroup,
-                                          dataSourceApi:
-                                              widget.tap.dataSourceApi,
-                                          limit: 10,
-                                          orderBy: widget.tap.orderBy,
-                                          tailCondition:
-                                              widget.tap.tailCondition,
-                                          master: widget.tap.master,
-                                          foreignKey: widget.tap.foreignKey,
-                                          foreignKeyValue:
-                                              widget.tap.foreignKeyValue,
-                                          groupLayout: widget.tap.groupLayout,
-                                          groupColumn: widget.tap.groupColumn,
-                                          outSiderGroupColumn:
-                                              widget.tap.outSiderGroupColumn,
-                                          editOnly: widget.tap.editOnly,
-                                          listMaster: widget.tap.listMaster,
-                                          excel: widget.tap.excel,
-                                          excelNew: widget.tap.excelNew,
-                                          showInPopUp: widget.tap.showInPopUp,
-                                          pageAttributeId:
-                                              widget.tap.pageAttributeId,
-                                          displayArabic:
-                                              widget.tap.displayArabic,
-                                          displayEnglish:
-                                              widget.tap.displayEnglish,
-                                          displayChinese:
-                                              widget.tap.displayChinese,
-                                          columnColor: widget.tap.columnColor,
-                                          enName: widget.tap.enName,
-                                          isDesc: widget.tap.isDesc,
-                                          unaryColumn: widget.tap.unaryColumn,
-                                          numberOfEmptyRow:
-                                              widget.tap.numberOfEmptyRow,
-                                          offset: 0,
-                                          statment: myStatement,
-                                        ),
-                                        numberOfPage: 1,
-                                        dropdownValueOfLimit: 10);
-                              },
-                            ),
-                          );
-                        },
-                        icon: const Icon(
-                          Icons.search,
-                        ),
-                        color: AppColors.white,
-                        style: IconButton.styleFrom(
-                            backgroundColor: AppColors.blue),
-                      ),
-                    if (widget.tap.showEdit != false && showSettings == true)
-                      IconButton(
-                        onPressed: () {
-                          if (widget.pageData.tableSrc ==
-                              AppStrings.tableGroup) {
-                            GoRouter.of(context).push(AppRouter.kEditView,
-                                extra: AddPassDataModel(
-                                  pageData: widget.pageData,
-                                  columnList: listColumn,
-                                  listKey: listKey,
-                                ));
-                          } else {
-                            CustomAlertDialog.alertWithCustomContent(
-                              context: context,
-                              title: S.of(context).btn_edit,
-                              isOverlayTapDismiss: false,
-                              isCloseButton: false,
-                              content: BuildAlertEditDetails(
-                                columnList: listColumn,
-                                pageData: widget.pageData,
-                                tap: widget.tap,
-                                mainId: widget.id,
-                                onTapEdit: (newRowData) {
-                                  BlocProvider.of<AddEditCubit>(context)
-                                      .edit(
-                                          controllerName:
-                                              widget.tap.controllerName,
-                                          body: newRowData)
-                                      .then((value) => BlocProvider.of<
-                                              GetPageDetailsTableCubit>(context)
-                                          .getPageDetailsTable(
-                                              tapData: ListTaps(
-                                                pageID: widget.tap.pageID,
-                                                pageDisplay:
-                                                    widget.tap.pageDisplay,
-                                                masterName:
-                                                    widget.tap.masterName,
-                                                modulName: widget.tap.modulName,
-                                                masterID: widget.tap.masterID,
-                                                modulID: widget.tap.modulID,
-                                                detailId: widget.tap.detailId,
-                                                listName: widget.tap.listName,
-                                                tableName: widget.tap.tableName,
-                                                primary: widget.tap.primary,
-                                                controllerName:
-                                                    widget.tap.controllerName,
-                                                tableSrc: widget.tap.tableSrc,
-                                                editSrc: widget.tap.editSrc,
-                                                isCompany: widget.tap.isCompany,
-                                                companyName:
-                                                    widget.tap.companyName,
-                                                showPrint: widget.tap.showPrint,
-                                                showExport:
-                                                    widget.tap.showExport,
-                                                showSearch:
-                                                    widget.tap.showSearch,
-                                                showEdit: widget.tap.showEdit,
-                                                showDelete:
-                                                    widget.tap.showDelete,
-                                                showRowPrint:
-                                                    widget.tap.showRowPrint,
-                                                showNew: widget.tap.showNew,
-                                                searchFirst:
-                                                    widget.tap.searchFirst,
-                                                showSetting:
-                                                    widget.tap.showSetting,
-                                                showMasterButton:
-                                                    widget.tap.showMasterButton,
-                                                canDrag: widget.tap.canDrag,
-                                                canGroup: widget.tap.canGroup,
-                                                showSum: widget.tap.showSum,
-                                                showColumnSetting: widget
-                                                    .tap.showColumnSetting,
-                                                showRefersh:
-                                                    widget.tap.showRefersh,
-                                                canSort: widget.tap.canSort,
-                                                showPaging:
-                                                    widget.tap.showPaging,
-                                                showGroup: widget.tap.showGroup,
-                                                dataSourceApi:
-                                                    widget.tap.dataSourceApi,
-                                                limit: 10,
-                                                orderBy: widget.tap.orderBy,
-                                                tailCondition:
-                                                    widget.tap.tailCondition,
-                                                master: widget.tap.master,
-                                                foreignKey:
-                                                    widget.tap.foreignKey,
-                                                foreignKeyValue:
-                                                    widget.tap.foreignKeyValue,
-                                                groupLayout:
-                                                    widget.tap.groupLayout,
-                                                groupColumn:
-                                                    widget.tap.groupColumn,
-                                                outSiderGroupColumn: widget
-                                                    .tap.outSiderGroupColumn,
-                                                editOnly: widget.tap.editOnly,
-                                                listMaster:
-                                                    widget.tap.listMaster,
-                                                excel: widget.tap.excel,
-                                                excelNew: widget.tap.excelNew,
-                                                showInPopUp:
-                                                    widget.tap.showInPopUp,
-                                                pageAttributeId:
-                                                    widget.tap.pageAttributeId,
-                                                displayArabic:
-                                                    widget.tap.displayArabic,
-                                                displayEnglish:
-                                                    widget.tap.displayEnglish,
-                                                displayChinese:
-                                                    widget.tap.displayChinese,
-                                                columnColor:
-                                                    widget.tap.columnColor,
-                                                enName: widget.tap.enName,
-                                                isDesc: widget.tap.isDesc,
-                                                unaryColumn:
-                                                    widget.tap.unaryColumn,
-                                                numberOfEmptyRow:
-                                                    widget.tap.numberOfEmptyRow,
-                                                offset: 0,
-                                                statment:
-                                                    "and ${widget.tap.foreignKey}  =  ${widget.id} ",
-                                              ),
-                                              numberOfPage: 1,
-                                              dropdownValueOfLimit: 10));
-                                },
-                              ),
-                            );
-                          }
-                        },
-                        icon: const Icon(Icons.edit_note),
-                        color: AppColors.white,
-                        style: IconButton.styleFrom(
-                            backgroundColor: AppColors.blueGreyDark),
-                      ),
-                    if (widget.tap.showNew != false && showSettings == true)
-                      IconButton(
-                        onPressed: () {
-                          if (widget.pageData.tableSrc ==
-                              AppStrings.tableGroup) {
-                            GoRouter.of(context).push(AppRouter.kAddView,
-                                extra: AddPassDataModel(
-                                  pageData: widget.pageData,
-                                  columnList: listColumn,
-                                  listKey: listKey,
-                                ));
-                          } else {
-                            CustomAlertDialog.alertWithCustomContent(
-                              context: context,
-                              title: S.of(context).btn_add,
-                              isOverlayTapDismiss: false,
-                              isCloseButton: false,
-                              content: BuildAlertAddDetails(
-                                columnList: listColumn,
-                                pageData: widget.pageData,
-                                tap: widget.tap,
-                                mainId: widget.id,
-                                onTapAdd: (newRowData) {
-                                  BlocProvider.of<AddEditCubit>(context)
-                                      .add(
-                                          controllerName:
-                                              widget.tap.controllerName,
-                                          body: newRowData)
-                                      .then((value) => BlocProvider.of<
-                                              GetPageDetailsTableCubit>(context)
-                                          .getPageDetailsTable(
-                                              tapData: ListTaps(
-                                                pageID: widget.tap.pageID,
-                                                pageDisplay:
-                                                    widget.tap.pageDisplay,
-                                                masterName:
-                                                    widget.tap.masterName,
-                                                modulName: widget.tap.modulName,
-                                                masterID: widget.tap.masterID,
-                                                modulID: widget.tap.modulID,
-                                                detailId: widget.tap.detailId,
-                                                listName: widget.tap.listName,
-                                                tableName: widget.tap.tableName,
-                                                primary: widget.tap.primary,
-                                                controllerName:
-                                                    widget.tap.controllerName,
-                                                tableSrc: widget.tap.tableSrc,
-                                                editSrc: widget.tap.editSrc,
-                                                isCompany: widget.tap.isCompany,
-                                                companyName:
-                                                    widget.tap.companyName,
-                                                showPrint: widget.tap.showPrint,
-                                                showExport:
-                                                    widget.tap.showExport,
-                                                showSearch:
-                                                    widget.tap.showSearch,
-                                                showEdit: widget.tap.showEdit,
-                                                showDelete:
-                                                    widget.tap.showDelete,
-                                                showRowPrint:
-                                                    widget.tap.showRowPrint,
-                                                showNew: widget.tap.showNew,
-                                                searchFirst:
-                                                    widget.tap.searchFirst,
-                                                showSetting:
-                                                    widget.tap.showSetting,
-                                                showMasterButton:
-                                                    widget.tap.showMasterButton,
-                                                canDrag: widget.tap.canDrag,
-                                                canGroup: widget.tap.canGroup,
-                                                showSum: widget.tap.showSum,
-                                                showColumnSetting: widget
-                                                    .tap.showColumnSetting,
-                                                showRefersh:
-                                                    widget.tap.showRefersh,
-                                                canSort: widget.tap.canSort,
-                                                showPaging:
-                                                    widget.tap.showPaging,
-                                                showGroup: widget.tap.showGroup,
-                                                dataSourceApi:
-                                                    widget.tap.dataSourceApi,
-                                                limit: 10,
-                                                orderBy: widget.tap.orderBy,
-                                                tailCondition:
-                                                    widget.tap.tailCondition,
-                                                master: widget.tap.master,
-                                                foreignKey:
-                                                    widget.tap.foreignKey,
-                                                foreignKeyValue:
-                                                    widget.tap.foreignKeyValue,
-                                                groupLayout:
-                                                    widget.tap.groupLayout,
-                                                groupColumn:
-                                                    widget.tap.groupColumn,
-                                                outSiderGroupColumn: widget
-                                                    .tap.outSiderGroupColumn,
-                                                editOnly: widget.tap.editOnly,
-                                                listMaster:
-                                                    widget.tap.listMaster,
-                                                excel: widget.tap.excel,
-                                                excelNew: widget.tap.excelNew,
-                                                showInPopUp:
-                                                    widget.tap.showInPopUp,
-                                                pageAttributeId:
-                                                    widget.tap.pageAttributeId,
-                                                displayArabic:
-                                                    widget.tap.displayArabic,
-                                                displayEnglish:
-                                                    widget.tap.displayEnglish,
-                                                displayChinese:
-                                                    widget.tap.displayChinese,
-                                                columnColor:
-                                                    widget.tap.columnColor,
-                                                enName: widget.tap.enName,
-                                                isDesc: widget.tap.isDesc,
-                                                unaryColumn:
-                                                    widget.tap.unaryColumn,
-                                                numberOfEmptyRow:
-                                                    widget.tap.numberOfEmptyRow,
-                                                offset: 0,
-                                                statment:
-                                                    "and ${widget.tap.foreignKey}  =  ${widget.id} ",
-                                              ),
-                                              numberOfPage: 1,
-                                              dropdownValueOfLimit: 10));
-                                },
-                              ),
                             );
                           }
                         },
@@ -603,109 +566,106 @@ class _TapDetailsWidgetBodyState extends State<TapDetailsWidgetBody> {
                                             controllerName:
                                                 widget.tap.controllerName,
                                             listId: listId)
-                                        .then((value) => BlocProvider.of<
-                                                    GetPageDetailsTableCubit>(
-                                                context)
-                                            .getPageDetailsTable(
-                                                tapData: ListTaps(
-                                                  pageID: widget.tap.pageID,
-                                                  pageDisplay:
-                                                      widget.tap.pageDisplay,
-                                                  masterName:
-                                                      widget.tap.masterName,
-                                                  modulName:
-                                                      widget.tap.modulName,
-                                                  masterID: widget.tap.masterID,
-                                                  modulID: widget.tap.modulID,
-                                                  detailId: widget.tap.detailId,
-                                                  listName: widget.tap.listName,
-                                                  tableName:
-                                                      widget.tap.tableName,
-                                                  primary: widget.tap.primary,
-                                                  controllerName:
-                                                      widget.tap.controllerName,
-                                                  tableSrc: widget.tap.tableSrc,
-                                                  editSrc: widget.tap.editSrc,
-                                                  isCompany:
-                                                      widget.tap.isCompany,
-                                                  companyName:
-                                                      widget.tap.companyName,
-                                                  showPrint:
-                                                      widget.tap.showPrint,
-                                                  showExport:
-                                                      widget.tap.showExport,
-                                                  showSearch:
-                                                      widget.tap.showSearch,
-                                                  showEdit: widget.tap.showEdit,
-                                                  showDelete:
-                                                      widget.tap.showDelete,
-                                                  showRowPrint:
-                                                      widget.tap.showRowPrint,
-                                                  showNew: widget.tap.showNew,
-                                                  searchFirst:
-                                                      widget.tap.searchFirst,
-                                                  showSetting:
-                                                      widget.tap.showSetting,
-                                                  showMasterButton: widget
-                                                      .tap.showMasterButton,
-                                                  canDrag: widget.tap.canDrag,
-                                                  canGroup: widget.tap.canGroup,
-                                                  showSum: widget.tap.showSum,
-                                                  showColumnSetting: widget
-                                                      .tap.showColumnSetting,
-                                                  showRefersh:
-                                                      widget.tap.showRefersh,
-                                                  canSort: widget.tap.canSort,
-                                                  showPaging:
-                                                      widget.tap.showPaging,
-                                                  showGroup:
-                                                      widget.tap.showGroup,
-                                                  dataSourceApi:
-                                                      widget.tap.dataSourceApi,
-                                                  limit: 10,
-                                                  orderBy: widget.tap.orderBy,
-                                                  tailCondition:
-                                                      widget.tap.tailCondition,
-                                                  master: widget.tap.master,
-                                                  foreignKey:
-                                                      widget.tap.foreignKey,
-                                                  foreignKeyValue: widget
-                                                      .tap.foreignKeyValue,
-                                                  groupLayout:
-                                                      widget.tap.groupLayout,
-                                                  groupColumn:
-                                                      widget.tap.groupColumn,
-                                                  outSiderGroupColumn: widget
-                                                      .tap.outSiderGroupColumn,
-                                                  editOnly: widget.tap.editOnly,
-                                                  listMaster:
-                                                      widget.tap.listMaster,
-                                                  excel: widget.tap.excel,
-                                                  excelNew: widget.tap.excelNew,
-                                                  showInPopUp:
-                                                      widget.tap.showInPopUp,
-                                                  pageAttributeId: widget
-                                                      .tap.pageAttributeId,
-                                                  displayArabic:
-                                                      widget.tap.displayArabic,
-                                                  displayEnglish:
-                                                      widget.tap.displayEnglish,
-                                                  displayChinese:
-                                                      widget.tap.displayChinese,
-                                                  columnColor:
-                                                      widget.tap.columnColor,
-                                                  enName: widget.tap.enName,
-                                                  isDesc: widget.tap.isDesc,
-                                                  unaryColumn:
-                                                      widget.tap.unaryColumn,
-                                                  numberOfEmptyRow: widget
-                                                      .tap.numberOfEmptyRow,
-                                                  offset: 0,
-                                                  statment:
-                                                      "and ${widget.tap.foreignKey}  =  ${widget.id} ",
-                                                ),
-                                                numberOfPage: 1,
-                                                dropdownValueOfLimit: 10));
+                                        .then((value) {
+                                      TapDetailsWidgetBody.rowData = [];
+                                      return BlocProvider.of<
+                                              GetPageDetailsTableCubit>(context)
+                                          .getPageDetailsTable(
+                                              tapData: ListTaps(
+                                                pageID: widget.tap.pageID,
+                                                pageDisplay:
+                                                    widget.tap.pageDisplay,
+                                                masterName:
+                                                    widget.tap.masterName,
+                                                modulName: widget.tap.modulName,
+                                                masterID: widget.tap.masterID,
+                                                modulID: widget.tap.modulID,
+                                                detailId: widget.tap.detailId,
+                                                listName: widget.tap.listName,
+                                                tableName: widget.tap.tableName,
+                                                primary: widget.tap.primary,
+                                                controllerName:
+                                                    widget.tap.controllerName,
+                                                tableSrc: widget.tap.tableSrc,
+                                                editSrc: widget.tap.editSrc,
+                                                isCompany: widget.tap.isCompany,
+                                                companyName:
+                                                    widget.tap.companyName,
+                                                showPrint: widget.tap.showPrint,
+                                                showExport:
+                                                    widget.tap.showExport,
+                                                showSearch:
+                                                    widget.tap.showSearch,
+                                                showEdit: widget.tap.showEdit,
+                                                showDelete:
+                                                    widget.tap.showDelete,
+                                                showRowPrint:
+                                                    widget.tap.showRowPrint,
+                                                showNew: widget.tap.showNew,
+                                                searchFirst:
+                                                    widget.tap.searchFirst,
+                                                showSetting:
+                                                    widget.tap.showSetting,
+                                                showMasterButton:
+                                                    widget.tap.showMasterButton,
+                                                canDrag: widget.tap.canDrag,
+                                                canGroup: widget.tap.canGroup,
+                                                showSum: widget.tap.showSum,
+                                                showColumnSetting: widget
+                                                    .tap.showColumnSetting,
+                                                showRefersh:
+                                                    widget.tap.showRefersh,
+                                                canSort: widget.tap.canSort,
+                                                showPaging:
+                                                    widget.tap.showPaging,
+                                                showGroup: widget.tap.showGroup,
+                                                dataSourceApi:
+                                                    widget.tap.dataSourceApi,
+                                                limit: 10,
+                                                orderBy: widget.tap.orderBy,
+                                                tailCondition:
+                                                    widget.tap.tailCondition,
+                                                master: widget.tap.master,
+                                                foreignKey:
+                                                    widget.tap.foreignKey,
+                                                foreignKeyValue:
+                                                    widget.tap.foreignKeyValue,
+                                                groupLayout:
+                                                    widget.tap.groupLayout,
+                                                groupColumn:
+                                                    widget.tap.groupColumn,
+                                                outSiderGroupColumn: widget
+                                                    .tap.outSiderGroupColumn,
+                                                editOnly: widget.tap.editOnly,
+                                                listMaster:
+                                                    widget.tap.listMaster,
+                                                excel: widget.tap.excel,
+                                                excelNew: widget.tap.excelNew,
+                                                showInPopUp:
+                                                    widget.tap.showInPopUp,
+                                                pageAttributeId:
+                                                    widget.tap.pageAttributeId,
+                                                displayArabic:
+                                                    widget.tap.displayArabic,
+                                                displayEnglish:
+                                                    widget.tap.displayEnglish,
+                                                displayChinese:
+                                                    widget.tap.displayChinese,
+                                                columnColor:
+                                                    widget.tap.columnColor,
+                                                enName: widget.tap.enName,
+                                                isDesc: widget.tap.isDesc,
+                                                unaryColumn:
+                                                    widget.tap.unaryColumn,
+                                                numberOfEmptyRow:
+                                                    widget.tap.numberOfEmptyRow,
+                                                offset: 0,
+                                                statment:
+                                                    "and ${widget.tap.foreignKey}  =  ${widget.id} ",
+                                              ),
+                                              numberOfPage: 1,
+                                              dropdownValueOfLimit: 10);
+                                    });
                                   },
                                 ),
                               ),
@@ -1084,3 +1044,238 @@ class _TapDetailsWidgetBodyState extends State<TapDetailsWidgetBody> {
     );
   }
 }
+
+/*showDialog(
+                                context: context,
+                                barrierDismissible: false,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: Center(
+                                      child: Text(
+                                        S.of(context).btn_edit,
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                            color: AppColors.blueLight),
+                                      ),
+                                    ),
+                                    content: BuildAlertEditDetails(
+                                      columnList: listColumn,
+                                      pageData: widget.pageData,
+                                      tap: widget.tap,
+                                      mainId: widget.id,
+                                      onTapEdit: (newRowData) {
+                                        BlocProvider.of<AddEditCubit>(context)
+                                            .edit(
+                                                controllerName:
+                                                    widget.tap.controllerName,
+                                                body: newRowData)
+                                            .then((value) => BlocProvider.of<
+                                                        GetPageDetailsTableCubit>(
+                                                    context)
+                                                .getPageDetailsTable(
+                                                    tapData: ListTaps(
+                                                      pageID: widget.tap.pageID,
+                                                      pageDisplay: widget
+                                                          .tap.pageDisplay,
+                                                      masterName:
+                                                          widget.tap.masterName,
+                                                      modulName:
+                                                          widget.tap.modulName,
+                                                      masterID:
+                                                          widget.tap.masterID,
+                                                      modulID:
+                                                          widget.tap.modulID,
+                                                      detailId:
+                                                          widget.tap.detailId,
+                                                      listName:
+                                                          widget.tap.listName,
+                                                      tableName:
+                                                          widget.tap.tableName,
+                                                      primary:
+                                                          widget.tap.primary,
+                                                      controllerName: widget
+                                                          .tap.controllerName,
+                                                      tableSrc:
+                                                          widget.tap.tableSrc,
+                                                      editSrc:
+                                                          widget.tap.editSrc,
+                                                      isCompany:
+                                                          widget.tap.isCompany,
+                                                      companyName: widget
+                                                          .tap.companyName,
+                                                      showPrint:
+                                                          widget.tap.showPrint,
+                                                      showExport:
+                                                          widget.tap.showExport,
+                                                      showSearch:
+                                                          widget.tap.showSearch,
+                                                      showEdit:
+                                                          widget.tap.showEdit,
+                                                      showDelete:
+                                                          widget.tap.showDelete,
+                                                      showRowPrint: widget
+                                                          .tap.showRowPrint,
+                                                      showNew:
+                                                          widget.tap.showNew,
+                                                      searchFirst: widget
+                                                          .tap.searchFirst,
+                                                      showSetting: widget
+                                                          .tap.showSetting,
+                                                      showMasterButton: widget
+                                                          .tap.showMasterButton,
+                                                      canDrag:
+                                                          widget.tap.canDrag,
+                                                      canGroup:
+                                                          widget.tap.canGroup,
+                                                      showSum:
+                                                          widget.tap.showSum,
+                                                      showColumnSetting: widget
+                                                          .tap
+                                                          .showColumnSetting,
+                                                      showRefersh: widget
+                                                          .tap.showRefersh,
+                                                      canSort:
+                                                          widget.tap.canSort,
+                                                      showPaging:
+                                                          widget.tap.showPaging,
+                                                      showGroup:
+                                                          widget.tap.showGroup,
+                                                      dataSourceApi: widget
+                                                          .tap.dataSourceApi,
+                                                      limit: 10,
+                                                      orderBy:
+                                                          widget.tap.orderBy,
+                                                      tailCondition: widget
+                                                          .tap.tailCondition,
+                                                      master: widget.tap.master,
+                                                      foreignKey:
+                                                          widget.tap.foreignKey,
+                                                      foreignKeyValue: widget
+                                                          .tap.foreignKeyValue,
+                                                      groupLayout: widget
+                                                          .tap.groupLayout,
+                                                      groupColumn: widget
+                                                          .tap.groupColumn,
+                                                      outSiderGroupColumn: widget
+                                                          .tap
+                                                          .outSiderGroupColumn,
+                                                      editOnly:
+                                                          widget.tap.editOnly,
+                                                      listMaster:
+                                                          widget.tap.listMaster,
+                                                      excel: widget.tap.excel,
+                                                      excelNew:
+                                                          widget.tap.excelNew,
+                                                      showInPopUp: widget
+                                                          .tap.showInPopUp,
+                                                      pageAttributeId: widget
+                                                          .tap.pageAttributeId,
+                                                      displayArabic: widget
+                                                          .tap.displayArabic,
+                                                      displayEnglish: widget
+                                                          .tap.displayEnglish,
+                                                      displayChinese: widget
+                                                          .tap.displayChinese,
+                                                      columnColor: widget
+                                                          .tap.columnColor,
+                                                      enName: widget.tap.enName,
+                                                      isDesc: widget.tap.isDesc,
+                                                      unaryColumn: widget
+                                                          .tap.unaryColumn,
+                                                      numberOfEmptyRow: widget
+                                                          .tap.numberOfEmptyRow,
+                                                      offset: 0,
+                                                      statment:
+                                                          "and ${widget.tap.foreignKey}  =  ${widget.id} ",
+                                                    ),
+                                                    numberOfPage: 1,
+                                                    dropdownValueOfLimit: 10));
+                                      },
+                                    ),
+                                  );
+                                },
+                              ).then(
+                                (value) {
+                                  BlocProvider.of<GetPageDetailsTableCubit>(
+                                          context)
+                                      .getPageDetailsTable(
+                                          tapData: ListTaps(
+                                            pageID: widget.tap.pageID,
+                                            pageDisplay: widget.tap.pageDisplay,
+                                            masterName: widget.tap.masterName,
+                                            modulName: widget.tap.modulName,
+                                            masterID: widget.tap.masterID,
+                                            modulID: widget.tap.modulID,
+                                            detailId: widget.tap.detailId,
+                                            listName: widget.tap.listName,
+                                            tableName: widget.tap.tableName,
+                                            primary: widget.tap.primary,
+                                            controllerName:
+                                                widget.tap.controllerName,
+                                            tableSrc: widget.tap.tableSrc,
+                                            editSrc: widget.tap.editSrc,
+                                            isCompany: widget.tap.isCompany,
+                                            companyName: widget.tap.companyName,
+                                            showPrint: widget.tap.showPrint,
+                                            showExport: widget.tap.showExport,
+                                            showSearch: widget.tap.showSearch,
+                                            showEdit: widget.tap.showEdit,
+                                            showDelete: widget.tap.showDelete,
+                                            showRowPrint:
+                                                widget.tap.showRowPrint,
+                                            showNew: widget.tap.showNew,
+                                            searchFirst: widget.tap.searchFirst,
+                                            showSetting: widget.tap.showSetting,
+                                            showMasterButton:
+                                                widget.tap.showMasterButton,
+                                            canDrag: widget.tap.canDrag,
+                                            canGroup: widget.tap.canGroup,
+                                            showSum: widget.tap.showSum,
+                                            showColumnSetting:
+                                                widget.tap.showColumnSetting,
+                                            showRefersh: widget.tap.showRefersh,
+                                            canSort: widget.tap.canSort,
+                                            showPaging: widget.tap.showPaging,
+                                            showGroup: widget.tap.showGroup,
+                                            dataSourceApi:
+                                                widget.tap.dataSourceApi,
+                                            limit: 10,
+                                            orderBy: widget.tap.orderBy,
+                                            tailCondition:
+                                                widget.tap.tailCondition,
+                                            master: widget.tap.master,
+                                            foreignKey: widget.tap.foreignKey,
+                                            foreignKeyValue:
+                                                widget.tap.foreignKeyValue,
+                                            groupLayout: widget.tap.groupLayout,
+                                            groupColumn: widget.tap.groupColumn,
+                                            outSiderGroupColumn:
+                                                widget.tap.outSiderGroupColumn,
+                                            editOnly: widget.tap.editOnly,
+                                            listMaster: widget.tap.listMaster,
+                                            excel: widget.tap.excel,
+                                            excelNew: widget.tap.excelNew,
+                                            showInPopUp: widget.tap.showInPopUp,
+                                            pageAttributeId:
+                                                widget.tap.pageAttributeId,
+                                            displayArabic:
+                                                widget.tap.displayArabic,
+                                            displayEnglish:
+                                                widget.tap.displayEnglish,
+                                            displayChinese:
+                                                widget.tap.displayChinese,
+                                            columnColor: widget.tap.columnColor,
+                                            enName: widget.tap.enName,
+                                            isDesc: widget.tap.isDesc,
+                                            unaryColumn: widget.tap.unaryColumn,
+                                            numberOfEmptyRow:
+                                                widget.tap.numberOfEmptyRow,
+                                            offset: 0,
+                                            statment:
+                                                "and ${widget.tap.foreignKey}  =  ${widget.id} ",
+                                          ),
+                                          numberOfPage: 1,
+                                          dropdownValueOfLimit: 10);
+                                },
+                              );*/

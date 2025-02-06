@@ -138,15 +138,24 @@ class _CustomFloatingActionButtonState
 
   void tapIcon(IconData icon) {
     if (icon == Icons.search) {
-      CustomAlertDialog.alertWithCustomContent(
+      showDialog(
         context: context,
-        title: S.of(context).btn_search,
-        isOverlayTapDismiss: false,
-        isCloseButton: false,
-        content: BuildAlertSearch(
-          columnList: columnList,
-          pageData: widget.pageData,
-          oldStatement: BuildAlertSearch.statement,
+        barrierDismissible: false,
+        builder: (context) => AlertDialog(
+          title: Center(
+            child: Text(
+              S.of(context).btn_search,
+              style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.blueLight),
+            ),
+          ),
+          content: BuildAlertSearch(
+            columnList: columnList,
+            pageData: widget.pageData,
+            oldStatement: BuildAlertSearch.statement,
+          ),
         ),
       );
     } else if (icon == Icons.refresh) {
@@ -268,14 +277,23 @@ class _CustomFloatingActionButtonState
               desc: S.of(context).massage_no_edit);
         } else if (myRowData.length == 1) {
           if (widget.pageData.editSrc == "") {
-            CustomAlertDialog.alertWithCustomContent(
+            showDialog(
               context: context,
-              title: S.of(context).btn_edit,
-              isOverlayTapDismiss: false,
-              isCloseButton: false,
-              content: BuildAlertEdit(
-                columnList: columnList,
-                pageData: widget.pageData,
+              barrierDismissible: false,
+              builder: (context) => AlertDialog(
+                title: Center(
+                  child: Text(
+                    S.of(context).btn_edit,
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.blueLight),
+                  ),
+                ),
+                content: BuildAlertEdit(
+                  columnList: columnList,
+                  pageData: widget.pageData,
+                ),
               ),
             );
           } else {
@@ -317,14 +335,23 @@ class _CustomFloatingActionButtonState
       }
     } else if (icon == Icons.add) {
       if (widget.pageData.editSrc == "") {
-        CustomAlertDialog.alertWithCustomContent(
+        showDialog(
           context: context,
-          title: S.of(context).btn_add,
-          isOverlayTapDismiss: false,
-          isCloseButton: false,
-          content: BuildAlertAdd(
-            columnList: columnList,
-            pageData: widget.pageData,
+          barrierDismissible: false,
+          builder: (context) => AlertDialog(
+            title: Center(
+              child: Text(
+                S.of(context).btn_add,
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.blueLight),
+              ),
+            ),
+            content: BuildAlertAdd(
+              columnList: columnList,
+              pageData: widget.pageData,
+            ),
           ),
         );
       } else {

@@ -125,75 +125,8 @@ class _BuildAlertSearchDetailsState extends State<BuildAlertSearchDetails> {
                         BuildAlertSearchDetails.statement = '';
                         TapDetailsWidgetBody.isDesc = false;
                         TapDetailsWidgetBody.orderBy = widget.tap.orderBy;
-                        // BlocProvider.of<GetPageDetailsTableCubit>(context)
-                        //     .getPageDetailsTable(
-                        //         tapData: ListTaps(
-                        //           pageID: widget.tap.pageID,
-                        //           pageDisplay: widget.tap.pageDisplay,
-                        //           masterName: widget.tap.masterName,
-                        //           modulName: widget.tap.modulName,
-                        //           masterID: widget.tap.masterID,
-                        //           modulID: widget.tap.modulID,
-                        //           detailId: widget.tap.detailId,
-                        //           listName: widget.tap.listName,
-                        //           tableName: widget.tap.tableName,
-                        //           primary: widget.tap.primary,
-                        //           controllerName: widget.tap.controllerName,
-                        //           tableSrc: widget.tap.tableSrc,
-                        //           editSrc: widget.tap.editSrc,
-                        //           isCompany: widget.tap.isCompany,
-                        //           companyName: widget.tap.companyName,
-                        //           showPrint: widget.tap.showPrint,
-                        //           showExport: widget.tap.showExport,
-                        //           showSearch: widget.tap.showSearch,
-                        //           showEdit: widget.tap.showEdit,
-                        //           showDelete: widget.tap.showDelete,
-                        //           showRowPrint: widget.tap.showRowPrint,
-                        //           showNew: widget.tap.showNew,
-                        //           searchFirst: widget.tap.searchFirst,
-                        //           showSetting: widget.tap.showSetting,
-                        //           showMasterButton: widget.tap.showMasterButton,
-                        //           canDrag: widget.tap.canDrag,
-                        //           canGroup: widget.tap.canGroup,
-                        //           showSum: widget.tap.showSum,
-                        //           showColumnSetting:
-                        //               widget.tap.showColumnSetting,
-                        //           showRefersh: widget.tap.showRefersh,
-                        //           canSort: widget.tap.canSort,
-                        //           showPaging: widget.tap.showPaging,
-                        //           showGroup: widget.tap.showGroup,
-                        //           dataSourceApi: widget.tap.dataSourceApi,
-                        //           limit: 10,
-                        //           orderBy: widget.tap.orderBy,
-                        //           tailCondition: widget.tap.tailCondition,
-                        //           master: widget.tap.master,
-                        //           foreignKey: widget.tap.foreignKey,
-                        //           foreignKeyValue: widget.tap.foreignKeyValue,
-                        //           groupLayout: widget.tap.groupLayout,
-                        //           groupColumn: widget.tap.groupColumn,
-                        //           outSiderGroupColumn:
-                        //               widget.tap.outSiderGroupColumn,
-                        //           editOnly: widget.tap.editOnly,
-                        //           listMaster: widget.tap.listMaster,
-                        //           excel: widget.tap.excel,
-                        //           excelNew: widget.tap.excelNew,
-                        //           showInPopUp: widget.tap.showInPopUp,
-                        //           pageAttributeId: widget.tap.pageAttributeId,
-                        //           displayArabic: widget.tap.displayArabic,
-                        //           displayEnglish: widget.tap.displayEnglish,
-                        //           displayChinese: widget.tap.displayChinese,
-                        //           columnColor: widget.tap.columnColor,
-                        //           enName: widget.tap.enName,
-                        //           isDesc: widget.tap.isDesc,
-                        //           unaryColumn: widget.tap.unaryColumn,
-                        //           numberOfEmptyRow: widget.tap.numberOfEmptyRow,
-                        //           offset: 0,
-                        //           statment:
-                        //               "and ${widget.tap.foreignKey}  =  ${widget.mainId} ",
-                        //         ),
-                        //         numberOfPage: 1,
-                        //         dropdownValueOfLimit: 10);
                         widget.onTapClean();
+                        setState(() {});
                         Navigator.pop(context);
                       },
                     ),
@@ -205,73 +138,6 @@ class _BuildAlertSearchDetailsState extends State<BuildAlertSearchDetails> {
                       formKey.currentState!.save();
                       TapDetailsWidgetBody.isSearch = true;
                       widget.onTapSearch(statment);
-                      // BlocProvider.of<GetPageDetailsTableCubit>(context)
-                      //     .getPageDetailsTable(
-                      //         tapData: ListTaps(
-                      //           pageID: widget.tap.pageID,
-                      //           pageDisplay: widget.tap.pageDisplay,
-                      //           masterName: widget.tap.masterName,
-                      //           modulName: widget.tap.modulName,
-                      //           masterID: widget.tap.masterID,
-                      //           modulID: widget.tap.modulID,
-                      //           detailId: widget.tap.detailId,
-                      //           listName: widget.tap.listName,
-                      //           tableName: widget.tap.tableName,
-                      //           primary: widget.tap.primary,
-                      //           controllerName: widget.tap.controllerName,
-                      //           tableSrc: widget.tap.tableSrc,
-                      //           editSrc: widget.tap.editSrc,
-                      //           isCompany: widget.tap.isCompany,
-                      //           companyName: widget.tap.companyName,
-                      //           showPrint: widget.tap.showPrint,
-                      //           showExport: widget.tap.showExport,
-                      //           showSearch: widget.tap.showSearch,
-                      //           showEdit: widget.tap.showEdit,
-                      //           showDelete: widget.tap.showDelete,
-                      //           showRowPrint: widget.tap.showRowPrint,
-                      //           showNew: widget.tap.showNew,
-                      //           searchFirst: widget.tap.searchFirst,
-                      //           showSetting: widget.tap.showSetting,
-                      //           showMasterButton: widget.tap.showMasterButton,
-                      //           canDrag: widget.tap.canDrag,
-                      //           canGroup: widget.tap.canGroup,
-                      //           showSum: widget.tap.showSum,
-                      //           showColumnSetting: widget.tap.showColumnSetting,
-                      //           showRefersh: widget.tap.showRefersh,
-                      //           canSort: widget.tap.canSort,
-                      //           showPaging: widget.tap.showPaging,
-                      //           showGroup: widget.tap.showGroup,
-                      //           dataSourceApi: widget.tap.dataSourceApi,
-                      //           limit: 10,
-                      //           orderBy: widget.tap.orderBy,
-                      //           tailCondition: widget.tap.tailCondition,
-                      //           master: widget.tap.master,
-                      //           foreignKey: widget.tap.foreignKey,
-                      //           foreignKeyValue: widget.tap.foreignKeyValue,
-                      //           groupLayout: widget.tap.groupLayout,
-                      //           groupColumn: widget.tap.groupColumn,
-                      //           outSiderGroupColumn:
-                      //               widget.tap.outSiderGroupColumn,
-                      //           editOnly: widget.tap.editOnly,
-                      //           listMaster: widget.tap.listMaster,
-                      //           excel: widget.tap.excel,
-                      //           excelNew: widget.tap.excelNew,
-                      //           showInPopUp: widget.tap.showInPopUp,
-                      //           pageAttributeId: widget.tap.pageAttributeId,
-                      //           displayArabic: widget.tap.displayArabic,
-                      //           displayEnglish: widget.tap.displayEnglish,
-                      //           displayChinese: widget.tap.displayChinese,
-                      //           columnColor: widget.tap.columnColor,
-                      //           enName: widget.tap.enName,
-                      //           isDesc: widget.tap.isDesc,
-                      //           unaryColumn: widget.tap.unaryColumn,
-                      //           numberOfEmptyRow: widget.tap.numberOfEmptyRow,
-                      //           offset: 0,
-                      //           statment: statment,
-                      //         ),
-                      //         numberOfPage: 1,
-                      //         dropdownValueOfLimit: 10)
-                      //     ;
 
                       Navigator.pop(context);
                     },
@@ -292,7 +158,7 @@ class _BuildAlertSearchDetailsState extends State<BuildAlertSearchDetails> {
           ? item.arColumnLabel!
           : item.enColumnLabel!;
       //text
-      if (item.insertType == "text" && item.visible == true) {
+      if (item.insertType == "text" && item.insertVisable == true) {
         String oldValue = getStringText(
             search: item.searchName!, statement: widget.oldStatement);
         TextEditingController controller =
@@ -325,7 +191,7 @@ class _BuildAlertSearchDetailsState extends State<BuildAlertSearchDetails> {
         ));
       }
       //number
-      if (item.insertType == "number" && item.visible == true) {
+      if (item.insertType == "number" && item.insertVisable == true) {
         String oldValueFrom = getStringNumber(
             search: item.searchName!,
             statement: widget.oldStatement,
@@ -429,7 +295,7 @@ class _BuildAlertSearchDetailsState extends State<BuildAlertSearchDetails> {
         ));
       }
       //Date
-      if (item.insertType == "date" && item.visible == true) {
+      if (item.insertType == "date" && item.insertVisable == true) {
         String oldValueFrom = getStringDate(
             search: item.searchName!,
             statement: widget.oldStatement,
@@ -544,7 +410,7 @@ class _BuildAlertSearchDetailsState extends State<BuildAlertSearchDetails> {
         );
       }
       //dropdown
-      if (item.insertType == "dropdown" && item.visible == true) {
+      if (item.insertType == "dropdown" && item.insertVisable == true) {
         // String oldValue = getStringDropdown(
         //     statement: widget.oldStatement, search: item.searchName!);
         // List<ListDropdownModel> dropList = [
@@ -790,7 +656,7 @@ class _BuildAlertSearchDetailsState extends State<BuildAlertSearchDetails> {
         );
       }
       //checkbox
-      if (item.insertType == "checkbox" && item.visible == true) {
+      if (item.insertType == "checkbox" && item.insertVisable == true) {
         String oldValue = getStringCheckbox(
             search: item.searchName!, statement: widget.oldStatement);
         String? valueCheckbox = oldValue.isEmpty ? null : oldValue;
