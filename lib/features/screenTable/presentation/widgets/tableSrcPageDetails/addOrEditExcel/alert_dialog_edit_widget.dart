@@ -350,7 +350,8 @@ class _AlertDialogEditWidgetState extends State<AlertDialogEditWidget> {
           }
         }
         for (var ii in listDrop!) {
-          if (ii.columnName == item.columnName) {
+          if (ii.columnName == item.columnName &&
+              ii.nameAr == item.arColumnLabel) {
             myListDrop = ii.list;
           }
         }
