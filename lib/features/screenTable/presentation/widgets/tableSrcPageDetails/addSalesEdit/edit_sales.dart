@@ -323,9 +323,11 @@ class _EditSalesState extends State<EditSales> {
                                                                 (double.parse(i[
                                                                             'PriceCurrancy']
                                                                         .toString()) *
-                                                                    double.parse(
-                                                                        i['Qty'] ??
-                                                                            "1"));
+                                                                    double.parse(i['Qty'] ==
+                                                                            null
+                                                                        ? "1"
+                                                                        : i['Qty']
+                                                                            .toString()));
 
                                                             discountController
                                                                 .text = discount(

@@ -100,6 +100,7 @@ class _SalesTableAddEditState extends State<SalesTableAddEdit> {
                 } else {
                   showDialog(
                     context: context,
+                    barrierDismissible: false,
                     builder: (context) {
                       return AlertDialog(
                         content: SalesAlertDialogAddWidget(
@@ -239,6 +240,7 @@ class _SalesTableAddEditState extends State<SalesTableAddEdit> {
                 if (indexSelect != -1) {
                   showDialog(
                     context: context,
+                    barrierDismissible: false,
                     builder: (context) {
                       return AlertDialog(
                         content: SalesAlertDialogEditWidget(
