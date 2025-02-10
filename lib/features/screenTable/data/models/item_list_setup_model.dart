@@ -28,8 +28,10 @@ class ItemListSetupModel {
   bool? isExcel;
   int? pageId;
   String? orderby;
+  String? targetPrimayColumn;
   int? comID;
   bool? masterInsertVisible;
+  bool? isTotal;
 
   ItemListSetupModel(
       {this.id,
@@ -61,8 +63,10 @@ class ItemListSetupModel {
       this.isExcel,
       this.pageId,
       this.orderby,
+      this.targetPrimayColumn,
       this.comID,
-      this.masterInsertVisible});
+      this.masterInsertVisible,
+      this.isTotal});
 
   ItemListSetupModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -94,8 +98,10 @@ class ItemListSetupModel {
     isExcel = json['IsExcel'];
     pageId = json['PageId'];
     orderby = json['orderby'];
+    targetPrimayColumn = json['TargetPrimayColumn'];
     comID = json['ComID'];
     masterInsertVisible = json['MasterInsertVisible'];
+    isTotal = json['IsTotal'];
   }
 
   Map<String, dynamic> toJson() {
@@ -129,8 +135,10 @@ class ItemListSetupModel {
     data['IsExcel'] = isExcel;
     data['PageId'] = pageId;
     data['orderby'] = orderby;
+    data['TargetPrimayColumn'] = targetPrimayColumn;
     data['ComID'] = comID;
     data['MasterInsertVisible'] = masterInsertVisible;
+    data['IsTotal'] = isTotal;
     return data;
   }
 }

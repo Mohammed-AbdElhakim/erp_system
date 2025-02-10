@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:linked_scroll_controller/linked_scroll_controller.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
+import '../../../../../../core/helper/AlertDialog/custom_alert_dialog.dart';
 import '../../../../../../core/models/menu_model/pages.dart';
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_styles.dart';
@@ -12,6 +14,7 @@ import '../../../../data/models/item_list_setup_model.dart';
 import '../../../../data/models/tap_model.dart';
 import '../../../views/barcode_view.dart';
 import '../../../views/screen_table.dart';
+import '../../details/build_alert_delete_details.dart';
 import 'add_product_process_out.dart';
 import 'product_process_out_alert_dialog_add_widget.dart';
 import 'product_process_out_alert_dialog_edit_widget.dart';
@@ -55,14 +58,18 @@ class _ProductProcessOutTableAddEditState
   List<Map<String, dynamic>> tableListInAddView = [];
   late List<Map<String, dynamic>> tableListInEditView;
   late int productId;
-  int indexSelect = -1;
-  bool select = false;
+  List<int> indexSelect = [];
+
+  late String columnNameIsTargetPrimayColumn;
+  late String columnNameIsTotal;
+
   @override
   void initState() {
     headerScrollController = controllerGroup.addAndGet();
     dataScrollController = controllerGroup.addAndGet();
 
     tableListInEditView = widget.oldTableList;
+    getColumnNamePrimaryAndTotal();
 
     super.initState();
   }
@@ -101,16 +108,20 @@ class _ProductProcessOutTableAddEditState
                               Map<String, dynamic> searchData =
                                   tableListInAddView.firstWhere(
                                 (element) =>
-                                    element['ProductID'] == data['ProductID'],
+                                    element[columnNameIsTargetPrimayColumn] ==
+                                    data[columnNameIsTargetPrimayColumn],
                                 orElse: () => {},
                               );
                               if (searchData.isEmpty) {
                                 tableListInAddView.add(data);
                                 widget.onTapAction(tableListInAddView);
                               } else {
-                                searchData['PQuntity'] =
-                                    (int.parse(searchData['PQuntity']) + 1)
-                                        .toString();
+                                searchData[columnNameIsTotal] = (int.parse(
+                                            searchData[columnNameIsTotal]
+                                                .toString()) +
+                                        int.parse(
+                                            data[columnNameIsTotal].toString()))
+                                    .toString();
                                 // element['PriceCurrancy'] =
                                 //     (proPrice * int.parse(element['Qty'])).toString();
                                 widget.onTapAction(tableListInAddView);
@@ -124,16 +135,20 @@ class _ProductProcessOutTableAddEditState
                               Map<String, dynamic> searchData =
                                   tableListInEditView.firstWhere(
                                 (element) =>
-                                    element['ProductID'] == data['ProductID'],
+                                    element[columnNameIsTargetPrimayColumn] ==
+                                    data[columnNameIsTargetPrimayColumn],
                                 orElse: () => {},
                               );
                               if (searchData.isEmpty) {
                                 tableListInEditView.add(data);
                                 widget.onTapAction(tableListInEditView);
                               } else {
-                                searchData['PQuntity'] =
-                                    (int.parse(searchData['PQuntity']) + 1)
-                                        .toString();
+                                searchData[columnNameIsTotal] = (int.parse(
+                                            searchData[columnNameIsTotal]
+                                                .toString()) +
+                                        int.parse(
+                                            data[columnNameIsTotal].toString()))
+                                    .toString();
                                 // element['PriceCurrancy'] =
                                 //     (proPrice * int.parse(element['Qty'])).toString();
                                 widget.onTapAction(tableListInEditView);
@@ -186,8 +201,8 @@ class _ProductProcessOutTableAddEditState
                       ));
                   } else {
                     Map<String, dynamic> proData = {
-                      "ProductID": productId,
-                      "PQuntity": "1",
+                      columnNameIsTargetPrimayColumn: productId,
+                      columnNameIsTotal: "1",
                     };
                     if (widget.typeView == "Add") {
                       if (tableListInAddView.isEmpty) {
@@ -197,15 +212,17 @@ class _ProductProcessOutTableAddEditState
                         Map<String, dynamic> data =
                             tableListInAddView.firstWhere(
                           (element) =>
-                              element['ProductID'] == proData['ProductID'],
+                              element[columnNameIsTargetPrimayColumn] ==
+                              proData[columnNameIsTargetPrimayColumn],
                           orElse: () => {},
                         );
                         if (data.isEmpty) {
                           tableListInAddView.add(proData);
                           widget.onTapAction(tableListInAddView);
                         } else {
-                          data['PQuntity'] =
-                              (int.parse(data['PQuntity']) + 1).toString();
+                          data[columnNameIsTotal] =
+                              (int.parse(data[columnNameIsTotal]) + 1)
+                                  .toString();
                           // element['PriceCurrancy'] =
                           //     (proPrice * int.parse(element['Qty'])).toString();
                           widget.onTapAction(tableListInAddView);
@@ -219,15 +236,17 @@ class _ProductProcessOutTableAddEditState
                         Map<String, dynamic> data =
                             tableListInEditView.firstWhere(
                           (element) =>
-                              element['ProductID'] == proData['ProductID'],
+                              element[columnNameIsTargetPrimayColumn] ==
+                              proData[columnNameIsTargetPrimayColumn],
                           orElse: () => {},
                         );
                         if (data.isEmpty) {
                           tableListInEditView.add(proData);
                           widget.onTapAction(tableListInEditView);
                         } else {
-                          data['PQuntity'] =
-                              (int.parse(data['PQuntity']) + 1).toString();
+                          data[columnNameIsTotal] =
+                              (int.parse(data[columnNameIsTotal]) + 1)
+                                  .toString();
                           // element['PriceCurrancy'] =
                           //     (proPrice * int.parse(element['Qty'])).toString();
                           widget.onTapAction(tableListInEditView);
@@ -246,41 +265,57 @@ class _ProductProcessOutTableAddEditState
               ),
             IconButton(
               onPressed: () {
-                if (indexSelect != -1) {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        content: ProductProcessOutAlertDialogEditWidget(
-                          tapData: widget.tapData,
-                          listKey: widget.listKey,
-                          listHeader: widget.listHeader,
-                          listColumn: widget.listColumn,
-                          allDropdownModelList:
-                              ScreenTable.myAllDropdownModelList,
-                          pageData: widget.pageData,
-                          onTapAdd: (data) {
-                            if (widget.typeView == "Add") {
-                              tableListInAddView.removeAt(indexSelect);
-                              tableListInAddView.insert(indexSelect, data);
-                              indexSelect = -1;
-                              widget.onTapAction(tableListInAddView);
-                            } else if (widget.typeView == "Edit") {
-                              tableListInEditView.removeAt(indexSelect);
-                              tableListInEditView.insert(indexSelect, data);
-                              indexSelect = -1;
-                              widget.onTapAction(tableListInEditView);
-                            }
-                          },
-                          dataOld: widget.typeView == "Add"
-                              ? tableListInAddView[indexSelect]
-                              : tableListInEditView[indexSelect],
-                        ),
-                      );
-                    },
-                  ).then((value) {
-                    setState(() {});
-                  });
+                if (indexSelect.isNotEmpty) {
+                  if (indexSelect.length > 1) {
+                    CustomAlertDialog.alertWithButton(
+                        context: context,
+                        type: AlertType.error,
+                        title: S.of(context).error,
+                        desc: S.of(context).massage_no_edit);
+                  } else if (indexSelect.length == 1) {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          content: ProductProcessOutAlertDialogEditWidget(
+                            tapData: widget.tapData,
+                            listKey: widget.listKey,
+                            listHeader: widget.listHeader,
+                            listColumn: widget.listColumn,
+                            allDropdownModelList:
+                                ScreenTable.myAllDropdownModelList,
+                            pageData: widget.pageData,
+                            onTapAdd: (data) {
+                              if (widget.typeView == "Add") {
+                                tableListInAddView.removeAt(indexSelect.first);
+                                tableListInAddView.insert(
+                                    indexSelect.first, data);
+                                indexSelect.clear();
+                                widget.onTapAction(tableListInAddView);
+                              } else if (widget.typeView == "Edit") {
+                                tableListInEditView.removeAt(indexSelect.first);
+                                tableListInEditView.insert(
+                                    indexSelect.first, data);
+                                indexSelect.clear();
+                                widget.onTapAction(tableListInEditView);
+                              }
+                            },
+                            dataOld: widget.typeView == "Add"
+                                ? tableListInAddView[indexSelect.first]
+                                : tableListInEditView[indexSelect.first],
+                          ),
+                        );
+                      },
+                    ).then((value) {
+                      setState(() {});
+                    });
+                  }
+                } else {
+                  CustomAlertDialog.alertWithButton(
+                      context: context,
+                      type: AlertType.error,
+                      title: S.of(context).error,
+                      desc: S.of(context).massage_choose_edit);
                 }
               },
               icon: const Icon(
@@ -293,19 +328,40 @@ class _ProductProcessOutTableAddEditState
             ),
             IconButton(
               onPressed: () {
-                if (indexSelect != -1) {
-                  if (widget.typeView == "Add") {
-                    tableListInAddView.removeAt(indexSelect);
-                    widget.onTapAction(tableListInAddView);
-                  } else if (widget.typeView == "Edit") {
-                    tableListInEditView.removeAt(indexSelect);
-                    widget.onTapAction(tableListInEditView);
-                  }
-                  // widget.typeView == "Add"
-                  //     ? tableListInAddView.removeAt(indexSelect)
-                  //     : tableListInEditView.removeAt(indexSelect);
-                  indexSelect = -1;
-                  setState(() {});
+                if (indexSelect.isNotEmpty) {
+                  CustomAlertDialog.alertDelete(
+                    context: context,
+                    contentButton: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: BuildAlertDeleteDetails(
+                        onTapDelete: () {
+                          if (widget.typeView == "Add") {
+                            for (var i in indexSelect) {
+                              tableListInAddView.removeAt(i);
+                            }
+                            widget.onTapAction(tableListInAddView);
+                          } else if (widget.typeView == "Edit") {
+                            for (var i in indexSelect) {
+                              tableListInEditView.removeAt(i);
+                            }
+                            widget.onTapAction(tableListInEditView);
+                          }
+                          // widget.typeView == "Add"
+                          //     ? tableListInAddView.removeAt(indexSelect)
+                          //     : tableListInEditView.removeAt(indexSelect);
+                          indexSelect.clear();
+                          Navigator.pop(context);
+                          setState(() {});
+                        },
+                      ),
+                    ),
+                  );
+                } else {
+                  CustomAlertDialog.alertWithButton(
+                      context: context,
+                      type: AlertType.error,
+                      title: S.of(context).error,
+                      desc: S.of(context).massage_choose_delete);
                 }
               },
               icon: const Icon(
@@ -374,20 +430,14 @@ class _ProductProcessOutTableAddEditState
                           SizedBox(
                               width: 35,
                               child: Checkbox(
-                                value: indexSelect == index ? select : false,
+                                value: indexSelect.contains(index),
                                 onChanged: (val) {
-                                  setState(() {
-                                    select = val!;
-                                  });
-                                  if (indexSelect == index) {
-                                    setState(() {
-                                      // widget.tableList.removeAt(index);
-                                      indexSelect = -1;
-                                    });
+                                  if (indexSelect.contains(index)) {
+                                    indexSelect.remove(index);
+                                    setState(() {});
                                   } else {
                                     setState(() {
-                                      // widget.tableList.removeAt(index);
-                                      indexSelect = index;
+                                      indexSelect.add(index);
                                     });
                                   }
                                 },
@@ -414,7 +464,7 @@ class _ProductProcessOutTableAddEditState
                                       }
                                     : null,
                                 child: Container(
-                                  color: indexSelect == index
+                                  color: indexSelect.contains(index)
                                       ? AppColors.blueGreyDark
                                       : Colors.transparent,
                                   width:
@@ -511,7 +561,8 @@ class _ProductProcessOutTableAddEditState
           overflow: TextOverflow.ellipsis,
           date == "0001-12-31" || date == "0000-12-31" ? '' : date,
           style: TextStyle(
-              color: indexSelect == indexRow ? Colors.white : Colors.black),
+              color:
+                  indexSelect.contains(indexRow) ? Colors.white : Colors.black),
         );
       case "checkbox":
         if (data == "true") {
@@ -565,7 +616,8 @@ class _ProductProcessOutTableAddEditState
           overflow: TextOverflow.ellipsis,
           val,
           style: TextStyle(
-              color: indexSelect == indexRow ? Colors.white : Colors.black),
+              color:
+                  indexSelect.contains(indexRow) ? Colors.white : Colors.black),
         );
       default:
         return Text(
@@ -574,7 +626,8 @@ class _ProductProcessOutTableAddEditState
           overflow: TextOverflow.ellipsis,
           data,
           style: TextStyle(
-              color: indexSelect == indexRow ? Colors.white : Colors.black),
+              color:
+                  indexSelect.contains(indexRow) ? Colors.white : Colors.black),
         );
     }
   }
@@ -584,13 +637,37 @@ class _ProductProcessOutTableAddEditState
       productId = AddProductProcessOut.listBarcodeData.firstWhere(
         (element) => element['BarcodeProc'] == resultScanner /*"11961"*/,
         orElse: () => {"ProductId": -1},
-      )['ProductId'];
+      )[columnNameIsTargetPrimayColumn];
     } else {
       //edit
       productId = AddProductProcessOut.listBarcodeData.firstWhere(
         (element) => element['BarcodeProc'] == resultScanner,
         orElse: () => {"ProductId": -1},
-      )['ProductId'];
+      )[columnNameIsTargetPrimayColumn];
+    }
+  }
+
+  void getColumnNamePrimaryAndTotal() {
+    for (var i in widget.listColumn) {
+      if (i.targetPrimayColumn == i.columnName) {
+        setState(() {
+          columnNameIsTargetPrimayColumn = i.columnName!;
+        });
+        getColumnNameTotal(columnNameIsTargetPrimayColumn);
+        break;
+      }
+    }
+  }
+
+  void getColumnNameTotal(String columnNameIsTargetPrimayColumn) {
+    for (var i in widget.listColumn) {
+      if (i.targetPrimayColumn == columnNameIsTargetPrimayColumn &&
+          i.isTotal == true) {
+        setState(() {
+          columnNameIsTotal = i.columnName!;
+        });
+        break;
+      }
     }
   }
 }
