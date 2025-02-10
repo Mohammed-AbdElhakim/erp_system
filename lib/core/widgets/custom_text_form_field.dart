@@ -42,6 +42,9 @@ class CustomTextFormField extends StatelessWidget {
       height: 40,
       child: TextFormField(
         controller: controller,
+        onTapOutside: (event) {
+          FocusManager.instance.primaryFocus?.unfocus();
+        },
         validator: isValidator == true
             ? (value) {
                 if (value?.isEmpty ?? true) {

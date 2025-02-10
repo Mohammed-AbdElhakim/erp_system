@@ -23,6 +23,9 @@ class CustomTextFormFieldSearch extends StatelessWidget {
       height: 40,
       child: TextFormField(
         controller: controller,
+        onTapOutside: (event) {
+          FocusManager.instance.primaryFocus?.unfocus();
+        },
         validator: (value) {
           if (value?.isEmpty ?? true) {
             return validatorMassage;
