@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
@@ -35,12 +38,14 @@ class _PresenceAndDepartureState extends State<PresenceAndDeparture> {
   bool isLocation = false;
   ListValue? myLocation;
   bool isAttend = false;
+  String deviceName = '';
 
   @override
   void initState() {
     super.initState();
     getData();
     getLocation();
+    getDeviceName();
   }
 
   @override
@@ -80,56 +85,63 @@ class _PresenceAndDepartureState extends State<PresenceAndDeparture> {
               },
               builder: (context, state) {
                 if (state is GetAttendanceLocationsSuccess) {
-                  return Center(
-                    child: VerticalSlidableButton(
-                      height: MediaQuery.of(context).size.height / 3,
-                      buttonHeight: 60.0,
-                      color: AppColors.blueGreyLight,
-                      buttonColor: isAttend ? AppColors.green : AppColors.red,
-                      dismissible: false,
-                      width: 90,
-                      initialPosition: isAttend == true
-                          ? SlidableButtonPosition.start
-                          : SlidableButtonPosition.end,
-                      label: Center(
-                        child: Text(
-                          S.of(context).swipe_to,
-                          style: AppStyles.textStyle12,
+                  return Column(
+                    children: [
+                      // Text("اسم الجهاز: $deviceName",
+                      //     style: const TextStyle(fontSize: 20)),
+                      Center(
+                        child: VerticalSlidableButton(
+                          height: MediaQuery.of(context).size.height / 3,
+                          buttonHeight: 60.0,
+                          color: AppColors.blueGreyLight,
+                          buttonColor:
+                              isAttend ? AppColors.green : AppColors.red,
+                          dismissible: false,
+                          width: 90,
+                          initialPosition: isAttend == true
+                              ? SlidableButtonPosition.start
+                              : SlidableButtonPosition.end,
+                          label: Center(
+                            child: Text(
+                              S.of(context).swipe_to,
+                              style: AppStyles.textStyle12,
+                            ),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(top: 25.0),
+                                child: Text(S.of(context).attend),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 25.0),
+                                child: Text(S.of(context).leave),
+                              ),
+                            ],
+                          ),
+                          onChanged: (position) {
+                            setState(() {
+                              if (position == SlidableButtonPosition.end) {
+                                BlocProvider.of<AttendanceCubit>(context)
+                                    .sendAttendance(
+                                  time: DateTime.now().toIso8601String(),
+                                  machineID: myLocation!.machineID.toString(),
+                                  checkType: "CheckOut",
+                                );
+                              } else {
+                                BlocProvider.of<AttendanceCubit>(context)
+                                    .sendAttendance(
+                                  time: DateTime.now().toIso8601String(),
+                                  machineID: myLocation!.machineID.toString(),
+                                  checkType: "CheckIn",
+                                );
+                              }
+                            });
+                          },
                         ),
                       ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(top: 25.0),
-                            child: Text(S.of(context).attend),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 25.0),
-                            child: Text(S.of(context).leave),
-                          ),
-                        ],
-                      ),
-                      onChanged: (position) {
-                        setState(() {
-                          if (position == SlidableButtonPosition.end) {
-                            BlocProvider.of<AttendanceCubit>(context)
-                                .sendAttendance(
-                              time: DateTime.now().toIso8601String(),
-                              machineID: myLocation!.machineID.toString(),
-                              checkType: "CheckOut",
-                            );
-                          } else {
-                            BlocProvider.of<AttendanceCubit>(context)
-                                .sendAttendance(
-                              time: DateTime.now().toIso8601String(),
-                              machineID: myLocation!.machineID.toString(),
-                              checkType: "CheckIn",
-                            );
-                          }
-                        });
-                      },
-                    ),
+                    ],
                   );
                 } else if (state is AttendanceFailure) {
                   return CustomErrorMassage(errorMassage: state.errorMassage);
@@ -215,6 +227,28 @@ class _PresenceAndDepartureState extends State<PresenceAndDeparture> {
     setState(() {
       lat = locationData.latitude;
       long = locationData.longitude;
+    });
+  }
+
+  Future<void> getDeviceName() async {
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    String name = "";
+    if (Platform.isAndroid) {
+      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+      name = androidInfo.name;
+      if (name.isEmpty) {
+        name = "${androidInfo.manufacturer} ${androidInfo.model}";
+      }
+    } else if (Platform.isIOS) {
+      IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+      name = iosInfo.name;
+      if (name.isEmpty) {
+        name = iosInfo.utsname.machine;
+      }
+    }
+
+    setState(() {
+      deviceName = name;
     });
   }
 }
