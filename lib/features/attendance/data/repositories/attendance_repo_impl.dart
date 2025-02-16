@@ -84,10 +84,14 @@ class AttendanceRepoImpl implements AttendanceRepo {
   }
 
   @override
-  Future<Either<Failure, String>> sendAttendance(
-      {required String machineID,
-      required String time,
-      required String checkType}) async {
+  Future<Either<Failure, String>> sendAttendance({
+    required String machineID,
+    required String time,
+    required String checkType,
+    required String deviceName,
+    required double long,
+    required double lat,
+  }) async {
     try {
       String companyKey =
           await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
@@ -100,7 +104,10 @@ class AttendanceRepoImpl implements AttendanceRepo {
         data: {
           "MachineID": machineID,
           "CheckDateTime": time,
-          "CheckType": checkType //"CheckIn" or "CheckOut"
+          "CheckType": checkType, //"CheckIn" or "CheckOut"
+          "Longitude": long,
+          "Latitude": lat,
+          "DeviceName": deviceName,
         },
         headers: {
           "Authorization": "Bearer $token",

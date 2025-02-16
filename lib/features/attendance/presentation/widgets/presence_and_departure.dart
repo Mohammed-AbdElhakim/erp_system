@@ -125,17 +125,23 @@ class _PresenceAndDepartureState extends State<PresenceAndDeparture> {
                               if (position == SlidableButtonPosition.end) {
                                 BlocProvider.of<AttendanceCubit>(context)
                                     .sendAttendance(
-                                  time: DateTime.now().toIso8601String(),
-                                  machineID: myLocation!.machineID.toString(),
-                                  checkType: "CheckOut",
-                                );
+                                        time: DateTime.now().toIso8601String(),
+                                        machineID:
+                                            myLocation!.machineID.toString(),
+                                        checkType: "CheckOut",
+                                        deviceName: deviceName,
+                                        lat: lat!,
+                                        long: long!);
                               } else {
                                 BlocProvider.of<AttendanceCubit>(context)
                                     .sendAttendance(
-                                  time: DateTime.now().toIso8601String(),
-                                  machineID: myLocation!.machineID.toString(),
-                                  checkType: "CheckIn",
-                                );
+                                        time: DateTime.now().toIso8601String(),
+                                        machineID:
+                                            myLocation!.machineID.toString(),
+                                        checkType: "CheckIn",
+                                        deviceName: deviceName,
+                                        lat: lat!,
+                                        long: long!);
                               }
                             });
                           },

@@ -34,13 +34,22 @@ class AttendanceCubit extends Cubit<AttendanceState> {
     });
   }
 
-  Future<void> sendAttendance(
-      {required String machineID,
-      required String time,
-      required String checkType}) async {
+  Future<void> sendAttendance({
+    required String machineID,
+    required String time,
+    required String checkType,
+    required String deviceName,
+    required double long,
+    required double lat,
+  }) async {
     emit(AttendanceLoading());
     Either<Failure, String> result = await attendanceRepo.sendAttendance(
-        machineID: machineID, time: time, checkType: checkType);
+        machineID: machineID,
+        time: time,
+        checkType: checkType,
+        long: long,
+        lat: lat,
+        deviceName: deviceName);
     result.fold((failure) {
       emit(AttendanceFailure(failure.errorMassage));
     }, (send) {
