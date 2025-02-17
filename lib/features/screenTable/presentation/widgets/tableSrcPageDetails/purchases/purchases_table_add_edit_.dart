@@ -110,9 +110,7 @@ class _PurchasesTableAddEditState extends State<PurchasesTableAddEdit> {
                       ),
                     );
                   },
-                ).then((value) {
-                  setState(() {});
-                });
+                );
               },
               icon: const Icon(
                 Icons.add,
@@ -497,19 +495,44 @@ class _PurchasesTableAddEditState extends State<PurchasesTableAddEdit> {
 
       case "dropdown":
         String val = '';
-        if (widget.typeView == "Add") {
-          for (var element in AddPurchases.listProduct) {
-            if (element['ProID'].toString() == data) {
-              val = element['ProName'] ?? "";
+        List<ListDrop>? listDrop = [];
+        List<ItemDrop>? myListDrop = [];
+
+        for (var ii in widget.allDropdownModelList) {
+          if (widget.tapData == null) {
+            if (ii.listName == widget.pageData.listName) {
+              listDrop = ii.list;
             }
-          }
-        } else {
-          for (var element in EditPurchases.listProduct) {
-            if (element['ProID'].toString() == data) {
-              val = element['ProName'] ?? "";
+          } else {
+            if (ii.listName == widget.tapData!.listName) {
+              listDrop = ii.list;
             }
           }
         }
+        for (var ii in listDrop!) {
+          if (ii.columnName == columnList.columnName &&
+              ii.nameAr == columnList.arColumnLabel) {
+            myListDrop = ii.list;
+          }
+        }
+        for (var element in myListDrop!) {
+          if (element.id.toString() == data) {
+            val = element.text ?? "";
+          }
+        }
+        // if (widget.typeView == "Add") {
+        //   for (var element in AddPurchases.listProduct) {
+        //     if (element['ProID'].toString() == data) {
+        //       val = element['ProName'] ?? "";
+        //     }
+        //   }
+        // } else {
+        //   for (var element in EditPurchases.listProduct) {
+        //     if (element['ProID'].toString() == data) {
+        //       val = element['ProName'] ?? "";
+        //     }
+        //   }
+        // }
 
         return Text(
           textAlign: TextAlign.center,
