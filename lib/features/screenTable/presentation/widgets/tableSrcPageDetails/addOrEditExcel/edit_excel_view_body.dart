@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:dio/dio.dart';
 import 'package:erp_system/core/widgets/custom_error_massage.dart';
@@ -88,7 +90,10 @@ class _EditExcelViewBodyState extends State<EditExcelViewBody> {
         builder: (context, state) {
           if (state is GetExpensesMasterSuccess) {
             Map<String, dynamic> dataMaster = state.data;
-
+            log(dataMaster.toString());
+            changeKeyByValue(dataMaster, (value) => value.toString() == id,
+                widget.tapData!.foreignKey);
+            log(dataMaster.toString());
             return BlocProvider(
               create: (context) =>
                   GetExpensesDetailsCubit(getIt.get<ScreenRepoImpl>())
@@ -161,6 +166,8 @@ class _EditExcelViewBodyState extends State<EditExcelViewBody> {
                   if (state is GetExpensesDetailsSuccess) {
                     List<Map<String, dynamic>> listDataInTable =
                         state.expensesDetailsModel.dynamicList!;
+
+                    tableList = state.expensesDetailsModel.dynamicList!;
 
                     return BlocBuilder<GetListSetupsCubit, GetListSetupsState>(
                       builder: (context, state) {
@@ -863,6 +870,19 @@ class _EditExcelViewBodyState extends State<EditExcelViewBody> {
       });
     } catch (e) {
       debugPrint(e.toString());
+    }
+  }
+
+  void changeKeyByValue<K, V>(
+      Map<K, V> map, bool Function(V) condition, K newKey) {
+    var entry = map.entries.firstWhere(
+      (e) => condition(e.value), // البحث بناءً على الشرط
+      // orElse: () => const MapEntry(null, null),
+    );
+
+    if (entry.key != null) {
+      map[newKey] = entry.value; // إضافة المفتاح الجديد
+      map.remove(entry.key); // حذف المفتاح القديم
     }
   }
 }
