@@ -83,7 +83,8 @@ class _NotificationsViewBodyState extends State<NotificationsViewBody> {
                                 border: Border.all(color: AppColors.blueLight),
                                 boxShadow: [
                                   BoxShadow(
-                                      color: AppColors.grey.withOpacity(.8),
+                                      // color: AppColors.grey.withOpacity(.8),
+                                      color: AppColors.grey.withAlpha(204),
                                       offset: const Offset(-2, 2),
                                       blurRadius: 2,
                                       spreadRadius: 1)

@@ -41,7 +41,10 @@ class LoginViewBody extends StatelessWidget {
               },
               child: Text(
                 S.of(context).change_host,
-                style: TextStyle(color: AppColors.blueDark.withOpacity(.7)),
+                style: TextStyle(
+                  // color: AppColors.blueDark.withOpacity(.7),
+                  color: AppColors.blueDark.withAlpha(179),
+                ),
               ),
             ),
           ),

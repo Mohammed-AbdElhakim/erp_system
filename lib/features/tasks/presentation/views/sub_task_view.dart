@@ -75,28 +75,32 @@ class _SubTaskViewState extends State<SubTaskView> {
                 return ListView(
                   children: [
                     CustomExpansionTile(
-                      color: Colors.redAccent.withOpacity(.7),
+                      // color: Colors.redAccent.withOpacity(.7),
+                      color: Colors.redAccent.withAlpha(179),
                       title: S.of(context).to_do,
                       children: noDoList,
                       stepIndex: 1,
                       idMainTask: widget.taskData.parent!.tID!.toString(),
                     ),
                     CustomExpansionTile(
-                      color: Colors.orange.withOpacity(.7),
+                      // color: Colors.orange.withOpacity(.7),
+                      color: Colors.orange.withAlpha(179),
                       title: S.of(context).on_progress,
                       children: doList,
                       stepIndex: 2,
                       idMainTask: widget.taskData.parent!.tID!.toString(),
                     ),
                     CustomExpansionTile(
-                      color: Colors.green.withOpacity(.7),
+                      // color: Colors.green.withOpacity(.7),
+                      color: Colors.green.withAlpha(179),
                       title: S.of(context).under_revision,
                       children: underRevisionList,
                       stepIndex: 3,
                       idMainTask: widget.taskData.parent!.tID!.toString(),
                     ),
                     CustomExpansionTile(
-                      color: Colors.teal.withOpacity(.7),
+                      // color: Colors.teal.withOpacity(.7),
+                      color: Colors.teal.withAlpha(179),
                       title: S.of(context).revision,
                       children: revisionList,
                       stepIndex: 4,

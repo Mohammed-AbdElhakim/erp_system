@@ -29,7 +29,8 @@ class TapDetailsWidget extends StatelessWidget {
         tap.displayArabic,
         style: AppStyles.textStyle18.copyWith(color: Colors.black),
       ),
-      backgroundColor: AppColors.blueGreyLight.withOpacity(.3),
+      //backgroundColor: AppColors.blueGreyLight.withOpacity(.3),
+      backgroundColor: AppColors.blueGreyLight.withAlpha(77),
       collapsedBackgroundColor: AppColors.blueGreyLight,
       children: [
         BlocProvider(

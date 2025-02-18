@@ -38,7 +38,8 @@ class BuildPercentageCard extends StatelessWidget {
                 child: CircularProgressIndicator(
                   value: value,
                   color: color,
-                  backgroundColor: color.withOpacity(.2),
+                  // backgroundColor: color.withOpacity(.2),
+                  backgroundColor: color.withAlpha(51),
                   strokeWidth: 6,
                 ),
               ),

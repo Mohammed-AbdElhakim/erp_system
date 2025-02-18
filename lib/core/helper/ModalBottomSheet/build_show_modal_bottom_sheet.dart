@@ -13,7 +13,8 @@ buildShowModalBottomSheet({
   return showModalBottomSheet(
     context: context,
     barrierColor: Colors.black38,
-    backgroundColor: AppColors.white.withOpacity(.01),
+    // backgroundColor: AppColors.white.withOpacity(.01),
+    backgroundColor: AppColors.white.withAlpha(3),
     enableDrag: false,
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
     isDismissible: false,
@@ -40,7 +41,8 @@ buildShowModalBottomSheet({
             ),
           ),
           Divider(
-              color: AppColors.blueGreyDark.withOpacity(.7),
+              // color: AppColors.blueGreyDark.withOpacity(.7),
+              color: AppColors.blueGreyDark.withAlpha(179),
               height: 1,
               thickness: 1.5),
           GestureDetector(

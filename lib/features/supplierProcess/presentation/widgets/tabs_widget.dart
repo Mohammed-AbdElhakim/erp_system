@@ -24,7 +24,8 @@ class _TabsWidgetState extends State<TabsWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: AppColors.blueLight.withOpacity(.3),
+      // color: AppColors.blueLight.withOpacity(.3),
+      color: AppColors.blueLight.withAlpha(77),
       width: double.infinity,
       child: Wrap(
         children: [

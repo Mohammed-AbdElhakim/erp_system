@@ -117,8 +117,9 @@ class _AddProductionProseccState extends State<AddProductionProsecc> {
                                             padding: const EdgeInsets.symmetric(
                                                 horizontal: 12, vertical: 8),
                                             decoration: BoxDecoration(
+                                                // color: AppColors.grey.withOpacity(.4),
                                                 color: AppColors.grey
-                                                    .withOpacity(.4),
+                                                    .withAlpha(102),
                                                 borderRadius:
                                                     BorderRadius.circular(15)),
                                             child: Text(
@@ -138,7 +139,8 @@ class _AddProductionProseccState extends State<AddProductionProsecc> {
                                   horizontal: 12, vertical: 8),
                               margin: const EdgeInsets.symmetric(vertical: 8),
                               decoration: BoxDecoration(
-                                  color: AppColors.grey.withOpacity(.4),
+                                  // color: AppColors.grey.withOpacity(.4),
+                                  color: AppColors.grey.withAlpha(102),
                                   borderRadius: BorderRadius.circular(15)),
                               child: Text(
                                 "المواد المصنعة",
@@ -176,7 +178,8 @@ class _AddProductionProseccState extends State<AddProductionProsecc> {
                                   horizontal: 12, vertical: 8),
                               margin: const EdgeInsets.symmetric(vertical: 8),
                               decoration: BoxDecoration(
-                                  color: AppColors.grey.withOpacity(.4),
+                                  // color: AppColors.grey.withOpacity(.4),
+                                  color: AppColors.grey.withAlpha(102),
                                   borderRadius: BorderRadius.circular(15)),
                               child: Text(
                                 "المواد الخام",

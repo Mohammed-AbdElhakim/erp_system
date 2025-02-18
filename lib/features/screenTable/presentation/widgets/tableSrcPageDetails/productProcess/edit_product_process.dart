@@ -228,15 +228,17 @@ class _EditProductProcessState extends State<EditProductProcess> {
                                                                   horizontal:
                                                                       12,
                                                                   vertical: 8),
-                                                          decoration: BoxDecoration(
-                                                              color: AppColors
-                                                                  .grey
-                                                                  .withOpacity(
-                                                                      .4),
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          15)),
+                                                          decoration:
+                                                              BoxDecoration(
+                                                                  // color: AppColors.grey.withOpacity(.4),
+                                                                  color: AppColors
+                                                                      .grey
+                                                                      .withAlpha(
+                                                                          102),
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              15)),
                                                           child: Text(
                                                             categoryName,
                                                             style: AppStyles

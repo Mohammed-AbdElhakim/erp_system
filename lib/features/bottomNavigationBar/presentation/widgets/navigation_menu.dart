@@ -38,7 +38,8 @@ class _NavigationMenuState extends State<NavigationMenu> {
                 margin: const EdgeInsets.symmetric(vertical: 8),
                 decoration: BoxDecoration(
                   color: selectIndex == e.id
-                      ? AppColors.white.withOpacity(0.10)
+                      // ? AppColors.white.withOpacity(0.10)
+                      ? AppColors.white.withAlpha(26)
                       : Colors.transparent,
                   borderRadius: BorderRadius.circular(15),
                 ),
@@ -55,7 +56,8 @@ class _NavigationMenuState extends State<NavigationMenu> {
                     size: selectIndex == e.id ? 30 : 20,
                     color: selectIndex == e.id
                         ? AppColors.white
-                        : AppColors.white.withOpacity(0.8),
+                        // : AppColors.white.withOpacity(0.8),
+                        : AppColors.white.withAlpha(204),
                   ),
                 ),
               ),
@@ -67,7 +69,8 @@ class _NavigationMenuState extends State<NavigationMenu> {
                     Icons.circle,
                     color: selectIndex == e.id
                         ? AppColors.orange
-                        : AppColors.orange.withOpacity(0.8),
+                        // : AppColors.orange.withOpacity(0.8),
+                        : AppColors.orange.withAlpha(204),
                     size: selectIndex == e.id ? 12 : 10,
                   ),
                 )

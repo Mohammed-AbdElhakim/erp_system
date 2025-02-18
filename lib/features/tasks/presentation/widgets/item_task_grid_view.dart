@@ -27,10 +27,13 @@ class ItemTaskGridView extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
             color: taskData.parent!.progress == 0.0
-                ? Colors.redAccent.withOpacity(.7)
+                // ? Colors.redAccent.withOpacity(.7)
+                ? Colors.redAccent.withAlpha(179)
                 : taskData.parent!.progress == 100.0
-                    ? Colors.green.withOpacity(.7)
-                    : Colors.orange.withOpacity(.7),
+                    // ? Colors.green.withOpacity(.7)
+                    ? Colors.green.withAlpha(179)
+                    // : Colors.orange.withOpacity(.7),
+                    : Colors.orange.withAlpha(179),
             borderRadius: BorderRadius.circular(15)),
         child: Column(
           children: [

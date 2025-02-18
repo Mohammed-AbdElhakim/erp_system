@@ -184,8 +184,9 @@ class _BuildTablesCardState extends State<BuildTablesCard> {
                                     alignment: Alignment.center,
                                     decoration: BoxDecoration(
                                       color: selectedRowIndex == rowIndex
+                                          // ? AppColors.blueGreyDark.withOpacity(.8)
                                           ? AppColors.blueGreyDark
-                                              .withOpacity(.8)
+                                              .withAlpha(204)
                                           : (rowIndex % 2 == 0
                                               ? Colors.white
                                               : Colors.white),

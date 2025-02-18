@@ -16,7 +16,8 @@ class RowSettingsScanner extends StatelessWidget {
               color: const Color(0xff393939),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.5),
+                  // color: Colors.black.withOpacity(0.5),
+                  color: Colors.black.withAlpha(128),
                   spreadRadius: 4,
                   blurRadius: 7,
                   offset: const Offset(0, 3), // changes position of shadow
@@ -48,7 +49,8 @@ class RowSettingsScanner extends StatelessWidget {
               color: const Color(0xff393939),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.5),
+                  // color: Colors.black.withOpacity(0.5),
+                  color: Colors.black.withAlpha(128),
                   spreadRadius: 4,
                   blurRadius: 7,
                   offset: const Offset(0, 3), // changes position of shadow

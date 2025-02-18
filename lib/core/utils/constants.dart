@@ -17,7 +17,8 @@ LinearGradient gradientButtonCancel = LinearGradient(
   end: AlignmentDirectional.bottomCenter,
   colors: [
     AppColors.grey,
-    AppColors.grey.withOpacity(.2),
+    // AppColors.grey.withOpacity(.2),
+    AppColors.grey.withAlpha(51),
   ],
 );
 

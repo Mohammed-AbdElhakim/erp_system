@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 import '../utils/app_colors.dart';
@@ -159,9 +158,10 @@ class _MyTableState extends State<MyTable> {
                                   color: widget.list.indexOf(e).isEven
                                       ? widget.list.indexOf(e) == indexColor
                                           ? Theme.of(context).primaryColor
+                                          // : Theme.of(context).primaryColor.withOpacity(.25)
                                           : Theme.of(context)
                                               .primaryColor
-                                              .withOpacity(.25)
+                                              .withAlpha(64)
                                       : widget.list.indexOf(e) == indexColor
                                           ? Theme.of(context).primaryColor
                                           : Colors.grey.shade100,
