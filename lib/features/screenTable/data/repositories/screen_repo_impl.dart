@@ -564,4 +564,44 @@ class ScreenRepoImpl implements ScreenRepo {
       );
     }
   }
+
+  @override
+  Future<Either<Failure, ExpensesDetailsModel>> getSalesInvoiceDetails({
+    required String invoiceID,
+  }) async {
+    try {
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
+              "";
+      String token =
+          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      // var rrr = jsonEncode(tapModel.toJson());
+      Map<String, dynamic> data = await apiService.post(
+        endPoint: "web/Structure/getDataGlobal",
+        data: {
+          "statment": "",
+          "tableName": "salesReturnsView",
+          "tailcondition": "ContractID = $invoiceID",
+        },
+        headers: {
+          "Authorization": "Bearer $token",
+          "CompanyKey": companyKey,
+        },
+      );
+      ExpensesDetailsModel expensesDetailsModel =
+          ExpensesDetailsModel.fromJson(data);
+      return right(expensesDetailsModel);
+    } catch (e) {
+      if (e is DioException) {
+        return left(
+          ServerFailure.fromDioException(e),
+        );
+      }
+      return left(
+        ServerFailure(
+          e.toString(),
+        ),
+      );
+    }
+  }
 }

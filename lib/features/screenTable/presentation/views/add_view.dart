@@ -11,8 +11,10 @@ import '../../data/models/screen_model.dart';
 import '../../data/repositories/screen_repo_impl.dart';
 import '../manager/getListSetups/get_list_setups_cubit.dart';
 import '../manager/getPageDetails/get_page_details_cubit.dart';
+import '../manager/getSalesInvoiceDetails/get_sales_invoice_details_cubit.dart';
 import '../widgets/tableSrcPageDetails/addOrEditExcel/add_excel_view_body.dart';
 import '../widgets/tableSrcPageDetails/addSalesEdit/add_sales.dart';
+import '../widgets/tableSrcPageDetails/addSalesEdit/add_sales_invoice.dart';
 import '../widgets/tableSrcPageDetails/extractionSupplierTable/add_extraction_supplier_table.dart';
 import '../widgets/tableSrcPageDetails/productProcess/add_product_process.dart';
 import '../widgets/tableSrcPageDetails/productProcessOut/add_product_process_out.dart';
@@ -39,9 +41,18 @@ class AddView extends StatelessWidget {
           isPortrait: true,
           title: "",
         ),
-        body: BlocProvider(
-          create: (context) => GetPageDetailsCubit(getIt.get<ScreenRepoImpl>())
-            ..getPageDetails(pageData.pageId),
+        body: MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) =>
+                  GetPageDetailsCubit(getIt.get<ScreenRepoImpl>())
+                    ..getPageDetails(pageData.pageId),
+            ),
+            BlocProvider(
+              create: (context) =>
+                  GetSalesInvoiceDetailsCubit(getIt.get<ScreenRepoImpl>()),
+            ),
+          ],
           child: BlocBuilder<GetPageDetailsCubit, GetPageDetailsState>(
             builder: (context, state) {
               if (state is GetPageDetailsSuccess) {
@@ -80,11 +91,20 @@ class AddView extends StatelessWidget {
           listKey: listKey,
         );
       case "salesDetails":
-        return AddSales(
-          tapData: state.tapModel.list[0],
-          pageData: pageData,
-          listKey: listKey,
-        );
+        if (pageData.nameAr == "مرتجعات البيع") {
+          return AddSalesInvoice(
+            tapData: state.tapModel.list[0],
+            pageData: pageData,
+            listKey: listKey,
+          );
+        } else {
+          return AddSales(
+            tapData: state.tapModel.list[0],
+            pageData: pageData,
+            listKey: listKey,
+          );
+        }
+
       case "Purchases":
         return AddPurchases(
           tapData: state.tapModel.list[0],

@@ -1,3 +1,4 @@
+import 'package:erp_system/features/screenTable/presentation/widgets/tableSrcPageDetails/addSalesEdit/add_sales_invoice.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:linked_scroll_controller/linked_scroll_controller.dart';
@@ -116,7 +117,8 @@ class _SalesTableAddEditState extends State<SalesTableAddEdit> {
                             if (widget.typeView == "Add") {
                               tableListInAddView.add(data);
                               widget.onTapAction(tableListInAddView);
-                            } else if (widget.typeView == "Edit") {
+                            } else if (widget.typeView == "Edit" ||
+                                widget.typeView == "AddSalesInvoice") {
                               tableListInEditView.add(data);
                               widget.onTapAction(tableListInEditView);
                             }
@@ -202,7 +204,8 @@ class _SalesTableAddEditState extends State<SalesTableAddEdit> {
                           widget.onTapAction(tableListInAddView);
                         }
                       }
-                    } else if (widget.typeView == "Edit") {
+                    } else if (widget.typeView == "Edit" ||
+                        widget.typeView == "AddSalesInvoice") {
                       if (tableListInEditView.isEmpty) {
                         tableListInEditView.add(proData);
                         widget.onTapAction(tableListInEditView);
@@ -258,7 +261,8 @@ class _SalesTableAddEditState extends State<SalesTableAddEdit> {
                               tableListInAddView.insert(indexSelect, data);
                               indexSelect = -1;
                               widget.onTapAction(tableListInAddView);
-                            } else if (widget.typeView == "Edit") {
+                            } else if (widget.typeView == "Edit" ||
+                                widget.typeView == "AddSalesInvoice") {
                               tableListInEditView.removeAt(indexSelect);
                               tableListInEditView.insert(indexSelect, data);
                               indexSelect = -1;
@@ -291,6 +295,9 @@ class _SalesTableAddEditState extends State<SalesTableAddEdit> {
                     tableListInAddView.removeAt(indexSelect);
                     widget.onTapAction(tableListInAddView);
                   } else if (widget.typeView == "Edit") {
+                    tableListInEditView.removeAt(indexSelect);
+                    widget.onTapAction(tableListInEditView);
+                  } else if (widget.typeView == "AddSalesInvoice") {
                     tableListInEditView.removeAt(indexSelect);
                     widget.onTapAction(tableListInEditView);
                   }
@@ -529,8 +536,14 @@ class _SalesTableAddEditState extends State<SalesTableAddEdit> {
               val = element["ProName"] ?? "";
             }
           }
-        } else {
+        } else if (widget.typeView == "Edit") {
           for (var element in EditSales.listProduct) {
+            if (element["ProID"].toString() == data) {
+              val = element["ProName"] ?? "";
+            }
+          }
+        } else if (widget.typeView == "AddSalesInvoice") {
+          for (var element in AddSalesInvoice.listProduct) {
             if (element["ProID"].toString() == data) {
               val = element["ProName"] ?? "";
             }
@@ -596,7 +609,7 @@ class _SalesTableAddEditState extends State<SalesTableAddEdit> {
               "";
         }
       }
-    } else {
+    } else if (type == "Edit") {
       productId = EditSales.listBarcodeData.firstWhere(
         (element) => element['BarcodeProc'] == resultScanner,
         orElse: () => {"ProductId": -1},
@@ -628,6 +641,46 @@ class _SalesTableAddEditState extends State<SalesTableAddEdit> {
         if (price != -1) {
           proPrice = price;
           proName = EditSales.listProduct.firstWhere(
+                (element) => element["ProID"] == productId,
+                orElse: () => {},
+              )['ProName'] ??
+              "";
+        }
+      }
+    } else if (type == "AddSalesInvoice") {
+      productId = AddSalesInvoice.listBarcodeData.firstWhere(
+        (element) => element['BarcodeProc'] == resultScanner,
+        orElse: () => {"ProductId": -1},
+      )['ProductId'];
+
+      customerCategoryID = AddSalesInvoice.listCustomerAccount.firstWhere(
+          (element) =>
+              element['CustomerAccountID'] ==
+              AddSalesInvoice.userId)['CategoryID'];
+
+      double productPrice = AddSalesInvoice.listProductPrices.firstWhere(
+            (element) =>
+                element['ProductID'] == productId &&
+                element['CustomerCategoryID'] == customerCategoryID,
+            orElse: () => {},
+          )['Price'] ??
+          0.0;
+      if (productPrice != 0.0) {
+        proPrice = productPrice;
+        proName = AddSalesInvoice.listProduct.firstWhere(
+              (element) => element["ProID"] == productId,
+              orElse: () => {},
+            )['ProName'] ??
+            "";
+      } else {
+        double price = AddSalesInvoice.listProduct.firstWhere(
+              (element) => element["ProID"] == productId,
+              orElse: () => {},
+            )['ProPrice'] ??
+            -1;
+        if (price != -1) {
+          proPrice = price;
+          proName = AddSalesInvoice.listProduct.firstWhere(
                 (element) => element["ProID"] == productId,
                 orElse: () => {},
               )['ProName'] ??

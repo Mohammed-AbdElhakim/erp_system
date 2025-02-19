@@ -80,4 +80,7 @@ abstract class ScreenRepo {
   Future<Either<Failure, ExpensesDetailsModel>> getExpensesDetails({
     required ListTaps tapModel,
   });
+  Future<Either<Failure, ExpensesDetailsModel>> getSalesInvoiceDetails({
+    required String invoiceID,
+  });
 }
