@@ -336,19 +336,19 @@ class _ProductProcessOutTableAddEditState
                       child: BuildAlertDeleteDetails(
                         onTapDelete: () {
                           if (widget.typeView == "Add") {
+                            indexSelect.sort((a, b) => b.compareTo(a));
                             for (var i in indexSelect) {
                               tableListInAddView.removeAt(i);
                             }
                             widget.onTapAction(tableListInAddView);
                           } else if (widget.typeView == "Edit") {
+                            indexSelect.sort((a, b) => b.compareTo(a));
                             for (var i in indexSelect) {
                               tableListInEditView.removeAt(i);
                             }
                             widget.onTapAction(tableListInEditView);
                           }
-                          // widget.typeView == "Add"
-                          //     ? tableListInAddView.removeAt(indexSelect)
-                          //     : tableListInEditView.removeAt(indexSelect);
+
                           indexSelect.clear();
                           Navigator.pop(context);
                           setState(() {});
