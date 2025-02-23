@@ -2,6 +2,7 @@ import 'package:erp_system/core/utils/service_locator.dart';
 import 'package:erp_system/core/widgets/change_status_bar_color.dart';
 import 'package:erp_system/core/widgets/custom_error_massage.dart';
 import 'package:erp_system/core/widgets/custom_loading_widget.dart';
+import 'package:erp_system/features/screenTable/presentation/widgets/tableSrcPageDetails/customerOrder/add_customer_order.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -132,6 +133,13 @@ class AddView extends StatelessWidget {
             tapData: state.tapModel.list[0],
             pageData: pageData,
             listKey: listKey);
+      case "CustomerOrder":
+        //أوامر البيع
+        return AddCustomerOrder(
+          tapData: state.tapModel.list[0],
+          pageData: pageData,
+          listKey: listKey,
+        );
 
       default:
         return Center(child: Text("TableSrc Details =>$tableSrc"));
