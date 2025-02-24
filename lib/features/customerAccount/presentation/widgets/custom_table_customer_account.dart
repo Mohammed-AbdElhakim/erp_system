@@ -8,8 +8,7 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import '../../../../../../core/models/menu_model/pages.dart';
 import '../../../../../../core/utils/app_colors.dart';
 import '../../data/models/all_dropdown_model.dart';
-import '../../data/models/customer_account_model.dart';
-import '../../data/models/screen_model.dart';
+import '../../data/models/header_model.dart';
 
 class CustomTableCustomerAccount extends StatefulWidget {
   const CustomTableCustomerAccount({
@@ -18,12 +17,14 @@ class CustomTableCustomerAccount extends StatefulWidget {
     required this.paginationWidget,
     required this.listColumn,
     required this.allDropdownModelList,
+    required this.tabsWidget,
     required this.pageData,
   });
   final Pages pageData;
-  final List<CustomerAccountItem> listData;
-  final List<ColumnList> listColumn;
+  final List<dynamic> listData;
+  final List<HeaderModel> listColumn;
   final List<AllDropdownModel> allDropdownModelList;
+  final Widget tabsWidget;
   final Widget paginationWidget;
 
   @override
@@ -77,6 +78,7 @@ class _CustomTableCustomerAccountState
   Widget build(BuildContext context) {
     return Column(
       children: [
+        widget.tabsWidget,
         Expanded(
           child: SfDataGridTheme(
             data: SfDataGridThemeData(
@@ -150,9 +152,9 @@ class _CustomTableCustomerAccountState
 }
 
 class TableDataSource extends DataGridSource {
-  final List<ColumnList> listColumn;
+  final List<HeaderModel> listColumn;
   final BuildContext context;
-  final List<CustomerAccountItem> data;
+  final List<dynamic> data;
   final Pages pageData;
   final List<AllDropdownModel> allDropdownModelList;
   final String? lang;
@@ -190,7 +192,7 @@ class TableDataSource extends DataGridSource {
     return DataGridRowAdapter(
         cells: row.getCells().map<Widget>((e) {
       int indexRow = dataGridRows.indexOf(row);
-      ColumnList columnList;
+      HeaderModel columnList;
       if (e.columnName.toString() == pageData.primary) {
         columnList = listColumn[0];
       } else {
@@ -217,7 +219,7 @@ class TableDataSource extends DataGridSource {
 
   buildMyWidget({
     required String value,
-    required ColumnList columnList,
+    required HeaderModel columnList,
     /* required int indexRow*/
   }) {
     switch (columnList.insertType) {
@@ -289,8 +291,8 @@ class TableDataSource extends DataGridSource {
     }
   }
 
-  getValue(List<ColumnList> listColumn, key, String value) {
-    ColumnList columnList =
+  getValue(List<HeaderModel> listColumn, key, String value) {
+    HeaderModel columnList =
         listColumn.firstWhere((element) => (element.columnName == key));
     if (columnList.insertType == "date") {
       try {

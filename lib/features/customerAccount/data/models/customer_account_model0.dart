@@ -1,14 +1,14 @@
-class CustomerAccountModel {
-  List<CustomerAccountItem>? dynamicList;
+class CustomerAccountModel0 {
+  List<DynamicList>? dynamicList;
   int? numberofrecords;
 
-  CustomerAccountModel({this.dynamicList, this.numberofrecords});
+  CustomerAccountModel0({this.dynamicList, this.numberofrecords});
 
-  CustomerAccountModel.fromJson(Map<String, dynamic> json) {
+  CustomerAccountModel0.fromJson(Map<String, dynamic> json) {
     if (json['dynamicList'] != null) {
-      dynamicList = <CustomerAccountItem>[];
+      dynamicList = <DynamicList>[];
       json['dynamicList'].forEach((v) {
-        dynamicList!.add(CustomerAccountItem.fromJson(v));
+        dynamicList!.add(DynamicList.fromJson(v));
       });
     }
     numberofrecords = json['numberofrecords'];
@@ -24,9 +24,11 @@ class CustomerAccountModel {
   }
 }
 
-class CustomerAccountItem {
+class DynamicList {
   String? eMID;
   String? dontShowCheque;
+  String? isContractor;
+  String? isSupplier;
   String? comID;
   String? eDate;
   String? eCode;
@@ -41,27 +43,39 @@ class CustomerAccountItem {
   String? accountStatus;
   String? acParent;
   String? expr1;
+  String? acType;
   String? depit;
   String? sourceType;
   String? createBy;
   String? createAt;
+  String? cID;
+  String? cName;
+  String? cPerDollar;
+  String? currancyID;
   String? depitCurrancy;
-  String? productID;
+  String? customerID;
   String? monyActCurrancy;
-  String? proName;
+  String? customerAccountName;
+  String? customerAccountID;
   String? entrySource;
-  String? description;
-  String? pIndex;
+  String? custCode;
   String? opositAccount;
   String? opositeIds;
   String? balance;
+  String? eDescription;
+  String? contractID;
+  String? autoNumber;
+  String? eNote;
   String? credit;
+  String? creditCurrancy;
   String? paperNumber;
   String? color;
 
-  CustomerAccountItem(
+  DynamicList(
       {this.eMID,
       this.dontShowCheque,
+      this.isContractor,
+      this.isSupplier,
       this.comID,
       this.eDate,
       this.eCode,
@@ -76,27 +90,39 @@ class CustomerAccountItem {
       this.accountStatus,
       this.acParent,
       this.expr1,
+      this.acType,
       this.depit,
       this.sourceType,
       this.createBy,
       this.createAt,
+      this.cID,
+      this.cName,
+      this.cPerDollar,
+      this.currancyID,
       this.depitCurrancy,
-      this.productID,
+      this.customerID,
       this.monyActCurrancy,
-      this.proName,
+      this.customerAccountName,
+      this.customerAccountID,
       this.entrySource,
-      this.description,
-      this.pIndex,
+      this.custCode,
       this.opositAccount,
       this.opositeIds,
       this.balance,
+      this.eDescription,
+      this.contractID,
+      this.autoNumber,
+      this.eNote,
       this.credit,
+      this.creditCurrancy,
       this.paperNumber,
       this.color});
 
-  CustomerAccountItem.fromJson(Map<String, dynamic> json) {
+  DynamicList.fromJson(Map<String, dynamic> json) {
     eMID = json['EMID'];
     dontShowCheque = json['DontShowCheque'];
+    isContractor = json['IsContractor'];
+    isSupplier = json['IsSupplier'];
     comID = json['ComID'];
     eDate = json['EDate'];
     eCode = json['ECode'];
@@ -111,21 +137,31 @@ class CustomerAccountItem {
     accountStatus = json['AccountStatus'];
     acParent = json['AcParent'];
     expr1 = json['Expr1'];
+    acType = json['AcType'];
     depit = json['Depit'];
     sourceType = json['SourceType'];
     createBy = json['CreateBy'];
     createAt = json['CreateAt'];
+    cID = json['CID'];
+    cName = json['CName'];
+    cPerDollar = json['CPerDollar'];
+    currancyID = json['CurrancyID'];
     depitCurrancy = json['DepitCurrancy'];
-    productID = json['ProductID'];
+    customerID = json['CustomerID'];
     monyActCurrancy = json['MonyActCurrancy'];
-    proName = json['ProName'];
+    customerAccountName = json['CustomerAccountName'];
+    customerAccountID = json['CustomerAccountID'];
     entrySource = json['EntrySource'];
-    description = json['description'];
-    pIndex = json['PIndex'];
+    custCode = json['CustCode'];
     opositAccount = json['OpositAccount'];
     opositeIds = json['opositeIds'];
     balance = json['balance'];
+    eDescription = json['EDescription'];
+    contractID = json['ContractID'];
+    autoNumber = json['AutoNumber'];
+    eNote = json['ENote'];
     credit = json['Credit'];
+    creditCurrancy = json['CreditCurrancy'];
     paperNumber = json['PaperNumber'];
     color = json['Color'];
   }
@@ -134,6 +170,8 @@ class CustomerAccountItem {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['EMID'] = eMID;
     data['DontShowCheque'] = dontShowCheque;
+    data['IsContractor'] = isContractor;
+    data['IsSupplier'] = isSupplier;
     data['ComID'] = comID;
     data['EDate'] = eDate;
     data['ECode'] = eCode;
@@ -148,21 +186,31 @@ class CustomerAccountItem {
     data['AccountStatus'] = accountStatus;
     data['AcParent'] = acParent;
     data['Expr1'] = expr1;
+    data['AcType'] = acType;
     data['Depit'] = depit;
     data['SourceType'] = sourceType;
     data['CreateBy'] = createBy;
     data['CreateAt'] = createAt;
+    data['CID'] = cID;
+    data['CName'] = cName;
+    data['CPerDollar'] = cPerDollar;
+    data['CurrancyID'] = currancyID;
     data['DepitCurrancy'] = depitCurrancy;
-    data['ProductID'] = productID;
+    data['CustomerID'] = customerID;
     data['MonyActCurrancy'] = monyActCurrancy;
-    data['ProName'] = proName;
+    data['CustomerAccountName'] = customerAccountName;
+    data['CustomerAccountID'] = customerAccountID;
     data['EntrySource'] = entrySource;
-    data['description'] = description;
-    data['PIndex'] = pIndex;
+    data['CustCode'] = custCode;
     data['OpositAccount'] = opositAccount;
     data['opositeIds'] = opositeIds;
     data['balance'] = balance;
+    data['EDescription'] = eDescription;
+    data['ContractID'] = contractID;
+    data['AutoNumber'] = autoNumber;
+    data['ENote'] = eNote;
     data['Credit'] = credit;
+    data['CreditCurrancy'] = creditCurrancy;
     data['PaperNumber'] = paperNumber;
     data['Color'] = color;
     return data;

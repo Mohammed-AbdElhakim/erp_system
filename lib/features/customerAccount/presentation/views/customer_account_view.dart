@@ -93,7 +93,7 @@ class _CustomerAccountViewState extends State<CustomerAccountView> {
 
                         return CustomerAccountViewBody(
                           listColumn: listColumn,
-                          listColumnInTable: listColumnInTable,
+                          // listColumnInTable: listColumnInTable,
                           pageData: widget.pageData,
                         );
                       } else if (state is GetTableFailure) {

@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 
 import '../../../../core/errors/failures.dart';
 import '../models/all_dropdown_model.dart';
-import '../models/customer_account_model.dart';
+import '../models/header_model.dart';
 import '../models/screen_model.dart';
 
 abstract class CustomerAccountRepo {
@@ -20,6 +20,9 @@ abstract class CustomerAccountRepo {
     required int authorizationID,
     required String viewEmployeeColumn,
   });
+  Future<Either<Failure, List<HeaderModel>>> getHeaderTable({
+    required String listName,
+  });
   Future<Either<Failure, List<AllDropdownModel>>> getAllDropdownList({
     required int pageID,
   });
@@ -29,7 +32,6 @@ abstract class CustomerAccountRepo {
     required Map<String, dynamic> body,
   });
 
-  Future<Either<Failure, CustomerAccountModel>> getTableCustomerAccount({
-    required Map<String, dynamic> objectData,
-  });
+  Future<Either<Failure, Map<String, dynamic>>> getTableCustomerAccount(
+      {required Map<String, dynamic> objectData, required String link});
 }

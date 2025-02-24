@@ -17,12 +17,15 @@ final class CustomerAccountFailure extends CustomerAccountState {
 }
 
 final class CustomerAccountSuccess extends CustomerAccountState {
-  final CustomerAccountModel accountProfModel;
+  final dynamic accountProfModel;
   final int numberPage;
   final int dropdownValue;
+  final int selectTap;
 
-  const CustomerAccountSuccess(
-      {required this.accountProfModel,
-      required this.numberPage,
-      required this.dropdownValue});
+  const CustomerAccountSuccess({
+    required this.accountProfModel,
+    required this.numberPage,
+    required this.dropdownValue,
+    required this.selectTap,
+  });
 }

@@ -6,7 +6,7 @@ import '../../../../core/helper/SharedPreferences/pref.dart';
 import '../../../../core/utils/api_service.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../models/all_dropdown_model.dart';
-import '../models/customer_account_model.dart';
+import '../models/header_model.dart';
 import '../models/screen_model.dart';
 import 'customer_account_repo.dart';
 
@@ -38,6 +38,44 @@ class CustomerAccountRepoImpl implements CustomerAccountRepo {
       }
 
       return right(dataList);
+    } catch (e) {
+      if (e is DioException) {
+        return left(
+          ServerFailure.fromDioException(e),
+        );
+      }
+      return left(
+        ServerFailure(
+          e.toString(),
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<HeaderModel>>> getHeaderTable({
+    required String listName,
+  }) async {
+    try {
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
+              "";
+      String token =
+          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      List<dynamic> data = await apiService.get(
+        endPoint: "web/Structure/getListSetups/$listName",
+        headers: {
+          "Authorization": "Bearer $token",
+          "CompanyKey": companyKey,
+        },
+      );
+
+      List<HeaderModel> headerList = [];
+      for (var i in data) {
+        headerList.add(HeaderModel.fromJson(i));
+      }
+
+      return right(headerList);
     } catch (e) {
       if (e is DioException) {
         return left(
@@ -147,8 +185,8 @@ class CustomerAccountRepoImpl implements CustomerAccountRepo {
   }
 
   @override
-  Future<Either<Failure, CustomerAccountModel>> getTableCustomerAccount(
-      {required Map<String, dynamic> objectData}) async {
+  Future<Either<Failure, Map<String, dynamic>>> getTableCustomerAccount(
+      {required Map<String, dynamic> objectData, required String link}) async {
     try {
       String companyKey =
           await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
@@ -156,17 +194,14 @@ class CustomerAccountRepoImpl implements CustomerAccountRepo {
       String token =
           await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await apiService.post(
-        endPoint: "web/ProfAccount/getDataGlobal",
+        endPoint: "web/$link/getDataGlobal",
         data: objectData,
         headers: {
           "Authorization": "Bearer $token",
           "CompanyKey": companyKey,
         },
       );
-      CustomerAccountModel customerAccountModel =
-          CustomerAccountModel.fromJson(data);
-
-      return right(customerAccountModel);
+      return right(data);
     } catch (e) {
       if (e is DioException) {
         return left(

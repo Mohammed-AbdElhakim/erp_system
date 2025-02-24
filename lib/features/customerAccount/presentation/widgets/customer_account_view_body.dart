@@ -20,26 +20,27 @@ import '../../../../core/widgets/custom_text_form_field.dart';
 import '../../../../generated/l10n.dart';
 import '../../../home/presentation/widgets/home_view_body.dart';
 import '../../data/models/all_dropdown_model.dart';
-import '../../data/models/customer_account_model.dart';
+import '../../data/models/header_model.dart';
 import '../../data/models/permission_model.dart';
 import '../../data/models/screen_model.dart';
 import '../../data/repositories/customer_account_repo_impl.dart';
 import '../manager/addEdit/add_edit_cubit.dart';
 import '../manager/customerAccount/customer_account_cubit.dart';
+import '../manager/getHeaderTable/get_header_table_cubit.dart';
 import '../views/customer_account_view.dart';
 import 'build_alert_add_in_dropdown.dart';
 import 'custom_table_customer_account.dart';
 import 'pagination_widget.dart';
+import 'tabs_widget.dart';
 
 class CustomerAccountViewBody extends StatefulWidget {
-  const CustomerAccountViewBody(
-      {super.key,
-      required this.listColumn,
-      required this.pageData,
-      required this.listColumnInTable});
+  const CustomerAccountViewBody({
+    super.key,
+    required this.listColumn,
+    required this.pageData,
+  });
 
   final List<ColumnList> listColumn;
-  final List<ColumnList> listColumnInTable;
   final Pages pageData;
 
   @override
@@ -65,6 +66,7 @@ class _CustomerAccountViewBodyState extends State<CustomerAccountViewBody> {
   List<int> listNumberItemInList = [10, 25, 50, 100];
   late int numberPage;
   late int dropdownValue;
+  late int selectTab;
   @override
   void didChangeDependencies() {
     lang = Localizations.localeOf(context).toString();
@@ -152,6 +154,384 @@ class _CustomerAccountViewBodyState extends State<CustomerAccountViewBody> {
   void initStatePage2() {
     numberPage = 1;
     dropdownValue = listNumberItemInList[0];
+    selectTab = 0;
+  }
+
+  _buildPage1() {
+    //تقسيم ال list  الى مجموعات
+    final Map<String, List<Map<String, dynamic>>> groupData = {};
+    for (var item in widgetsData) {
+      if (!groupData.containsKey((item['widget'] as ColumnList).categoryName)) {
+        groupData[(item['widget'] as ColumnList).categoryName!] = [];
+      }
+      groupData[(item['widget'] as ColumnList).categoryName]!.add(item);
+    }
+    return Padding(
+      padding: const EdgeInsets.all(12),
+      child: Scaffold(
+        body: ListView(
+          children: [
+            ...groupData.entries.map((entry) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  buildCategoryName(entry),
+                  buildCategoryChildren(entry),
+                ],
+              );
+            }).toList(),
+            const SizedBox(height: 80),
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: AppColors.blueLight,
+          shape: const StadiumBorder(),
+          child: Icon(
+            Icons.search,
+            color: AppColors.white,
+          ),
+          onPressed: () {
+            selectTab = 0;
+            numberPage = 1;
+            dropdownValue = listNumberItemInList[0];
+            createMyData(data: {
+              "employee": false,
+              "limit": dropdownValue,
+              "offset": (numberPage * dropdownValue) - dropdownValue,
+              "statment": "",
+              "selectcolumns": "",
+              "IsDepartment": false,
+              "AuthorizationID": 0,
+              "ViewEmployeeColumn": "",
+              "OrderBy": "EDID",
+              "IsDesc": true,
+              "tableName": "ProfAccount",
+              "listName": "ProfAccount",
+            });
+            _pageController.jumpToPage(2);
+          },
+        ),
+      ),
+    );
+  }
+
+  _buildPage2() {
+    return myData.isNotEmpty
+        ? MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (context) =>
+                    CustomerAccountCubit(getIt.get<CustomerAccountRepoImpl>())
+                      ..getTableCustomerAccount(
+                        selectTab: selectTab,
+                        objectData: myData,
+                        link: "ProfAccount",
+                        numberOfPage: numberPage,
+                        dropdownValueOfLimit: dropdownValue,
+                      ),
+              ),
+              BlocProvider(
+                create: (context) =>
+                    GetHeaderTableCubit(getIt.get<CustomerAccountRepoImpl>())
+                      ..getHeaderTable(listName: "ProfAccount"),
+              ),
+            ],
+            child: BlocBuilder<GetHeaderTableCubit, GetHeaderTableState>(
+              builder: (context, state) {
+                if (state is GetHeaderTableSuccess) {
+                  List<HeaderModel> headerList = [];
+                  for (var item in state.headerList) {
+                    if (item.mobileVisable == true &&
+                        item.visible == true &&
+                        item.cvisable == true) {
+                      headerList.add(item);
+                    }
+                  }
+                  return BlocBuilder<CustomerAccountCubit,
+                      CustomerAccountState>(
+                    builder: (context, state) {
+                      if (state is CustomerAccountSuccess) {
+                        int? numberOfRecords =
+                            state.accountProfModel.numberofrecords;
+                        List<dynamic>? listData =
+                            state.accountProfModel.dynamicList;
+
+                        numberPage = state.numberPage;
+                        dropdownValue = state.dropdownValue;
+                        allPages = (numberOfRecords! % dropdownValue) == 0
+                            ? (numberOfRecords ~/ dropdownValue)
+                            : (numberOfRecords ~/ dropdownValue) + 1;
+                        return CustomTableCustomerAccount(
+                          pageData: widget.pageData,
+                          listData: listData!,
+                          listColumn: headerList,
+                          allDropdownModelList:
+                              CustomerAccountView.myAllDropdownModelList,
+                          paginationWidget: PaginationWidget(
+                            allPages: allPages,
+                            dropdownValue: dropdownValue,
+                            listNumberItemInList: listNumberItemInList,
+                            myPage: numberPage,
+                            numberOfRecords: numberOfRecords,
+                            onChangeLimit: (limit) {
+                              setState(() {
+                                dropdownValue = limit;
+                                numberPage = 1;
+                                allPages = (numberOfRecords % dropdownValue) ==
+                                        0
+                                    ? (numberOfRecords ~/ dropdownValue)
+                                    : (numberOfRecords ~/ dropdownValue) + 1;
+                              });
+                              // createMyData();
+                              BlocProvider.of<CustomerAccountCubit>(context)
+                                  .getTableCustomerAccount(
+                                selectTab: selectTab,
+                                link: selectTab == 0
+                                    ? "ProfAccount"
+                                    : selectTab == 4
+                                        ? "CustomerDetailsReport"
+                                        : "Structure",
+                                objectData: myData,
+                                numberOfPage: numberPage,
+                                dropdownValueOfLimit: dropdownValue,
+                              );
+                            },
+                            onTapMin: () {
+                              setState(() {
+                                numberPage--;
+                              });
+                              // createMyData();
+                              BlocProvider.of<CustomerAccountCubit>(context)
+                                  .getTableCustomerAccount(
+                                selectTab: selectTab,
+                                objectData: myData,
+                                link: selectTab == 0
+                                    ? "ProfAccount"
+                                    : selectTab == 4
+                                        ? "CustomerDetailsReport"
+                                        : "Structure",
+                                numberOfPage: numberPage,
+                                dropdownValueOfLimit: dropdownValue,
+                              );
+                            },
+                            onTapAdd: () {
+                              setState(() {
+                                numberPage++;
+                              });
+                              // createMyData();
+                              BlocProvider.of<CustomerAccountCubit>(context)
+                                  .getTableCustomerAccount(
+                                selectTab: selectTab,
+                                objectData: myData,
+                                link: selectTab == 0
+                                    ? "ProfAccount"
+                                    : selectTab == 4
+                                        ? "CustomerDetailsReport"
+                                        : "Structure",
+                                numberOfPage: numberPage,
+                                dropdownValueOfLimit: dropdownValue,
+                              );
+                            },
+                          ),
+                          tabsWidget: TabsWidget(
+                            selectTab: selectTab,
+                            onTap: (index) {
+                              setState(() {
+                                selectTab = index;
+                              });
+                              switch (index) {
+                                case 0:
+                                  createMyData(data: {
+                                    "employee": false,
+                                    "limit": dropdownValue,
+                                    "offset": (numberPage * dropdownValue) -
+                                        dropdownValue,
+                                    "statment": "",
+                                    "selectcolumns": "",
+                                    "IsDepartment": false,
+                                    "AuthorizationID": 0,
+                                    "ViewEmployeeColumn": "",
+                                    "OrderBy": "EDID",
+                                    "IsDesc": true,
+                                    "tableName": "ProfAccount",
+                                    "listName": "ProfAccount",
+                                  });
+                                  BlocProvider.of<GetHeaderTableCubit>(context)
+                                      .getHeaderTable(listName: "ProfAccount");
+                                  BlocProvider.of<CustomerAccountCubit>(context)
+                                      .getTableCustomerAccount(
+                                    selectTab: selectTab,
+                                    objectData: myData,
+                                    link: "ProfAccount",
+                                    numberOfPage: numberPage,
+                                    dropdownValueOfLimit: dropdownValue,
+                                  );
+                                  break;
+                                case 1:
+                                  String customerId = widgetsData.firstWhere(
+                                    (element) =>
+                                        (element['widget'] as ColumnList)
+                                            .columnName ==
+                                        "CustomerID",
+                                  )['value'];
+
+                                  createMyData(data: {
+                                    "employee": false,
+                                    "limit": dropdownValue,
+                                    "offset": (numberPage * dropdownValue) -
+                                        dropdownValue,
+                                    "statment": "",
+                                    "selectcolumns": "",
+                                    "IsDepartment": false,
+                                    "AuthorizationID": 0,
+                                    "ViewEmployeeColumn": "",
+                                    "OrderBy": "SystemID",
+                                    "IsDesc": true,
+                                    "tableName": "salessystemcontract",
+                                    "listName": "SalesDetailReport",
+                                    "tailcondition":
+                                        "(IsResale=0 or IsResale is null) and CustomerID=$customerId",
+                                  });
+                                  BlocProvider.of<GetHeaderTableCubit>(context)
+                                      .getHeaderTable(
+                                          listName: "SalesDetailReport");
+                                  BlocProvider.of<CustomerAccountCubit>(context)
+                                      .getTableCustomerAccount(
+                                    selectTab: selectTab,
+                                    objectData: myData,
+                                    link: "Structure",
+                                    numberOfPage: numberPage,
+                                    dropdownValueOfLimit: dropdownValue,
+                                  );
+                                  break;
+                                case 2:
+                                  String customerId = widgetsData.firstWhere(
+                                    (element) =>
+                                        (element['widget'] as ColumnList)
+                                            .columnName ==
+                                        "CustomerID",
+                                  )['value'];
+                                  createMyData(data: {
+                                    // "pageId": 289,
+                                    "employee": false,
+                                    "limit": dropdownValue,
+                                    "offset": (numberPage * dropdownValue) -
+                                        dropdownValue,
+                                    "statment": "",
+                                    "selectcolumns": "",
+                                    "IsDepartment": false,
+                                    "AuthorizationID": 0,
+                                    "ViewEmployeeColumn": "",
+                                    "OrderBy": "SystemID",
+                                    "company": true,
+                                    "companyname": "ComID",
+                                    "IsDesc": true,
+                                    "listName": "SalesDetailReport",
+                                    "tableName": "salessystemcontract",
+                                    "tailcondition":
+                                        "(IsResale=1) and CustomerID=$customerId",
+                                  });
+                                  BlocProvider.of<GetHeaderTableCubit>(context)
+                                      .getHeaderTable(
+                                          listName: "SalesDetailReport");
+                                  BlocProvider.of<CustomerAccountCubit>(context)
+                                      .getTableCustomerAccount(
+                                    selectTab: selectTab,
+                                    objectData: myData,
+                                    numberOfPage: numberPage,
+                                    link: "Structure",
+                                    dropdownValueOfLimit: dropdownValue,
+                                  );
+                                  break;
+                                case 3:
+                                  String customerId = widgetsData.firstWhere(
+                                    (element) =>
+                                        (element['widget'] as ColumnList)
+                                            .columnName ==
+                                        "CustomerID",
+                                  )['value'];
+                                  createMyData(data: {
+                                    // "pageId": widget.pageData.pageId,
+                                    "employee": false,
+                                    "limit": dropdownValue,
+                                    "offset": (numberPage * dropdownValue) -
+                                        dropdownValue,
+                                    "statment": "",
+                                    "selectcolumns": "",
+                                    "IsDepartment": false,
+                                    "AuthorizationID": 0,
+                                    "ViewEmployeeColumn": "",
+                                    "OrderBy": "PRID",
+                                    "company": true,
+                                    "companyname": "ComID",
+                                    "IsDesc": true,
+                                    "listName": "CustomerPaymentReport",
+                                    "tableName": "PaymentReciveView",
+                                    "tailcondition": "CustomerID=$customerId",
+                                  });
+                                  BlocProvider.of<GetHeaderTableCubit>(context)
+                                      .getHeaderTable(
+                                          listName: "CustomerPaymentReport");
+                                  BlocProvider.of<CustomerAccountCubit>(context)
+                                      .getTableCustomerAccount(
+                                    selectTab: selectTab,
+                                    objectData: myData,
+                                    numberOfPage: numberPage,
+                                    link: "Structure",
+                                    dropdownValueOfLimit: dropdownValue,
+                                  );
+                                  break;
+                                case 4:
+                                  createMyData(data: {
+                                    "employee": false,
+                                    "limit": dropdownValue,
+                                    "offset": (numberPage * dropdownValue) -
+                                        dropdownValue,
+                                    "statment": "",
+                                    "selectcolumns": "",
+                                    "IsDepartment": false,
+                                    "AuthorizationID": 0,
+                                    "ViewEmployeeColumn": "",
+                                    "OrderBy": "ECode",
+                                    "company": true,
+                                    "companyname": "ComID",
+                                    "IsDesc": true,
+                                    "listName": "ProfAccountDetails",
+                                    "tableName": "EntryWithsales",
+                                  });
+                                  BlocProvider.of<GetHeaderTableCubit>(context)
+                                      .getHeaderTable(
+                                          listName: "ProfAccountDetails");
+                                  BlocProvider.of<CustomerAccountCubit>(context)
+                                      .getTableCustomerAccount(
+                                    selectTab: selectTab,
+                                    objectData: myData,
+                                    link: "CustomerDetailsReport",
+                                    numberOfPage: numberPage,
+                                    dropdownValueOfLimit: dropdownValue,
+                                  );
+                                  break;
+                              }
+                            },
+                          ),
+                        );
+                      } else if (state is CustomerAccountFailure) {
+                        return CustomErrorMassage(
+                            errorMassage: state.errorMassage);
+                      } else {
+                        return const CustomLoadingWidget();
+                      }
+                    },
+                  );
+                } else if (state is GetHeaderTableFailure) {
+                  return CustomErrorMassage(errorMassage: state.errorMassage);
+                } else {
+                  return const CustomLoadingWidget();
+                }
+              },
+            ),
+          )
+        : const SizedBox();
   }
 
   Widget buildCategoryChildren(
@@ -614,155 +994,25 @@ class _CustomerAccountViewBodyState extends State<CustomerAccountViewBody> {
         ));
   }
 
-  _buildPage1() {
-    //تقسيم ال list  الى مجموعات
-    final Map<String, List<Map<String, dynamic>>> groupData = {};
-    for (var item in widgetsData) {
-      if (!groupData.containsKey((item['widget'] as ColumnList).categoryName)) {
-        groupData[(item['widget'] as ColumnList).categoryName!] = [];
-      }
-      groupData[(item['widget'] as ColumnList).categoryName]!.add(item);
-    }
-    return Padding(
-      padding: const EdgeInsets.all(12),
-      child: Scaffold(
-        body: ListView(
-          children: [
-            ...groupData.entries.map((entry) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  buildCategoryName(entry),
-                  buildCategoryChildren(entry),
-                ],
-              );
-            }).toList(),
-            const SizedBox(height: 80),
-          ],
-        ),
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: AppColors.blueLight,
-          shape: const StadiumBorder(),
-          child: Icon(
-            Icons.search,
-            color: AppColors.white,
-          ),
-          onPressed: () {
-            numberPage = 1;
-            dropdownValue = listNumberItemInList[0];
-            createMyData();
-            _pageController.jumpToPage(2);
-          },
-        ),
-      ),
-    );
-  }
-
-  _buildPage2() {
-    return myData.isNotEmpty
-        ? BlocProvider(
-            create: (context) =>
-                CustomerAccountCubit(getIt.get<CustomerAccountRepoImpl>())
-                  ..getTableCustomerAccount(
-                    objectData: myData,
-                    numberOfPage: numberPage,
-                    dropdownValueOfLimit: dropdownValue,
-                  ),
-            child: BlocBuilder<CustomerAccountCubit, CustomerAccountState>(
-              builder: (context, state) {
-                if (state is CustomerAccountSuccess) {
-                  int? numberOfRecords = state.accountProfModel.numberofrecords;
-                  List<CustomerAccountItem>? listData =
-                      state.accountProfModel.dynamicList;
-
-                  numberPage = state.numberPage;
-                  dropdownValue = state.dropdownValue;
-                  allPages = (numberOfRecords! % dropdownValue) == 0
-                      ? (numberOfRecords ~/ dropdownValue)
-                      : (numberOfRecords ~/ dropdownValue) + 1;
-                  return CustomTableCustomerAccount(
-                    pageData: widget.pageData,
-                    listData: listData!,
-                    listColumn: widget.listColumnInTable,
-                    allDropdownModelList:
-                        CustomerAccountView.myAllDropdownModelList,
-                    paginationWidget: PaginationWidget(
-                      allPages: allPages,
-                      dropdownValue: dropdownValue,
-                      listNumberItemInList: listNumberItemInList,
-                      myPage: numberPage,
-                      numberOfRecords: numberOfRecords,
-                      onChangeLimit: (limit) {
-                        setState(() {
-                          dropdownValue = limit;
-                          numberPage = 1;
-                          allPages = (numberOfRecords % dropdownValue) == 0
-                              ? (numberOfRecords ~/ dropdownValue)
-                              : (numberOfRecords ~/ dropdownValue) + 1;
-                        });
-                        createMyData();
-                        BlocProvider.of<CustomerAccountCubit>(context)
-                            .getTableCustomerAccount(
-                          objectData: myData,
-                          numberOfPage: numberPage,
-                          dropdownValueOfLimit: dropdownValue,
-                        );
-                      },
-                      onTapMin: () {
-                        setState(() {
-                          numberPage--;
-                        });
-                        createMyData();
-                        BlocProvider.of<CustomerAccountCubit>(context)
-                            .getTableCustomerAccount(
-                          objectData: myData,
-                          numberOfPage: numberPage,
-                          dropdownValueOfLimit: dropdownValue,
-                        );
-                      },
-                      onTapAdd: () {
-                        setState(() {
-                          numberPage++;
-                        });
-                        createMyData();
-                        BlocProvider.of<CustomerAccountCubit>(context)
-                            .getTableCustomerAccount(
-                          objectData: myData,
-                          numberOfPage: numberPage,
-                          dropdownValueOfLimit: dropdownValue,
-                        );
-                      },
-                    ),
-                  );
-                } else if (state is CustomerAccountFailure) {
-                  return CustomErrorMassage(errorMassage: state.errorMassage);
-                } else {
-                  return const CustomLoadingWidget();
-                }
-              },
-            ),
-          )
-        : const SizedBox();
-  }
-
-  void createMyData() {
+  void createMyData({required Map<String, dynamic> data}) {
     Map<String, dynamic> params = {};
     myData = {};
-    myData.addAll({
-      "pageId": widget.pageData.pageId,
-      "employee": false,
-      "limit": dropdownValue,
-      "offset": (numberPage * dropdownValue) - dropdownValue,
-      "statment": "",
-      "selectcolumns": "",
-      "IsDepartment": widget.pageData.isDepartment,
-      "DepartmentName": widget.pageData.departmentName,
-      "AuthorizationID": widget.pageData.authorizationID,
-      "ViewEmployeeColumn": widget.pageData.viewEmployeeColumn,
-      "OrderBy": widget.pageData.orderBy,
-      "IsDesc": widget.pageData.isDesc,
-      "tableName": widget.pageData.tableName,
-    });
+    myData.addAll(data);
+    // myData.addAll({
+    //   "pageId": widget.pageData.pageId,
+    //   "employee": false,
+    //   "limit": dropdownValue,
+    //   "offset": (numberPage * dropdownValue) - dropdownValue,
+    //   "statment": "",
+    //   "selectcolumns": "",
+    //   "IsDepartment": widget.pageData.isDepartment,
+    //   "DepartmentName": widget.pageData.departmentName,
+    //   "AuthorizationID": widget.pageData.authorizationID,
+    //   "ViewEmployeeColumn": widget.pageData.viewEmployeeColumn,
+    //   "OrderBy": widget.pageData.orderBy,
+    //   "IsDesc": widget.pageData.isDesc,
+    //   "tableName": widget.pageData.tableName,
+    // });
     for (var i in widgetsData) {
       params["${(i['widget'] as ColumnList).columnName}"] = i['value'];
     }
