@@ -280,39 +280,43 @@ class TableDataSource extends DataGridSource {
 
   @override
   DataGridRowAdapter buildRow(DataGridRow row) {
+    int indexRow = dataGridRows.indexOf(row);
     return DataGridRowAdapter(
-        cells: row.getCells().map<Widget>((e) {
-      ColumnList columnList;
-      if (e.columnName.toString() == pageData.primary) {
-        columnList = listColumn[0];
-      } else {
-        columnList = listColumn
-            .firstWhere((element) => element.columnName == e.columnName);
-      }
-
-      return InkWell(
-        onTap: columnList.insertType! != "date"
-            ? () {
-                buildShowDialog(context,
-                    text: e.value.toString(),
-                    listName: pageData.listName,
-                    allDropdownModelList: allDropdownModelList,
-                    columnList: columnList);
-              }
+        color: data[indexRow][pageData.columnColor] != null
+            ? hexToColor(data[indexRow][pageData.columnColor])
             : null,
-        child: Container(
-          alignment: Alignment.center,
-          padding: const EdgeInsets.all(8),
-          child: e.columnName.toString() == pageData.primary
-              ? Text(e.value.toString())
-              : buildMyWidget(
-                  value: e.value.toString(),
-                  columnList: columnList,
-                  // indexRow: ,
-                ),
-        ),
-      );
-    }).toList());
+        cells: row.getCells().map<Widget>((e) {
+          ColumnList columnList;
+          if (e.columnName.toString() == pageData.primary) {
+            columnList = listColumn[0];
+          } else {
+            columnList = listColumn
+                .firstWhere((element) => element.columnName == e.columnName);
+          }
+
+          return InkWell(
+            onTap: columnList.insertType! != "date"
+                ? () {
+                    buildShowDialog(context,
+                        text: e.value.toString(),
+                        listName: pageData.listName,
+                        allDropdownModelList: allDropdownModelList,
+                        columnList: columnList);
+                  }
+                : null,
+            child: Container(
+              alignment: Alignment.center,
+              padding: const EdgeInsets.all(8),
+              child: e.columnName.toString() == pageData.primary
+                  ? Text(e.value.toString())
+                  : buildMyWidget(
+                      value: e.value.toString(),
+                      columnList: columnList,
+                      // indexRow: ,
+                    ),
+            ),
+          );
+        }).toList());
   }
 
   @override
@@ -437,5 +441,17 @@ class TableDataSource extends DataGridSource {
           //         selectedRows[indexRow] == true ? Colors.white : Colors.black),
         );
     }
+  }
+
+  // دالة لتحويل الكود hex إلى لون
+  Color hexToColor(String hex) {
+    hex = hex.replaceAll('#', ''); // إزالة #
+
+    // إضافة شفافية كاملة إذا لم يكن الكود يحتوي على 8 خانات (ARGB)
+    if (hex.length == 6) {
+      hex = "FF$hex"; // إضافة الشفافية
+    }
+
+    return Color(int.parse("0x$hex"));
   }
 }

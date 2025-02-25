@@ -283,68 +283,59 @@ class TableDataSource extends DataGridSource {
 
   @override
   DataGridRowAdapter buildRow(DataGridRow row) {
+    int indexRow = dataGridRows.indexOf(row);
     return DataGridRowAdapter(
+        color: data[indexRow][pageData.columnColor] != null
+            ? hexToColor(data[indexRow][pageData.columnColor])
+            : null,
         cells: row.getCells().map<Widget>((e) {
-      int indexRow = dataGridRows.indexOf(row);
-      ColumnList columnList;
-      if (e.columnName.toString() == pageData.primary) {
-        columnList = listColumn[0];
-      } else {
-        if (e.columnName == "icon") {
-          columnList = listColumn[0];
-        } else {
-          columnList = listColumn
-              .firstWhere((element) => element.columnName == e.columnName);
-        }
-      }
-      if (e.columnName == "icon") {
-        return InkWell(
-          onTap: () {
-            GoRouter.of(context).push(AppRouter.kDetailsRowView,
-                extra: PassDataDetailsRow(
-                  pageData: pageData,
-                  rowData: data[indexRow],
-                ));
-          },
-          child: Container(
-            margin: const EdgeInsets.all(6),
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: AppColors.blue,
-            ),
-            child: Icon(
-              Icons.add,
-              color: AppColors.white,
-              size: 15,
-            ),
-          ),
-        );
-      } else {
-        // return InkWell(
-        //   onTap: columnList.insertType! != "date"
-        //       ? () {
-        //           buildShowDialog(context,
-        //               text: e.value.toString(),
-        //               listName: pageData.listName,
-        //               allDropdownModelList: allDropdownModelList,
-        //               columnList: columnList);
-        //         }
-        //       : null,
-        //   child: ,
-        // );
-        return Container(
-          alignment: Alignment.center,
-          padding: const EdgeInsets.all(8),
-          child: e.columnName.toString() == pageData.primary
-              ? Text(e.value.toString())
-              : buildMyWidget(
-                  value: e.value.toString(),
-                  columnList: columnList,
-                  // indexRow: ,
+          ColumnList columnList;
+          if (e.columnName.toString() == pageData.primary) {
+            columnList = listColumn[0];
+          } else {
+            if (e.columnName == "icon") {
+              columnList = listColumn[0];
+            } else {
+              columnList = listColumn
+                  .firstWhere((element) => element.columnName == e.columnName);
+            }
+          }
+          if (e.columnName == "icon") {
+            return InkWell(
+              onTap: () {
+                GoRouter.of(context).push(AppRouter.kDetailsRowView,
+                    extra: PassDataDetailsRow(
+                      pageData: pageData,
+                      rowData: data[indexRow],
+                    ));
+              },
+              child: Container(
+                margin: const EdgeInsets.all(6),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: AppColors.blue,
                 ),
-        );
-      }
-    }).toList());
+                child: Icon(
+                  Icons.add,
+                  color: AppColors.white,
+                  size: 15,
+                ),
+              ),
+            );
+          } else {
+            return Container(
+              alignment: Alignment.center,
+              padding: const EdgeInsets.all(8),
+              child: e.columnName.toString() == pageData.primary
+                  ? Text(e.value.toString())
+                  : buildMyWidget(
+                      value: e.value.toString(),
+                      columnList: columnList,
+                      // indexRow: ,
+                    ),
+            );
+          }
+        }).toList());
   }
 
   @override
@@ -490,5 +481,17 @@ class TableDataSource extends DataGridSource {
     } else {
       return value;
     }
+  }
+
+  // دالة لتحويل الكود hex إلى لون
+  Color hexToColor(String hex) {
+    hex = hex.replaceAll('#', ''); // إزالة #
+
+    // إضافة شفافية كاملة إذا لم يكن الكود يحتوي على 8 خانات (ARGB)
+    if (hex.length == 6) {
+      hex = "FF$hex"; // إضافة الشفافية
+    }
+
+    return Color(int.parse("0x$hex"));
   }
 }
