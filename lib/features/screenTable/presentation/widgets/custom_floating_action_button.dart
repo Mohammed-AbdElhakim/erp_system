@@ -163,7 +163,7 @@ class _CustomFloatingActionButtonState
           pageId: widget.pageData.pageId,
           employee: false,
           isdesc: ScreenTable.isDesc,
-          limit: 10,
+          limit: ScreenTable.dropdownValue,
           offset: 0,
           orderby: ScreenTable.orderBy,
           statment:
