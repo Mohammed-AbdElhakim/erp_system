@@ -72,6 +72,8 @@ class _EditCustomerOrderState extends State<EditCustomerOrder> {
   ];
 
   double total = 0.0;
+  String dropdownAccount = "";
+  String dropdownConTypeId = "";
   TextEditingController discountController = TextEditingController();
   TextEditingController discountPercentController = TextEditingController();
   TextEditingController shippingCostsController = TextEditingController();
@@ -112,6 +114,7 @@ class _EditCustomerOrderState extends State<EditCustomerOrder> {
         builder: (context, state) {
           if (state is GetExpensesMasterSuccess) {
             Map<String, dynamic> dataMaster = state.data;
+            singleObject = dataMaster;
             total = dataMaster['TotalOrder'] ?? 0.0;
             return BlocProvider(
               create: (context) =>
@@ -550,28 +553,53 @@ class _EditCustomerOrderState extends State<EditCustomerOrder> {
                                                       formKey.currentState!
                                                           .save();
 
-                                                      // singleObject.addAll({
-                                                      //   "TotalOrder": total,
-                                                      //   "MasterDescount": double.parse(
-                                                      //       discountController.text.isEmpty
-                                                      //           ? "0.0"
-                                                      //           : discountController.text
-                                                      //           .trim()),
-                                                      //   "ShippingPrice": double.parse(
-                                                      //       shippingCostsController.text.isEmpty
-                                                      //           ? "0.0"
-                                                      //           : shippingCostsController.text
-                                                      //           .trim()),
-                                                      //   "POPaid": double.parse(
-                                                      //       paidController.text.isEmpty
-                                                      //           ? "0.0"
-                                                      //           : paidController.text.trim()),
-                                                      //   "remind": double.parse(
-                                                      //       restController.text.isEmpty
-                                                      //           ? "0.0"
-                                                      //           : restController.text.trim()),
-                                                      // });
-
+                                                      singleObject.addAll({
+                                                        "TotalOrder": total,
+                                                        "MasterDescount": double
+                                                            .parse(discountController
+                                                                    .text
+                                                                    .isEmpty
+                                                                ? "0.0"
+                                                                : discountController
+                                                                    .text
+                                                                    .trim()),
+                                                        "ShippingPrice": double.parse(
+                                                            shippingCostsController
+                                                                    .text
+                                                                    .isEmpty
+                                                                ? "0.0"
+                                                                : shippingCostsController
+                                                                    .text
+                                                                    .trim()),
+                                                        "POPaid": double.parse(
+                                                            paidController.text
+                                                                    .isEmpty
+                                                                ? "0.0"
+                                                                : paidController
+                                                                    .text
+                                                                    .trim()),
+                                                        "remind": double.parse(
+                                                            restController.text
+                                                                    .isEmpty
+                                                                ? "0.0"
+                                                                : restController
+                                                                    .text
+                                                                    .trim()),
+                                                        "SafeAccount":
+                                                            dropdownAccount,
+                                                        "ConTypeId":
+                                                            dropdownConTypeId,
+                                                      });
+                                                      // if (!mapEquals(
+                                                      //     singleObject,
+                                                      //     newSingleObject)) {
+                                                      //   singleObject = Map.from(
+                                                      //       newSingleObject); // حفظ التعديلات
+                                                      //   print(
+                                                      //       'تم التعديل: $singleObject');
+                                                      // } else {
+                                                      //   print('لا يوجد تعديل');
+                                                      // }
                                                       BlocProvider.of<
                                                                   AddEditExpensesCubit>(
                                                               context)
@@ -1122,6 +1150,7 @@ class _EditCustomerOrderState extends State<EditCustomerOrder> {
           ),
         );
       case "الحساب":
+        dropdownAccount = oldDataMaster['SafeAccount'].toString();
         ItemListSetupModel item = listSetup
             .firstWhere((element) => element.columnName == "SafeAccount");
         List<ListDrop>? listDrop = [];
@@ -1145,13 +1174,15 @@ class _EditCustomerOrderState extends State<EditCustomerOrder> {
           }
         }
         for (var i in myListDrop!) {
-          if (i.id == oldDataMaster['SafeAccount']) {
+          if (i.id == oldDataMaster['SafeAccount'].toString()) {
             val = i.text!;
+          } else {
+            val = "null";
           }
         }
         return CustomDropdown<String>.search(
           hintText: '',
-          initialItem: val,
+          initialItem: val == "null" ? null : val,
           closedHeaderPadding:
               const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
           decoration: CustomDropdownDecoration(
@@ -1162,7 +1193,11 @@ class _EditCustomerOrderState extends State<EditCustomerOrder> {
               ? [""]
               : List.generate(
                   myListDrop.length, (index) => myListDrop![index].text ?? ''),
-          onChanged: (value) {},
+          onChanged: (value) {
+            ItemDrop ii =
+                myListDrop!.firstWhere((element) => element.text == value);
+            dropdownAccount = ii.id!;
+          },
         );
 
       case "الباقي":
@@ -1180,6 +1215,7 @@ class _EditCustomerOrderState extends State<EditCustomerOrder> {
         );
 
       case "طريقة البيع":
+        dropdownConTypeId = oldDataMaster['ConTypeId'].toString();
         ItemListSetupModel item = listSetup
             .firstWhere((element) => element.columnName == "ConTypeId");
         List<ListDrop>? listDrop = [];
@@ -1204,13 +1240,15 @@ class _EditCustomerOrderState extends State<EditCustomerOrder> {
           }
         }
         for (var i in myListDrop!) {
-          if (i.id == oldDataMaster['ConTypeId']) {
+          if (i.id == oldDataMaster['ConTypeId'].toString()) {
             val = i.text!;
+          } else {
+            val = "null";
           }
         }
         return CustomDropdown<String>.search(
           hintText: '',
-          initialItem: val,
+          initialItem: val == "null" ? null : val,
           closedHeaderPadding:
               const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
           decoration: CustomDropdownDecoration(
@@ -1221,7 +1259,11 @@ class _EditCustomerOrderState extends State<EditCustomerOrder> {
               ? [""]
               : List.generate(
                   myListDrop.length, (index) => myListDrop![index].text ?? ''),
-          onChanged: (value) {},
+          onChanged: (value) {
+            ItemDrop ii =
+                myListDrop!.firstWhere((element) => element.text == value);
+            dropdownConTypeId = ii.id!;
+          },
         );
     }
   }
@@ -1475,4 +1517,9 @@ class _EditCustomerOrderState extends State<EditCustomerOrder> {
       debugPrint(e.toString());
     }
   }
+
+  // bool mapEquals(Map<String, dynamic> singleObject, Map<String, dynamic> newSingleObject) {
+  //   return singleObject.length == newSingleObject.length &&
+  //       singleObject.keys.every((key) => newSingleObject.containsKey(key) && singleObject[key] == newSingleObject[key]);
+  // }
 }

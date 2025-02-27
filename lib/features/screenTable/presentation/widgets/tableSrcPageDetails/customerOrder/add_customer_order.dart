@@ -68,6 +68,8 @@ class _AddCustomerOrderState extends State<AddCustomerOrder> {
   ];
 
   double total = 0.0;
+  String dropdownAccount = "";
+  String dropdownConTypeId = "";
   TextEditingController discountController = TextEditingController();
   TextEditingController discountPercentController = TextEditingController();
   TextEditingController shippingCostsController = TextEditingController();
@@ -425,6 +427,8 @@ class _AddCustomerOrderState extends State<AddCustomerOrder> {
                                             restController.text.isEmpty
                                                 ? "0.0"
                                                 : restController.text.trim()),
+                                        "SafeAccount": dropdownAccount,
+                                        "ConTypeId": dropdownConTypeId,
                                       });
 
                                       BlocProvider.of<AddEditExpensesCubit>(
@@ -928,7 +932,11 @@ class _AddCustomerOrderState extends State<AddCustomerOrder> {
               ? [""]
               : List.generate(
                   myListDrop.length, (index) => myListDrop![index].text ?? ''),
-          onChanged: (value) {},
+          onChanged: (value) {
+            ItemDrop ii =
+                myListDrop!.firstWhere((element) => element.text == value);
+            dropdownAccount = ii.id!;
+          },
         );
 
       case "الباقي":
@@ -981,7 +989,11 @@ class _AddCustomerOrderState extends State<AddCustomerOrder> {
               ? [""]
               : List.generate(
                   myListDrop.length, (index) => myListDrop![index].text ?? ''),
-          onChanged: (value) {},
+          onChanged: (value) {
+            ItemDrop ii =
+                myListDrop!.firstWhere((element) => element.text == value);
+            dropdownConTypeId = ii.id!;
+          },
         );
     }
   }
