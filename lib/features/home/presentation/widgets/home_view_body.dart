@@ -62,7 +62,11 @@ class _HomeViewBodyState extends State<HomeViewBody> {
                     controller: controllerSearch,
                     onChanged: (value) {
                       pagesListSearch = allPagesList
-                          .where((page) => page.nameAr.contains(value))
+                          .where((page) =>
+                              page.nameAr.contains(value) ||
+                              page.nameEn
+                                  .toUpperCase()
+                                  .contains(value.toUpperCase()))
                           .toList();
                       setState(() {});
                     },
