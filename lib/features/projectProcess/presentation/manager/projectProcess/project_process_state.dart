@@ -1,4 +1,4 @@
-part of 'customer_account_cubit.dart';
+part of 'project_process_cubit.dart';
 
 sealed class ProjectProcessState extends Equatable {
   const ProjectProcessState();

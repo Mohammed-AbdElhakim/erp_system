@@ -9,7 +9,7 @@ import '../../../data/models/project_process_model2.dart';
 import '../../../data/models/project_process_model3.dart';
 import '../../../data/repositories/project_process_repo.dart';
 
-part 'customer_account_state.dart';
+part 'project_process_state.dart';
 
 class ProjectProcessCubit extends Cubit<ProjectProcessState> {
   ProjectProcessCubit(this.projectProcessRepo) : super(ProjectProcessInitial());
