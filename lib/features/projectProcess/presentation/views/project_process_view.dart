@@ -42,48 +42,41 @@ class _ProjectProcessViewState extends State<ProjectProcessView> {
         appBar: CustomAppBar(
           isPortrait: isOrientationPortrait(context),
           isTitleInPortrait: true,
-          title: lang == AppStrings.enLangKey
-              ? widget.pageData.nameEn
-              : widget.pageData.nameAr,
+          title: lang == AppStrings.enLangKey ? widget.pageData.nameEn : widget.pageData.nameAr,
         ),
         body: BlocProvider(
-          create: (context) =>
-              GetAllDropdownListCubit(getIt.get<ProjectProcessRepoImpl>())
-                ..getAllDropdownList(pageId: widget.pageData.pageId),
+          create: (context) => GetAllDropdownListCubit(getIt.get<ProjectProcessRepoImpl>())
+            ..getAllDropdownList(pageId: widget.pageData.pageId),
           child: BlocBuilder<GetAllDropdownListCubit, GetAllDropdownListState>(
             builder: (context, state) {
               if (state is GetAllDropdownListSuccess) {
-                List<AllDropdownModel> allDropdownModelList =
-                    state.allDropdownModelList;
-                ProjectProcessView.myAllDropdownModelList =
-                    allDropdownModelList;
+                List<AllDropdownModel> allDropdownModelList = state.allDropdownModelList;
+                ProjectProcessView.myAllDropdownModelList = allDropdownModelList;
                 return BlocProvider(
-                  create: (context) =>
-                      GetTableCubit(getIt.get<ProjectProcessRepoImpl>())
-                        ..getTable(
-                          pageId: widget.pageData.pageId,
-                          employee: false,
-                          isdesc: widget.pageData.isDesc,
-                          limit: 10,
-                          offset: 0,
-                          orderby: widget.pageData.orderBy,
-                          statment: "",
-                          selectcolumns: '',
-                          departmentName: widget.pageData.departmentName,
-                          isDepartment: widget.pageData.isDepartment,
-                          authorizationID: widget.pageData.authorizationID,
-                          viewEmployeeColumn:
-                              widget.pageData.viewEmployeeColumn,
-                          dropdownValueOfLimit: 10,
-                          numberOfPage: 1,
-                        ),
+                  create: (context) => GetTableCubit(getIt.get<ProjectProcessRepoImpl>())
+                    ..getTable(
+                      pageId: widget.pageData.pageId,
+                      employee: false,
+                      isdesc: widget.pageData.isDesc,
+                      limit: 10,
+                      offset: 0,
+                      orderby: widget.pageData.orderBy,
+                      statment: "",
+                      selectcolumns: '',
+                      departmentName: widget.pageData.departmentName,
+                      isDepartment: widget.pageData.isDepartment,
+                      authorizationID: widget.pageData.authorizationID,
+                      viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
+                      dropdownValueOfLimit: 10,
+                      numberOfPage: 1,
+                    ),
                   child: BlocBuilder<GetTableCubit, GetTableState>(
                     builder: (context, state) {
                       if (state is GetTableSuccess) {
                         List<ColumnList> listColumn = [];
                         List<ColumnList> listColumnInTable = [];
                         for (var item in state.screenModel.columnList!) {
-                          if (item.insertVisable == true) {
+                          if (item.insertVisable == true && item.isGeneral == true) {
                             listColumn.add(item);
                           }
                           if (item.visible == true) {
@@ -97,8 +90,7 @@ class _ProjectProcessViewState extends State<ProjectProcessView> {
                           pageData: widget.pageData,
                         );
                       } else if (state is GetTableFailure) {
-                        return CustomErrorMassage(
-                            errorMassage: state.errorMassage);
+                        return CustomErrorMassage(errorMassage: state.errorMassage);
                       } else {
                         return const CustomLoadingWidget();
                       }
