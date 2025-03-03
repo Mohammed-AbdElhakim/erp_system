@@ -17,7 +17,7 @@ import '../../../../../core/widgets/custom_loading_widget.dart';
 import '../../../../../core/widgets/custom_text_form_field.dart';
 import '../../../../../generated/l10n.dart';
 import '../../data/models/all_dropdown_model.dart';
-import '../../data/models/header_model.dart';
+import '../../data/models/screen_model.dart';
 import '../manager/addEdit/add_edit_cubit.dart';
 
 typedef OnTapBtn<T> = void Function(T value);
@@ -29,7 +29,7 @@ class BuildAlertAddInDropdown extends StatefulWidget {
     required this.pageData,
     required this.onTapBtn,
   });
-  final List<HeaderModel> columnList;
+  final List<ColumnList> columnList;
   final Pages pageData;
   final OnTapBtn<bool> onTapBtn;
 
@@ -196,7 +196,7 @@ class _BuildAlertAddInDropdownState extends State<BuildAlertAddInDropdown> {
   }
 
   List<Widget> getMyWidgetList({
-    required List<HeaderModel> columnList,
+    required List<ColumnList> columnList,
     required String categoryName,
     required bool show,
   }) {
@@ -208,7 +208,7 @@ class _BuildAlertAddInDropdownState extends State<BuildAlertAddInDropdown> {
       //text
       if (item.insertType == "text" &&
           item.insertVisable == true &&
-          item.categoryTitle == categoryName &&
+          item.categoryName == categoryName &&
           item.insertDefult == show) {
         list.add(
           Padding(
@@ -251,7 +251,7 @@ class _BuildAlertAddInDropdownState extends State<BuildAlertAddInDropdown> {
       //number
       if (item.insertType == "number" &&
           item.insertVisable == true &&
-          item.categoryTitle == categoryName &&
+          item.categoryName == categoryName &&
           item.insertDefult == show) {
         list.add(
           Padding(
@@ -294,7 +294,7 @@ class _BuildAlertAddInDropdownState extends State<BuildAlertAddInDropdown> {
       //Date
       if (item.insertType == "date" &&
           item.insertVisable == true &&
-          item.categoryTitle == categoryName &&
+          item.categoryName == categoryName &&
           item.insertDefult == show) {
         String date = '';
         list.add(
@@ -365,7 +365,7 @@ class _BuildAlertAddInDropdownState extends State<BuildAlertAddInDropdown> {
       //dropdown
       if (item.insertType == "dropdown" &&
           item.insertVisable == true &&
-          item.categoryTitle == categoryName &&
+          item.categoryName == categoryName &&
           item.insertDefult == show) {
         List<ListDrop>? listDrop = [];
         List<ItemDrop>? myListDrop = [];
@@ -485,7 +485,7 @@ class _BuildAlertAddInDropdownState extends State<BuildAlertAddInDropdown> {
       //checkbox
       if (item.insertType == "checkbox" &&
           item.insertVisable == true &&
-          item.categoryTitle == categoryName &&
+          item.categoryName == categoryName &&
           item.insertDefult == show) {
         bool checkboxValue = false;
         list.add(
@@ -527,10 +527,10 @@ class _BuildAlertAddInDropdownState extends State<BuildAlertAddInDropdown> {
     return list;
   }
 
-  List<String> getCategory(List<HeaderModel> columnList) {
+  List<String> getCategory(List<ColumnList> columnList) {
     List<String> category = [];
     for (var item in columnList) {
-      category.add(item.categoryTitle!);
+      category.add(item.categoryName!);
     }
     List<String> categoryList = category.toSet().toList();
     return categoryList;

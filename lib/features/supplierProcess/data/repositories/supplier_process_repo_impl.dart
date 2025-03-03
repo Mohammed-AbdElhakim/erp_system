@@ -7,6 +7,7 @@ import '../../../../core/utils/api_service.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../models/all_dropdown_model.dart';
 import '../models/header_model.dart';
+import '../models/screen_model.dart';
 import 'supplier_process_repo.dart';
 
 class SupplierProcessRepoImpl implements SupplierProcessRepo {
@@ -75,6 +76,65 @@ class SupplierProcessRepoImpl implements SupplierProcessRepo {
       }
 
       return right(headerList);
+    } catch (e) {
+      if (e is DioException) {
+        return left(
+          ServerFailure.fromDioException(e),
+        );
+      }
+      return left(
+        ServerFailure(
+          e.toString(),
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<Failure, ScreenModel>> getTable({
+    required int pageId,
+    required bool employee,
+    required bool isdesc,
+    required int limit,
+    required int offset,
+    required String orderby,
+    required String statment,
+    required String selectcolumns,
+    required bool isDepartment,
+    required String departmentName,
+    required int authorizationID,
+    required String viewEmployeeColumn,
+  }) async {
+    try {
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
+              "";
+      String token =
+          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      Map<String, dynamic> data = await apiService.post(
+        endPoint: "home/getGeneralTable",
+        data: {
+          "pageId": pageId,
+          "employee": employee,
+          "isdesc": isdesc,
+          "limit": limit,
+          "offset": offset,
+          "orderby": orderby,
+          "statment": statment,
+          "selectcolumns": selectcolumns,
+          "IsDepartment": isDepartment,
+          "DepartmentName": departmentName,
+          "AuthorizationID": authorizationID,
+          "ViewEmployeeColumn": viewEmployeeColumn
+        },
+        headers: {
+          "Authorization": "Bearer $token",
+          "CompanyKey": companyKey,
+        },
+      );
+      ScreenModel screenModel = ScreenModel.fromJson(data);
+
+      return right(screenModel);
     } catch (e) {
       if (e is DioException) {
         return left(

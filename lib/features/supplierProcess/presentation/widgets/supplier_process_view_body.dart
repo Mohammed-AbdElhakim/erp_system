@@ -1,32 +1,49 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
+import '../../../../core/helper/AlertDialog/custom_alert_dialog.dart';
+import '../../../../core/helper/SharedPreferences/pref.dart';
 import '../../../../core/models/menu_model/pages.dart';
+import '../../../../core/utils/api_service.dart';
 import '../../../../core/utils/app_colors.dart';
+import '../../../../core/utils/app_strings.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/service_locator.dart';
 import '../../../../core/widgets/custom_error_massage.dart';
 import '../../../../core/widgets/custom_loading_widget.dart';
+import '../../../../core/widgets/custom_text_form_field.dart';
+import '../../../../generated/l10n.dart';
+import '../../../home/presentation/widgets/home_view_body.dart';
 import '../../data/models/all_dropdown_model.dart';
 import '../../data/models/header_model.dart';
+import '../../data/models/permission_model.dart';
+import '../../data/models/screen_model.dart';
 import '../../data/repositories/supplier_process_repo_impl.dart';
+import '../manager/addEdit/add_edit_cubit.dart';
 import '../manager/getHeaderTable/get_header_table_cubit.dart';
 import '../manager/supplierProcess/supplier_process_cubit.dart';
 import '../views/supplier_process_view.dart';
+import 'build_alert_add_in_dropdown.dart';
 import 'custom_table_supplier_process.dart';
 import 'pagination_widget.dart';
 import 'tabs_widget.dart';
 
 class SupplierProcessViewBody extends StatefulWidget {
-  const SupplierProcessViewBody({super.key, required this.pageData});
+  const SupplierProcessViewBody({
+    super.key,
+    required this.listColumn,
+    required this.pageData,
+  });
 
+  final List<ColumnList> listColumn;
   final Pages pageData;
   @override
-  State<SupplierProcessViewBody> createState() =>
-      _SupplierProcessViewBodyState();
+  State<SupplierProcessViewBody> createState() => _SupplierProcessViewBodyState();
 }
 
 class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
@@ -117,13 +134,19 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
   }
 
   void initStatePage1() {
-    widgetsData.add({"widget": 1, "value": ""});
-    widgetsData.add({"widget": 2, "value": ""});
-    widgetsData.add({"widget": 3, "value": ""});
-    widgetsData.add({"widget": 4, "value": ""});
-    widgetsData.add({"widget": 5, "value": false});
-    widgetsData.add({"widget": 6, "value": false});
-
+    for (var i in widget.listColumn) {
+      if (i.insertType == "checkbox") {
+        widgetsData.add({"widget": i, "value": false});
+      } else if (i.insertType == "dropdown") {
+        if (i.isMulti == true) {
+          widgetsData.add({"widget": i, "value": []});
+        } else {
+          widgetsData.add({"widget": i, "value": ""});
+        }
+      } else {
+        widgetsData.add({"widget": i, "value": ""});
+      }
+    }
     myAllDropdownModelList = SupplierProcessView.myAllDropdownModelList;
   }
 
@@ -134,308 +157,29 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
   }
 
   _buildPage1() {
-    String? dropValue1;
-    for (var i in myAllDropdownModelList[0]
-        .list!
-        .firstWhere(
-          (element) => element.columnName == "supplierIDs",
-        )
-        .list!) {
-      if (i.id.toString() == widgetsData[0]['value'].toString()) {
-        dropValue1 = i.text ?? '';
+    //تقسيم ال list  الى مجموعات
+    final Map<String, List<Map<String, dynamic>>> groupData = {};
+    for (var item in widgetsData) {
+      if (!groupData.containsKey((item['widget'] as ColumnList).categoryName)) {
+        groupData[(item['widget'] as ColumnList).categoryName!] = [];
       }
+      groupData[(item['widget'] as ColumnList).categoryName]!.add(item);
     }
-
-    String? dropValue2;
-    for (var i in myAllDropdownModelList[0]
-        .list!
-        .firstWhere(
-          (element) => element.columnName == "CurrancyID",
-        )
-        .list!) {
-      if (i.id.toString() == widgetsData[1]['value'].toString()) {
-        dropValue2 = i.text ?? '';
-      }
-    }
-    String dateFrom = widgetsData[2]['value'] != ""
-        ? DateFormat("yyyy-MM-dd", 'en')
-            .format(DateTime.parse(widgetsData[2]['value']))
-        : "";
-    String dateTo = widgetsData[3]['value'] != ""
-        ? DateFormat("yyyy-MM-dd", 'en')
-            .format(DateTime.parse(widgetsData[3]['value']))
-        : "";
     return Padding(
       padding: const EdgeInsets.all(12),
       child: Scaffold(
-        body: Column(
+        body: ListView(
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 5),
-              child: Column(
+            ...groupData.entries.map((entry) {
+              return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    "المورد",
-                    style: AppStyles.textStyle14.copyWith(color: Colors.grey),
-                  ),
-                  StatefulBuilder(
-                    builder: (context, dropSetState) {
-                      return SizedBox(
-                        height: 40,
-                        child: CustomDropdown<String>.search(
-                          hintText: '',
-                          initialItem: dropValue1,
-                          closedHeaderPadding: const EdgeInsets.symmetric(
-                              horizontal: 15, vertical: 8),
-                          decoration: CustomDropdownDecoration(
-                            headerStyle: AppStyles.textStyle16
-                                .copyWith(color: Colors.black),
-                            closedFillColor: Colors.transparent,
-                            closedBorder: Border.all(color: AppColors.blueDark),
-                          ),
-                          items: List.generate(
-                            myAllDropdownModelList[0]
-                                .list!
-                                .firstWhere(
-                                  (element) =>
-                                      element.columnName == "supplierIDs",
-                                )
-                                .list!
-                                .length,
-                            (index) {
-                              return myAllDropdownModelList[0]
-                                      .list!
-                                      .firstWhere(
-                                        (element) =>
-                                            element.columnName == "supplierIDs",
-                                      )
-                                      .list![index]
-                                      .text ??
-                                  "";
-                            },
-                          ),
-                          onChanged: (value) {
-                            dropSetState(() {
-                              ItemDrop ii = myAllDropdownModelList[0]
-                                  .list!
-                                  .firstWhere(
-                                    (element) =>
-                                        element.columnName == "supplierIDs",
-                                  )
-                                  .list!
-                                  .firstWhere(
-                                      (element) => element.text == value);
-                              widgetsData[0]['value'] = "";
-                              widgetsData[0]['value'] = ii.id;
-                            });
-                          },
-                        ),
-                      );
-                    },
-                  ),
+                  buildCategoryName(entry),
+                  buildCategoryChildren(entry),
                 ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 5),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "العملة",
-                    style: AppStyles.textStyle14.copyWith(color: Colors.grey),
-                  ),
-                  StatefulBuilder(
-                    builder: (context, dropSetState) {
-                      return SizedBox(
-                        height: 40,
-                        child: CustomDropdown<String>.search(
-                          hintText: '',
-                          initialItem: dropValue2,
-                          closedHeaderPadding: const EdgeInsets.symmetric(
-                              horizontal: 15, vertical: 8),
-                          decoration: CustomDropdownDecoration(
-                            headerStyle: AppStyles.textStyle16
-                                .copyWith(color: Colors.black),
-                            closedFillColor: Colors.transparent,
-                            closedBorder: Border.all(color: AppColors.blueDark),
-                          ),
-                          items: List.generate(
-                            myAllDropdownModelList[0]
-                                .list!
-                                .firstWhere(
-                                  (element) =>
-                                      element.columnName == "CurrancyID",
-                                )
-                                .list!
-                                .length,
-                            (index) {
-                              return myAllDropdownModelList[0]
-                                      .list!
-                                      .firstWhere(
-                                        (element) =>
-                                            element.columnName == "CurrancyID",
-                                      )
-                                      .list![index]
-                                      .text ??
-                                  "";
-                            },
-                          ),
-                          onChanged: (value) {
-                            dropSetState(() {
-                              ItemDrop ii = myAllDropdownModelList[0]
-                                  .list!
-                                  .firstWhere(
-                                    (element) =>
-                                        element.columnName == "CurrancyID",
-                                  )
-                                  .list!
-                                  .firstWhere(
-                                      (element) => element.text == value);
-                              widgetsData[1]['value'] = "";
-                              widgetsData[1]['value'] = ii.id;
-                            });
-                          },
-                        ),
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 5),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "تاريخ من",
-                    style: AppStyles.textStyle14.copyWith(color: Colors.grey),
-                  ),
-                  StatefulBuilder(
-                    builder: (context, dsetState) {
-                      return InkWell(
-                        onTap: () async {
-                          DateTime? dateTime = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime(1980),
-                            lastDate: DateTime(2100),
-                          );
-                          if (dateTime != null) {
-                            dsetState(() {
-                              dateFrom = DateFormat("yyyy-MM-dd", 'en')
-                                  .format(dateTime);
-                              widgetsData[2]['value'] = "";
-                              widgetsData[2]['value'] = dateTime.toString();
-                            });
-                          }
-                        },
-                        child: Container(
-                            height: 40,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(color: AppColors.blueDark)),
-                            alignment: Alignment.center,
-                            padding: const EdgeInsets.all(8),
-                            child: Text(
-                              dateFrom,
-                              textAlign: TextAlign.center,
-                              style: AppStyles.textStyle14
-                                  .copyWith(color: Colors.black),
-                            )),
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 5),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "تاريخ إلى",
-                    style: AppStyles.textStyle14.copyWith(color: Colors.grey),
-                  ),
-                  StatefulBuilder(
-                    builder: (context, dsetState) {
-                      return InkWell(
-                        onTap: () async {
-                          DateTime? dateTime = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime(1980),
-                            lastDate: DateTime(2100),
-                          );
-                          if (dateTime != null) {
-                            dsetState(() {
-                              dateTo = DateFormat("yyyy-MM-dd", 'en')
-                                  .format(dateTime);
-                              widgetsData[3]['value'] = "";
-                              widgetsData[3]['value'] = dateTime.toString();
-                            });
-                          }
-                        },
-                        child: Container(
-                            height: 40,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(color: AppColors.blueDark)),
-                            alignment: Alignment.center,
-                            padding: const EdgeInsets.all(8),
-                            child: Text(
-                              dateTo,
-                              textAlign: TextAlign.center,
-                              style: AppStyles.textStyle14
-                                  .copyWith(color: Colors.black),
-                            )),
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),
-            StatefulBuilder(
-              builder: (context, csetState) {
-                return CheckboxListTile(
-                  contentPadding: EdgeInsets.zero,
-                  value: widgetsData[4]['value'],
-                  controlAffinity: ListTileControlAffinity.leading,
-                  title: Text(
-                    "عدم حساب الشيكات",
-                    style: AppStyles.textStyle14.copyWith(color: Colors.black),
-                  ),
-                  onChanged: (newValue) {
-                    csetState(() {
-                      widgetsData[4]['value'] = false;
-                      widgetsData[4]['value'] = newValue;
-                    });
-                  },
-                );
-              },
-            ),
-            StatefulBuilder(
-              builder: (context, csetState) {
-                return CheckboxListTile(
-                  contentPadding: EdgeInsets.zero,
-                  value: widgetsData[5]['value'],
-                  controlAffinity: ListTileControlAffinity.leading,
-                  title: Text(
-                    "استخدام الداتا السابقة",
-                    style: AppStyles.textStyle14.copyWith(color: Colors.black),
-                  ),
-                  onChanged: (newValue) {
-                    csetState(() {
-                      widgetsData[5]['value'] = false;
-                      widgetsData[5]['value'] = newValue;
-                    });
-                  },
-                );
-              },
-            ),
+              );
+            }).toList(),
+            const SizedBox(height: 80),
           ],
         ),
         floatingActionButton: FloatingActionButton(
@@ -461,8 +205,8 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
               "ViewEmployeeColumn": "",
               "OrderBy": "EDate",
               "IsDesc": true,
-              "tableName": "[ProfAccount]",
-              "listName": "ProfAccount",
+              "tableName": widget.pageData.tableName,
+              "listName": widget.pageData.listName,
               "tailcondition": "",
             });
             _pageController.jumpToPage(2);
@@ -477,20 +221,18 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
         ? MultiBlocProvider(
             providers: [
               BlocProvider(
-                create: (context) =>
-                    SupplierProcessCubit(getIt.get<SupplierProcessRepoImpl>())
-                      ..getTableSupplierProcess(
-                        selectTab: selectTab,
-                        objectData: myData,
-                        numberOfPage: numberPage,
-                        link: "ProfAccount",
-                        dropdownValueOfLimit: dropdownValue,
-                      ),
+                create: (context) => SupplierProcessCubit(getIt.get<SupplierProcessRepoImpl>())
+                  ..getTableSupplierProcess(
+                    selectTab: selectTab,
+                    objectData: myData,
+                    numberOfPage: numberPage,
+                    link: "ProfAccount",
+                    dropdownValueOfLimit: dropdownValue,
+                  ),
               ),
               BlocProvider(
-                create: (context) =>
-                    GetHeaderTableCubit(getIt.get<SupplierProcessRepoImpl>())
-                      ..getHeaderTable(listName: "ProfAccount"),
+                create: (context) => GetHeaderTableCubit(getIt.get<SupplierProcessRepoImpl>())
+                  ..getHeaderTable(listName: "ProfAccount"),
               ),
             ],
             child: BlocBuilder<GetHeaderTableCubit, GetHeaderTableState>(
@@ -504,15 +246,12 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                       headerList.add(item);
                     }
                   }
-                  return BlocBuilder<SupplierProcessCubit,
-                      SupplierProcessState>(
+                  return BlocBuilder<SupplierProcessCubit, SupplierProcessState>(
                     builder: (context, state) {
                       if (state is SupplierProcessSuccess) {
-                        int? numberOfRecords =
-                            state.accountProfModel.numberofrecords;
+                        int? numberOfRecords = state.accountProfModel.numberofrecords;
 
-                        List<dynamic>? listData =
-                            state.accountProfModel.dynamicList;
+                        List<dynamic>? listData = state.accountProfModel.dynamicList;
 
                         numberPage = state.numberPage;
                         selectTab = state.selectTap;
@@ -524,8 +263,7 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                           pageData: widget.pageData,
                           listData: listData!,
                           listColumn: headerList,
-                          allDropdownModelList:
-                              SupplierProcessView.myAllDropdownModelList,
+                          allDropdownModelList: SupplierProcessView.myAllDropdownModelList,
                           paginationWidget: PaginationWidget(
                             allPages: allPages,
                             dropdownValue: dropdownValue,
@@ -536,8 +274,7 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                               setState(() {
                                 dropdownValue = limit;
                                 numberPage = 1;
-                                allPages = (numberOfRecords % dropdownValue) ==
-                                        0
+                                allPages = (numberOfRecords % dropdownValue) == 0
                                     ? (numberOfRecords ~/ dropdownValue)
                                     : (numberOfRecords ~/ dropdownValue) + 1;
                               });
@@ -603,8 +340,7 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                                   createMyData(data: {
                                     "employee": false,
                                     "limit": dropdownValue,
-                                    "offset": (numberPage * dropdownValue) -
-                                        dropdownValue,
+                                    "offset": (numberPage * dropdownValue) - dropdownValue,
                                     "statment": "",
                                     "selectcolumns": "",
                                     "IsDepartment": false,
@@ -613,12 +349,12 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                                     "ViewEmployeeColumn": "",
                                     "OrderBy": "EDate",
                                     "IsDesc": true,
-                                    "tableName": "[ProfAccount]",
-                                    "listName": "ProfAccount",
+                                    "tableName": widget.pageData.tableName,
+                                    "listName": widget.pageData.listName,
                                     "tailcondition": "",
                                   });
                                   BlocProvider.of<GetHeaderTableCubit>(context)
-                                      .getHeaderTable(listName: "ProfAccount");
+                                      .getHeaderTable(listName: widget.pageData.tableName);
                                   BlocProvider.of<SupplierProcessCubit>(context)
                                       .getTableSupplierProcess(
                                     selectTab: selectTab,
@@ -629,26 +365,13 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                                   );
                                   break;
                                 case 1:
-                                  String till = "";
-                                  if (widgetsData[0]['value'] != "") {
-                                    till =
-                                        "${till}POID is not null AND SupplierID= ${widgetsData[0]['value']} ";
-                                  }
-                                  if (widgetsData[2]['value'] != "") {
-                                    till =
-                                        "${till}AND PODate >= CONVERT(DATETIME,'${widgetsData[2]['value']}', 102) ";
-                                  }
-                                  if (widgetsData[3]['value'] != "") {
-                                    till =
-                                        "${till}AND PODate <= CONVERT(DATETIME,'${widgetsData[3]['value']}', 102) ";
-                                  }
+                                  String tailCondition = getTailConditionInCase1();
 
                                   createMyData(data: {
                                     // "pageId": 289,
                                     "employee": false,
                                     "limit": dropdownValue,
-                                    "offset": (numberPage * dropdownValue) -
-                                        dropdownValue,
+                                    "offset": (numberPage * dropdownValue) - dropdownValue,
                                     "statment": "",
                                     "selectcolumns": "",
                                     "IsDepartment": false,
@@ -661,11 +384,10 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                                     "IsDesc": true,
                                     "tableName": "[PurchaseDetialView]",
                                     "listName": "PurchaseDetailReport",
-                                    "tailcondition": till,
+                                    "tailcondition": tailCondition,
                                   });
                                   BlocProvider.of<GetHeaderTableCubit>(context)
-                                      .getHeaderTable(
-                                          listName: "PurchaseDetailReport");
+                                      .getHeaderTable(listName: "PurchaseDetailReport");
                                   BlocProvider.of<SupplierProcessCubit>(context)
                                       .getTableSupplierProcess(
                                     selectTab: selectTab,
@@ -676,26 +398,13 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                                   );
                                   break;
                                 case 2:
-                                  String till = "";
-                                  if (widgetsData[0]['value'] != "") {
-                                    till =
-                                        "${till}PRID is not null AND SupplierID= ${widgetsData[0]['value']} ";
-                                  }
-                                  if (widgetsData[2]['value'] != "") {
-                                    till =
-                                        "${till}AND ActualPayDate >= CONVERT(DATETIME,'${widgetsData[2]['value']}', 102) ";
-                                  }
-                                  if (widgetsData[3]['value'] != "") {
-                                    till =
-                                        "${till}AND ActualPayDate <= CONVERT(DATETIME,'${widgetsData[3]['value']}', 102) ";
-                                  }
+                                  String tailCondition = getTailConditionInCase2();
 
                                   createMyData(data: {
                                     // "pageId": 289,
                                     "employee": false,
                                     "limit": dropdownValue,
-                                    "offset": (numberPage * dropdownValue) -
-                                        dropdownValue,
+                                    "offset": (numberPage * dropdownValue) - dropdownValue,
                                     "statment": "",
                                     "selectcolumns": "",
                                     "IsDepartment": false,
@@ -708,11 +417,10 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                                     "IsDesc": true,
                                     "listName": "SupplierPaymentReport",
                                     "tableName": "[PaymentReciveView]",
-                                    "tailcondition": till,
+                                    "tailcondition": tailCondition,
                                   });
                                   BlocProvider.of<GetHeaderTableCubit>(context)
-                                      .getHeaderTable(
-                                          listName: "SupplierPaymentReport");
+                                      .getHeaderTable(listName: "SupplierPaymentReport");
                                   BlocProvider.of<SupplierProcessCubit>(context)
                                       .getTableSupplierProcess(
                                     selectTab: selectTab,
@@ -723,26 +431,13 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                                   );
                                   break;
                                 case 3:
-                                  String till = "";
-                                  if (widgetsData[0]['value'] != "") {
-                                    till =
-                                        "${till}ExtractionID is not null AND SupplierID= ${widgetsData[0]['value']} ";
-                                  }
-                                  if (widgetsData[2]['value'] != "") {
-                                    till =
-                                        "${till}AND ExtractionDate >= CONVERT(DATETIME,'${widgetsData[2]['value']}', 102) ";
-                                  }
-                                  if (widgetsData[3]['value'] != "") {
-                                    till =
-                                        "${till}AND ExtractionDate <= CONVERT(DATETIME,'${widgetsData[3]['value']}', 102) ";
-                                  }
+                                  String tailCondition = getTailConditionInCase3();
 
                                   createMyData(data: {
                                     // "pageId": widget.pageData.pageId,
                                     "employee": false,
                                     "limit": dropdownValue,
-                                    "offset": (numberPage * dropdownValue) -
-                                        dropdownValue,
+                                    "offset": (numberPage * dropdownValue) - dropdownValue,
                                     "statment": "",
                                     "selectcolumns": "",
                                     "IsDepartment": false,
@@ -755,12 +450,10 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                                     "IsDesc": true,
                                     "listName": "ExtractionDetailsReportList",
                                     "tableName": "[ExtractionDetailsReport]",
-                                    "tailcondition": till,
+                                    "tailcondition": tailCondition,
                                   });
                                   BlocProvider.of<GetHeaderTableCubit>(context)
-                                      .getHeaderTable(
-                                          listName:
-                                              "ExtractionDetailsReportList");
+                                      .getHeaderTable(listName: "ExtractionDetailsReportList");
                                   BlocProvider.of<SupplierProcessCubit>(context)
                                       .getTableSupplierProcess(
                                     selectTab: selectTab,
@@ -771,25 +464,12 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                                   );
                                   break;
                                 case 4:
-                                  String till = "";
-                                  if (widgetsData[0]['value'] != "") {
-                                    till =
-                                        "${till}ExtractionMasterID is not null AND SupplierID= ${widgetsData[0]['value']} ";
-                                  }
-                                  if (widgetsData[2]['value'] != "") {
-                                    till =
-                                        "${till}AND ExtractionDate >= CONVERT(DATETIME,'${widgetsData[2]['value']}', 102) ";
-                                  }
-                                  if (widgetsData[3]['value'] != "") {
-                                    till =
-                                        "${till}AND ExtractionDate <= CONVERT(DATETIME,'${widgetsData[3]['value']}', 102) ";
-                                  }
+                                  String tailCondition = getTailConditionInCase4();
 
                                   createMyData(data: {
                                     "employee": false,
                                     "limit": dropdownValue,
-                                    "offset": (numberPage * dropdownValue) -
-                                        dropdownValue,
+                                    "offset": (numberPage * dropdownValue) - dropdownValue,
                                     "statment": "",
                                     "selectcolumns": "",
                                     "IsDepartment": false,
@@ -802,12 +482,10 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                                     "IsDesc": true,
                                     "listName": "ExtractionTotalReportList",
                                     "tableName": "[ExtractionTotalReport]",
-                                    "tailcondition": till,
+                                    "tailcondition": tailCondition,
                                   });
                                   BlocProvider.of<GetHeaderTableCubit>(context)
-                                      .getHeaderTable(
-                                          listName:
-                                              "ExtractionTotalReportList");
+                                      .getHeaderTable(listName: "ExtractionTotalReportList");
                                   BlocProvider.of<SupplierProcessCubit>(context)
                                       .getTableSupplierProcess(
                                     selectTab: selectTab,
@@ -821,8 +499,7 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                                   createMyData(data: {
                                     "employee": false,
                                     "limit": dropdownValue,
-                                    "offset": (numberPage * dropdownValue) -
-                                        dropdownValue,
+                                    "offset": (numberPage * dropdownValue) - dropdownValue,
                                     "statment": "",
                                     "selectcolumns": "",
                                     "IsDepartment": false,
@@ -838,8 +515,7 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                                     "tailcondition": "",
                                   });
                                   BlocProvider.of<GetHeaderTableCubit>(context)
-                                      .getHeaderTable(
-                                          listName: "ProfAccountDetails");
+                                      .getHeaderTable(listName: "ProfAccountDetails");
                                   BlocProvider.of<SupplierProcessCubit>(context)
                                       .getTableSupplierProcess(
                                     selectTab: selectTab,
@@ -854,8 +530,7 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                           ),
                         );
                       } else if (state is SupplierProcessFailure) {
-                        return CustomErrorMassage(
-                            errorMassage: state.errorMassage);
+                        return CustomErrorMassage(errorMassage: state.errorMassage);
                       } else {
                         return const CustomLoadingWidget();
                       }
@@ -872,19 +547,546 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
         : const SizedBox();
   }
 
+  String getTailConditionInCase1() {
+    String till = "POID is not null ";
+    for (var i in widgetsData) {
+      if ((i["widget"] as ColumnList).columnName == "supplierID" && i['value'] != "") {
+        till = "${till}AND SupplierID= ${i['value']} ";
+      }
+      if ((i["widget"] as ColumnList).columnName == "datefrom" && i['value'] != "") {
+        till = "${till}AND PODate >= CONVERT(DATETIME,'${i['value']}', 102) ";
+      }
+      if ((i["widget"] as ColumnList).columnName == "dateto" && i['value'] != "") {
+        till = "${till}AND PODate <= CONVERT(DATETIME,'${widgetsData[3]['value']}', 102) ";
+      }
+      if ((i["widget"] as ColumnList).columnName == "ProductID" && i['value'] != "") {
+        till = "${till}AND ProjectID= ${i['value']} ";
+      }
+      if ((i["widget"] as ColumnList).columnName == "ConstSupplierMasterId" && i['value'] != "") {
+        till = "${till}AND ConstSupplierMasterId= ${i['value']} ";
+      }
+    }
+    return till;
+  }
+
+  String getTailConditionInCase2() {
+    String till = "PRID is not null ";
+    for (var i in widgetsData) {
+      if ((i["widget"] as ColumnList).columnName == "supplierID" && i['value'] != "") {
+        till = "${till}AND SupplierID= ${i['value']} ";
+      }
+      if ((i["widget"] as ColumnList).columnName == "datefrom" && i['value'] != "") {
+        till = "${till}AND ActualPayDate >= CONVERT(DATETIME,'${i['value']}', 102) ";
+      }
+      if ((i["widget"] as ColumnList).columnName == "dateto" && i['value'] != "") {
+        till = "${till}AND ActualPayDate <= CONVERT(DATETIME,'${widgetsData[3]['value']}', 102) ";
+      }
+      if ((i["widget"] as ColumnList).columnName == "ProductID" && i['value'] != "") {
+        till = "${till}AND ProjectID= ${i['value']} ";
+      }
+      if ((i["widget"] as ColumnList).columnName == "ConstSupplierMasterId" && i['value'] != "") {
+        till = "${till}AND ConstSupplierMasterId= ${i['value']} ";
+      }
+    }
+    return till;
+  }
+
+  String getTailConditionInCase3() {
+    String till = "ExtractionID is not null ";
+    for (var i in widgetsData) {
+      if ((i["widget"] as ColumnList).columnName == "supplierID" && i['value'] != "") {
+        till = "${till}AND SupplierID= ${i['value']} ";
+      }
+      if ((i["widget"] as ColumnList).columnName == "datefrom" && i['value'] != "") {
+        till = "${till}AND ExtractionDate >= CONVERT(DATETIME,'${i['value']}', 102) ";
+      }
+      if ((i["widget"] as ColumnList).columnName == "dateto" && i['value'] != "") {
+        till = "${till}AND ExtractionDate <= CONVERT(DATETIME,'${widgetsData[3]['value']}', 102) ";
+      }
+      if ((i["widget"] as ColumnList).columnName == "ProductID" && i['value'] != "") {
+        till = "${till}AND ProjectID= ${i['value']} ";
+      }
+      if ((i["widget"] as ColumnList).columnName == "ConstSupplierMasterId" && i['value'] != "") {
+        till = "${till}AND ConstSupplierMasterId= ${i['value']} ";
+      }
+    }
+    return till;
+  }
+
+  String getTailConditionInCase4() {
+    String till = "ExtractionMasterID is not null ";
+    for (var i in widgetsData) {
+      if ((i["widget"] as ColumnList).columnName == "supplierID" && i['value'] != "") {
+        till = "${till}AND SupplierID= ${i['value']} ";
+      }
+      if ((i["widget"] as ColumnList).columnName == "datefrom" && i['value'] != "") {
+        till = "${till}AND ExtractionDate >= CONVERT(DATETIME,'${i['value']}', 102) ";
+      }
+      if ((i["widget"] as ColumnList).columnName == "dateto" && i['value'] != "") {
+        till = "${till}AND ExtractionDate <= CONVERT(DATETIME,'${widgetsData[3]['value']}', 102) ";
+      }
+      if ((i["widget"] as ColumnList).columnName == "ProductID" && i['value'] != "") {
+        till = "${till}AND ProjectID= ${i['value']} ";
+      }
+      if ((i["widget"] as ColumnList).columnName == "ConstSupplierMasterId" && i['value'] != "") {
+        till = "${till}AND ConstSupplierMasterId= ${i['value']} ";
+      }
+    }
+    return till;
+  }
+
+  Widget buildCategoryChildren(MapEntry<String, List<Map<String, dynamic>>> entry) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ...List.generate(
+            entry.value.length,
+            (index) {
+              final widgetData = entry.value[index];
+              ColumnList itemColumnList = widgetData['widget'];
+              String title = lang == AppStrings.arLangKey
+                  ? itemColumnList.arColumnLabel!
+                  : itemColumnList.enColumnLabel!;
+              if (itemColumnList.insertType == "text") {
+                return buildTextAndNumberWidget(
+                    title, itemColumnList, widgetData, TextInputType.text);
+              } else if (itemColumnList.insertType == "number") {
+                return buildTextAndNumberWidget(
+                    title, itemColumnList, widgetData, TextInputType.number);
+              } else if (itemColumnList.insertType == "checkbox") {
+                return buildCheckBoxWidget(widgetData, title, itemColumnList);
+              } else if (itemColumnList.insertType == "date") {
+                return buildDateWidget(title, itemColumnList, widgetData);
+              } else if (itemColumnList.insertType == "dropdown") {
+                return buildDropdownWidget(title, itemColumnList, widgetData);
+              } else {
+                return Text("${itemColumnList.insertType}");
+              }
+            },
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget buildTextAndNumberWidget(String title, ColumnList itemColumnList,
+      Map<String, dynamic> widgetData, TextInputType? keyboardType) {
+    return StatefulBuilder(
+      builder: (context, tNSetState) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 5),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    title,
+                    style: AppStyles.textStyle14.copyWith(color: Colors.grey),
+                  ),
+                  if (itemColumnList.isRquired! == true)
+                    const Icon(
+                      Icons.star,
+                      color: Colors.red,
+                      size: 10,
+                    )
+                ],
+              ),
+              CustomTextFormField(
+                hintText: '',
+                isValidator: itemColumnList.isRquired!,
+                keyboardType: keyboardType,
+                controller: TextEditingController(text: widgetData['value']),
+                onChanged: (value) {
+                  tNSetState(() {
+                    widgetData['value'] = "";
+                    widgetData['value'] = value;
+                  });
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget buildDateWidget(String title, ColumnList itemColumnList, Map<String, dynamic> widgetData) {
+    String date = widgetData['value'] != ""
+        ? DateFormat("yyyy-MM-dd", 'en').format(DateTime.parse(widgetData['value']))
+        : "";
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Text(
+                title,
+                style: AppStyles.textStyle14.copyWith(color: Colors.grey),
+              ),
+              if (itemColumnList.isRquired == true)
+                const Icon(
+                  Icons.star,
+                  color: Colors.red,
+                  size: 10,
+                )
+            ],
+          ),
+          StatefulBuilder(
+            builder: (context, dsetState) {
+              return InkWell(
+                onTap: () async {
+                  DateTime? dateTime = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(1980),
+                    lastDate: DateTime(2100),
+                  );
+                  if (dateTime != null) {
+                    dsetState(() {
+                      date = DateFormat("yyyy-MM-dd", 'en').format(dateTime);
+                      widgetData['value'] = "";
+                      widgetData['value'] = dateTime.toString();
+                    });
+                  }
+                },
+                child: Container(
+                    height: 40,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: AppColors.blueDark)),
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.all(8),
+                    child: Text(
+                      date,
+                      textAlign: TextAlign.center,
+                      style: AppStyles.textStyle14.copyWith(color: Colors.black),
+                    )),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildDropdownWidget(
+    String title,
+    ColumnList itemColumnList,
+    Map<String, dynamic> widgetData,
+  ) {
+    List<ListDrop>? listDrop = [];
+    List<ItemDrop>? myListDrop = [];
+
+    for (var ii in myAllDropdownModelList) {
+      if (ii.listName == widget.pageData.listName) {
+        listDrop = ii.list;
+      }
+    }
+    for (var ii in listDrop!) {
+      if (ii.columnName == itemColumnList.columnName) {
+        myListDrop = ii.list;
+      }
+    }
+    String? dropValue;
+    List<String> dropValueList = [];
+    if (itemColumnList.isMulti == true) {
+      for (var st in widgetData['value']) {
+        for (var i in myListDrop!) {
+          if (i.id.toString() == st) {
+            dropValueList.add(i.text ?? '');
+          }
+        }
+      }
+    } else {
+      for (var i in myListDrop!) {
+        if (i.id.toString() == widgetData['value'].toString()) {
+          dropValue = i.text ?? '';
+        }
+      }
+    }
+
+    Pages? dropPage = getDropPage(itemColumnList.pageId);
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Text(
+                title,
+                style: AppStyles.textStyle14.copyWith(color: Colors.grey),
+              ),
+              if (itemColumnList.isRquired == true)
+                const Icon(
+                  Icons.star,
+                  color: Colors.red,
+                  size: 10,
+                ),
+              const SizedBox(
+                width: 12,
+              ),
+              if (dropPage != null)
+                InkWell(
+                  onTap: () async {
+                    bool canAdd = await getPermissions(itemColumnList.pageId);
+                    if (canAdd == true) {
+                      getColumnListAndAdd(dropPage);
+                    } else {
+                      CustomAlertDialog.alertWithButton(
+                          context: context,
+                          type: AlertType.error,
+                          title: S.of(context).error,
+                          desc: S.of(context).massage_no_permission);
+                    }
+                  },
+                  child: const Icon(
+                    Icons.add,
+                    color: Colors.blue,
+                    size: 24,
+                  ),
+                ),
+              const SizedBox(
+                width: 5,
+              ),
+              // if (dropPage != null)
+              InkWell(
+                onTap: () async {
+                  getDropdownList(widget.pageData.pageId);
+                },
+                child: const Icon(
+                  Icons.refresh,
+                  color: Colors.green,
+                  size: 24,
+                ),
+              ),
+            ],
+          ),
+          StatefulBuilder(
+            builder: (context, dropSetState) {
+              return SizedBox(
+                height: 40,
+                child: itemColumnList.isMulti == false
+                    ? CustomDropdown<String>.search(
+                        hintText: '',
+                        initialItem: dropValue,
+                        closedHeaderPadding:
+                            const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                        decoration: CustomDropdownDecoration(
+                          headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
+                          closedFillColor: Colors.transparent,
+                          closedBorder: Border.all(color: AppColors.blueDark),
+                        ),
+                        items: myListDrop!.isEmpty
+                            ? [""]
+                            : List.generate(
+                                myListDrop.length, (index) => myListDrop![index].text ?? ''),
+                        onChanged: (value) {
+                          dropSetState(() {
+                            ItemDrop ii =
+                                myListDrop!.firstWhere((element) => element.text == value);
+                            widgetData['value'] = "";
+                            widgetData['value'] = ii.id;
+                          });
+                        },
+                      )
+                    : CustomDropdown<String>.multiSelectSearch(
+                        hintText: '',
+                        initialItems: dropValueList,
+                        onListChanged: (valueList) {
+                          dropSetState(() {
+                            widgetData['value'] = [];
+                            for (String i in valueList) {
+                              for (ItemDrop ii in myListDrop!) {
+                                if (ii.text == i) {
+                                  widgetData['value'].add(ii.id);
+                                }
+                              }
+                            }
+                          });
+                        },
+                        // initialItem: dropValue,
+                        closedHeaderPadding:
+                            const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                        decoration: CustomDropdownDecoration(
+                          headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
+                          closedFillColor: Colors.transparent,
+                          closedBorder: Border.all(color: AppColors.blueDark),
+                        ),
+                        items: myListDrop!.isEmpty
+                            ? [""]
+                            : List.generate(
+                                myListDrop.length, (index) => myListDrop![index].text ?? ''),
+                      ),
+              );
+            },
+          )
+        ],
+      ),
+    );
+  }
+
+  StatefulBuilder buildCheckBoxWidget(
+      Map<String, dynamic> widgetData, String title, ColumnList itemColumnList) {
+    return StatefulBuilder(
+      builder: (context, csetState) {
+        return CheckboxListTile(
+          contentPadding: EdgeInsets.zero,
+          value: widgetData['value'],
+          controlAffinity: ListTileControlAffinity.leading,
+          title: Row(
+            children: [
+              Text(
+                title,
+                style: AppStyles.textStyle14.copyWith(color: Colors.black),
+              ),
+              if (itemColumnList.isRquired == true)
+                const Icon(
+                  Icons.star,
+                  color: Colors.red,
+                  size: 10,
+                )
+            ],
+          ),
+          onChanged: (newValue) {
+            csetState(() {
+              widgetData['value'] = false;
+              widgetData['value'] = newValue;
+            });
+          },
+        );
+      },
+    );
+  }
+
+  Pages? getDropPage(int? pageId) {
+    for (var page in HomeViewBody.pagesList) {
+      if (page.pageId == pageId) {
+        return page;
+      }
+    }
+    return null;
+  }
+
+  Future<bool> getPermissions(int? pageId) async {
+    try {
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      Map<String, dynamic> data = await ApiService(Dio()).get(
+        endPoint: "home/GetPagePermissions?pageId=$pageId",
+        headers: {
+          "Authorization": "Bearer $token",
+          "CompanyKey": companyKey,
+        },
+      );
+      PermissionModel permissionModel = PermissionModel.fromJson(data);
+      return permissionModel.showNew;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  void getColumnListAndAdd(Pages page) async {
+    try {
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      Map<String, dynamic> data = await ApiService(Dio()).post(
+        endPoint: "home/getGeneralTable",
+        data: {
+          "pageId": page.pageId,
+          "employee": false,
+          "isdesc": page.isDesc,
+          "limit": 10,
+          "offset": 0,
+          "orderby": page.orderBy,
+          "statment": '',
+          "selectcolumns": '',
+          "IsDepartment": page.isDepartment,
+          "DepartmentName": page.departmentName,
+          "AuthorizationID": page.authorizationID,
+          "ViewEmployeeColumn": page.viewEmployeeColumn
+        },
+        headers: {
+          "Authorization": "Bearer $token",
+          "CompanyKey": companyKey,
+        },
+      );
+      ScreenModel screenModel = ScreenModel.fromJson(data);
+
+      List<ColumnList>? columnList = screenModel.columnList;
+      CustomAlertDialog.alertWithCustomContent(
+        context: context,
+        title: S.of(context).btn_add,
+        isOverlayTapDismiss: false,
+        isCloseButton: false,
+        content: BlocProvider(
+          create: (context) => AddEditCubit(getIt.get<SupplierProcessRepoImpl>()),
+          child: BuildAlertAddInDropdown(
+            columnList: columnList!,
+            pageData: page,
+            onTapBtn: (val) {
+              getDropdownList(widget.pageData.pageId);
+            },
+          ),
+        ),
+      );
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
+  void getDropdownList(int pageId) async {
+    try {
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      List<dynamic> data = await ApiService(Dio()).get(
+        endPoint: "home/GetPageDropDown?pageId=$pageId",
+        headers: {
+          "Authorization": "Bearer $token",
+          "CompanyKey": companyKey,
+        },
+      );
+
+      List<AllDropdownModel> dataList = [];
+      for (var i in data) {
+        dataList.add(AllDropdownModel.fromJson(i));
+      }
+
+      setState(() {
+        myAllDropdownModelList = dataList;
+      });
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
+  Container buildCategoryName(MapEntry<String, List<Map<String, dynamic>>> entry) {
+    return Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        decoration: BoxDecoration(
+            // color: AppColors.grey.withOpacity(.4),
+            color: AppColors.grey.withAlpha(102),
+            borderRadius: BorderRadius.circular(15)),
+        child: Text(
+          entry.key,
+          style: AppStyles.textStyle18.copyWith(color: Colors.black),
+        ));
+  }
+
   void createMyData({required Map<String, dynamic> data}) {
     // String tailCondition = "";
     Map<String, dynamic> params = {};
     myData = {};
     myData.addAll(data);
 
-    params["supplierID"] = widgetsData[0]['value'];
-    params["CurrancyID"] = widgetsData[1]['value'];
-    params["datefrom"] = widgetsData[2]['value'];
-    params["dateto"] = widgetsData[3]['value'];
-    params["DontShowCheque"] = widgetsData[4]['value'];
-    params["GettingFromTemp"] = widgetsData[5]['value'];
-
+    for (var i in widgetsData) {
+      params["${(i['widget'] as ColumnList).columnName}"] = i['value'];
+    }
     myData["Params"] = params;
   }
 }
