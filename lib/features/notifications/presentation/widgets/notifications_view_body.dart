@@ -33,8 +33,7 @@ class _NotificationsViewBodyState extends State<NotificationsViewBody> {
             }
             return OrientationBuilder(
               builder: (context, orientation) {
-                int crossAxisCount =
-                    orientation == Orientation.portrait ? 2 : 4;
+                int crossAxisCount = orientation == Orientation.portrait ? 2 : 4;
                 return GridView.builder(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: crossAxisCount,
@@ -49,16 +48,14 @@ class _NotificationsViewBodyState extends State<NotificationsViewBody> {
                     PagesForNotificationsModel pagesForNotificationsModel =
                         pagesNotificationsList[index];
                     Map<String, dynamic> body = {
-                      "pageId": pagesForNotificationsModel.pageId,
+                      "pageId": pagesForNotificationsModel.pageID,
                       "primary": pagesForNotificationsModel.primary,
                       "tableName": pagesForNotificationsModel.tableName,
                     };
                     return BlocProvider(
-                      create: (context) =>
-                          NotificationsCubit(getIt.get<NotificationsRepoImpl>())
-                            ..getNotifications(body: body),
-                      child:
-                          BlocBuilder<NotificationsCubit, NotificationsState>(
+                      create: (context) => NotificationsCubit(getIt.get<NotificationsRepoImpl>())
+                        ..getNotifications(body: body),
+                      child: BlocBuilder<NotificationsCubit, NotificationsState>(
                         builder: (context, state) {
                           return InkWell(
                             onTap: () {
@@ -66,16 +63,14 @@ class _NotificationsViewBodyState extends State<NotificationsViewBody> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => SubNotificationsView(
-                                    pagesForNotificationsModel:
-                                        pagesForNotificationsModel,
+                                    pagesForNotificationsModel: pagesForNotificationsModel,
                                     body: body,
                                   ),
                                 ),
                               );
                             },
                             child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 8, horizontal: 12),
+                              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                               alignment: AlignmentDirectional.centerStart,
                               decoration: BoxDecoration(
                                 color: AppColors.white,
@@ -90,33 +85,27 @@ class _NotificationsViewBodyState extends State<NotificationsViewBody> {
                                       spreadRadius: 1)
                                 ],
                               ),
-                              child: Column(
+                              child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 children: [
                                   Expanded(
                                     child: Text(
-                                      pagesForNotificationsModel
-                                          .pageNotification!.pageDisplay!,
-                                      style:
-                                          TextStyle(color: AppColors.blueDark),
+                                      pagesForNotificationsModel.pageDisplay!,
+                                      style: TextStyle(color: AppColors.blueDark),
                                     ),
                                   ),
-                                  Expanded(
-                                    child: Align(
-                                      alignment: AlignmentDirectional.centerEnd,
-                                      child: CircleAvatar(
-                                        radius: 13,
-                                        child: Text(
-                                          state is NotificationsSuccess
-                                              ? "${state.notificationsModel.numberofrecords}"
-                                              : "",
-                                          textAlign: TextAlign.end,
-                                          style: TextStyle(
-                                              color: AppColors.blueLight),
-                                        ),
-                                      ),
+                                  const SizedBox(
+                                    width: 8,
+                                  ),
+                                  CircleAvatar(
+                                    radius: 13,
+                                    child: Text(
+                                      state is NotificationsSuccess
+                                          ? "${state.notificationsModel.numberofrecords}"
+                                          : "",
+                                      textAlign: TextAlign.end,
+                                      style: TextStyle(color: AppColors.blueLight),
                                     ),
                                   ),
                                 ],

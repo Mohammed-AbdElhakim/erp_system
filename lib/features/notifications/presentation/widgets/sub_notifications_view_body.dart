@@ -12,9 +12,7 @@ import 'notification_list_item.dart';
 
 class SubNotificationsViewBody extends StatelessWidget {
   const SubNotificationsViewBody(
-      {super.key,
-      required this.notificationListItem,
-      required this.pagesForNotificationsModel});
+      {super.key, required this.notificationListItem, required this.pagesForNotificationsModel});
   final List<Map<String, dynamic>> notificationListItem;
   final PagesForNotificationsModel pagesForNotificationsModel;
 
@@ -31,10 +29,10 @@ class SubNotificationsViewBody extends StatelessWidget {
               itemBuilder: (context, index) {
                 return NotificationListItem(
                   onTap: () {
-                    Pages? page = getPage(pagesForNotificationsModel.pageId);
+                    Pages? page = getPage(pagesForNotificationsModel.pageID);
                     if (page != null) {
                       GoRouter.of(context).push(AppRouter.kScreenView,
-                          extra: getPage(pagesForNotificationsModel.pageId));
+                          extra: getPage(pagesForNotificationsModel.pageID));
                     } else {
                       CustomAlertDialog.alertWithButton(
                           context: context,
@@ -51,7 +49,7 @@ class SubNotificationsViewBody extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                          "${notificationListItem[index]['${pagesForNotificationsModel.viewEmployeeColumn}']}"),
+                          "${notificationListItem[index]['${pagesForNotificationsModel.viewEmployeeColumn}'] ?? ""}"),
                     ],
                   ),
                 );

@@ -14,9 +14,7 @@ import '../widgets/sub_notifications_view_body.dart';
 
 class SubNotificationsView extends StatelessWidget {
   const SubNotificationsView(
-      {super.key,
-      required this.pagesForNotificationsModel,
-      required this.body});
+      {super.key, required this.pagesForNotificationsModel, required this.body});
 
   final PagesForNotificationsModel pagesForNotificationsModel;
   final Map<String, dynamic> body;
@@ -25,14 +23,13 @@ class SubNotificationsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
-          NotificationsCubit(getIt.get<NotificationsRepoImpl>())
-            ..getNotifications(body: body),
+          NotificationsCubit(getIt.get<NotificationsRepoImpl>())..getNotifications(body: body),
       child: ChangeStatusBarColor(
         child: Scaffold(
           appBar: CustomAppBar(
             isPortrait: isOrientationPortrait(context),
             isTitleInPortrait: true,
-            title: pagesForNotificationsModel.pageNotification!.pageDisplay!,
+            title: pagesForNotificationsModel.pageDisplay!,
           ),
           body: BlocBuilder<NotificationsCubit, NotificationsState>(
             builder: (context, state) {
