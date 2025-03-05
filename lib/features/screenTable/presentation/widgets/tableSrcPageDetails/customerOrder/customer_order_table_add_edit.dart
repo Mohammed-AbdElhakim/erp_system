@@ -47,8 +47,7 @@ class CustomerOrderTableAddEdit extends StatefulWidget {
   static String barcode = '';
 
   @override
-  State<CustomerOrderTableAddEdit> createState() =>
-      _CustomerOrderTableAddEditState();
+  State<CustomerOrderTableAddEdit> createState() => _CustomerOrderTableAddEditState();
 }
 
 class _CustomerOrderTableAddEditState extends State<CustomerOrderTableAddEdit> {
@@ -99,8 +98,7 @@ class _CustomerOrderTableAddEditState extends State<CustomerOrderTableAddEdit> {
                         listKey: widget.listKey,
                         listHeader: widget.listHeader,
                         listColumn: widget.listColumn,
-                        allDropdownModelList:
-                            ScreenTable.myAllDropdownModelList,
+                        allDropdownModelList: ScreenTable.myAllDropdownModelList,
                         pageData: widget.pageData,
                         onTapAdd: (data) {
                           if (widget.typeView == "Add") {
@@ -165,8 +163,7 @@ class _CustomerOrderTableAddEditState extends State<CustomerOrderTableAddEdit> {
                       widget.onTapAction(tableListInAddView);
                     } else {
                       Map<String, dynamic> data = tableListInAddView.firstWhere(
-                        (element) =>
-                            element['ProductID'] == proData['ProductID'],
+                        (element) => element['ProductID'] == proData['ProductID'],
                         orElse: () => {},
                       );
                       if (data.isEmpty) {
@@ -184,10 +181,8 @@ class _CustomerOrderTableAddEditState extends State<CustomerOrderTableAddEdit> {
                       tableListInEditView.add(proData);
                       widget.onTapAction(tableListInEditView);
                     } else {
-                      Map<String, dynamic> data =
-                          tableListInEditView.firstWhere(
-                        (element) =>
-                            element['ProductID'] == proData['ProductID'],
+                      Map<String, dynamic> data = tableListInEditView.firstWhere(
+                        (element) => element['ProductID'] == proData['ProductID'],
                         orElse: () => {},
                       );
                       if (data.isEmpty) {
@@ -232,20 +227,17 @@ class _CustomerOrderTableAddEditState extends State<CustomerOrderTableAddEdit> {
                             listKey: widget.listKey,
                             listHeader: widget.listHeader,
                             listColumn: widget.listColumn,
-                            allDropdownModelList:
-                                ScreenTable.myAllDropdownModelList,
+                            allDropdownModelList: ScreenTable.myAllDropdownModelList,
                             pageData: widget.pageData,
                             onTapAdd: (data) {
                               if (widget.typeView == "Add") {
                                 tableListInAddView.removeAt(indexSelect.first);
-                                tableListInAddView.insert(
-                                    indexSelect.first, data);
+                                tableListInAddView.insert(indexSelect.first, data);
                                 indexSelect.clear();
                                 widget.onTapAction(tableListInAddView);
                               } else if (widget.typeView == "Edit") {
                                 tableListInEditView.removeAt(indexSelect.first);
-                                tableListInEditView.insert(
-                                    indexSelect.first, data);
+                                tableListInEditView.insert(indexSelect.first, data);
                                 indexSelect.clear();
                                 widget.onTapAction(tableListInEditView);
                               }
@@ -367,9 +359,7 @@ class _CustomerOrderTableAddEditState extends State<CustomerOrderTableAddEdit> {
                   )
                 ],
                 rows: List.generate(
-                  widget.typeView == "Add"
-                      ? tableListInAddView.length
-                      : tableListInEditView.length,
+                  widget.typeView == "Add" ? tableListInAddView.length : tableListInEditView.length,
                   (index) {
                     return DataRow(
                       cells: [
@@ -396,17 +386,15 @@ class _CustomerOrderTableAddEditState extends State<CustomerOrderTableAddEdit> {
                             SizedBox(
                               width: 130,
                               child: InkWell(
-                                onTap: widget.listColumn[i].insertType! !=
-                                        "date"
+                                onTap: widget.listColumn[i].insertType! != "date"
                                     ? () {
                                         buildShowDialogText(
                                           context,
                                           text: widget.typeView == "Add"
-                                              ? tableListInAddView[index][widget
-                                                  .listColumn[i].columnName]
-                                              : tableListInEditView[index][
-                                                  widget.listColumn[i]
-                                                      .columnName],
+                                              ? tableListInAddView[index]
+                                                  [widget.listColumn[i].columnName]
+                                              : tableListInEditView[index]
+                                                  [widget.listColumn[i].columnName],
                                         );
                                       }
                                     : null,
@@ -414,14 +402,9 @@ class _CustomerOrderTableAddEditState extends State<CustomerOrderTableAddEdit> {
                                   color: indexSelect.contains(index)
                                       ? AppColors.blueGreyDark
                                       : Colors.transparent,
-                                  width:
-                                      widget.listColumn[i].toString().length >
-                                              12
-                                          ? 100
-                                          : null,
+                                  width: widget.listColumn[i].toString().length > 12 ? 100 : null,
                                   alignment: Alignment.center,
-                                  child: buildMyWidget(
-                                      widget.listColumn[i], index),
+                                  child: buildMyWidget(widget.listColumn[i], index),
                                 ),
                               ),
                             ),
@@ -487,11 +470,11 @@ class _CustomerOrderTableAddEditState extends State<CustomerOrderTableAddEdit> {
 
   buildMyWidget(ItemListSetupModel columnList, int indexRow) {
     String data;
-    Map<String, dynamic> dataRow = widget.typeView == "Add"
-        ? tableListInAddView[indexRow]
-        : tableListInEditView[indexRow];
+    Map<String, dynamic> dataRow =
+        widget.typeView == "Add" ? tableListInAddView[indexRow] : tableListInEditView[indexRow];
     if (dataRow.containsKey(columnList.columnName)) {
-      data = dataRow[columnList.columnName].toString();
+      data =
+          dataRow[columnList.columnName] == null ? "" : dataRow[columnList.columnName].toString();
     } else {
       data = '';
     }
@@ -499,17 +482,14 @@ class _CustomerOrderTableAddEditState extends State<CustomerOrderTableAddEdit> {
     switch (columnList.insertType) {
       case "date":
         String date = data.isNotEmpty
-            ? DateFormat("yyyy-MM-dd", "en")
-                .format(DateTime.parse(data).toLocal())
+            ? DateFormat("yyyy-MM-dd", "en").format(DateTime.parse(data).toLocal())
             : '';
         return Text(
           textAlign: TextAlign.center,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           date == "0001-12-31" || date == "0000-12-31" ? '' : date,
-          style: TextStyle(
-              color:
-                  indexSelect.contains(indexRow) ? Colors.white : Colors.black),
+          style: TextStyle(color: indexSelect.contains(indexRow) ? Colors.white : Colors.black),
         );
       case "checkbox":
         if (data == "true") {
@@ -543,8 +523,7 @@ class _CustomerOrderTableAddEditState extends State<CustomerOrderTableAddEdit> {
           }
         }
         for (var ii in listDrop!) {
-          if (ii.columnName == columnList.columnName &&
-              ii.nameAr == columnList.arColumnLabel) {
+          if (ii.columnName == columnList.columnName && ii.nameAr == columnList.arColumnLabel) {
             myListDrop = ii.list;
           }
         }
@@ -559,9 +538,7 @@ class _CustomerOrderTableAddEditState extends State<CustomerOrderTableAddEdit> {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           val,
-          style: TextStyle(
-              color:
-                  indexSelect.contains(indexRow) ? Colors.white : Colors.black),
+          style: TextStyle(color: indexSelect.contains(indexRow) ? Colors.white : Colors.black),
         );
       default:
         return Text(
@@ -569,9 +546,7 @@ class _CustomerOrderTableAddEditState extends State<CustomerOrderTableAddEdit> {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           data,
-          style: TextStyle(
-              color:
-                  indexSelect.contains(indexRow) ? Colors.white : Colors.black),
+          style: TextStyle(color: indexSelect.contains(indexRow) ? Colors.white : Colors.black),
         );
     }
   }
