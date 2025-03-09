@@ -10,6 +10,7 @@ import '../../features/chart/data/repositories/chart_repo_impl.dart';
 import '../../features/customerAccount/data/repositories/customer_account_repo_impl.dart';
 import '../../features/dashboard/data/repositories/dashboard_repo_impl.dart';
 import '../../features/generalBalance/data/repositories/general_balance_repo_impl.dart';
+import '../../features/inventoryProduct/data/repositories/trial_balance_repo_impl.dart';
 import '../../features/notifications/data/repositories/notifications_repo_impl.dart';
 import '../../features/productCard/data/repositories/product_card_repo_impl.dart';
 import '../../features/profile/data/repositories/profile_repo_impl.dart';
@@ -142,6 +143,11 @@ void setupServiceLocator() {
 
   getIt.registerSingleton<ProjectProcessRepoImpl>(
     ProjectProcessRepoImpl(
+      getIt.get<ApiService>(),
+    ),
+  );
+  getIt.registerSingleton<InventoryProductRepoImpl>(
+    InventoryProductRepoImpl(
       getIt.get<ApiService>(),
     ),
   );
