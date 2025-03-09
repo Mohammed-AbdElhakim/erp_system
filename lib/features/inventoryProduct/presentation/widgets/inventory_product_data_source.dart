@@ -22,8 +22,11 @@ class InventoryProductDataSource extends DataGridSource {
       inventoryProductFinallyList = inventoryProduct
           .where(
             (element) =>
-                element.acName!.contains(controllerSearch) ||
-                element.acIndex!.toString().contains(controllerSearch),
+                element.acName!.toUpperCase().contains(controllerSearch.toUpperCase()) ||
+                element.acIndex!
+                    .toString()
+                    .toUpperCase()
+                    .contains(controllerSearch.toUpperCase()),
           )
           .toList();
     }
