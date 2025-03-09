@@ -1,6 +1,8 @@
+import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/utils/app_colors.dart';
+import '../../../../core/utils/app_styles.dart';
 import '../../../../generated/l10n.dart';
 
 typedef OnChangeLimit<int> = void Function(int limit);
@@ -98,29 +100,29 @@ class _PaginationWidgetState extends State<PaginationWidget> {
           ),
         ),
         Padding(
-          padding: const EdgeInsetsDirectional.only(end: 65),
+          padding: const EdgeInsetsDirectional.only(bottom: 8),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Text("${S.of(context).Total_number_of_entries}  ${widget.numberOfRecords}"),
               SizedBox(
-                  height: 50.0,
-                  width: 110.0,
-                  child: DropdownButton(
-                    value: widget.dropdownValue,
-                    elevation: 16,
-                    isExpanded: true,
-                    underline: const SizedBox(),
-                    onChanged: (int? newValue) {
-                      widget.onChangeLimit(newValue!);
-                    },
-                    items: widget.listNumberItemInList.map<DropdownMenuItem<int>>((int value) {
-                      return DropdownMenuItem<int>(
-                        value: value,
-                        child: Center(child: Text(value.toString())),
-                      );
-                    }).toList(),
-                  )),
+                height: 50.0,
+                width: 110.0,
+                child: CustomDropdown<int>(
+                  hintText: '',
+                  initialItem: widget.dropdownValue,
+                  closedHeaderPadding:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                  decoration: CustomDropdownDecoration(
+                    headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
+                    closedFillColor: Colors.transparent,
+                  ),
+                  items: widget.listNumberItemInList,
+                  onChanged: (selectValue) {
+                    widget.onChangeLimit(selectValue!);
+                  },
+                ),
+              ),
             ],
           ),
         )
