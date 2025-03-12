@@ -30,3 +30,6 @@ LinearGradient gradientContainer = LinearGradient(
     AppColors.blueLight,
   ],
 );
+
+// String spaceBetweenWords="#\$%^@";
+String spaceBetweenWords = " ";

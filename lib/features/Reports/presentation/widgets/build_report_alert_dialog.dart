@@ -77,7 +77,7 @@ class _BuildReportAlertDialogState extends State<BuildReportAlertDialog> {
           departmentName: widget.pageData.departmentName,
           authorizationID: widget.pageData.authorizationID,
           viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
-          tailcondition: widget.tailCondition,
+          tailcondition: "",
           numberOfPage: 1,
           dropdownValueOfLimit: 10),
       child: BlocBuilder<GetTableCubit, GetTableState>(

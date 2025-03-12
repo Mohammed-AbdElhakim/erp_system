@@ -8,6 +8,7 @@ import '../../../../core/models/menu_model/pages.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../../../../core/utils/app_styles.dart';
+import '../../../../core/utils/constants.dart';
 import '../../data/models/report_model.dart';
 import '../../data/models/table_model.dart';
 import '../../data/models/xy.dart';
@@ -31,6 +32,7 @@ class TableReportsViewBody extends StatefulWidget {
   final TableModel tableModel;
   final Pages pageData;
   final ReportModel reportModel;
+  static SfDataGrid? mySfDataGrid;
 
   @override
   State<TableReportsViewBody> createState() => _TableReportsViewBodyState();
@@ -48,6 +50,7 @@ class _TableReportsViewBodyState extends State<TableReportsViewBody> {
   int numberPage = 1;
   bool isChart = false;
   ChartType chartType = ChartType.column;
+  late List listDataShow;
 
   @override
   void didChangeDependencies() {
@@ -65,18 +68,96 @@ class _TableReportsViewBodyState extends State<TableReportsViewBody> {
       numberPage: numberPage,
       context: context,
       pageData: widget.pageData,
-      title: lang == AppStrings.enLangKey
-          ? widget.pageData.nameEn
-          : widget.pageData.nameAr,
+      title:
+          lang == AppStrings.enLangKey ? widget.pageData.nameEn : widget.pageData.nameAr,
     );
-    allPages = (widget.tableModel.numberofrecords! % dropdownValue) == 0
-        ? (widget.tableModel.numberofrecords! ~/ dropdownValue)
-        : (widget.tableModel.numberofrecords! ~/ dropdownValue) + 1;
+    listDataShow = removeDuplicates(
+        originalList: widget.tableModel.dynamicList[0],
+        keys: widget.tableModel.listes.map((item) => item.columnName as String).toList());
+    allPages = (listDataShow.length % dropdownValue) == 0
+        ? (listDataShow.length ~/ dropdownValue)
+        : (listDataShow.length ~/ dropdownValue) + 1;
     dataList = getDataList(widget.tableModel);
   }
 
   @override
   Widget build(BuildContext context) {
+    TableReportsViewBody.mySfDataGrid = SfDataGrid(
+      gridLinesVisibility: GridLinesVisibility.both,
+      headerGridLinesVisibility: GridLinesVisibility.both,
+      source: reportDataSource,
+      headerRowHeight: 35,
+      rowHeight: 35,
+      verticalScrollController: verticalScrollController,
+      horizontalScrollController: horizontalScrollController,
+      // showHorizontalScrollbar: false,
+      // showVerticalScrollbar: false,
+      isScrollbarAlwaysShown: true,
+      columns: buildColumnsTable(),
+      columnWidthMode: ColumnWidthMode.auto,
+      selectionMode: SelectionMode.singleDeselect,
+      stackedHeaderRows: <StackedHeaderRow>[buildCustomStackedHeaderRow()],
+      onCellLongPress: (DataGridCellLongPressDetails details) {
+        final String value = reportDataSource
+            .effectiveRows[details.rowColumnIndex.rowIndex - 2]
+            .getCells()[details.rowColumnIndex.columnIndex]
+            .value
+            .toString();
+
+        if (value.isNotEmpty) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                content: Text(
+                  value,
+                  textAlign: TextAlign.center,
+                ),
+              );
+            },
+          );
+        }
+      },
+      tableSummaryRows: [
+        GridTableSummaryRow(
+          showSummaryInRow: false,
+          color: Colors.blue,
+          columns: [
+            if (widget.tableModel.data!.sowHSum == true)
+              ...List.generate(
+                widget.tableModel.arabicLableAggrigate.length,
+                (index) {
+                  return GridSummaryColumn(
+                    name:
+                        'Sum ${widget.tableModel.arabicLableAggrigate[index].columnName!}',
+                    columnName: widget.tableModel.arabicLableAggrigate[index].columnName!,
+                    summaryType: GridSummaryType.sum,
+                  );
+                },
+              ),
+            ...List.generate(
+              widget.tableModel.dynamicList[1].length *
+                  widget.tableModel.arabicLableAggrigate.length,
+              (index) {
+                return GridSummaryColumn(
+                  name: 'Sum ${getTitle(
+                    index: index,
+                    dynamicList: widget.tableModel.dynamicList[1],
+                    arabicLableAggrigate: widget.tableModel.arabicLableAggrigate,
+                  )}',
+                  columnName: getTitle(
+                      index: index,
+                      dynamicList: widget.tableModel.dynamicList[1],
+                      arabicLableAggrigate: widget.tableModel.arabicLableAggrigate),
+                  summaryType: GridSummaryType.sum,
+                );
+              },
+            )
+          ],
+          position: GridTableSummaryRowPosition.bottom,
+        ),
+      ],
+    );
     return Expanded(
       child: Scaffold(
         body: isChart == false ? buildTableWidget(context) : buildChartWidget(),
@@ -89,15 +170,6 @@ class _TableReportsViewBodyState extends State<TableReportsViewBody> {
           curve: Curves.easeIn,
           childrenButtonSize: const Size(50, 50),
           children: [
-            // SpeedDialChild(
-            //     elevation: 0,
-            //     backgroundColor: AppColors.blue,
-            //     shape: const CircleBorder(),
-            //     child: Icon(
-            //       Icons.search,
-            //       color: AppColors.white,
-            //     ),
-            //     onTap: () {}),
             SpeedDialChild(
                 elevation: 0,
                 backgroundColor: AppColors.orange,
@@ -115,7 +187,7 @@ class _TableReportsViewBodyState extends State<TableReportsViewBody> {
                 backgroundColor: AppColors.blueLight,
                 shape: const CircleBorder(),
                 child: Icon(
-                  Icons.stacked_bar_chart,
+                  isChart == false ? Icons.stacked_bar_chart : Icons.table_view,
                   color: AppColors.white,
                 ),
                 onTap: () {
@@ -145,46 +217,7 @@ class _TableReportsViewBodyState extends State<TableReportsViewBody> {
               gridLineColor: Colors.grey,
               // gridLineStrokeWidth: 1,
             ),
-            child: SfDataGrid(
-              gridLinesVisibility: GridLinesVisibility.both,
-              headerGridLinesVisibility: GridLinesVisibility.both,
-              source: reportDataSource,
-              headerRowHeight: 35,
-              rowHeight: 35,
-              verticalScrollController: verticalScrollController,
-              horizontalScrollController: horizontalScrollController,
-              // showHorizontalScrollbar: false,
-              // showVerticalScrollbar: false,
-              isScrollbarAlwaysShown: true,
-              columns: buildColumnsTable(),
-              columnWidthMode: ColumnWidthMode.auto,
-              selectionMode: SelectionMode.singleDeselect,
-              tableSummaryRows: [
-                GridTableSummaryRow(
-                  showSummaryInRow: false,
-                  color: Colors.blue,
-                  columns: [
-                    const GridSummaryColumn(
-                      name: 'SumTotal',
-                      columnName: 'total',
-                      summaryType: GridSummaryType.sum,
-                    ),
-                    ...List.generate(
-                      widget.tableModel.dynamicList![1].length,
-                      (index) {
-                        return GridSummaryColumn(
-                          name: 'Sum',
-                          columnName: widget.tableModel.dynamicList![1][index]
-                              ['Coulumn'],
-                          summaryType: GridSummaryType.sum,
-                        );
-                      },
-                    )
-                  ],
-                  position: GridTableSummaryRowPosition.bottom,
-                ),
-              ],
-            ),
+            child: TableReportsViewBody.mySfDataGrid!,
           ),
         ),
         PaginationWidget(
@@ -192,15 +225,14 @@ class _TableReportsViewBodyState extends State<TableReportsViewBody> {
           dropdownValue: dropdownValue,
           listNumberItemInList: const [10, 25, 50, 100],
           myPage: numberPage,
-          numberOfRecords: widget.tableModel.numberofrecords!,
+          numberOfRecords: listDataShow.length,
           onChangeLimit: (limit) {
             setState(() {
               dropdownValue = limit;
               numberPage = 1;
-              allPages = (widget.tableModel.numberofrecords! % dropdownValue) ==
-                      0
-                  ? (widget.tableModel.numberofrecords! ~/ dropdownValue)
-                  : (widget.tableModel.numberofrecords! ~/ dropdownValue) + 1;
+              allPages = (listDataShow.length % dropdownValue) == 0
+                  ? (listDataShow.length ~/ dropdownValue)
+                  : (listDataShow.length ~/ dropdownValue) + 1;
               reportDataSource = ReportDataSource(
                 tableModel: widget.tableModel,
                 itemsInPage: dropdownValue,
@@ -319,34 +351,112 @@ class _TableReportsViewBodyState extends State<TableReportsViewBody> {
   buildColumnsTable() {
     return [
       ...List.generate(
-        widget.tableModel.listes!.length,
+        widget.tableModel.listes.length,
         (index) {
           String title = lang == AppStrings.enLangKey
-              ? widget.tableModel.listes![index].enColumnLabel!
-              : widget.tableModel.listes![index].arColumnLabel!;
+              ? widget.tableModel.listes[index].enColumnLabel!
+              : widget.tableModel.listes[index].arColumnLabel!;
           return GridColumn(
             // width: MediaQuery.of(context).size.width * .4,
-            columnName: widget.tableModel.listes![index].columnName!,
-            label: Center(child: Text(title, style: AppStyles.textStyle14)),
+            columnName: widget.tableModel.listes[index].columnName!,
+            label: GestureDetector(
+                onLongPress: () {
+                  if (title.isNotEmpty) {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          content: Text(
+                            title,
+                            textAlign: TextAlign.center,
+                          ),
+                        );
+                      },
+                    );
+                  }
+                },
+                child: Center(child: Text(title, style: AppStyles.textStyle14))),
             // columnWidthMode: ColumnWidthMode.auto,
           );
         },
       ),
-      GridColumn(
-        // width: MediaQuery.of(context).size.width * .27,
-        columnName: 'total',
-        label: Center(child: Text('Total', style: AppStyles.textStyle14)),
-        // columnWidthMode: ColumnWidthMode.auto,
-      ),
+      if (widget.tableModel.data!.sowHSum == true)
+        ...List.generate(
+          widget.tableModel.arabicLableAggrigate.length,
+          (index) {
+            String title = lang == AppStrings.enLangKey
+                ? widget.tableModel.arabicLableAggrigate[index].enColumnLabel!
+                : widget.tableModel.arabicLableAggrigate[index].arColumnLabel!;
+            return GridColumn(
+              // width: MediaQuery.of(context).size.width * .27,
+              // maximumWidth: 100,
+              minimumWidth: 90,
+              columnName: widget.tableModel.arabicLableAggrigate[index].columnName!,
+              label: GestureDetector(
+                  onLongPress: () {
+                    if (title.isNotEmpty) {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            content: Text(
+                              title,
+                              textAlign: TextAlign.center,
+                            ),
+                          );
+                        },
+                      );
+                    }
+                  },
+                  child: Center(child: Text(title, style: AppStyles.textStyle14))),
+              // columnWidthMode: ColumnWidthMode.auto,
+            );
+          },
+        ),
       ...List.generate(
-        widget.tableModel.dynamicList![1].length,
+        widget.tableModel.dynamicList[1].length *
+            widget.tableModel.arabicLableAggrigate.length,
         (index) {
+          String title = lang == AppStrings.enLangKey
+              ? widget
+                  .tableModel
+                  .arabicLableAggrigate[getIndex(
+                      index: index,
+                      arabicLableAggrigate: widget.tableModel.arabicLableAggrigate)]
+                  .enColumnLabel!
+              : widget
+                  .tableModel
+                  .arabicLableAggrigate[getIndex(
+                      index: index,
+                      arabicLableAggrigate: widget.tableModel.arabicLableAggrigate)]
+                  .arColumnLabel!;
           return GridColumn(
-            // width: MediaQuery.of(context).size.width * .4,
-            columnName: widget.tableModel.dynamicList![1][index]['Coulumn'],
-            label: Center(
-                child: Text(widget.tableModel.dynamicList![1][index]['Coulumn'],
-                    style: AppStyles.textStyle14)),
+            // width: MediaQuery.of(context).size.width * .27,
+            // width: 30,
+            maximumWidth: 150,
+            minimumWidth: 90,
+
+            columnName: getTitle(
+                index: index,
+                dynamicList: widget.tableModel.dynamicList[1],
+                arabicLableAggrigate: widget.tableModel.arabicLableAggrigate),
+            label: GestureDetector(
+                onLongPress: () {
+                  if (title.isNotEmpty) {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          content: Text(
+                            title,
+                            textAlign: TextAlign.center,
+                          ),
+                        );
+                      },
+                    );
+                  }
+                },
+                child: Center(child: Text(title, style: AppStyles.textStyle14))),
             // columnWidthMode: ColumnWidthMode.auto,
           );
         },
@@ -387,8 +497,8 @@ class _TableReportsViewBodyState extends State<TableReportsViewBody> {
 
   List<XY> getDataList(TableModel tableModel) {
     List<XY> data = [];
-    for (Map<String, dynamic> i in tableModel.dynamicList![1]) {
-      for (Map<String, dynamic> j in tableModel.dynamicList![0]) {
+    for (Map<String, dynamic> i in tableModel.dynamicList[1]) {
+      for (Map<String, dynamic> j in tableModel.dynamicList[0]) {
         if (j[i["Coulumn"]] != null) {
           data.add(XY(x: i["Coulumn"], y: j[i["Coulumn"]]));
         } else {
@@ -397,6 +507,92 @@ class _TableReportsViewBodyState extends State<TableReportsViewBody> {
       }
     }
     return data;
+  }
+
+  getTitle(
+      {required int index,
+      required List dynamicList,
+      required List<ArabicLableAggrigate> arabicLableAggrigate}) {
+    String title1 = dynamicList[(index ~/ arabicLableAggrigate.length)]['Coulumn'];
+    String title2 =
+        arabicLableAggrigate[(index % arabicLableAggrigate.length)].columnName!;
+    return "$title1$spaceBetweenWords$title2";
+  }
+
+  getIndex(
+      {required int index, required List<ArabicLableAggrigate> arabicLableAggrigate}) {
+    return (index % arabicLableAggrigate.length);
+  }
+
+  StackedHeaderRow buildCustomStackedHeaderRow() {
+    return StackedHeaderRow(cells: [
+      if (widget.tableModel.data!.sowHSum == true)
+        StackedHeaderCell(
+            columnNames: widget.tableModel.arabicLableAggrigate
+                .map((item) => item.columnName as String)
+                .toList(),
+            text: 'Total',
+            child: Center(child: Text('Total', style: AppStyles.textStyle14))),
+      ...List.generate(
+        widget.tableModel.dynamicList[1].length,
+        (index) {
+          return StackedHeaderCell(
+              columnNames: getTitleForStackedHeader(
+                  index: index,
+                  dynamicList: widget.tableModel.dynamicList[1],
+                  arabicLableAggrigate: widget.tableModel.arabicLableAggrigate),
+              text: widget.tableModel.dynamicList[1][index]['Coulumn'],
+              child: GestureDetector(
+                onLongPress: () {
+                  if (widget.tableModel.dynamicList[1][index]['Coulumn'].isNotEmpty) {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          content: Text(
+                            widget.tableModel.dynamicList[1][index]['Coulumn'],
+                            textAlign: TextAlign.center,
+                          ),
+                        );
+                      },
+                    );
+                  }
+                },
+                child: Center(
+                    child: Text(widget.tableModel.dynamicList[1][index]['Coulumn'],
+                        style: AppStyles.textStyle14)),
+              ));
+        },
+      ),
+    ]);
+  }
+
+  getTitleForStackedHeader(
+      {required int index,
+      required List dynamicList,
+      required List<ArabicLableAggrigate> arabicLableAggrigate}) {
+    List<String> list = [];
+
+    for (var i2 in arabicLableAggrigate) {
+      list.add('${dynamicList[index]['Coulumn']}$spaceBetweenWords${i2.columnName}');
+    }
+
+    return list;
+  }
+
+  List removeDuplicates({required List originalList, required List<String> keys}) {
+    final uniqueItems = <String, Map<String, dynamic>>{};
+
+    for (var item in originalList) {
+      // نكوّن المفتاح بناءً على القيم لكل مفتاح موجود في القائمة keys
+      String key = keys.map((k) => item[k].toString()).join('_');
+
+      if (!uniqueItems.containsKey(key)) {
+        uniqueItems[key] = item;
+      }
+    }
+
+    return uniqueItems.values.toList();
   }
 }
 
