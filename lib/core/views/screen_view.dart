@@ -15,6 +15,7 @@ import '../../features/screenTable/presentation/views/screen_table.dart';
 import '../../features/storeShow/presentation/views/store_show_view.dart';
 import '../../features/supplierProcess/presentation/views/supplier_process_view.dart';
 import '../../features/tasks/presentation/views/tasks_view.dart';
+import '../../features/taxDeclaration/presentation/views/tax_declaration_view.dart';
 import '../../features/trialBalance/presentation/views/trial_balance.dart';
 import '../models/menu_model/pages.dart';
 
@@ -62,6 +63,8 @@ class ScreenView extends StatelessWidget {
             return ProjectProcessView(pageData: pageData);
           case "inventoryProduct":
             return InventoryProduct(pageData: pageData);
+          case "TaxDeclaration":
+            return TaxDeclarationView(pageData: pageData);
           default:
             return ScreenTable(pageData: pageData);
         }

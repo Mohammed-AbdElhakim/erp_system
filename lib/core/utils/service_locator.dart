@@ -20,6 +20,7 @@ import '../../features/screenTable/data/repositories/screen_repo_impl.dart';
 import '../../features/storeShow/data/repositories/store_show_repo_impl.dart';
 import '../../features/supplierProcess/data/repositories/supplier_process_repo_impl.dart';
 import '../../features/tasks/data/repositories/task_repo_impl.dart';
+import '../../features/taxDeclaration/data/repositories/tax_declaration_repo_impl.dart';
 import '../../features/trialBalance/data/repositories/trial_balance_repo_impl.dart';
 import '../repositories/menu/menu_repo_impl.dart';
 import 'api_service.dart';
@@ -148,6 +149,11 @@ void setupServiceLocator() {
   );
   getIt.registerSingleton<InventoryProductRepoImpl>(
     InventoryProductRepoImpl(
+      getIt.get<ApiService>(),
+    ),
+  );
+  getIt.registerSingleton<TaxDeclarationRepoImpl>(
+    TaxDeclarationRepoImpl(
       getIt.get<ApiService>(),
     ),
   );
