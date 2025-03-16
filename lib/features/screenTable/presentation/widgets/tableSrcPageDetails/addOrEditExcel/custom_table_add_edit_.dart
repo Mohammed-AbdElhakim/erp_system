@@ -91,45 +91,47 @@ class _CustomTableAddEditState extends State<CustomTableAddEdit> {
                         pageData: widget.pageData,
                         onTapAdd: (data) {
                           if (widget.typeView == "Add") {
-                            if (tableListInAddView.isEmpty) {
-                              tableListInAddView.add(data);
-                              widget.onTapAction(tableListInAddView);
-                            } else {
-                              Map<String, dynamic> searchData = tableListInAddView.firstWhere(
-                                (element) => element['ProductID'] == data['ProductID'],
-                                orElse: () => {},
-                              );
-                              if (searchData.isEmpty) {
-                                tableListInAddView.add(data);
-                                widget.onTapAction(tableListInAddView);
-                              } else {
-                                searchData['PQuntity'] =
-                                    (int.parse(searchData['PQuntity']) + 1).toString();
-                                // element['PriceCurrancy'] =
-                                //     (proPrice * int.parse(element['Qty'])).toString();
-                                widget.onTapAction(tableListInAddView);
-                              }
-                            }
+                            // if (tableListInAddView.isEmpty) {
+                            tableListInAddView.add(data);
+                            widget.onTapAction(tableListInAddView);
+                            // } else {
+                            //   Map<String, dynamic> searchData =
+                            //       tableListInAddView.firstWhere(
+                            //     (element) => element['ProductID'] == data['ProductID'],
+                            //     orElse: () => {},
+                            //   );
+                            //   if (searchData.isEmpty) {
+                            //     tableListInAddView.add(data);
+                            //     widget.onTapAction(tableListInAddView);
+                            //   } else {
+                            //     searchData['PQuntity'] =
+                            //         (int.parse(searchData['PQuntity']) + 1).toString();
+                            //     // element['PriceCurrancy'] =
+                            //     //     (proPrice * int.parse(element['Qty'])).toString();
+                            //     widget.onTapAction(tableListInAddView);
+                            //   }
+                            // }
                           } else if (widget.typeView == "Edit") {
-                            if (tableListInEditView.isEmpty) {
-                              tableListInEditView.add(data);
-                              widget.onTapAction(tableListInEditView);
-                            } else {
-                              Map<String, dynamic> searchData = tableListInEditView.firstWhere(
-                                (element) => element['ProductID'] == data['ProductID'],
-                                orElse: () => {},
-                              );
-                              if (searchData.isEmpty) {
-                                tableListInEditView.add(data);
-                                widget.onTapAction(tableListInEditView);
-                              } else {
-                                searchData['PQuntity'] =
-                                    (int.parse(searchData['PQuntity']) + 1).toString();
-                                // element['PriceCurrancy'] =
-                                //     (proPrice * int.parse(element['Qty'])).toString();
-                                widget.onTapAction(tableListInEditView);
-                              }
-                            }
+                            // if (tableListInEditView.isEmpty) {
+                            tableListInEditView.add(data);
+                            widget.onTapAction(tableListInEditView);
+                            // }
+                            // else {
+                            //   Map<String, dynamic> searchData = tableListInEditView.firstWhere(
+                            //     (element) => element['ProductID'] == data['ProductID'],
+                            //     orElse: () => {},
+                            //   );
+                            //   if (searchData.isEmpty) {
+                            //     tableListInEditView.add(data);
+                            //     widget.onTapAction(tableListInEditView);
+                            //   } else {
+                            //     searchData['PQuntity'] =
+                            //         (int.parse(searchData['PQuntity']) + 1).toString();
+                            //     // element['PriceCurrancy'] =
+                            //     //     (proPrice * int.parse(element['Qty'])).toString();
+                            //     widget.onTapAction(tableListInEditView);
+                            //   }
+                            // }
                           }
                         },
                       ),
@@ -348,7 +350,9 @@ class _CustomTableAddEditState extends State<CustomTableAddEdit> {
                   )
                 ],
                 rows: List.generate(
-                  widget.typeView == "Add" ? tableListInAddView.length : tableListInEditView.length,
+                  widget.typeView == "Add"
+                      ? tableListInAddView.length
+                      : tableListInEditView.length,
                   (index) {
                     return DataRow(
                       cells: [
@@ -397,7 +401,9 @@ class _CustomTableAddEditState extends State<CustomTableAddEdit> {
                                   color: indexSelect == index
                                       ? AppColors.blueGreyDark
                                       : Colors.transparent,
-                                  width: widget.listColumn[i].toString().length > 12 ? 100 : null,
+                                  width: widget.listColumn[i].toString().length > 12
+                                      ? 100
+                                      : null,
                                   alignment: Alignment.center,
                                   child: buildMyWidget(widget.listColumn[i], index),
                                 ),
@@ -465,11 +471,13 @@ class _CustomTableAddEditState extends State<CustomTableAddEdit> {
 
   buildMyWidget(ItemListSetupModel columnList, int indexRow) {
     String data;
-    Map<String, dynamic> dataRow =
-        widget.typeView == "Add" ? tableListInAddView[indexRow] : tableListInEditView[indexRow];
+    Map<String, dynamic> dataRow = widget.typeView == "Add"
+        ? tableListInAddView[indexRow]
+        : tableListInEditView[indexRow];
     if (dataRow.containsKey(columnList.columnName)) {
-      data =
-          dataRow[columnList.columnName] == null ? "" : dataRow[columnList.columnName].toString();
+      data = dataRow[columnList.columnName] == null
+          ? ""
+          : dataRow[columnList.columnName].toString();
     } else {
       data = '';
     }
@@ -537,7 +545,8 @@ class _CustomTableAddEditState extends State<CustomTableAddEdit> {
         }
 
         for (var item in listDrop!) {
-          if (item.columnName == columnList.columnName && item.nameAr == columnList.arColumnLabel) {
+          if (item.columnName == columnList.columnName &&
+              item.nameAr == columnList.arColumnLabel) {
             myListDrop = item.list;
           }
         }
