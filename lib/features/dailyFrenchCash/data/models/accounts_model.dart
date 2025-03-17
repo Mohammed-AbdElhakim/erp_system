@@ -87,6 +87,10 @@ class AccountsList {
       this.showPerm,
       this.outPerm,
       this.acNameKSA});
+  @override
+  String toString() {
+    return acName!;
+  }
 
   AccountsList.fromJson(Map<String, dynamic> json) {
     acID = json['AcID'];

@@ -73,7 +73,9 @@
   "advance_balance": "رصيد السلف",
   "vacation_balance":"رصيد الاجازات",
   "attendance_days": "أيام الحضور",
-  "salary_items":"مفرادات المرتب"
+  "salary_items":"مفرادات المرتب",
+
+  "account": "الحساب"
 
 
 

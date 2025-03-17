@@ -25,6 +25,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Total_number_of_entries": MessageLookupByLibrary.simpleMessage(
       "إجمالي عدد الإدخالات : ",
     ),
+    "account": MessageLookupByLibrary.simpleMessage("الحساب"),
     "advance_balance": MessageLookupByLibrary.simpleMessage("رصيد السلف"),
     "arabic": MessageLookupByLibrary.simpleMessage("عربي"),
     "attend": MessageLookupByLibrary.simpleMessage("حضور"),
