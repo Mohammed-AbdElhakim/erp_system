@@ -5,8 +5,9 @@ import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_styles.dart';
 
 class BuildDateWidget extends StatefulWidget {
-  const BuildDateWidget({super.key, required this.title});
+  const BuildDateWidget({super.key, required this.title, required this.selectedDate});
   final String title;
+  final void Function(String dateTime) selectedDate;
 
   @override
   State<BuildDateWidget> createState() => _BuildDateWidgetState();
@@ -38,6 +39,7 @@ class _BuildDateWidgetState extends State<BuildDateWidget> {
                 if (dateTime != null) {
                   setState(() {
                     date = DateFormat("yyyy-MM-dd", 'en').format(dateTime);
+                    widget.selectedDate(dateTime.toString());
                   });
                 }
               },
