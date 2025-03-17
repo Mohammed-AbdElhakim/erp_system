@@ -77,7 +77,8 @@ class _BuildDailyFrenchCashInputState extends State<BuildDailyFrenchCashInput> {
                   },
                 ),
               ),
-              Expanded(
+              Padding(
+                padding: const EdgeInsetsDirectional.only(end: 16),
                 child: FloatingActionButton(
                   backgroundColor: AppColors.blueLight,
                   shape: const CircleBorder(),
