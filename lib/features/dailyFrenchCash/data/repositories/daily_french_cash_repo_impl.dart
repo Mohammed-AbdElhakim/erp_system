@@ -24,7 +24,7 @@ class DailyFrenchCashRepoImpl implements DailyFrenchCashRepo {
       // var rrr = jsonEncode(bodyRequestDailyFrenchCash.toJson());
       Map<String, dynamic> data = await apiService.post(
         endPoint: "web/DailyFrenshCash/PostFrensh",
-        data: bodyRequestDailyFrenchCash,
+        data: bodyRequestDailyFrenchCash.toJson(),
         headers: {
           "Authorization": "Bearer $token",
           "CompanyKey": companyKey,
