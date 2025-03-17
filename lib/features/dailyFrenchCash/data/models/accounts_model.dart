@@ -1,14 +1,14 @@
 class AccountsModel {
-  List<AccountsList>? dynamicList;
+  List<AccountsList>? accountsList;
   int? numberOfRecords;
 
-  AccountsModel({this.dynamicList, this.numberOfRecords});
+  AccountsModel({this.accountsList, this.numberOfRecords});
 
   AccountsModel.fromJson(Map<String, dynamic> json) {
     if (json['dynamicList'] != null) {
-      dynamicList = <AccountsList>[];
+      accountsList = <AccountsList>[];
       json['dynamicList'].forEach((v) {
-        dynamicList!.add(AccountsList.fromJson(v));
+        accountsList!.add(AccountsList.fromJson(v));
       });
     }
     numberOfRecords = json['numberofrecords'];
@@ -16,8 +16,8 @@ class AccountsModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    if (dynamicList != null) {
-      data['dynamicList'] = dynamicList!.map((v) => v.toJson()).toList();
+    if (accountsList != null) {
+      data['dynamicList'] = accountsList!.map((v) => v.toJson()).toList();
     }
     data['numberofrecords'] = numberOfRecords;
     return data;
