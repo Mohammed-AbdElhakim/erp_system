@@ -62,6 +62,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "from": MessageLookupByLibrary.simpleMessage("From"),
     "hi": MessageLookupByLibrary.simpleMessage("Hi, "),
     "host_view": MessageLookupByLibrary.simpleMessage("Host"),
+    "incoming": MessageLookupByLibrary.simpleMessage("incoming"),
     "leave": MessageLookupByLibrary.simpleMessage("Leave"),
     "log_out": MessageLookupByLibrary.simpleMessage("Log Out"),
     "login": MessageLookupByLibrary.simpleMessage("LOG IN"),
@@ -95,6 +96,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "notifications": MessageLookupByLibrary.simpleMessage("Notifications"),
     "ok": MessageLookupByLibrary.simpleMessage("Ok"),
     "on_progress": MessageLookupByLibrary.simpleMessage("Work has begun on it"),
+    "outgoing": MessageLookupByLibrary.simpleMessage("outgoing"),
     "password": MessageLookupByLibrary.simpleMessage("Password"),
     "product_not_available": MessageLookupByLibrary.simpleMessage(
       "Product is not available.",

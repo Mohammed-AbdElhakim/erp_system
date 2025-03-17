@@ -62,6 +62,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "from": MessageLookupByLibrary.simpleMessage("من"),
     "hi": MessageLookupByLibrary.simpleMessage("أهلاً، "),
     "host_view": MessageLookupByLibrary.simpleMessage("المضيف"),
+    "incoming": MessageLookupByLibrary.simpleMessage("واردة"),
     "leave": MessageLookupByLibrary.simpleMessage("انصراف"),
     "log_out": MessageLookupByLibrary.simpleMessage("تسجيل الخروج"),
     "login": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
@@ -93,6 +94,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "notifications": MessageLookupByLibrary.simpleMessage("الإشعارات"),
     "ok": MessageLookupByLibrary.simpleMessage("حسناً"),
     "on_progress": MessageLookupByLibrary.simpleMessage("تم بدأالعمل عليها"),
+    "outgoing": MessageLookupByLibrary.simpleMessage("صادرة"),
     "password": MessageLookupByLibrary.simpleMessage("كلمة المرور"),
     "product_not_available": MessageLookupByLibrary.simpleMessage(
       "المنتج غير متوفر.",

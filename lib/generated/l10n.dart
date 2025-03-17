@@ -554,6 +554,16 @@ class S {
   String get account {
     return Intl.message('Account', name: 'account', desc: '', args: []);
   }
+
+  /// `outgoing`
+  String get outgoing {
+    return Intl.message('outgoing', name: 'outgoing', desc: '', args: []);
+  }
+
+  /// `incoming`
+  String get incoming {
+    return Intl.message('incoming', name: 'incoming', desc: '', args: []);
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

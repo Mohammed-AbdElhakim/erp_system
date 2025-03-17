@@ -77,7 +77,9 @@
   "salary_items":"Salary Items",
 
 
-  "account": "Account"
+  "account": "Account",
+  "outgoing":"outgoing",
+  "incoming":"incoming"
 
 
 
