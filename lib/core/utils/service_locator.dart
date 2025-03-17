@@ -8,6 +8,7 @@ import '../../features/auth/data/repositories/login/login_repo_impl.dart';
 import '../../features/cashier/data/repositories/cashier_repo_impl.dart';
 import '../../features/chart/data/repositories/chart_repo_impl.dart';
 import '../../features/customerAccount/data/repositories/customer_account_repo_impl.dart';
+import '../../features/dailyFrenchCash/data/repositories/daily_french_cash_repo_impl.dart';
 import '../../features/dashboard/data/repositories/dashboard_repo_impl.dart';
 import '../../features/generalBalance/data/repositories/general_balance_repo_impl.dart';
 import '../../features/inventoryProduct/data/repositories/trial_balance_repo_impl.dart';
@@ -154,6 +155,11 @@ void setupServiceLocator() {
   );
   getIt.registerSingleton<TaxDeclarationRepoImpl>(
     TaxDeclarationRepoImpl(
+      getIt.get<ApiService>(),
+    ),
+  );
+  getIt.registerSingleton<DailyFrenchCashRepoImpl>(
+    DailyFrenchCashRepoImpl(
       getIt.get<ApiService>(),
     ),
   );
