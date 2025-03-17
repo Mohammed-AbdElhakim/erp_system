@@ -1,5 +1,5 @@
 class BodyRequestDailyFrenchCash {
-  final List<String> accountId;
+  final List<int> accountId;
   final bool creditOrDepit;
   final String dateFrom;
   final String dateTo;
