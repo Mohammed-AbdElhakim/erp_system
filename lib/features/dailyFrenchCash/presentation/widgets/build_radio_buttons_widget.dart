@@ -11,7 +11,7 @@ class BuildRadioButtonsWidget extends StatefulWidget {
 }
 
 class _BuildRadioButtonsWidgetState extends State<BuildRadioButtonsWidget> {
-  String? _selected;
+  String _selected = "incoming";
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -30,8 +30,8 @@ class _BuildRadioButtonsWidgetState extends State<BuildRadioButtonsWidget> {
           groupValue: _selected,
           onChanged: (newValue) {
             setState(() {
-              _selected = newValue;
-              widget.selectedType(_selected!);
+              _selected = newValue!;
+              widget.selectedType(_selected);
             });
           },
         ),
