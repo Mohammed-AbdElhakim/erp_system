@@ -7,8 +7,10 @@ import '../../../../generated/l10n.dart';
 import '../../data/models/accounts_model.dart';
 
 class BuildDropdownWidget extends StatefulWidget {
-  const BuildDropdownWidget({super.key, required this.accountsList});
+  const BuildDropdownWidget(
+      {super.key, required this.accountsList, required this.selectedList});
   final List<AccountsList> accountsList;
+  final void Function(List<int> idList) selectedList;
 
   @override
   State<BuildDropdownWidget> createState() => _BuildDropdownWidgetState();
@@ -49,8 +51,12 @@ class _BuildDropdownWidgetState extends State<BuildDropdownWidget> {
             child: CustomDropdown<AccountsList>.multiSelectSearch(
               hintText: '',
               onListChanged: (valueList) {
+                accountIdList.clear();
+                for (var element in valueList) {
+                  accountIdList.add(element.acID!);
+                }
                 setState(() {
-                  accountIdList = valueList.cast<int>();
+                  widget.selectedList(accountIdList);
                 });
               },
               // initialItem: dropValue,
