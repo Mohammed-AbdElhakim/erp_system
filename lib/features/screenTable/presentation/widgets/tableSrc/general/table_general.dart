@@ -65,8 +65,7 @@ class _TableGeneralState extends State<TableGeneral> {
     return BlocBuilder<GetAllDropdownListCubit, GetAllDropdownListState>(
       builder: (context, state) {
         if (state is GetAllDropdownListSuccess) {
-          List<AllDropdownModel> allDropdownModelList =
-              state.allDropdownModelList;
+          List<AllDropdownModel> allDropdownModelList = state.allDropdownModelList;
           ScreenTable.myAllDropdownModelList = allDropdownModelList;
           return BlocBuilder<GetTableCubit, GetTableState>(
             builder: (context, state) {
@@ -88,7 +87,7 @@ class _TableGeneralState extends State<TableGeneral> {
                       : item.arColumnLabel!);
                   listKey.add(item.columnName);
                   listColumn.add(item);
-                  category.add(item.categoryName!);
+                  category.add(item.categoryName ?? "بيانات اساسية");
                 }
                 List<String> categoryList = category.toSet().toList();
                 ScreenTable.listCategory = categoryList;
@@ -113,12 +112,9 @@ class _TableGeneralState extends State<TableGeneral> {
                       setState(() {
                         ScreenTable.dropdownValue = limit;
                         ScreenTable.numberPage = 1;
-                        allPages =
-                            (numberOfRecords % ScreenTable.dropdownValue) == 0
-                                ? (numberOfRecords ~/ ScreenTable.dropdownValue)
-                                : (numberOfRecords ~/
-                                        ScreenTable.dropdownValue) +
-                                    1;
+                        allPages = (numberOfRecords % ScreenTable.dropdownValue) == 0
+                            ? (numberOfRecords ~/ ScreenTable.dropdownValue)
+                            : (numberOfRecords ~/ ScreenTable.dropdownValue) + 1;
                       });
 
                       BlocProvider.of<GetTableCubit>(context).getTable(
@@ -126,8 +122,7 @@ class _TableGeneralState extends State<TableGeneral> {
                         employee: false,
                         isdesc: widget.pageData.isDesc,
                         limit: ScreenTable.dropdownValue,
-                        offset: (ScreenTable.numberPage *
-                                ScreenTable.dropdownValue) -
+                        offset: (ScreenTable.numberPage * ScreenTable.dropdownValue) -
                             ScreenTable.dropdownValue,
                         orderby: widget.pageData.orderBy,
                         statment: ScreenTable.isSearch == true
@@ -152,8 +147,7 @@ class _TableGeneralState extends State<TableGeneral> {
                         employee: false,
                         isdesc: widget.pageData.isDesc,
                         limit: ScreenTable.dropdownValue,
-                        offset: (ScreenTable.numberPage *
-                                ScreenTable.dropdownValue) -
+                        offset: (ScreenTable.numberPage * ScreenTable.dropdownValue) -
                             ScreenTable.dropdownValue,
                         orderby: widget.pageData.orderBy,
                         statment: ScreenTable.isSearch == true
@@ -178,8 +172,7 @@ class _TableGeneralState extends State<TableGeneral> {
                         employee: false,
                         isdesc: widget.pageData.isDesc,
                         limit: ScreenTable.dropdownValue,
-                        offset: (ScreenTable.numberPage *
-                                ScreenTable.dropdownValue) -
+                        offset: (ScreenTable.numberPage * ScreenTable.dropdownValue) -
                             ScreenTable.dropdownValue,
                         orderby: widget.pageData.orderBy,
                         statment: ScreenTable.isSearch == true
@@ -206,13 +199,11 @@ class _TableGeneralState extends State<TableGeneral> {
                       employee: false,
                       isdesc: ScreenTable.isDesc,
                       limit: ScreenTable.dropdownValue,
-                      offset:
-                          (ScreenTable.numberPage * ScreenTable.dropdownValue) -
-                              ScreenTable.dropdownValue,
+                      offset: (ScreenTable.numberPage * ScreenTable.dropdownValue) -
+                          ScreenTable.dropdownValue,
                       orderby: ScreenTable.orderBy,
-                      statment: ScreenTable.isSearch == true
-                          ? BuildAlertSearch.statement
-                          : '',
+                      statment:
+                          ScreenTable.isSearch == true ? BuildAlertSearch.statement : '',
                       selectcolumns: '',
                       departmentName: widget.pageData.departmentName,
                       isDepartment: widget.pageData.isDepartment,
