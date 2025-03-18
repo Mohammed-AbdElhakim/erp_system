@@ -50,8 +50,7 @@ class PurchasesAlertDialogAddWidget extends StatefulWidget {
       _PurchasesAlertDialogAddWidgetState();
 }
 
-class _PurchasesAlertDialogAddWidgetState
-    extends State<PurchasesAlertDialogAddWidget> {
+class _PurchasesAlertDialogAddWidgetState extends State<PurchasesAlertDialogAddWidget> {
   String? lang;
   GlobalKey<FormState> formKey = GlobalKey();
   Map<String, dynamic> newRowData = {};
@@ -90,8 +89,7 @@ class _PurchasesAlertDialogAddWidgetState
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ...getMyWidgetList(
-                        columnList: widget.listColumn, show: true),
+                    ...getMyWidgetList(columnList: widget.listColumn, show: true),
                     // //المنتج
                     // Padding(
                     //   padding: const EdgeInsets.symmetric(vertical: 5),
@@ -480,8 +478,7 @@ class _PurchasesAlertDialogAddWidgetState
                     noGradient: true,
                     color: Colors.transparent,
                     noShadow: true,
-                    textStyle:
-                        AppStyles.textStyle16.copyWith(color: Colors.grey),
+                    textStyle: AppStyles.textStyle16.copyWith(color: Colors.grey),
                     onTap: () {
                       Navigator.pop(context);
                     },
@@ -495,9 +492,17 @@ class _PurchasesAlertDialogAddWidgetState
                     onTap: () {
                       if (formKey.currentState!.validate()) {
                         formKey.currentState!.save();
-                        widget.onTapAdd(newRowData);
-                        // AddViewBody.tableList.add(newRowData);
-                        Navigator.pop(context);
+                        if (newRowData["CostCurrancy"] != "") {
+                          widget.onTapAdd(newRowData);
+                          // AddViewBody.tableList.add(newRowData);
+                          Navigator.pop(context);
+                        } else {
+                          CustomAlertDialog.alertWithButton(
+                              context: context,
+                              type: AlertType.error,
+                              title: S.of(context).error,
+                              desc: "أدخل التكلفة");
+                        }
                       }
                     },
                   ),
@@ -539,9 +544,8 @@ class _PurchasesAlertDialogAddWidgetState
   }) {
     List<Widget> list = [];
     for (var item in columnList) {
-      String title = lang == AppStrings.arLangKey
-          ? item.arColumnLabel!
-          : item.enColumnLabel!;
+      String title =
+          lang == AppStrings.arLangKey ? item.arColumnLabel! : item.enColumnLabel!;
       //text
       if (item.insertType == "text") {
         list.add(
@@ -571,8 +575,7 @@ class _PurchasesAlertDialogAddWidgetState
                   onSaved: (newValue) {
                     if (newValue!.isNotEmpty) {
                       setState(() {
-                        newRowData
-                            .addAll({item.columnName!.toString(): newValue});
+                        newRowData.addAll({item.columnName!.toString(): newValue});
                       });
                     }
                   },
@@ -613,12 +616,10 @@ class _PurchasesAlertDialogAddWidgetState
                     setState(() {
                       if (item.columnName == "PQuntity") {
                         newRowData.addAll({
-                          item.columnName!.toString():
-                              newValue!.isEmpty ? "1" : newValue
+                          item.columnName!.toString(): newValue!.isEmpty ? "1" : newValue
                         });
                       } else {
-                        newRowData
-                            .addAll({item.columnName!.toString(): newValue});
+                        newRowData.addAll({item.columnName!.toString(): newValue});
                       }
                     });
                     // }
@@ -664,14 +665,12 @@ class _PurchasesAlertDialogAddWidgetState
                         );
                         if (dateTime != null) {
                           dsetState(() {
-                            date =
-                                DateFormat("yyyy-MM-dd", 'en').format(dateTime);
+                            date = DateFormat("yyyy-MM-dd", 'en').format(dateTime);
                           });
 
                           dsetState(() {
-                            newRowData.addAll({
-                              item.columnName!.toString(): dateTime.toString()
-                            });
+                            newRowData.addAll(
+                                {item.columnName!.toString(): dateTime.toString()});
                           });
                         }
                       },
@@ -685,8 +684,7 @@ class _PurchasesAlertDialogAddWidgetState
                           child: Text(
                             date,
                             textAlign: TextAlign.center,
-                            style: AppStyles.textStyle14
-                                .copyWith(color: Colors.black),
+                            style: AppStyles.textStyle14.copyWith(color: Colors.black),
                           )),
                     );
                   },
@@ -714,8 +712,7 @@ class _PurchasesAlertDialogAddWidgetState
           }
         }
         for (var ii in listDrop!) {
-          if (ii.columnName == item.columnName &&
-              ii.nameAr == item.arColumnLabel) {
+          if (ii.columnName == item.columnName && ii.nameAr == item.arColumnLabel) {
             myListDrop = ii.list;
           }
         }
@@ -782,17 +779,16 @@ class _PurchasesAlertDialogAddWidgetState
                   closedHeaderPadding:
                       const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                   decoration: CustomDropdownDecoration(
-                      headerStyle:
-                          AppStyles.textStyle16.copyWith(color: Colors.black),
+                      headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
                       closedFillColor: Colors.transparent,
                       closedBorder: Border.all(color: AppColors.blueDark)),
                   items: myListDrop!.isEmpty
                       ? [""]
-                      : List.generate(myListDrop.length,
-                          (index) => myListDrop![index].text ?? ''),
+                      : List.generate(
+                          myListDrop.length, (index) => myListDrop![index].text ?? ''),
                   onChanged: (value) {
-                    ItemDrop ii = myListDrop!
-                        .firstWhere((element) => element.text == value);
+                    ItemDrop ii =
+                        myListDrop!.firstWhere((element) => element.text == value);
                     newRowData.addAll({item.searchName!.toString(): ii.id});
                   },
                 ),
@@ -815,8 +811,7 @@ class _PurchasesAlertDialogAddWidgetState
                     children: [
                       Text(
                         title,
-                        style:
-                            AppStyles.textStyle14.copyWith(color: Colors.black),
+                        style: AppStyles.textStyle14.copyWith(color: Colors.black),
                       ),
                       if (item.isRquired == true)
                         const Icon(
@@ -831,8 +826,7 @@ class _PurchasesAlertDialogAddWidgetState
                       checkboxValue = !checkboxValue;
                     });
                     csetState(() {
-                      newRowData
-                          .addAll({item.columnName!.toString(): checkboxValue});
+                      newRowData.addAll({item.columnName!.toString(): checkboxValue});
                     });
                   });
             },
@@ -846,10 +840,8 @@ class _PurchasesAlertDialogAddWidgetState
   void getColumnListAndAdd(Pages page) async {
     try {
       String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).post(
         endPoint: "home/getGeneralTable",
         data: {
@@ -904,10 +896,8 @@ class _PurchasesAlertDialogAddWidgetState
   Future<bool> getPermissions(int? pageId) async {
     try {
       String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPagePermissions?pageId=$pageId",
         headers: {
@@ -925,10 +915,8 @@ class _PurchasesAlertDialogAddWidgetState
   void getDropdownList(int pageId) async {
     try {
       String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       List<dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPageDropDown?pageId=$pageId",
         headers: {
