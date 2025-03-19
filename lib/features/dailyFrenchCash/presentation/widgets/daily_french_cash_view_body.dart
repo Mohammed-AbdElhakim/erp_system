@@ -2,7 +2,6 @@ import 'package:erp_system/core/widgets/custom_error_massage.dart';
 import 'package:erp_system/core/widgets/custom_loading_widget.dart';
 import 'package:erp_system/features/dailyFrenchCash/data/models/body_request_daily_french_cash.dart';
 import 'package:erp_system/features/dailyFrenchCash/presentation/manager/dailyFrenchCash/daily_french_cash_cubit.dart';
-import 'package:erp_system/features/dailyFrenchCash/presentation/widgets/custom_table_daily_french_cash.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -10,6 +9,7 @@ import 'package:intl/intl.dart';
 import '../../data/models/accounts_model.dart';
 import '../../data/models/daily_french_cash_model.dart';
 import 'build_daily_french_cash_input.dart';
+import 'custom_table_daily_french_cash.dart';
 
 class DailyFrenchCashViewBody extends StatefulWidget {
   const DailyFrenchCashViewBody({super.key, required this.accountsList});
@@ -53,21 +53,34 @@ class _DailyFrenchCashViewBodyState extends State<DailyFrenchCashViewBody> {
                 return Expanded(
                   child: Card(
                     color: Colors.white,
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: Text(
-                            title,
-                            textAlign: TextAlign.center,
+                    child: dailyFrenchCashModel.totalAll == 0.0 &&
+                            dailyFrenchCashModel.totalAccount!.isEmpty &&
+                            dailyFrenchCashModel.list!.isEmpty &&
+                            dailyFrenchCashModel.totalEntry!.isEmpty &&
+                            dailyFrenchCashModel.columns!.isEmpty
+                        ? Center(
+                            child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 10, horizontal: 20),
+                                decoration: BoxDecoration(
+                                    color: Colors.orange,
+                                    borderRadius: BorderRadius.circular(8)),
+                                child: const Text("لا يوجد تعاملات على هذا الحساب")))
+                        : Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: Text(
+                                  title,
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                              CustomTableDailyFrenchCash(
+                                dailyFrenchCashModel: dailyFrenchCashModel,
+                                creditOrDepit: inputMyData.creditOrDepit,
+                              )
+                            ],
                           ),
-                        ),
-                        CustomTableDailyFrenchCash(
-                          dailyFrenchCashModel: dailyFrenchCashModel,
-                          creditOrDepit: inputMyData.creditOrDepit,
-                        )
-                      ],
-                    ),
                   ),
                 );
               } else {
