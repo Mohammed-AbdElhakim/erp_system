@@ -50,18 +50,24 @@ class _DailyFrenchCashViewBodyState extends State<DailyFrenchCashViewBody> {
                 String title = inputMyData.creditOrDepit
                     ? "واردة من حساب من فترة ${DateFormat('MMM d, y', 'en').format(DateTime.parse(inputMyData.dateFrom))} إلى فترة ${DateFormat('MMM d, y', 'en').format(DateTime.parse(inputMyData.dateTo))}"
                     : "صادرة من حساب من فترة ${DateFormat('MMM d, y', 'en').format(DateTime.parse(inputMyData.dateFrom))} إلى فترة ${DateFormat('MMM d, y', 'en').format(DateTime.parse(inputMyData.dateTo))}";
-                return Card(
-                  color: Colors.white,
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Text(title),
-                      ),
-                      CustomTableDailyFrenchCash(
-                        dailyFrenchCashModel: dailyFrenchCashModel,
-                      )
-                    ],
+                return Expanded(
+                  child: Card(
+                    color: Colors.white,
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Text(
+                            title,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        CustomTableDailyFrenchCash(
+                          dailyFrenchCashModel: dailyFrenchCashModel,
+                          creditOrDepit: inputMyData.creditOrDepit,
+                        )
+                      ],
+                    ),
                   ),
                 );
               } else {

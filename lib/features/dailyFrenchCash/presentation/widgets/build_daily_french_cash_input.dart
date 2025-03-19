@@ -69,10 +69,12 @@ class _BuildDailyFrenchCashInputState extends State<BuildDailyFrenchCashInput> {
                       setState(() {
                         selectType = true;
                       });
+                      makeRequest(context);
                     } else if (type == "outgoing") {
                       setState(() {
                         selectType = false;
                       });
+                      makeRequest(context);
                     }
                   },
                 ),
@@ -84,16 +86,7 @@ class _BuildDailyFrenchCashInputState extends State<BuildDailyFrenchCashInput> {
                   shape: const CircleBorder(),
                   mini: true,
                   onPressed: () {
-                    BodyRequestDailyFrenchCash bodyRequestDailyFrenchCash =
-                        BodyRequestDailyFrenchCash(
-                      accountId: listOfId,
-                      creditOrDepit: selectType,
-                      dateFrom: dateFrom,
-                      dateTo: dateTo,
-                    );
-                    widget.dataInput(bodyRequestDailyFrenchCash);
-                    BlocProvider.of<DailyFrenchCashCubit>(context).getDailyFrenchCash(
-                        bodyRequestDailyFrenchCash: bodyRequestDailyFrenchCash);
+                    makeRequest(context);
                   },
                   child: const Icon(
                     Icons.search,
@@ -106,5 +99,17 @@ class _BuildDailyFrenchCashInputState extends State<BuildDailyFrenchCashInput> {
         ],
       ),
     );
+  }
+
+  void makeRequest(BuildContext context) {
+    BodyRequestDailyFrenchCash bodyRequestDailyFrenchCash = BodyRequestDailyFrenchCash(
+      accountId: listOfId,
+      creditOrDepit: selectType,
+      dateFrom: dateFrom,
+      dateTo: dateTo,
+    );
+    widget.dataInput(bodyRequestDailyFrenchCash);
+    BlocProvider.of<DailyFrenchCashCubit>(context)
+        .getDailyFrenchCash(bodyRequestDailyFrenchCash: bodyRequestDailyFrenchCash);
   }
 }
