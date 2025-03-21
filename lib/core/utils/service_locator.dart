@@ -19,6 +19,7 @@ import '../../features/profit/data/repositories/profit_repo_impl.dart';
 import '../../features/projectProcess/data/repositories/project_process_repo_impl.dart';
 import '../../features/screenTable/data/repositories/screen_repo_impl.dart';
 import '../../features/storeShow/data/repositories/store_show_repo_impl.dart';
+import '../../features/supplierCustomerProcess/data/repositories/supplier_customer_process_repo_impl.dart';
 import '../../features/supplierProcess/data/repositories/supplier_process_repo_impl.dart';
 import '../../features/tasks/data/repositories/task_repo_impl.dart';
 import '../../features/taxDeclaration/data/repositories/tax_declaration_repo_impl.dart';
@@ -160,6 +161,12 @@ void setupServiceLocator() {
   );
   getIt.registerSingleton<DailyFrenchCashRepoImpl>(
     DailyFrenchCashRepoImpl(
+      getIt.get<ApiService>(),
+    ),
+  );
+
+  getIt.registerSingleton<SupplierCustomerProcessRepoImpl>(
+    SupplierCustomerProcessRepoImpl(
       getIt.get<ApiService>(),
     ),
   );
