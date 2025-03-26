@@ -1,0 +1,2 @@
+D:/mobile/egy_dynamic/erp_system/android/app/.cxx/RelWithDebInfo/352n5z6c/x86/CMakeFiles/edit_cache.dir
+D:/mobile/egy_dynamic/erp_system/android/app/.cxx/RelWithDebInfo/352n5z6c/x86/CMakeFiles/rebuild_cache.dir
