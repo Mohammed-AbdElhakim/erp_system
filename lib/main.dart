@@ -29,11 +29,21 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   setupServiceLocator();
   runApp(const ERPSystem());
-//   runApp(DevicePreview(
-//     enabled: !kReleaseMode,
-//     builder: (context) {
-// return const ERPSystem();
-//   },));
+  /*runApp( DevicePreview(
+    enabled: !kReleaseMode,
+    devices: [
+      DeviceInfo.genericPhone(
+        platform: TargetPlatform.android,
+        id: "samsung_a05s",
+        name: "Samsung Galaxy A05s",
+        screenSize: const Size(1080 / 2.75, 2400 / 2.75), // دقة الشاشة الفعلية
+        pixelRatio: 2.75, // تقريبًا
+      ),
+    ],
+    builder: (context) {
+      return const ERPSystem();
+    },
+  ));*/
 }
 
 class ERPSystem extends StatefulWidget {
@@ -90,26 +100,30 @@ class _ERPSystemState extends State<ERPSystem> {
               GetPageDetailsTableCubit(getIt.get<ScreenRepoImpl>()),
         ),
       ],
-      child: MaterialApp.router(
-        // useInheritedMediaQuery: true,
-        title: AppStrings.appTitle,
-        // builder: DevicePreview.appBuilder,
-        theme: ThemeData(
-            fontFamily: AppStrings.appFontFamily,
-            colorScheme: ColorScheme.fromSeed(
-              seedColor: AppColors.blueDark,
-            ),
-            useMaterial3: true),
-        debugShowCheckedModeBanner: false,
-        routerConfig: AppRouter.router,
-        locale: _locale,
-        supportedLocales: S.delegate.supportedLocales,
-        localizationsDelegates: const [
-          S.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-        ],
+      child: MediaQuery(
+        //عشان اثبت الاحجم بتاع الخطوط على اللى فى التطبيق فى حاله لو المستخدم عامل تكبير او تصغير للخط عنده
+        data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(0.95)),
+        child: MaterialApp.router(
+          // useInheritedMediaQuery: true,
+          title: AppStrings.appTitle,
+          // builder: DevicePreview.appBuilder,
+          theme: ThemeData(
+              fontFamily: AppStrings.appFontFamily,
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: AppColors.blueDark,
+              ),
+              useMaterial3: true),
+          debugShowCheckedModeBanner: false,
+          routerConfig: AppRouter.router,
+          locale: _locale,
+          supportedLocales: S.delegate.supportedLocales,
+          localizationsDelegates: const [
+            S.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+          ],
+        ),
       ),
     );
   }
