@@ -277,6 +277,7 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                                 allPages = (numberOfRecords % dropdownValue) == 0
                                     ? (numberOfRecords ~/ dropdownValue)
                                     : (numberOfRecords ~/ dropdownValue) + 1;
+                                myData['limit']=limit;
                               });
                               // createMyData();
                               BlocProvider.of<SupplierProcessCubit>(context)
@@ -295,6 +296,7 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                             onTapMin: () {
                               setState(() {
                                 numberPage--;
+                                myData['offset']=(numberPage * dropdownValue) - dropdownValue;
                               });
                               // createMyData();
                               BlocProvider.of<SupplierProcessCubit>(context)
@@ -313,6 +315,7 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                             onTapAdd: () {
                               setState(() {
                                 numberPage++;
+                                myData['offset']=(numberPage * dropdownValue) - dropdownValue;
                               });
                               // createMyData();
                               BlocProvider.of<SupplierProcessCubit>(context)

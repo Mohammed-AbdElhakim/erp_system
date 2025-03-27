@@ -281,6 +281,7 @@ class _CustomerAccountViewBodyState extends State<CustomerAccountViewBody> {
                                         0
                                     ? (numberOfRecords ~/ dropdownValue)
                                     : (numberOfRecords ~/ dropdownValue) + 1;
+                                myData['limit']=limit;
                               });
                               // createMyData();
                               BlocProvider.of<CustomerAccountCubit>(context)
@@ -299,6 +300,7 @@ class _CustomerAccountViewBodyState extends State<CustomerAccountViewBody> {
                             onTapMin: () {
                               setState(() {
                                 numberPage--;
+                                myData['offset']=(numberPage * dropdownValue) - dropdownValue;
                               });
                               // createMyData();
                               BlocProvider.of<CustomerAccountCubit>(context)
@@ -317,6 +319,7 @@ class _CustomerAccountViewBodyState extends State<CustomerAccountViewBody> {
                             onTapAdd: () {
                               setState(() {
                                 numberPage++;
+                                myData['offset']=(numberPage * dropdownValue) - dropdownValue;
                               });
                               // createMyData();
                               BlocProvider.of<CustomerAccountCubit>(context)

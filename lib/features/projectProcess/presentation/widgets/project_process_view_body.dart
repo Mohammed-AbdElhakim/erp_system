@@ -279,6 +279,7 @@ class _ProjectProcessViewBodyState extends State<ProjectProcessViewBody> {
                                         0
                                     ? (numberOfRecords ~/ dropdownValue)
                                     : (numberOfRecords ~/ dropdownValue) + 1;
+                                myData['limit']=limit;
                               });
                               // createMyData();
                               BlocProvider.of<ProjectProcessCubit>(context)
@@ -295,6 +296,7 @@ class _ProjectProcessViewBodyState extends State<ProjectProcessViewBody> {
                             onTapMin: () {
                               setState(() {
                                 numberPage--;
+                                myData['offset']=(numberPage * dropdownValue) - dropdownValue;
                               });
                               // createMyData();
                               BlocProvider.of<ProjectProcessCubit>(context)
@@ -311,6 +313,7 @@ class _ProjectProcessViewBodyState extends State<ProjectProcessViewBody> {
                             onTapAdd: () {
                               setState(() {
                                 numberPage++;
+                                myData['offset']=(numberPage * dropdownValue) - dropdownValue;
                               });
                               // createMyData();
                               BlocProvider.of<ProjectProcessCubit>(context)

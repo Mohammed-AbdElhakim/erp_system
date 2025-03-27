@@ -279,6 +279,7 @@ class _SupplierCustomerProcessViewBodyState
                                 allPages = (numberOfRecords % dropdownValue) == 0
                                     ? (numberOfRecords ~/ dropdownValue)
                                     : (numberOfRecords ~/ dropdownValue) + 1;
+                                myData['limit']=limit;
                               });
                               // createMyData();
                               BlocProvider.of<SupplierCustomerProcessCubit>(context)
@@ -297,6 +298,7 @@ class _SupplierCustomerProcessViewBodyState
                             onTapMin: () {
                               setState(() {
                                 numberPage--;
+                                myData['offset']=(numberPage * dropdownValue) - dropdownValue;
                               });
                               // createMyData();
                               BlocProvider.of<SupplierCustomerProcessCubit>(context)
@@ -315,6 +317,7 @@ class _SupplierCustomerProcessViewBodyState
                             onTapAdd: () {
                               setState(() {
                                 numberPage++;
+                                myData['offset']=(numberPage * dropdownValue) - dropdownValue;
                               });
                               // createMyData();
                               BlocProvider.of<SupplierCustomerProcessCubit>(context)
