@@ -7,7 +7,7 @@ class FileManager {
     if (Platform.isAndroid) {
       appDir = Directory("/storage/emulated/0/Dynamic Pro"); // اسم التطبيق
     } else if (Platform.isIOS) {
-      appDir = Directory("${(await Directory.systemTemp).path}/Dynamic Pro");
+      appDir = Directory("${(Directory.systemTemp).path}/Dynamic Pro");
     }
 
     if (appDir != null && !(await appDir.exists())) {
