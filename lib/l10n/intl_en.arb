@@ -79,7 +79,13 @@
 
   "account": "Account",
   "outgoing":"outgoing",
-  "incoming":"incoming"
+  "incoming":"incoming",
+
+
+  "exporting_excel_file": "Exporting Excel File...",
+  "exporting_pdf_file": "Exporting Pdf File...",
+  "permission_denied": "Permission Denied.",
+  "file_saved_in": "File saved in: "
 
 
 

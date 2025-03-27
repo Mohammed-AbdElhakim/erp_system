@@ -1,3 +1,4 @@
+import 'package:erp_system/core/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 
 import '../../features/screenTable/data/models/dropdown_model/all_dropdown_model.dart';
@@ -317,4 +318,15 @@ buildShowDialogText(
       ),
     );
   }
+}
+
+
+void showSnackBar({required BuildContext context, required String message}) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(message),
+      duration: const Duration(seconds: 2),
+      backgroundColor: AppColors.blueLight,
+    ),
+  );
 }

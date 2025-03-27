@@ -20,8 +20,11 @@ import '../manager/getPermissions/get_permissions_cubit.dart';
 import '../manager/getTable/get_table_cubit.dart';
 import '../views/screen_table.dart';
 import 'build_alert_search.dart';
+import 'file_excel.dart';
+import 'file_pdf.dart';
 import 'tableSrcPageDetails/build_alert_add.dart';
 import 'tableSrcPageDetails/build_alert_edit.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class CustomFloatingActionButton extends StatefulWidget {
   const CustomFloatingActionButton({super.key, required this.pageData});
@@ -43,6 +46,8 @@ class _CustomFloatingActionButtonState
   List<IconData> iconList = [
     Icons.search,
     Icons.refresh,
+    FontAwesomeIcons.fileExcel,
+    FontAwesomeIcons.filePdf,
   ];
 
   @override
@@ -74,6 +79,11 @@ class _CustomFloatingActionButtonState
               iconList.add(Icons.add);
             });
           }
+          // if (permissionModel.showPrint == true) {
+          //   setState(() {
+          //     iconList.add(Icons.print);
+          //   });
+          // }
         }
       },
       child: BlocListener<GetTableCubit, GetTableState>(
@@ -132,6 +142,12 @@ class _CustomFloatingActionButtonState
     } else if (icon == Icons.edit_note) {
       return AppColors.blueGreyDark;
     } else if (icon == Icons.add) {
+      return AppColors.blueLight;
+    }
+    else if (icon == FontAwesomeIcons.fileExcel) {
+      return AppColors.blueLight;
+    }
+    else if (icon == FontAwesomeIcons.filePdf) {
       return AppColors.blueLight;
     }
   }
@@ -382,6 +398,29 @@ class _CustomFloatingActionButtonState
           },
         );
       }
+    }else if (icon == FontAwesomeIcons.fileExcel){
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) =>  AlertDialog(
+          content: FileExcel(
+            pageData: widget.pageData,
+            lang: lang!,
+          ),
+        ),
+      );
+    }else if (icon == FontAwesomeIcons.filePdf){
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) =>  AlertDialog(
+          content: FilePdf(
+            pageData: widget.pageData,
+            lang: lang!,
+          ),
+        ),
+      );
     }
   }
 }
+

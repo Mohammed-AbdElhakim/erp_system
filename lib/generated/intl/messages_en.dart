@@ -56,9 +56,16 @@ class MessageLookup extends MessageLookupByLibrary {
     "end_date": MessageLookupByLibrary.simpleMessage("End Date: "),
     "english": MessageLookupByLibrary.simpleMessage("English"),
     "error": MessageLookupByLibrary.simpleMessage("Error"),
+    "exporting_excel_file": MessageLookupByLibrary.simpleMessage(
+      "Exporting Excel File...",
+    ),
+    "exporting_pdf_file": MessageLookupByLibrary.simpleMessage(
+      "Exporting Pdf File...",
+    ),
     "field_is_required": MessageLookupByLibrary.simpleMessage(
       "Field is required",
     ),
+    "file_saved_in": MessageLookupByLibrary.simpleMessage("File saved in: "),
     "from": MessageLookupByLibrary.simpleMessage("From"),
     "hi": MessageLookupByLibrary.simpleMessage("Hi, "),
     "host_view": MessageLookupByLibrary.simpleMessage("Host"),
@@ -98,6 +105,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "on_progress": MessageLookupByLibrary.simpleMessage("Work has begun on it"),
     "outgoing": MessageLookupByLibrary.simpleMessage("outgoing"),
     "password": MessageLookupByLibrary.simpleMessage("Password"),
+    "permission_denied": MessageLookupByLibrary.simpleMessage(
+      "Permission Denied.",
+    ),
     "product_not_available": MessageLookupByLibrary.simpleMessage(
       "Product is not available.",
     ),

@@ -68,5 +68,11 @@
     <string>We need to access your camera for barcode scanning.</string>
 
 
+<key>NSDocumentsDirectoryUsageDescription</key>
+<string>We need access to documents to save files</string>
+<key>NSDownloadsDirectoryUsageDescription</key>
+<string>We need access to downloads to save files</string>
+
+
 </dict>
 </plist>

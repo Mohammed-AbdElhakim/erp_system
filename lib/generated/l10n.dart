@@ -564,6 +564,46 @@ class S {
   String get incoming {
     return Intl.message('incoming', name: 'incoming', desc: '', args: []);
   }
+
+  /// `Exporting Excel File...`
+  String get exporting_excel_file {
+    return Intl.message(
+      'Exporting Excel File...',
+      name: 'exporting_excel_file',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Exporting Pdf File...`
+  String get exporting_pdf_file {
+    return Intl.message(
+      'Exporting Pdf File...',
+      name: 'exporting_pdf_file',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Permission Denied.`
+  String get permission_denied {
+    return Intl.message(
+      'Permission Denied.',
+      name: 'permission_denied',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `File saved in: `
+  String get file_saved_in {
+    return Intl.message(
+      'File saved in: ',
+      name: 'file_saved_in',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

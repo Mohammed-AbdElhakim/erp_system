@@ -56,9 +56,16 @@ class MessageLookup extends MessageLookupByLibrary {
     "end_date": MessageLookupByLibrary.simpleMessage("تاريخ النهاية: "),
     "english": MessageLookupByLibrary.simpleMessage("English"),
     "error": MessageLookupByLibrary.simpleMessage("خطأ"),
+    "exporting_excel_file": MessageLookupByLibrary.simpleMessage(
+      "جاري تصدير ملف Excel...",
+    ),
+    "exporting_pdf_file": MessageLookupByLibrary.simpleMessage(
+      "جاري تصدير ملف Pdf...",
+    ),
     "field_is_required": MessageLookupByLibrary.simpleMessage(
       "هذا الحقل مطلوب",
     ),
+    "file_saved_in": MessageLookupByLibrary.simpleMessage("تم حفظ الملف في: "),
     "from": MessageLookupByLibrary.simpleMessage("من"),
     "hi": MessageLookupByLibrary.simpleMessage("أهلاً، "),
     "host_view": MessageLookupByLibrary.simpleMessage("المضيف"),
@@ -96,6 +103,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "on_progress": MessageLookupByLibrary.simpleMessage("تم بدأالعمل عليها"),
     "outgoing": MessageLookupByLibrary.simpleMessage("صادرة"),
     "password": MessageLookupByLibrary.simpleMessage("كلمة المرور"),
+    "permission_denied": MessageLookupByLibrary.simpleMessage("تم رفض الإذن."),
     "product_not_available": MessageLookupByLibrary.simpleMessage(
       "المنتج غير متوفر.",
     ),

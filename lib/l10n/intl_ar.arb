@@ -77,7 +77,12 @@
 
   "account": "الحساب",
   "outgoing":"صادرة",
-  "incoming":"واردة"
+  "incoming":"واردة",
+
+  "exporting_excel_file": "جاري تصدير ملف Excel...",
+  "exporting_pdf_file": "جاري تصدير ملف Pdf...",
+  "permission_denied":"تم رفض الإذن.",
+  "file_saved_in": "تم حفظ الملف في: "
 
 
 
