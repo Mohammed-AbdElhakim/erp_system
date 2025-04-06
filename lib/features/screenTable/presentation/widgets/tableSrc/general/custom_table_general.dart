@@ -1,3 +1,4 @@
+import 'package:erp_system/core/utils/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -53,6 +54,13 @@ class _CustomTableGeneralState extends State<CustomTableGeneral> {
 
   ScrollController verticalScrollController = ScrollController();
   ScrollController horizontalScrollController = ScrollController();
+  String? lang;
+
+  @override
+  void didChangeDependencies() {
+    lang = Localizations.localeOf(context).toString();
+    super.didChangeDependencies();
+  }
   @override
   void initState() {
     headerScrollController = controllerGroup.addAndGet();
@@ -167,7 +175,7 @@ class _CustomTableGeneralState extends State<CustomTableGeneral> {
                           },
                           child: Center(
                             child: Text(
-                              widget.listColumn[index].arColumnLabel!,
+                             lang==AppStrings.arLangKey?widget.listColumn[index].arColumnLabel!:widget.listColumn[index].enColumnLabel!,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: const TextStyle(color: Colors.white),
