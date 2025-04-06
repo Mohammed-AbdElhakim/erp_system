@@ -87,6 +87,7 @@ class FileExcel extends StatelessWidget {
     // إنشاء خريطة تربط كل ColumnName باسم العمود المناسب بناءً على اللغة المختارة
     Map<String, String> columnHeaders = {
       for (var col in columnList)
+        if(col['visible']==true)
         col['ColumnName']: language == AppStrings.arLangKey ? col['arColumnLabel'] : col['enColumnLabel']
     };
 
@@ -107,9 +108,17 @@ class FileExcel extends StatelessWidget {
     Directory? dir = await FileManager.getAppStorageDirectory();
     String fileName=lang==AppStrings.arLangKey?pageData.nameAr:pageData.nameEn;
     String path = "${dir.path}/$fileName.xlsx";
-    File(path)
-      ..createSync(recursive: true)
-      ..writeAsBytesSync(excel.encode()!);
+    if(await File(path).exists()){
+      File(path).delete();
+      File(path)
+        ..createSync(recursive: true)
+        ..writeAsBytesSync(excel.encode()!);
+    }else{
+      File(path)
+        ..createSync(recursive: true)
+        ..writeAsBytesSync(excel.encode()!);
+    }
+
     openFile(path);
 
     return "${S.of(context).file_saved_in}\n$path";
