@@ -21,12 +21,7 @@ import '../../../../core/utils/service_locator.dart';
 import '../../../../generated/l10n.dart';
 import '../../data/repositories/screen_repo_impl.dart';
 import '../manager/getFileExcel/get_file_excel_cubit.dart';
-import 'dart:convert';
-import 'dart:typed_data';
-import 'package:flutter/services.dart';
-import 'package:syncfusion_flutter_xlsio/xlsio.dart' as xls;
 import 'package:syncfusion_flutter_pdf/pdf.dart';
-import 'package:printing/printing.dart';
 
 class FilePdf extends StatelessWidget {
   final Pages pageData;
@@ -520,8 +515,6 @@ class FilePdf extends StatelessWidget {
         ..writeAsBytesSync(pdfBytes);
     }
 
-
-    print("${S.of(context).file_saved_in}\n$path");
     openFile(path);
     return "${S.of(context).file_saved_in}\n$path";
   }
