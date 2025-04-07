@@ -428,18 +428,31 @@ class FilePdf extends StatelessWidget {
     var jsonData = jsonDecode(jsonString);
     List<dynamic> columnList = jsonData['columnList'];
     List<dynamic> dataList = jsonData['dataList'];
-
+    List<String> columnKeys;
+    List<String> columnLabels;
     // final xls.Workbook workbook = xls.Workbook();
     // final xls.Worksheet sheet = workbook.worksheets[0];
+    if(columnList.length>=10){
+      Map<String, String> columnHeaders = {
+        for (var col in columnList.sublist(0,10))
+          if(col['visible']==true)
+            col['ColumnName']: language == 'ar' ? col['arColumnLabel'] : col['enColumnLabel']
+      };
+       columnKeys = columnHeaders.keys.toList();
+       columnLabels = columnKeys.map((key) => columnHeaders[key] ?? key).toList();
 
-    Map<String, String> columnHeaders = {
-      for (var col in columnList)
-        if(col['visible']==true)
-        col['ColumnName']: language == 'ar' ? col['arColumnLabel'] : col['enColumnLabel']
-    };
+    }else{
+      Map<String, String> columnHeaders = {
+        for (var col in columnList)
+          if(col['visible']==true)
+            col['ColumnName']: language == 'ar' ? col['arColumnLabel'] : col['enColumnLabel']
+      };
+       columnKeys = columnHeaders.keys.toList();
+       columnLabels = columnKeys.map((key) => columnHeaders[key] ?? key).toList();
 
-    List<String> columnKeys = columnHeaders.keys.toList();
-    List<String> columnLabels = columnKeys.map((key) => columnHeaders[key] ?? key).toList();
+    }
+
+
 
     // for (int i = 0; i < columnLabels.length; i++) {
     //   sheet.getRangeByIndex(1, i + 1).setText(columnLabels[i]);
