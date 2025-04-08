@@ -91,7 +91,7 @@ class _CustomTableGroupState extends State<CustomTableGroup> {
       },
     );
     tableDataSource.addColumnGroup(
-        ColumnGroup(name: 'PaymentAutoNumber', sortGroupRows: false));
+        ColumnGroup(name: widget.pageData.outSiderGroupColumn, sortGroupRows: false));
 
     super.initState();
   }
@@ -325,7 +325,7 @@ class TableDataSource extends DataGridSource {
     String? titleGroup = RegExp(r'\d+').firstMatch(summaryValue)?.group(0);
     // String titleGroup = summaryValue.split(":")[1].trim().split('-')[0].trim();
     Map<String, dynamic> item = data.firstWhere(
-        (element) => element['PaymentAutoNumber'] == int.parse(titleGroup!));
+        (element) => element[pageData.outSiderGroupColumn] == int.parse(titleGroup!));
     bool select = false;
     return StatefulBuilder(
       builder: (context, ssetState) {

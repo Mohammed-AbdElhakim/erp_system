@@ -16,9 +16,16 @@ class ScreenTableBody extends StatelessWidget {
           pageData: pageData,
         );
       case "":
-        return TableGeneral(
-          pageData: pageData,
-        );
+
+        if(pageData.outSiderGroupColumn.isNotEmpty){
+          return TableGroup(
+            pageData: pageData,
+          );
+        }else{
+          return TableGeneral(
+            pageData: pageData,
+          );
+        }
       default:
         return Text("tableSrc   ==>   ${pageData.tableSrc}");
     }
