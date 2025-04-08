@@ -37,6 +37,22 @@ class ApiService {
     );
     return response.data;
   }
+  Future<dynamic> postToPrint({
+    required String endPoint,
+    required Object? data,
+    required Map<String, dynamic>? headers,
+  }) async {
+    String host = await Pref.getStringFromPref(key: AppStrings.hostKey) ?? "";
+    Response response = await _dio.post(
+      "$host$_baseUrl$endPoint",
+      data: data,
+      options: Options(
+        responseType: ResponseType.bytes,
+        headers: headers,
+      ),
+    );
+    return response.data;
+  }
 
   Future<dynamic> put({
     required String endPoint,

@@ -72,7 +72,7 @@ dependencies:
 #  syncfusion_flutter_xlsio: ^26.2.14
   syncfusion_flutter_pdf: ^26.2.14
 #  path_provider: ^2.1.2
-#  printing: ^5.11.1
+  printing: ^5.14.2
 
 #  device_preview: ^1.2.0
 

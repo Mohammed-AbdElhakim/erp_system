@@ -1,3 +1,4 @@
+
 import 'package:erp_system/core/utils/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,6 +23,7 @@ import '../views/screen_table.dart';
 import 'build_alert_search.dart';
 import 'file_excel.dart';
 import 'file_pdf.dart';
+import 'print_row.dart';
 import 'tableSrcPageDetails/build_alert_add.dart';
 import 'tableSrcPageDetails/build_alert_edit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -38,7 +40,8 @@ class CustomFloatingActionButton extends StatefulWidget {
 class _CustomFloatingActionButtonState
     extends State<CustomFloatingActionButton> {
   String? lang;
-
+  ValueNotifier<bool> isDialOpen = ValueNotifier(false);
+  bool shouldReopenDial = true;
   List<Map<String, dynamic>> listData = [];
   List<ColumnList> columnList = [];
   List<dynamic> listKey = [];
@@ -46,6 +49,10 @@ class _CustomFloatingActionButtonState
   List<IconData> iconList = [
     Icons.search,
     Icons.refresh,
+    Icons.print,
+  ];
+  List<IconData> printIconList = [
+    Icons.print,
     FontAwesomeIcons.fileExcel,
     FontAwesomeIcons.filePdf,
   ];
@@ -79,11 +86,7 @@ class _CustomFloatingActionButtonState
               iconList.add(Icons.add);
             });
           }
-          // if (permissionModel.showPrint == true) {
-          //   setState(() {
-          //     iconList.add(Icons.print);
-          //   });
-          // }
+
         }
       },
       child: BlocListener<GetTableCubit, GetTableState>(
@@ -105,15 +108,19 @@ class _CustomFloatingActionButtonState
         child: SpeedDial(
           backgroundColor: AppColors.blueLight,
           overlayOpacity: 0.5,
+          openCloseDial: isDialOpen,
+          closeManually: true,
           activeIcon: Icons.close,
           iconTheme: IconThemeData(color: AppColors.white),
           buttonSize: const Size(58, 58),
           curve: Curves.easeIn,
+
           children: List.generate(
             iconList.length,
             (index) => SpeedDialChild(
                 elevation: 0,
                 backgroundColor: getColor(iconList[index]),
+
                 shape: const CircleBorder(),
                 child: Icon(
                   iconList[index],
@@ -121,6 +128,7 @@ class _CustomFloatingActionButtonState
                 ),
                 onTap: () {
                   tapIcon(iconList[index]);
+                  isDialOpen.value = false;
                 }),
           ),
           child: Icon(
@@ -143,12 +151,12 @@ class _CustomFloatingActionButtonState
       return AppColors.blueGreyDark;
     } else if (icon == Icons.add) {
       return AppColors.blueLight;
-    }
-    else if (icon == FontAwesomeIcons.fileExcel) {
+    } else if (icon == FontAwesomeIcons.fileExcel) {
       return AppColors.blueLight;
-    }
-    else if (icon == FontAwesomeIcons.filePdf) {
-      return AppColors.blueLight;
+    } else if (icon == FontAwesomeIcons.filePdf) {
+      return AppColors.red;
+    } else if (icon == Icons.print) {
+      return AppColors.green;
     }
   }
 
@@ -398,29 +406,119 @@ class _CustomFloatingActionButtonState
           },
         );
       }
-    }else if (icon == FontAwesomeIcons.fileExcel){
+    }  else if (icon == Icons.print) {
+      showBottomSheet(context);
+    }
+  }
+
+  void showBottomSheet(BuildContext context)async{
+    shouldReopenDial = true;
+    isDialOpen.value = false;
+
+    await  showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.blue.shade100,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (BuildContext context) {
+        return Container(
+          padding: const EdgeInsets.all(16),
+          height: 100,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: List.generate(printIconList.length, (index) {
+              return
+                Padding(
+                  padding: const EdgeInsetsDirectional.symmetric(horizontal: 15),
+                  child: InkWell(
+                    child: CircleAvatar(
+                      backgroundColor: Colors.black,
+                      radius: 26,
+                      child: CircleAvatar(backgroundColor: getColor(printIconList[index]),
+                      radius: 25,child: Icon(printIconList[index],color: Colors.white,size: 25,),),
+                    ),
+                    onTap: () {
+                      shouldReopenDial = false;
+                      isDialOpen.value = false;
+                      Navigator.pop(context);
+                      tapIconsInPrint(printIconList[index]);
+                    },
+                  ),
+                )
+              ;
+            },),
+          ),
+        );
+
+      },
+    );
+    if (shouldReopenDial) {
+      isDialOpen.value = true;
+    }
+  }
+  void tapIconsInPrint(IconData icon) {
+
+   if (icon == FontAwesomeIcons.fileExcel) {
+
       showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (context) =>  AlertDialog(
+        builder: (context) => AlertDialog(
           content: FileExcel(
             pageData: widget.pageData,
             lang: lang!,
           ),
         ),
       );
-    }else if (icon == FontAwesomeIcons.filePdf){
+    } else if (icon == FontAwesomeIcons.filePdf) {
+
       showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (context) =>  AlertDialog(
+        builder: (context) => AlertDialog(
           content: FilePdf(
             pageData: widget.pageData,
             lang: lang!,
           ),
         ),
       );
+    } else if (icon == Icons.print) {
+
+     List<dynamic> myRowData = ScreenTable.rowData;
+     if (myRowData.isNotEmpty) {
+       if (myRowData.length > 1) {
+         CustomAlertDialog.alertWithButton(
+             context: context,
+             type: AlertType.error,
+             title: S.of(context).error,
+             desc: S.of(context).massage_no_print);
+       } else if (myRowData.length == 1) {
+
+         showDialog(
+           context: context,
+           barrierDismissible: false,
+           builder: (context) => AlertDialog(
+             content: PrintRow(
+               pageData: widget.pageData,
+               lang: lang!,
+               id:int.parse(ScreenTable.rowData[0].toString()),
+             ),
+           ),
+         );
+       }
+     } else {
+       CustomAlertDialog.alertWithButton(
+           context: context,
+           type: AlertType.error,
+           title: S.of(context).error,
+           desc: S.of(context).massage_choose_print);
+     }
+
     }
   }
-}
 
+
+
+
+}

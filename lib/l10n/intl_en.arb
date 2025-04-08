@@ -35,6 +35,7 @@
   "from": "From",
   "to": "TO",
   "massage_choose_edit":"Please select the item you want to edit.",
+  "massage_choose_print":"Please select the item you want to print.",
   "massage_choose_delete":"Please select the item you want to delete.",
   "massage_number_zero": "Eliminate zero balances.",
   "multiple_choices": "Multiple choices",
@@ -43,6 +44,7 @@
   "field_is_required":"Field is required",
   "sure":"sure",
   "massage_no_edit": "It is not possible to modify more than one item.",
+  "massage_no_print": "It is not possible to print more than one item.",
   "massage_delete": "Do you want to confirm the deletion of the selected item?",
   "show_more": "Show more",
   "show_less":"Show less",
@@ -83,9 +85,12 @@
 
 
   "exporting_excel_file": "Exporting Excel File...",
+  "preparing_print_file": "Preparing the print file...",
   "exporting_pdf_file": "Exporting Pdf File...",
   "permission_denied": "Permission Denied.",
-  "file_saved_in": "File saved in: "
+  "file_saved_in": "File saved in: ",
+  "file_print_saved_in": "The file was printed and saved in: ",
+  "no_print_file": "No print file."
 
 
 

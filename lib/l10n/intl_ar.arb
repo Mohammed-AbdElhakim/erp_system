@@ -35,6 +35,7 @@
   "from": "من",
   "to": "إلى",
   "massage_choose_edit": "يرجى اختيار العنصر الذي تريد تعديله.",
+  "massage_choose_print": "يرجى اختيار العنصر الذي تريد طباعته.",
   "massage_choose_delete": "يرجى اختيار العنصر الذي تريد حذفه.",
   "massage_number_zero": "إلغاء الأرصدة الصفرية.",
   "multiple_choices": "إختيارات متعددة",
@@ -43,6 +44,7 @@
   "field_is_required":"هذا الحقل مطلوب",
   "sure":"تأكيد",
   "massage_no_edit": "لا يمكن تعديل اكثر من عنصر.",
+  "massage_no_print": "لا يمكن طباعة اكثر من عنصر.",
   "massage_delete": "هل تريد بتأكيد حذف العنصر المحدد؟",
   "show_more": "عرض المزيد",
   "show_less": "عرض أقل",
@@ -80,9 +82,12 @@
   "incoming":"واردة",
 
   "exporting_excel_file": "جاري تصدير ملف Excel...",
+  "preparing_print_file": "جاري تجهيز ملف الطباعة...",
   "exporting_pdf_file": "جاري تصدير ملف Pdf...",
   "permission_denied":"تم رفض الإذن.",
-  "file_saved_in": "تم حفظ الملف في: "
+  "file_saved_in": "تم حفظ الملف في: ",
+  "file_print_saved_in": "تم طباعة الملف و تم حفظ الملف في: ",
+  "no_print_file": "لا يوجد ملف طباعة."
 
 
 

@@ -275,6 +275,16 @@ class S {
     );
   }
 
+  /// `Please select the item you want to print.`
+  String get massage_choose_print {
+    return Intl.message(
+      'Please select the item you want to print.',
+      name: 'massage_choose_print',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Please select the item you want to delete.`
   String get massage_choose_delete {
     return Intl.message(
@@ -340,6 +350,16 @@ class S {
     return Intl.message(
       'It is not possible to modify more than one item.',
       name: 'massage_no_edit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `It is not possible to print more than one item.`
+  String get massage_no_print {
+    return Intl.message(
+      'It is not possible to print more than one item.',
+      name: 'massage_no_print',
       desc: '',
       args: [],
     );
@@ -575,6 +595,16 @@ class S {
     );
   }
 
+  /// `Preparing the print file...`
+  String get preparing_print_file {
+    return Intl.message(
+      'Preparing the print file...',
+      name: 'preparing_print_file',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Exporting Pdf File...`
   String get exporting_pdf_file {
     return Intl.message(
@@ -600,6 +630,26 @@ class S {
     return Intl.message(
       'File saved in: ',
       name: 'file_saved_in',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The file was printed and saved in: `
+  String get file_print_saved_in {
+    return Intl.message(
+      'The file was printed and saved in: ',
+      name: 'file_print_saved_in',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No print file.`
+  String get no_print_file {
+    return Intl.message(
+      'No print file.',
+      name: 'no_print_file',
       desc: '',
       args: [],
     );

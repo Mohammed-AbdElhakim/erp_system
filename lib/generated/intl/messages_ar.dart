@@ -65,6 +65,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "field_is_required": MessageLookupByLibrary.simpleMessage(
       "هذا الحقل مطلوب",
     ),
+    "file_print_saved_in": MessageLookupByLibrary.simpleMessage(
+      "تم طباعة الملف و تم حفظ الملف في: ",
+    ),
     "file_saved_in": MessageLookupByLibrary.simpleMessage("تم حفظ الملف في: "),
     "from": MessageLookupByLibrary.simpleMessage("من"),
     "hi": MessageLookupByLibrary.simpleMessage("أهلاً، "),
@@ -79,6 +82,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "massage_choose_edit": MessageLookupByLibrary.simpleMessage(
       "يرجى اختيار العنصر الذي تريد تعديله.",
     ),
+    "massage_choose_print": MessageLookupByLibrary.simpleMessage(
+      "يرجى اختيار العنصر الذي تريد طباعته.",
+    ),
     "massage_delete": MessageLookupByLibrary.simpleMessage(
       "هل تريد بتأكيد حذف العنصر المحدد؟",
     ),
@@ -87,6 +93,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "massage_no_permission": MessageLookupByLibrary.simpleMessage(
       "ليس لديك إذن.",
+    ),
+    "massage_no_print": MessageLookupByLibrary.simpleMessage(
+      "لا يمكن طباعة اكثر من عنصر.",
     ),
     "massage_number_zero": MessageLookupByLibrary.simpleMessage(
       "إلغاء الأرصدة الصفرية.",
@@ -98,12 +107,16 @@ class MessageLookup extends MessageLookupByLibrary {
     "no_location": MessageLookupByLibrary.simpleMessage(
       "غير متاح فى هذا المكان.",
     ),
+    "no_print_file": MessageLookupByLibrary.simpleMessage("لا يوجد ملف طباعة."),
     "notifications": MessageLookupByLibrary.simpleMessage("الإشعارات"),
     "ok": MessageLookupByLibrary.simpleMessage("حسناً"),
     "on_progress": MessageLookupByLibrary.simpleMessage("تم بدأالعمل عليها"),
     "outgoing": MessageLookupByLibrary.simpleMessage("صادرة"),
     "password": MessageLookupByLibrary.simpleMessage("كلمة المرور"),
     "permission_denied": MessageLookupByLibrary.simpleMessage("تم رفض الإذن."),
+    "preparing_print_file": MessageLookupByLibrary.simpleMessage(
+      "جاري تجهيز ملف الطباعة...",
+    ),
     "product_not_available": MessageLookupByLibrary.simpleMessage(
       "المنتج غير متوفر.",
     ),

@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:dartz/dartz.dart';
 
 import '../../../../../core/errors/failures.dart';
@@ -82,5 +84,10 @@ abstract class ScreenRepo {
   });
   Future<Either<Failure, ExpensesDetailsModel>> getSalesInvoiceDetails({
     required String invoiceID,
+  });
+
+  Future<Either<Failure, Uint8List>> getFilePdfPrint({
+    required String pageId,
+    required int id,
   });
 }

@@ -1,4 +1,5 @@
-import 'dart:convert';
+
+import 'dart:typed_data';
 
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
@@ -442,7 +443,7 @@ class ScreenRepoImpl implements ScreenRepo {
               "";
       String token =
           await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
-      var rrr = jsonEncode(body);
+      // var rrr = jsonEncode(body);
       var data = await apiService.post(
         endPoint: "web/$controllerName",
         data: body,
@@ -476,7 +477,7 @@ class ScreenRepoImpl implements ScreenRepo {
               "";
       String token =
           await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
-      var rrr = jsonEncode(body);
+      // var rrr = jsonEncode(body);
       var data = await apiService.put(
         endPoint: "web/$controllerName",
         data: body,
@@ -541,7 +542,7 @@ class ScreenRepoImpl implements ScreenRepo {
               "";
       String token =
           await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
-      var rrr = jsonEncode(tapModel.toJson());
+      // var rrr = jsonEncode(tapModel.toJson());
       Map<String, dynamic> data = await apiService.post(
         endPoint: "web/Structure/getDataGlobal",
         data: tapModel.toJson(),
@@ -593,6 +594,43 @@ class ScreenRepoImpl implements ScreenRepo {
       ExpensesDetailsModel expensesDetailsModel =
           ExpensesDetailsModel.fromJson(data);
       return right(expensesDetailsModel);
+    } catch (e) {
+      if (e is DioException) {
+        return left(
+          ServerFailure.fromDioException(e),
+        );
+      }
+      return left(
+        ServerFailure(
+          e.toString(),
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<Failure, Uint8List>> getFilePdfPrint({required int id,required String pageId}) async{
+    try {
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
+          "";
+      String token =
+          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+
+
+    final response = await apiService.postToPrint(
+        endPoint: "web/Structure/pdf/$pageId/0",
+        data: [id],
+        headers: {
+          'Accept': 'application/pdf',
+          "Authorization": "Bearer $token",
+          "CompanyKey": companyKey,
+          "content-type":"application/octet-stream",
+        },
+      );
+
+      Uint8List pdfBytes = Uint8List.fromList(response);
+      return right(pdfBytes);
     } catch (e) {
       if (e is DioException) {
         return left(

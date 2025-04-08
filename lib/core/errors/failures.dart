@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 
@@ -44,7 +46,12 @@ class ServerFailure extends Failure {
 
   factory ServerFailure.fromResponse(int statusCode, dynamic response) {
     if (statusCode == 400) {
-      return ServerFailure(response);
+      if(response is String ){
+        return ServerFailure(response);
+      }else{
+        return ServerFailure(utf8.decode(response));
+      }
+
     } else if (statusCode == 401 || statusCode == 403) {
       return const ServerFailure("The problem is related to authentication!");
     } else if (statusCode == 404) {

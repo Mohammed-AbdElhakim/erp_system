@@ -65,6 +65,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "field_is_required": MessageLookupByLibrary.simpleMessage(
       "Field is required",
     ),
+    "file_print_saved_in": MessageLookupByLibrary.simpleMessage(
+      "The file was printed and saved in: ",
+    ),
     "file_saved_in": MessageLookupByLibrary.simpleMessage("File saved in: "),
     "from": MessageLookupByLibrary.simpleMessage("From"),
     "hi": MessageLookupByLibrary.simpleMessage("Hi, "),
@@ -79,6 +82,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "massage_choose_edit": MessageLookupByLibrary.simpleMessage(
       "Please select the item you want to edit.",
     ),
+    "massage_choose_print": MessageLookupByLibrary.simpleMessage(
+      "Please select the item you want to print.",
+    ),
     "massage_delete": MessageLookupByLibrary.simpleMessage(
       "Do you want to confirm the deletion of the selected item?",
     ),
@@ -87,6 +93,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "massage_no_permission": MessageLookupByLibrary.simpleMessage(
       "You do not have permission.",
+    ),
+    "massage_no_print": MessageLookupByLibrary.simpleMessage(
+      "It is not possible to print more than one item.",
     ),
     "massage_number_zero": MessageLookupByLibrary.simpleMessage(
       "Eliminate zero balances.",
@@ -100,6 +109,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "no_location": MessageLookupByLibrary.simpleMessage(
       "Not available at this location.",
     ),
+    "no_print_file": MessageLookupByLibrary.simpleMessage("No print file."),
     "notifications": MessageLookupByLibrary.simpleMessage("Notifications"),
     "ok": MessageLookupByLibrary.simpleMessage("Ok"),
     "on_progress": MessageLookupByLibrary.simpleMessage("Work has begun on it"),
@@ -107,6 +117,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "password": MessageLookupByLibrary.simpleMessage("Password"),
     "permission_denied": MessageLookupByLibrary.simpleMessage(
       "Permission Denied.",
+    ),
+    "preparing_print_file": MessageLookupByLibrary.simpleMessage(
+      "Preparing the print file...",
     ),
     "product_not_available": MessageLookupByLibrary.simpleMessage(
       "Product is not available.",
