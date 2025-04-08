@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
@@ -185,7 +184,7 @@ class TaxDeclarationRepoImpl implements TaxDeclarationRepo {
       String companyKey =
           await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
-      var rrr = jsonEncode(objectData);
+      // var rrr = jsonEncode(objectData);
       Map<String, dynamic> data = await apiService.post(
         endPoint: "web/$link/getDataGlobal",
         data: objectData,
