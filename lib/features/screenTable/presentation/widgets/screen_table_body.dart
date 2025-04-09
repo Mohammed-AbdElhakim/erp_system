@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/models/menu_model/pages.dart';
 import 'tableSrc/general/table_general.dart';
+import 'tableSrc/generalGroup/table_general_group.dart';
 import 'tableSrc/group/table_group.dart';
 
 class ScreenTableBody extends StatelessWidget {
@@ -18,7 +19,7 @@ class ScreenTableBody extends StatelessWidget {
       case "":
 
         if(pageData.outSiderGroupColumn.isNotEmpty){
-          return TableGroup(
+          return TableGeneralGroup(
             pageData: pageData,
           );
         }else{
