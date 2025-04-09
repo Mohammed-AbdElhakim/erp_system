@@ -191,26 +191,6 @@ class _CustomTableGeneralGroupState extends State<CustomTableGeneralGroup> {
                     ),
                   )
                 ],
-                onCellLongPress: (DataGridCellLongPressDetails details) {
-                  final String value = tableDataSource
-                      .effectiveRows[details.rowColumnIndex.rowIndex - 1]
-                      .getCells()[details.rowColumnIndex.columnIndex - 1]
-                      .value;
-
-                  if (value.isNotEmpty) {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          content: Text(
-                            value,
-                            textAlign: TextAlign.center,
-                          ),
-                        );
-                      },
-                    );
-                  }
-                },
                 tableSummaryRows: [
                   if (widget.listSum!.isNotEmpty)
                     GridTableSummaryRow(
@@ -335,16 +315,34 @@ class TableDataSource extends DataGridSource {
               ),
             );
           } else {
-            return Container(
-              alignment: Alignment.center,
-              padding: const EdgeInsets.all(8),
-              child: e.columnName.toString() == pageData.primary
-                  ? Text(e.value.toString())
-                  : buildMyWidget(
-                      value: e.value.toString(),
-                      columnList: columnList,
-                      // indexRow: ,
-                    ),
+            return GestureDetector(
+              onLongPress: (){
+                String value=e.value.toString();
+                    if (value.isNotEmpty) {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            content: Text(
+                              value,
+                              textAlign: TextAlign.center,
+                            ),
+                          );
+                        },
+                      );
+                    }
+              },
+              child: Container(
+                alignment: Alignment.center,
+                padding: const EdgeInsets.all(8),
+                child: e.columnName.toString() == pageData.primary
+                    ? Text(e.value.toString())
+                    : buildMyWidget(
+                        value: e.value.toString(),
+                        columnList: columnList,
+                        // indexRow: ,
+                      ),
+              ),
             );
           }
         }).toList());
