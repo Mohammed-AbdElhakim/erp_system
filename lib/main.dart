@@ -1,4 +1,6 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:erp_system/features/screenTable/presentation/manager/addEditExpenses/add_edit_expenses_cubit.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,22 +30,22 @@ void main() async {
   );
   WidgetsFlutterBinding.ensureInitialized();
   setupServiceLocator();
-  runApp(const ERPSystem());
-  /*runApp( DevicePreview(
+  // runApp(const ERPSystem());
+  runApp(DevicePreview(
     enabled: !kReleaseMode,
-    devices: [
-      DeviceInfo.genericPhone(
-        platform: TargetPlatform.android,
-        id: "samsung_a05s",
-        name: "Samsung Galaxy A05s",
-        screenSize: const Size(1080 / 2.75, 2400 / 2.75), // دقة الشاشة الفعلية
-        pixelRatio: 2.75, // تقريبًا
-      ),
-    ],
+    // devices: [
+    //   DeviceInfo.genericPhone(
+    //     platform: TargetPlatform.android,
+    //     id: "samsung_a05s",
+    //     name: "Samsung Galaxy A05s",
+    //     screenSize: const Size(1080 / 2.75, 2400 / 2.75), // دقة الشاشة الفعلية
+    //     pixelRatio: 2.75, // تقريبًا
+    //   ),
+    // ],
     builder: (context) {
       return const ERPSystem();
     },
-  ));*/
+  ));
 }
 
 class ERPSystem extends StatefulWidget {
@@ -102,11 +104,12 @@ class _ERPSystemState extends State<ERPSystem> {
       ],
       child: MediaQuery(
         //عشان اثبت الاحجم بتاع الخطوط على اللى فى التطبيق فى حاله لو المستخدم عامل تكبير او تصغير للخط عنده
-        data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(0.95)),
+        data: MediaQuery.of(context)
+            .copyWith(textScaler: const TextScaler.linear(0.95)),
         child: MaterialApp.router(
-          // useInheritedMediaQuery: true,
+          useInheritedMediaQuery: true,
           title: AppStrings.appTitle,
-          // builder: DevicePreview.appBuilder,
+          builder: DevicePreview.appBuilder,
           theme: ThemeData(
               fontFamily: AppStrings.appFontFamily,
               colorScheme: ColorScheme.fromSeed(

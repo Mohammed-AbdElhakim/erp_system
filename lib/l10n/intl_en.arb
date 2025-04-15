@@ -90,7 +90,15 @@
   "permission_denied": "Permission Denied.",
   "file_saved_in": "File saved in: ",
   "file_print_saved_in": "The file was printed and saved in: ",
-  "no_print_file": "No print file."
+  "no_print_file": "No print file.",
+
+
+  "employees": "Employees",
+  "employee_name": "Employee Name",
+  "date_of_request": "Date of Request",
+  "request_of_extend": "Request of Extend",
+  "save":"Save",
+  "add_new": "Add New"
 
 
 

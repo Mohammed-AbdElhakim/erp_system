@@ -30,9 +30,14 @@ class _TasksViewBodyState extends State<TasksViewBody> {
     lang = Localizations.localeOf(context).toString();
     super.didChangeDependencies();
   }
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+
     return CustomScrollView(
       slivers: [
         isOrientationPortrait(context)
@@ -59,6 +64,7 @@ class _TasksViewBodyState extends State<TasksViewBody> {
               ),
         SliverToBoxAdapter(
           child: BlocBuilder<TaskCubit, TaskState>(
+
             builder: (context, state) {
               if (state is TaskSuccess) {
                 List<TaskModel> taskList = state.taskList;
@@ -70,8 +76,8 @@ class _TasksViewBodyState extends State<TasksViewBody> {
                   //     ? ((MediaQuery.of(context).size.width) / 226.1)
                   //     : ((MediaQuery.of(context).size.width * .5) / 230.1),
                   childAspectRatio: isOrientationPortrait(context)
-                      ? ((MediaQuery.of(context).size.width) / 205)
-                      : ((MediaQuery.of(context).size.width * .5) / 209),
+                      ? ((MediaQuery.of(context).size.width) / 222)
+                      : ((MediaQuery.of(context).size.width * .5) / 220),
                   mainAxisSpacing: 35,
                   crossAxisSpacing: 35,
                   padding:

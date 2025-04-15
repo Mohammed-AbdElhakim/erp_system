@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class ButtonMove extends StatelessWidget {
-  const ButtonMove({super.key, required this.icon, required this.onTap});
+class ButtonSettings extends StatelessWidget {
+  const ButtonSettings({super.key, required this.icon, required this.onTap});
   final IconData icon;
   final void Function() onTap;
   @override
@@ -10,11 +10,12 @@ class ButtonMove extends StatelessWidget {
       onTap: onTap,
       child: Container(
         margin: const EdgeInsetsDirectional.only(end: 25),
-        decoration: const BoxDecoration(
-          color: Colors.black,
-          borderRadius: BorderRadius.only(
-            bottomRight: Radius.circular(8),
-            bottomLeft: Radius.circular(8),
+        decoration:  BoxDecoration(
+          color: Colors.blue.shade900,
+          borderRadius: const BorderRadiusDirectional.only(
+
+            topStart: Radius.circular(15),
+            bottomEnd: Radius.circular(8),
           ),
         ),
         width: 25,

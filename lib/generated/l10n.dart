@@ -654,6 +654,51 @@ class S {
       args: [],
     );
   }
+
+  /// `Employees`
+  String get employees {
+    return Intl.message('Employees', name: 'employees', desc: '', args: []);
+  }
+
+  /// `Employee Name`
+  String get employee_name {
+    return Intl.message(
+      'Employee Name',
+      name: 'employee_name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Date of Request`
+  String get date_of_request {
+    return Intl.message(
+      'Date of Request',
+      name: 'date_of_request',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Request of Extend`
+  String get request_of_extend {
+    return Intl.message(
+      'Request of Extend',
+      name: 'request_of_extend',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save`
+  String get save {
+    return Intl.message('Save', name: 'save', desc: '', args: []);
+  }
+
+  /// `Add New`
+  String get add_new {
+    return Intl.message('Add New', name: 'add_new', desc: '', args: []);
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

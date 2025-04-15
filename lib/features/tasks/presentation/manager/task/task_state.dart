@@ -21,3 +21,5 @@ final class TaskSuccess extends TaskState {
 
   const TaskSuccess(this.taskList);
 }
+
+

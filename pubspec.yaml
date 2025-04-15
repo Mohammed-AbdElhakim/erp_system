@@ -65,16 +65,16 @@ dependencies:
   font_awesome_flutter: ^10.8.0
   excel: ^4.0.6
   pdf: ^3.11.3
-#  path_provider: ^2.1.5
+  #  path_provider: ^2.1.5
   open_file: ^3.5.10
   permission_handler: ^11.4.0
-#  excel: ^2.1.0
-#  syncfusion_flutter_xlsio: ^26.2.14
+  #  excel: ^2.1.0
+  #  syncfusion_flutter_xlsio: ^26.2.14
   syncfusion_flutter_pdf: ^26.2.14
-#  path_provider: ^2.1.2
+  #  path_provider: ^2.1.2
   printing: ^5.14.2
 
-#  device_preview: ^1.2.0
+  device_preview: ^1.2.0
 
 
 dev_dependencies:

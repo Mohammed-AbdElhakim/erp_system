@@ -20,4 +20,5 @@ class TaskCubit extends Cubit<TaskState> {
       emit(TaskSuccess(tasks));
     });
   }
+
 }

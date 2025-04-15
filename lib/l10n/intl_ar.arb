@@ -87,7 +87,19 @@
   "permission_denied":"تم رفض الإذن.",
   "file_saved_in": "تم حفظ الملف في: ",
   "file_print_saved_in": "تم طباعة الملف و تم حفظ الملف في: ",
-  "no_print_file": "لا يوجد ملف طباعة."
+  "no_print_file": "لا يوجد ملف طباعة.",
+
+  "employees": "الموظفيين",
+  "employee_name": "اسم الموظف",
+  "date_of_request": "تاريخ الطلب",
+  "request_of_extend": "طلب مد الوقت",
+  "save": "حفظ",
+  "add_new": "إضافة جديد"
+
+
+
+
+
 
 
 
