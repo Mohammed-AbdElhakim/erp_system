@@ -30,8 +30,10 @@ void main() async {
   );
   WidgetsFlutterBinding.ensureInitialized();
   setupServiceLocator();
-  // runApp(const ERPSystem());
-  runApp(DevicePreview(
+  runApp(const ERPSystem());
+
+  ///DevicePreview
+  /*runApp(DevicePreview(
     enabled: !kReleaseMode,
     // devices: [
     //   DeviceInfo.genericPhone(
@@ -45,7 +47,7 @@ void main() async {
     builder: (context) {
       return const ERPSystem();
     },
-  ));
+  ));*/
 }
 
 class ERPSystem extends StatefulWidget {
@@ -107,9 +109,10 @@ class _ERPSystemState extends State<ERPSystem> {
         data: MediaQuery.of(context)
             .copyWith(textScaler: const TextScaler.linear(0.95)),
         child: MaterialApp.router(
-          useInheritedMediaQuery: true,
+          ///DevicePreview
+          /*useInheritedMediaQuery: true,
+           builder: DevicePreview.appBuilder,*/
           title: AppStrings.appTitle,
-          builder: DevicePreview.appBuilder,
           theme: ThemeData(
               fontFamily: AppStrings.appFontFamily,
               colorScheme: ColorScheme.fromSeed(
