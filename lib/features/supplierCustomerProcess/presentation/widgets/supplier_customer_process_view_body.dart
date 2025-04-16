@@ -1078,7 +1078,8 @@ class _SupplierCustomerProcessViewBodyState
               (i["widget"] as ColumnList).columnName == "CusSupId") &&
           i['value'] != "") {
         // till = "${till}AND CustomerID= ${i['value']} ";
-        till = "${till}and (CustomerID= ${i['value']}or SupplierID=3384)";
+        till =
+            "${till}and (CustomerID= ${i['value']}or SupplierID=${i['value']})";
       }
       if ((i["widget"] as ColumnList).columnName == "datefrom" &&
           i['value'] != "") {
