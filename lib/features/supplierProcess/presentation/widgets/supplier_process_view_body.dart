@@ -32,6 +32,7 @@ import 'build_alert_add_in_dropdown.dart';
 import 'custom_table_supplier_process.dart';
 import 'pagination_widget.dart';
 import 'tabs_widget.dart';
+import 'custom_floating_action_button.dart';
 
 class SupplierProcessViewBody extends StatefulWidget {
   const SupplierProcessViewBody({
@@ -42,8 +43,10 @@ class SupplierProcessViewBody extends StatefulWidget {
 
   final List<ColumnList> listColumn;
   final Pages pageData;
+
   @override
-  State<SupplierProcessViewBody> createState() => _SupplierProcessViewBodyState();
+  State<SupplierProcessViewBody> createState() =>
+      _SupplierProcessViewBodyState();
 }
 
 class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
@@ -221,18 +224,20 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
         ? MultiBlocProvider(
             providers: [
               BlocProvider(
-                create: (context) => SupplierProcessCubit(getIt.get<SupplierProcessRepoImpl>())
-                  ..getTableSupplierProcess(
-                    selectTab: selectTab,
-                    objectData: myData,
-                    numberOfPage: numberPage,
-                    link: "ProfAccount",
-                    dropdownValueOfLimit: dropdownValue,
-                  ),
+                create: (context) =>
+                    SupplierProcessCubit(getIt.get<SupplierProcessRepoImpl>())
+                      ..getTableSupplierProcess(
+                        selectTab: selectTab,
+                        objectData: myData,
+                        numberOfPage: numberPage,
+                        link: "ProfAccount",
+                        dropdownValueOfLimit: dropdownValue,
+                      ),
               ),
               BlocProvider(
-                create: (context) => GetHeaderTableCubit(getIt.get<SupplierProcessRepoImpl>())
-                  ..getHeaderTable(listName: "ProfAccount"),
+                create: (context) =>
+                    GetHeaderTableCubit(getIt.get<SupplierProcessRepoImpl>())
+                      ..getHeaderTable(listName: "ProfAccount"),
               ),
             ],
             child: BlocBuilder<GetHeaderTableCubit, GetHeaderTableState>(
@@ -246,12 +251,15 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                       headerList.add(item);
                     }
                   }
-                  return BlocBuilder<SupplierProcessCubit, SupplierProcessState>(
+                  return BlocBuilder<SupplierProcessCubit,
+                      SupplierProcessState>(
                     builder: (context, state) {
                       if (state is SupplierProcessSuccess) {
-                        int? numberOfRecords = state.accountProfModel.numberofrecords;
+                        int? numberOfRecords =
+                            state.accountProfModel.numberofrecords;
 
-                        List<dynamic>? listData = state.accountProfModel.dynamicList;
+                        List<dynamic>? listData =
+                            state.accountProfModel.dynamicList;
 
                         numberPage = state.numberPage;
                         selectTab = state.selectTap;
@@ -259,281 +267,332 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                         allPages = (numberOfRecords! % dropdownValue) == 0
                             ? (numberOfRecords ~/ dropdownValue)
                             : (numberOfRecords ~/ dropdownValue) + 1;
-                        return CustomTableSupplierProcess(
-                          pageData: widget.pageData,
-                          listData: listData!,
-                          listColumn: headerList,
-                          allDropdownModelList: SupplierProcessView.myAllDropdownModelList,
-                          paginationWidget: PaginationWidget(
-                            allPages: allPages,
-                            dropdownValue: dropdownValue,
-                            listNumberItemInList: listNumberItemInList,
-                            myPage: numberPage,
-                            numberOfRecords: numberOfRecords,
-                            onChangeLimit: (limit) {
-                              setState(() {
-                                dropdownValue = limit;
-                                numberPage = 1;
-                                allPages = (numberOfRecords % dropdownValue) == 0
-                                    ? (numberOfRecords ~/ dropdownValue)
-                                    : (numberOfRecords ~/ dropdownValue) + 1;
-                                myData['limit']=limit;
-                              });
-                              // createMyData();
-                              BlocProvider.of<SupplierProcessCubit>(context)
-                                  .getTableSupplierProcess(
-                                selectTab: selectTab,
-                                objectData: myData,
-                                link: selectTab == 0
+                        return Scaffold(
+                          floatingActionButton: CustomFloatingActionButton(
+                            data: myData,
+                            link: selectTab == 0
+                                ? "ProfAccount"
+                                : selectTab == 5
                                     ? "ProfAccount"
-                                    : selectTab == 5
-                                        ? "ProfAccount"
-                                        : "Structure",
-                                numberOfPage: numberPage,
-                                dropdownValueOfLimit: dropdownValue,
-                              );
-                            },
-                            onTapMin: () {
-                              setState(() {
-                                numberPage--;
-                                myData['offset']=(numberPage * dropdownValue) - dropdownValue;
-                              });
-                              // createMyData();
-                              BlocProvider.of<SupplierProcessCubit>(context)
-                                  .getTableSupplierProcess(
-                                selectTab: selectTab,
-                                objectData: myData,
-                                link: selectTab == 0
-                                    ? "ProfAccount"
-                                    : selectTab == 5
-                                        ? "ProfAccount"
-                                        : "Structure",
-                                numberOfPage: numberPage,
-                                dropdownValueOfLimit: dropdownValue,
-                              );
-                            },
-                            onTapAdd: () {
-                              setState(() {
-                                numberPage++;
-                                myData['offset']=(numberPage * dropdownValue) - dropdownValue;
-                              });
-                              // createMyData();
-                              BlocProvider.of<SupplierProcessCubit>(context)
-                                  .getTableSupplierProcess(
-                                selectTab: selectTab,
-                                objectData: myData,
-                                link: selectTab == 0
-                                    ? "ProfAccount"
-                                    : selectTab == 5
-                                        ? "ProfAccount"
-                                        : "Structure",
-                                numberOfPage: numberPage,
-                                dropdownValueOfLimit: dropdownValue,
-                              );
-                            },
-                          ),
-                          tabsWidget: TabsWidget(
+                                    : "Structure",
                             selectTab: selectTab,
-                            onTap: (index) {
-                              setState(() {
-                                selectTab = index;
-                              });
-                              switch (index) {
-                                case 0:
-                                  createMyData(data: {
-                                    "employee": false,
-                                    "limit": dropdownValue,
-                                    "offset": (numberPage * dropdownValue) - dropdownValue,
-                                    "statment": "",
-                                    "selectcolumns": "",
-                                    "IsDepartment": false,
-                                    "DepartmentName": "",
-                                    "AuthorizationID": 0,
-                                    "ViewEmployeeColumn": "",
-                                    "OrderBy": "EDate",
-                                    "IsDesc": true,
-                                    "tableName": widget.pageData.tableName,
-                                    "listName": widget.pageData.listName,
-                                    "tailcondition": "",
-                                  });
-                                  BlocProvider.of<GetHeaderTableCubit>(context)
-                                      .getHeaderTable(listName: widget.pageData.tableName);
-                                  BlocProvider.of<SupplierProcessCubit>(context)
-                                      .getTableSupplierProcess(
-                                    selectTab: selectTab,
-                                    objectData: myData,
-                                    link: "ProfAccount",
-                                    numberOfPage: numberPage,
-                                    dropdownValueOfLimit: dropdownValue,
-                                  );
-                                  break;
-                                case 1:
-                                  String tailCondition = getTailConditionInCase1();
+                            pageData: widget.pageData,
+                          ),
+                          body: CustomTableSupplierProcess(
+                            pageData: widget.pageData,
+                            listData: listData!,
+                            listColumn: headerList,
+                            allDropdownModelList:
+                                SupplierProcessView.myAllDropdownModelList,
+                            paginationWidget: PaginationWidget(
+                              allPages: allPages,
+                              dropdownValue: dropdownValue,
+                              listNumberItemInList: listNumberItemInList,
+                              myPage: numberPage,
+                              numberOfRecords: numberOfRecords,
+                              onChangeLimit: (limit) {
+                                setState(() {
+                                  dropdownValue = limit;
+                                  numberPage = 1;
+                                  allPages =
+                                      (numberOfRecords % dropdownValue) == 0
+                                          ? (numberOfRecords ~/ dropdownValue)
+                                          : (numberOfRecords ~/ dropdownValue) +
+                                              1;
+                                  myData['limit'] = limit;
+                                });
+                                // createMyData();
+                                BlocProvider.of<SupplierProcessCubit>(context)
+                                    .getTableSupplierProcess(
+                                  selectTab: selectTab,
+                                  objectData: myData,
+                                  link: selectTab == 0
+                                      ? "ProfAccount"
+                                      : selectTab == 5
+                                          ? "ProfAccount"
+                                          : "Structure",
+                                  numberOfPage: numberPage,
+                                  dropdownValueOfLimit: dropdownValue,
+                                );
+                              },
+                              onTapMin: () {
+                                setState(() {
+                                  numberPage--;
+                                  myData['offset'] =
+                                      (numberPage * dropdownValue) -
+                                          dropdownValue;
+                                });
+                                // createMyData();
+                                BlocProvider.of<SupplierProcessCubit>(context)
+                                    .getTableSupplierProcess(
+                                  selectTab: selectTab,
+                                  objectData: myData,
+                                  link: selectTab == 0
+                                      ? "ProfAccount"
+                                      : selectTab == 5
+                                          ? "ProfAccount"
+                                          : "Structure",
+                                  numberOfPage: numberPage,
+                                  dropdownValueOfLimit: dropdownValue,
+                                );
+                              },
+                              onTapAdd: () {
+                                setState(() {
+                                  numberPage++;
+                                  myData['offset'] =
+                                      (numberPage * dropdownValue) -
+                                          dropdownValue;
+                                });
+                                // createMyData();
+                                BlocProvider.of<SupplierProcessCubit>(context)
+                                    .getTableSupplierProcess(
+                                  selectTab: selectTab,
+                                  objectData: myData,
+                                  link: selectTab == 0
+                                      ? "ProfAccount"
+                                      : selectTab == 5
+                                          ? "ProfAccount"
+                                          : "Structure",
+                                  numberOfPage: numberPage,
+                                  dropdownValueOfLimit: dropdownValue,
+                                );
+                              },
+                            ),
+                            tabsWidget: TabsWidget(
+                              selectTab: selectTab,
+                              onTap: (index) {
+                                setState(() {
+                                  selectTab = index;
+                                });
+                                switch (index) {
+                                  case 0:
+                                    createMyData(data: {
+                                      "employee": false,
+                                      "limit": dropdownValue,
+                                      "offset": (numberPage * dropdownValue) -
+                                          dropdownValue,
+                                      "statment": "",
+                                      "selectcolumns": "",
+                                      "IsDepartment": false,
+                                      "DepartmentName": "",
+                                      "AuthorizationID": 0,
+                                      "ViewEmployeeColumn": "",
+                                      "OrderBy": "EDate",
+                                      "IsDesc": true,
+                                      "tableName": widget.pageData.tableName,
+                                      "listName": widget.pageData.listName,
+                                      "tailcondition": "",
+                                    });
+                                    BlocProvider.of<GetHeaderTableCubit>(
+                                            context)
+                                        .getHeaderTable(
+                                            listName:
+                                                widget.pageData.tableName);
+                                    BlocProvider.of<SupplierProcessCubit>(
+                                            context)
+                                        .getTableSupplierProcess(
+                                      selectTab: selectTab,
+                                      objectData: myData,
+                                      link: "ProfAccount",
+                                      numberOfPage: numberPage,
+                                      dropdownValueOfLimit: dropdownValue,
+                                    );
+                                    break;
+                                  case 1:
+                                    String tailCondition =
+                                        getTailConditionInCase1();
 
-                                  createMyData(data: {
-                                    // "pageId": 289,
-                                    "employee": false,
-                                    "limit": dropdownValue,
-                                    "offset": (numberPage * dropdownValue) - dropdownValue,
-                                    "statment": "",
-                                    "selectcolumns": "",
-                                    "IsDepartment": false,
-                                    "DepartmentName": "",
-                                    "AuthorizationID": 0,
-                                    "ViewEmployeeColumn": "",
-                                    "OrderBy": "PDID",
-                                    "company": true,
-                                    "companyname": "ComID",
-                                    "IsDesc": true,
-                                    "tableName": "[PurchaseDetialView]",
-                                    "listName": "PurchaseDetailReport",
-                                    "tailcondition": tailCondition,
-                                  });
-                                  BlocProvider.of<GetHeaderTableCubit>(context)
-                                      .getHeaderTable(listName: "PurchaseDetailReport");
-                                  BlocProvider.of<SupplierProcessCubit>(context)
-                                      .getTableSupplierProcess(
-                                    selectTab: selectTab,
-                                    objectData: myData,
-                                    link: "Structure",
-                                    numberOfPage: numberPage,
-                                    dropdownValueOfLimit: dropdownValue,
-                                  );
-                                  break;
-                                case 2:
-                                  String tailCondition = getTailConditionInCase2();
+                                    createMyData(data: {
+                                      // "pageId": 289,
+                                      "employee": false,
+                                      "limit": dropdownValue,
+                                      "offset": (numberPage * dropdownValue) -
+                                          dropdownValue,
+                                      "statment": "",
+                                      "selectcolumns": "",
+                                      "IsDepartment": false,
+                                      "DepartmentName": "",
+                                      "AuthorizationID": 0,
+                                      "ViewEmployeeColumn": "",
+                                      "OrderBy": "PDID",
+                                      "company": true,
+                                      "companyname": "ComID",
+                                      "IsDesc": true,
+                                      "tableName": "[PurchaseDetialView]",
+                                      "listName": "PurchaseDetailReport",
+                                      "tailcondition": tailCondition,
+                                    });
+                                    BlocProvider.of<GetHeaderTableCubit>(
+                                            context)
+                                        .getHeaderTable(
+                                            listName: "PurchaseDetailReport");
+                                    BlocProvider.of<SupplierProcessCubit>(
+                                            context)
+                                        .getTableSupplierProcess(
+                                      selectTab: selectTab,
+                                      objectData: myData,
+                                      link: "Structure",
+                                      numberOfPage: numberPage,
+                                      dropdownValueOfLimit: dropdownValue,
+                                    );
+                                    break;
+                                  case 2:
+                                    String tailCondition =
+                                        getTailConditionInCase2();
 
-                                  createMyData(data: {
-                                    // "pageId": 289,
-                                    "employee": false,
-                                    "limit": dropdownValue,
-                                    "offset": (numberPage * dropdownValue) - dropdownValue,
-                                    "statment": "",
-                                    "selectcolumns": "",
-                                    "IsDepartment": false,
-                                    "DepartmentName": "",
-                                    "AuthorizationID": 0,
-                                    "ViewEmployeeColumn": "",
-                                    "OrderBy": "PRID",
-                                    "company": true,
-                                    "companyname": "ComID",
-                                    "IsDesc": true,
-                                    "listName": "SupplierPaymentReport",
-                                    "tableName": "[PaymentReciveView]",
-                                    "tailcondition": tailCondition,
-                                  });
-                                  BlocProvider.of<GetHeaderTableCubit>(context)
-                                      .getHeaderTable(listName: "SupplierPaymentReport");
-                                  BlocProvider.of<SupplierProcessCubit>(context)
-                                      .getTableSupplierProcess(
-                                    selectTab: selectTab,
-                                    objectData: myData,
-                                    numberOfPage: numberPage,
-                                    link: "Structure",
-                                    dropdownValueOfLimit: dropdownValue,
-                                  );
-                                  break;
-                                case 3:
-                                  String tailCondition = getTailConditionInCase3();
+                                    createMyData(data: {
+                                      // "pageId": 289,
+                                      "employee": false,
+                                      "limit": dropdownValue,
+                                      "offset": (numberPage * dropdownValue) -
+                                          dropdownValue,
+                                      "statment": "",
+                                      "selectcolumns": "",
+                                      "IsDepartment": false,
+                                      "DepartmentName": "",
+                                      "AuthorizationID": 0,
+                                      "ViewEmployeeColumn": "",
+                                      "OrderBy": "PRID",
+                                      "company": true,
+                                      "companyname": "ComID",
+                                      "IsDesc": true,
+                                      "listName": "SupplierPaymentReport",
+                                      "tableName": "[PaymentReciveView]",
+                                      "tailcondition": tailCondition,
+                                    });
+                                    BlocProvider.of<GetHeaderTableCubit>(
+                                            context)
+                                        .getHeaderTable(
+                                            listName: "SupplierPaymentReport");
+                                    BlocProvider.of<SupplierProcessCubit>(
+                                            context)
+                                        .getTableSupplierProcess(
+                                      selectTab: selectTab,
+                                      objectData: myData,
+                                      numberOfPage: numberPage,
+                                      link: "Structure",
+                                      dropdownValueOfLimit: dropdownValue,
+                                    );
+                                    break;
+                                  case 3:
+                                    String tailCondition =
+                                        getTailConditionInCase3();
 
-                                  createMyData(data: {
-                                    // "pageId": widget.pageData.pageId,
-                                    "employee": false,
-                                    "limit": dropdownValue,
-                                    "offset": (numberPage * dropdownValue) - dropdownValue,
-                                    "statment": "",
-                                    "selectcolumns": "",
-                                    "IsDepartment": false,
-                                    "DepartmentName": "",
-                                    "AuthorizationID": 0,
-                                    "ViewEmployeeColumn": "",
-                                    // "OrderBy": widget.pageData.orderBy,
-                                    "company": true,
-                                    "companyname": "ComID",
-                                    "IsDesc": true,
-                                    "listName": "ExtractionDetailsReportList",
-                                    "tableName": "[ExtractionDetailsReport]",
-                                    "tailcondition": tailCondition,
-                                  });
-                                  BlocProvider.of<GetHeaderTableCubit>(context)
-                                      .getHeaderTable(listName: "ExtractionDetailsReportList");
-                                  BlocProvider.of<SupplierProcessCubit>(context)
-                                      .getTableSupplierProcess(
-                                    selectTab: selectTab,
-                                    objectData: myData,
-                                    numberOfPage: numberPage,
-                                    link: "Structure",
-                                    dropdownValueOfLimit: dropdownValue,
-                                  );
-                                  break;
-                                case 4:
-                                  String tailCondition = getTailConditionInCase4();
+                                    createMyData(data: {
+                                      // "pageId": widget.pageData.pageId,
+                                      "employee": false,
+                                      "limit": dropdownValue,
+                                      "offset": (numberPage * dropdownValue) -
+                                          dropdownValue,
+                                      "statment": "",
+                                      "selectcolumns": "",
+                                      "IsDepartment": false,
+                                      "DepartmentName": "",
+                                      "AuthorizationID": 0,
+                                      "ViewEmployeeColumn": "",
+                                      // "OrderBy": widget.pageData.orderBy,
+                                      "company": true,
+                                      "companyname": "ComID",
+                                      "IsDesc": true,
+                                      "listName": "ExtractionDetailsReportList",
+                                      "tableName": "[ExtractionDetailsReport]",
+                                      "tailcondition": tailCondition,
+                                    });
+                                    BlocProvider.of<GetHeaderTableCubit>(
+                                            context)
+                                        .getHeaderTable(
+                                            listName:
+                                                "ExtractionDetailsReportList");
+                                    BlocProvider.of<SupplierProcessCubit>(
+                                            context)
+                                        .getTableSupplierProcess(
+                                      selectTab: selectTab,
+                                      objectData: myData,
+                                      numberOfPage: numberPage,
+                                      link: "Structure",
+                                      dropdownValueOfLimit: dropdownValue,
+                                    );
+                                    break;
+                                  case 4:
+                                    String tailCondition =
+                                        getTailConditionInCase4();
 
-                                  createMyData(data: {
-                                    "employee": false,
-                                    "limit": dropdownValue,
-                                    "offset": (numberPage * dropdownValue) - dropdownValue,
-                                    "statment": "",
-                                    "selectcolumns": "",
-                                    "IsDepartment": false,
-                                    "DepartmentName": "",
-                                    "AuthorizationID": 0,
-                                    "ViewEmployeeColumn": "",
-                                    // "OrderBy": widget.pageData.orderBy,
-                                    "company": true,
-                                    "companyname": "ComID",
-                                    "IsDesc": true,
-                                    "listName": "ExtractionTotalReportList",
-                                    "tableName": "[ExtractionTotalReport]",
-                                    "tailcondition": tailCondition,
-                                  });
-                                  BlocProvider.of<GetHeaderTableCubit>(context)
-                                      .getHeaderTable(listName: "ExtractionTotalReportList");
-                                  BlocProvider.of<SupplierProcessCubit>(context)
-                                      .getTableSupplierProcess(
-                                    selectTab: selectTab,
-                                    objectData: myData,
-                                    link: "Structure",
-                                    numberOfPage: numberPage,
-                                    dropdownValueOfLimit: dropdownValue,
-                                  );
-                                  break;
-                                case 5:
-                                  createMyData(data: {
-                                    "employee": false,
-                                    "limit": dropdownValue,
-                                    "offset": (numberPage * dropdownValue) - dropdownValue,
-                                    "statment": "",
-                                    "selectcolumns": "",
-                                    "IsDepartment": false,
-                                    "DepartmentName": "",
-                                    "AuthorizationID": 0,
-                                    "ViewEmployeeColumn": "",
-                                    "OrderBy": "ECode",
-                                    "company": true,
-                                    "companyname": "ComID",
-                                    "IsDesc": true,
-                                    "listName": "ProfAccountDetails",
-                                    "tableName": "EntryWithPurchaseDetail",
-                                    "tailcondition": "",
-                                  });
-                                  BlocProvider.of<GetHeaderTableCubit>(context)
-                                      .getHeaderTable(listName: "ProfAccountDetails");
-                                  BlocProvider.of<SupplierProcessCubit>(context)
-                                      .getTableSupplierProcess(
-                                    selectTab: selectTab,
-                                    objectData: myData,
-                                    link: "ProfAccount",
-                                    numberOfPage: numberPage,
-                                    dropdownValueOfLimit: dropdownValue,
-                                  );
-                                  break;
-                              }
-                            },
+                                    createMyData(data: {
+                                      "employee": false,
+                                      "limit": dropdownValue,
+                                      "offset": (numberPage * dropdownValue) -
+                                          dropdownValue,
+                                      "statment": "",
+                                      "selectcolumns": "",
+                                      "IsDepartment": false,
+                                      "DepartmentName": "",
+                                      "AuthorizationID": 0,
+                                      "ViewEmployeeColumn": "",
+                                      // "OrderBy": widget.pageData.orderBy,
+                                      "company": true,
+                                      "companyname": "ComID",
+                                      "IsDesc": true,
+                                      "listName": "ExtractionTotalReportList",
+                                      "tableName": "[ExtractionTotalReport]",
+                                      "tailcondition": tailCondition,
+                                    });
+                                    BlocProvider.of<GetHeaderTableCubit>(
+                                            context)
+                                        .getHeaderTable(
+                                            listName:
+                                                "ExtractionTotalReportList");
+                                    BlocProvider.of<SupplierProcessCubit>(
+                                            context)
+                                        .getTableSupplierProcess(
+                                      selectTab: selectTab,
+                                      objectData: myData,
+                                      link: "Structure",
+                                      numberOfPage: numberPage,
+                                      dropdownValueOfLimit: dropdownValue,
+                                    );
+                                    break;
+                                  case 5:
+                                    createMyData(data: {
+                                      "employee": false,
+                                      "limit": dropdownValue,
+                                      "offset": (numberPage * dropdownValue) -
+                                          dropdownValue,
+                                      "statment": "",
+                                      "selectcolumns": "",
+                                      "IsDepartment": false,
+                                      "DepartmentName": "",
+                                      "AuthorizationID": 0,
+                                      "ViewEmployeeColumn": "",
+                                      "OrderBy": "ECode",
+                                      "company": true,
+                                      "companyname": "ComID",
+                                      "IsDesc": true,
+                                      "listName": "ProfAccountDetails",
+                                      "tableName": "EntryWithPurchaseDetail",
+                                      "tailcondition": "",
+                                    });
+                                    BlocProvider.of<GetHeaderTableCubit>(
+                                            context)
+                                        .getHeaderTable(
+                                            listName: "ProfAccountDetails");
+                                    BlocProvider.of<SupplierProcessCubit>(
+                                            context)
+                                        .getTableSupplierProcess(
+                                      selectTab: selectTab,
+                                      objectData: myData,
+                                      link: "ProfAccount",
+                                      numberOfPage: numberPage,
+                                      dropdownValueOfLimit: dropdownValue,
+                                    );
+                                    break;
+                                }
+                              },
+                            ),
                           ),
                         );
                       } else if (state is SupplierProcessFailure) {
-                        return CustomErrorMassage(errorMassage: state.errorMassage);
+                        return CustomErrorMassage(
+                            errorMassage: state.errorMassage);
                       } else {
                         return const CustomLoadingWidget();
                       }
@@ -553,19 +612,25 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
   String getTailConditionInCase1() {
     String till = "POID is not null ";
     for (var i in widgetsData) {
-      if ((i["widget"] as ColumnList).columnName == "supplierID" && i['value'] != "") {
+      if ((i["widget"] as ColumnList).columnName == "supplierID" &&
+          i['value'] != "") {
         till = "${till}AND SupplierID= ${i['value']} ";
       }
-      if ((i["widget"] as ColumnList).columnName == "datefrom" && i['value'] != "") {
+      if ((i["widget"] as ColumnList).columnName == "datefrom" &&
+          i['value'] != "") {
         till = "${till}AND PODate >= CONVERT(DATETIME,'${i['value']}', 102) ";
       }
-      if ((i["widget"] as ColumnList).columnName == "dateto" && i['value'] != "") {
-        till = "${till}AND PODate <= CONVERT(DATETIME,'${widgetsData[3]['value']}', 102) ";
+      if ((i["widget"] as ColumnList).columnName == "dateto" &&
+          i['value'] != "") {
+        till =
+            "${till}AND PODate <= CONVERT(DATETIME,'${widgetsData[3]['value']}', 102) ";
       }
-      if ((i["widget"] as ColumnList).columnName == "ProductID" && i['value'] != "") {
+      if ((i["widget"] as ColumnList).columnName == "ProductID" &&
+          i['value'] != "") {
         till = "${till}AND ProjectID= ${i['value']} ";
       }
-      if ((i["widget"] as ColumnList).columnName == "ConstSupplierMasterId" && i['value'] != "") {
+      if ((i["widget"] as ColumnList).columnName == "ConstSupplierMasterId" &&
+          i['value'] != "") {
         till = "${till}AND ConstSupplierMasterId= ${i['value']} ";
       }
     }
@@ -575,19 +640,26 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
   String getTailConditionInCase2() {
     String till = "PRID is not null ";
     for (var i in widgetsData) {
-      if ((i["widget"] as ColumnList).columnName == "supplierID" && i['value'] != "") {
+      if ((i["widget"] as ColumnList).columnName == "supplierID" &&
+          i['value'] != "") {
         till = "${till}AND SupplierID= ${i['value']} ";
       }
-      if ((i["widget"] as ColumnList).columnName == "datefrom" && i['value'] != "") {
-        till = "${till}AND ActualPayDate >= CONVERT(DATETIME,'${i['value']}', 102) ";
+      if ((i["widget"] as ColumnList).columnName == "datefrom" &&
+          i['value'] != "") {
+        till =
+            "${till}AND ActualPayDate >= CONVERT(DATETIME,'${i['value']}', 102) ";
       }
-      if ((i["widget"] as ColumnList).columnName == "dateto" && i['value'] != "") {
-        till = "${till}AND ActualPayDate <= CONVERT(DATETIME,'${widgetsData[3]['value']}', 102) ";
+      if ((i["widget"] as ColumnList).columnName == "dateto" &&
+          i['value'] != "") {
+        till =
+            "${till}AND ActualPayDate <= CONVERT(DATETIME,'${widgetsData[3]['value']}', 102) ";
       }
-      if ((i["widget"] as ColumnList).columnName == "ProductID" && i['value'] != "") {
+      if ((i["widget"] as ColumnList).columnName == "ProductID" &&
+          i['value'] != "") {
         till = "${till}AND ProjectID= ${i['value']} ";
       }
-      if ((i["widget"] as ColumnList).columnName == "ConstSupplierMasterId" && i['value'] != "") {
+      if ((i["widget"] as ColumnList).columnName == "ConstSupplierMasterId" &&
+          i['value'] != "") {
         till = "${till}AND ConstSupplierMasterId= ${i['value']} ";
       }
     }
@@ -597,19 +669,26 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
   String getTailConditionInCase3() {
     String till = "ExtractionID is not null ";
     for (var i in widgetsData) {
-      if ((i["widget"] as ColumnList).columnName == "supplierID" && i['value'] != "") {
+      if ((i["widget"] as ColumnList).columnName == "supplierID" &&
+          i['value'] != "") {
         till = "${till}AND SupplierID= ${i['value']} ";
       }
-      if ((i["widget"] as ColumnList).columnName == "datefrom" && i['value'] != "") {
-        till = "${till}AND ExtractionDate >= CONVERT(DATETIME,'${i['value']}', 102) ";
+      if ((i["widget"] as ColumnList).columnName == "datefrom" &&
+          i['value'] != "") {
+        till =
+            "${till}AND ExtractionDate >= CONVERT(DATETIME,'${i['value']}', 102) ";
       }
-      if ((i["widget"] as ColumnList).columnName == "dateto" && i['value'] != "") {
-        till = "${till}AND ExtractionDate <= CONVERT(DATETIME,'${widgetsData[3]['value']}', 102) ";
+      if ((i["widget"] as ColumnList).columnName == "dateto" &&
+          i['value'] != "") {
+        till =
+            "${till}AND ExtractionDate <= CONVERT(DATETIME,'${widgetsData[3]['value']}', 102) ";
       }
-      if ((i["widget"] as ColumnList).columnName == "ProductID" && i['value'] != "") {
+      if ((i["widget"] as ColumnList).columnName == "ProductID" &&
+          i['value'] != "") {
         till = "${till}AND ProjectID= ${i['value']} ";
       }
-      if ((i["widget"] as ColumnList).columnName == "ConstSupplierMasterId" && i['value'] != "") {
+      if ((i["widget"] as ColumnList).columnName == "ConstSupplierMasterId" &&
+          i['value'] != "") {
         till = "${till}AND ConstSupplierMasterId= ${i['value']} ";
       }
     }
@@ -619,26 +698,34 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
   String getTailConditionInCase4() {
     String till = "ExtractionMasterID is not null ";
     for (var i in widgetsData) {
-      if ((i["widget"] as ColumnList).columnName == "supplierID" && i['value'] != "") {
+      if ((i["widget"] as ColumnList).columnName == "supplierID" &&
+          i['value'] != "") {
         till = "${till}AND SupplierID= ${i['value']} ";
       }
-      if ((i["widget"] as ColumnList).columnName == "datefrom" && i['value'] != "") {
-        till = "${till}AND ExtractionDate >= CONVERT(DATETIME,'${i['value']}', 102) ";
+      if ((i["widget"] as ColumnList).columnName == "datefrom" &&
+          i['value'] != "") {
+        till =
+            "${till}AND ExtractionDate >= CONVERT(DATETIME,'${i['value']}', 102) ";
       }
-      if ((i["widget"] as ColumnList).columnName == "dateto" && i['value'] != "") {
-        till = "${till}AND ExtractionDate <= CONVERT(DATETIME,'${widgetsData[3]['value']}', 102) ";
+      if ((i["widget"] as ColumnList).columnName == "dateto" &&
+          i['value'] != "") {
+        till =
+            "${till}AND ExtractionDate <= CONVERT(DATETIME,'${widgetsData[3]['value']}', 102) ";
       }
-      if ((i["widget"] as ColumnList).columnName == "ProductID" && i['value'] != "") {
+      if ((i["widget"] as ColumnList).columnName == "ProductID" &&
+          i['value'] != "") {
         till = "${till}AND ProjectID= ${i['value']} ";
       }
-      if ((i["widget"] as ColumnList).columnName == "ConstSupplierMasterId" && i['value'] != "") {
+      if ((i["widget"] as ColumnList).columnName == "ConstSupplierMasterId" &&
+          i['value'] != "") {
         till = "${till}AND ConstSupplierMasterId= ${i['value']} ";
       }
     }
     return till;
   }
 
-  Widget buildCategoryChildren(MapEntry<String, List<Map<String, dynamic>>> entry) {
+  Widget buildCategoryChildren(
+      MapEntry<String, List<Map<String, dynamic>>> entry) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Column(
@@ -716,9 +803,11 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
     );
   }
 
-  Widget buildDateWidget(String title, ColumnList itemColumnList, Map<String, dynamic> widgetData) {
+  Widget buildDateWidget(String title, ColumnList itemColumnList,
+      Map<String, dynamic> widgetData) {
     String date = widgetData['value'] != ""
-        ? DateFormat("yyyy-MM-dd", 'en').format(DateTime.parse(widgetData['value']))
+        ? DateFormat("yyyy-MM-dd", 'en')
+            .format(DateTime.parse(widgetData['value']))
         : "";
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5),
@@ -767,7 +856,8 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                     child: Text(
                       date,
                       textAlign: TextAlign.center,
-                      style: AppStyles.textStyle14.copyWith(color: Colors.black),
+                      style:
+                          AppStyles.textStyle14.copyWith(color: Colors.black),
                     )),
               );
             },
@@ -878,21 +968,22 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                     ? CustomDropdown<String>.search(
                         hintText: '',
                         initialItem: dropValue,
-                        closedHeaderPadding:
-                            const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                        closedHeaderPadding: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 8),
                         decoration: CustomDropdownDecoration(
-                          headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
+                          headerStyle: AppStyles.textStyle16
+                              .copyWith(color: Colors.black),
                           closedFillColor: Colors.transparent,
                           closedBorder: Border.all(color: AppColors.blueDark),
                         ),
                         items: myListDrop!.isEmpty
                             ? [""]
-                            : List.generate(
-                                myListDrop.length, (index) => myListDrop![index].text ?? ''),
+                            : List.generate(myListDrop.length,
+                                (index) => myListDrop![index].text ?? ''),
                         onChanged: (value) {
                           dropSetState(() {
-                            ItemDrop ii =
-                                myListDrop!.firstWhere((element) => element.text == value);
+                            ItemDrop ii = myListDrop!
+                                .firstWhere((element) => element.text == value);
                             widgetData['value'] = "";
                             widgetData['value'] = ii.id;
                           });
@@ -914,17 +1005,18 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                           });
                         },
                         // initialItem: dropValue,
-                        closedHeaderPadding:
-                            const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                        closedHeaderPadding: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 8),
                         decoration: CustomDropdownDecoration(
-                          headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
+                          headerStyle: AppStyles.textStyle16
+                              .copyWith(color: Colors.black),
                           closedFillColor: Colors.transparent,
                           closedBorder: Border.all(color: AppColors.blueDark),
                         ),
                         items: myListDrop!.isEmpty
                             ? [""]
-                            : List.generate(
-                                myListDrop.length, (index) => myListDrop![index].text ?? ''),
+                            : List.generate(myListDrop.length,
+                                (index) => myListDrop![index].text ?? ''),
                       ),
               );
             },
@@ -934,8 +1026,8 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
     );
   }
 
-  StatefulBuilder buildCheckBoxWidget(
-      Map<String, dynamic> widgetData, String title, ColumnList itemColumnList) {
+  StatefulBuilder buildCheckBoxWidget(Map<String, dynamic> widgetData,
+      String title, ColumnList itemColumnList) {
     return StatefulBuilder(
       builder: (context, csetState) {
         return CheckboxListTile(
@@ -978,8 +1070,11 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
 
   Future<bool> getPermissions(int? pageId) async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
-      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
+              "";
+      String token =
+          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPagePermissions?pageId=$pageId",
         headers: {
@@ -996,8 +1091,11 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
 
   void getColumnListAndAdd(Pages page) async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
-      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
+              "";
+      String token =
+          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).post(
         endPoint: "home/getGeneralTable",
         data: {
@@ -1028,7 +1126,8 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
         isOverlayTapDismiss: false,
         isCloseButton: false,
         content: BlocProvider(
-          create: (context) => AddEditCubit(getIt.get<SupplierProcessRepoImpl>()),
+          create: (context) =>
+              AddEditCubit(getIt.get<SupplierProcessRepoImpl>()),
           child: BuildAlertAddInDropdown(
             columnList: columnList!,
             pageData: page,
@@ -1045,8 +1144,11 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
 
   void getDropdownList(int pageId) async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
-      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
+              "";
+      String token =
+          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       List<dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPageDropDown?pageId=$pageId",
         headers: {
@@ -1068,7 +1170,8 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
     }
   }
 
-  Container buildCategoryName(MapEntry<String, List<Map<String, dynamic>>> entry) {
+  Container buildCategoryName(
+      MapEntry<String, List<Map<String, dynamic>>> entry) {
     return Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
