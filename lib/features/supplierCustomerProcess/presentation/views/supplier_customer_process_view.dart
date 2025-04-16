@@ -23,10 +23,12 @@ class SupplierCustomerProcessView extends StatefulWidget {
   static List<AllDropdownModel> myAllDropdownModelList = [];
 
   @override
-  State<SupplierCustomerProcessView> createState() => _SupplierCustomerProcessViewState();
+  State<SupplierCustomerProcessView> createState() =>
+      _SupplierCustomerProcessViewState();
 }
 
-class _SupplierCustomerProcessViewState extends State<SupplierCustomerProcessView> {
+class _SupplierCustomerProcessViewState
+    extends State<SupplierCustomerProcessView> {
   String? lang;
 
   @override
@@ -47,54 +49,52 @@ class _SupplierCustomerProcessViewState extends State<SupplierCustomerProcessVie
               : widget.pageData.nameAr,
         ),
         body: BlocProvider(
-          create: (context) =>
-              GetAllDropdownListCubit(getIt.get<SupplierCustomerProcessRepoImpl>())
-                ..getAllDropdownList(pageId: widget.pageData.pageId),
+          create: (context) => GetAllDropdownListCubit(
+              getIt.get<SupplierCustomerProcessRepoImpl>())
+            ..getAllDropdownList(pageId: widget.pageData.pageId),
           child: BlocBuilder<GetAllDropdownListCubit, GetAllDropdownListState>(
             builder: (context, state) {
               if (state is GetAllDropdownListSuccess) {
-                List<AllDropdownModel> allDropdownModelList = state.allDropdownModelList;
-                SupplierCustomerProcessView.myAllDropdownModelList = allDropdownModelList;
+                List<AllDropdownModel> allDropdownModelList =
+                    state.allDropdownModelList;
+                SupplierCustomerProcessView.myAllDropdownModelList =
+                    allDropdownModelList;
                 return BlocProvider(
-                  create: (context) =>
-                      GetTableCubit(getIt.get<SupplierCustomerProcessRepoImpl>())
-                        ..getTable(
-                          pageId: widget.pageData.pageId,
-                          employee: false,
-                          isdesc: widget.pageData.isDesc,
-                          limit: 10,
-                          offset: 0,
-                          orderby: widget.pageData.orderBy,
-                          statment: "",
-                          selectcolumns: '',
-                          departmentName: widget.pageData.departmentName,
-                          isDepartment: widget.pageData.isDepartment,
-                          authorizationID: widget.pageData.authorizationID,
-                          viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
-                          dropdownValueOfLimit: 10,
-                          numberOfPage: 1,
-                        ),
+                  create: (context) => GetTableCubit(
+                      getIt.get<SupplierCustomerProcessRepoImpl>())
+                    ..getTable(
+                      pageId: widget.pageData.pageId,
+                      employee: false,
+                      isdesc: widget.pageData.isDesc,
+                      limit: 10,
+                      offset: 0,
+                      orderby: widget.pageData.orderBy,
+                      statment: "",
+                      selectcolumns: '',
+                      departmentName: widget.pageData.departmentName,
+                      isDepartment: widget.pageData.isDepartment,
+                      authorizationID: widget.pageData.authorizationID,
+                      viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
+                      dropdownValueOfLimit: 10,
+                      numberOfPage: 1,
+                    ),
                   child: BlocBuilder<GetTableCubit, GetTableState>(
                     builder: (context, state) {
                       if (state is GetTableSuccess) {
                         List<ColumnList> listColumn = [];
-                        List<ColumnList> listColumnInTable = [];
                         for (var item in state.screenModel.columnList!) {
                           if (item.insertVisable == true) {
                             listColumn.add(item);
-                          }
-                          if (item.visible == true) {
-                            listColumnInTable.add(item);
                           }
                         }
 
                         return SupplierCustomerProcessViewBody(
                           listColumn: listColumn,
-                          // listColumnInTable: listColumnInTable,
                           pageData: widget.pageData,
                         );
                       } else if (state is GetTableFailure) {
-                        return CustomErrorMassage(errorMassage: state.errorMassage);
+                        return CustomErrorMassage(
+                            errorMassage: state.errorMassage);
                       } else {
                         return const CustomLoadingWidget();
                       }

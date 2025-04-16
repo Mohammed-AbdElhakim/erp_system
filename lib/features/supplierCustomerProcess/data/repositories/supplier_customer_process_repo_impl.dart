@@ -1,3 +1,4 @@
+import 'dart:convert';
 
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
@@ -21,8 +22,10 @@ class SupplierCustomerProcessRepoImpl implements SupplierCustomerProcessRepo {
       {required int pageID}) async {
     try {
       String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
-      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
+              "";
+      String token =
+          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       List<dynamic> data = await apiService.get(
         endPoint: "home/GetPageDropDown?pageId=$pageID",
         headers: {
@@ -57,8 +60,10 @@ class SupplierCustomerProcessRepoImpl implements SupplierCustomerProcessRepo {
   }) async {
     try {
       String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
-      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
+              "";
+      String token =
+          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       List<dynamic> data = await apiService.get(
         endPoint: "web/Structure/getListSetups/$listName",
         headers: {
@@ -104,8 +109,10 @@ class SupplierCustomerProcessRepoImpl implements SupplierCustomerProcessRepo {
   }) async {
     try {
       String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
-      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
+              "";
+      String token =
+          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await apiService.post(
         endPoint: "home/getGeneralTable",
         data: {
@@ -151,8 +158,10 @@ class SupplierCustomerProcessRepoImpl implements SupplierCustomerProcessRepo {
   }) async {
     try {
       String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
-      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
+              "";
+      String token =
+          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
 
       var data = await apiService.post(
         endPoint: "home/AddEdit?controllerName=$controllerName",
@@ -182,9 +191,11 @@ class SupplierCustomerProcessRepoImpl implements SupplierCustomerProcessRepo {
       {required Map<String, dynamic> objectData, required String link}) async {
     try {
       String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
-      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
-      // var rrr = jsonEncode(objectData);
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
+              "";
+      String token =
+          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      var rrr = jsonEncode(objectData);
       Map<String, dynamic> data = await apiService.post(
         endPoint: "web/$link/getDataGlobal",
         data: objectData,
