@@ -29,6 +29,7 @@ import '../manager/getHeaderTable/get_header_table_cubit.dart';
 import '../manager/projectProcess/project_process_cubit.dart';
 import '../views/project_process_view.dart';
 import 'build_alert_add_in_dropdown.dart';
+import 'custom_floating_action_button.dart';
 import 'custom_table_project_process.dart';
 import 'pagination_widget.dart';
 import 'tabs_widget.dart';
@@ -66,6 +67,7 @@ class _ProjectProcessViewBodyState extends State<ProjectProcessViewBody> {
   late int numberPage;
   late int dropdownValue;
   late int selectTab;
+
   @override
   void didChangeDependencies() {
     lang = Localizations.localeOf(context).toString();
@@ -259,228 +261,249 @@ class _ProjectProcessViewBodyState extends State<ProjectProcessViewBody> {
                         allPages = (numberOfRecords! % dropdownValue) == 0
                             ? (numberOfRecords ~/ dropdownValue)
                             : (numberOfRecords ~/ dropdownValue) + 1;
-                        return CustomTableProjectProcess(
-                          pageData: widget.pageData,
-                          listData: listData!,
-                          listColumn: headerList,
-                          allDropdownModelList:
-                              ProjectProcessView.myAllDropdownModelList,
-                          paginationWidget: PaginationWidget(
-                            allPages: allPages,
-                            dropdownValue: dropdownValue,
-                            listNumberItemInList: listNumberItemInList,
-                            myPage: numberPage,
-                            numberOfRecords: numberOfRecords,
-                            onChangeLimit: (limit) {
-                              setState(() {
-                                dropdownValue = limit;
-                                numberPage = 1;
-                                allPages = (numberOfRecords % dropdownValue) ==
-                                        0
-                                    ? (numberOfRecords ~/ dropdownValue)
-                                    : (numberOfRecords ~/ dropdownValue) + 1;
-                                myData['limit']=limit;
-                              });
-                              // createMyData();
-                              BlocProvider.of<ProjectProcessCubit>(context)
-                                  .getTableProjectProcess(
-                                selectTab: selectTab,
-                                link: selectTab == 0
-                                    ? "ProfAccount"
-                                    : "Structure",
-                                objectData: myData,
-                                numberOfPage: numberPage,
-                                dropdownValueOfLimit: dropdownValue,
-                              );
-                            },
-                            onTapMin: () {
-                              setState(() {
-                                numberPage--;
-                                myData['offset']=(numberPage * dropdownValue) - dropdownValue;
-                              });
-                              // createMyData();
-                              BlocProvider.of<ProjectProcessCubit>(context)
-                                  .getTableProjectProcess(
-                                selectTab: selectTab,
-                                objectData: myData,
-                                link: selectTab == 0
-                                    ? "ProfAccount"
-                                    : "Structure",
-                                numberOfPage: numberPage,
-                                dropdownValueOfLimit: dropdownValue,
-                              );
-                            },
-                            onTapAdd: () {
-                              setState(() {
-                                numberPage++;
-                                myData['offset']=(numberPage * dropdownValue) - dropdownValue;
-                              });
-                              // createMyData();
-                              BlocProvider.of<ProjectProcessCubit>(context)
-                                  .getTableProjectProcess(
-                                selectTab: selectTab,
-                                objectData: myData,
-                                link: selectTab == 0
-                                    ? "ProfAccount"
-                                    : "Structure",
-                                numberOfPage: numberPage,
-                                dropdownValueOfLimit: dropdownValue,
-                              );
-                            },
-                          ),
-                          tabsWidget: TabsWidget(
+                        return Scaffold(
+                          floatingActionButton: CustomFloatingActionButton(
+                            data: myData,
+                            link: selectTab == 0 ? "ProfAccount" : "Structure",
                             selectTab: selectTab,
-                            onTap: (index) {
-                              setState(() {
-                                selectTab = index;
-                              });
-                              switch (index) {
-                                case 0:
-                                  createMyData(data: {
-                                    "employee": false,
-                                    "limit": dropdownValue,
-                                    "offset": (numberPage * dropdownValue) -
-                                        dropdownValue,
-                                    "statment": "",
-                                    "selectcolumns": "",
-                                    "IsDepartment": false,
-                                    "AuthorizationID": 0,
-                                    "ViewEmployeeColumn": "",
-                                    "OrderBy": "EDate",
-                                    "IsDesc": true,
-                                    "tableName": "ProfAccount",
-                                    "listName": "ProfAccountProject",
-                                  });
-                                  BlocProvider.of<GetHeaderTableCubit>(context)
-                                      .getHeaderTable(
-                                          listName: "ProfAccountProject");
-                                  BlocProvider.of<ProjectProcessCubit>(context)
-                                      .getTableProjectProcess(
-                                    selectTab: selectTab,
-                                    objectData: myData,
-                                    link: "ProfAccount",
-                                    numberOfPage: numberPage,
-                                    dropdownValueOfLimit: dropdownValue,
-                                  );
-                                  break;
-                                case 1:
-                                  String projectID = widgetsData.firstWhere(
-                                    (element) =>
-                                        (element['widget'] as ColumnList)
-                                            .columnName ==
-                                        "ProductID",
-                                  )['value'];
+                            pageData: widget.pageData,
+                          ),
+                          body: CustomTableProjectProcess(
+                            pageData: widget.pageData,
+                            listData: listData!,
+                            listColumn: headerList,
+                            allDropdownModelList:
+                                ProjectProcessView.myAllDropdownModelList,
+                            paginationWidget: PaginationWidget(
+                              allPages: allPages,
+                              dropdownValue: dropdownValue,
+                              listNumberItemInList: listNumberItemInList,
+                              myPage: numberPage,
+                              numberOfRecords: numberOfRecords,
+                              onChangeLimit: (limit) {
+                                setState(() {
+                                  dropdownValue = limit;
+                                  numberPage = 1;
+                                  allPages =
+                                      (numberOfRecords % dropdownValue) == 0
+                                          ? (numberOfRecords ~/ dropdownValue)
+                                          : (numberOfRecords ~/ dropdownValue) +
+                                              1;
+                                  myData['limit'] = limit;
+                                });
+                                // createMyData();
+                                BlocProvider.of<ProjectProcessCubit>(context)
+                                    .getTableProjectProcess(
+                                  selectTab: selectTab,
+                                  link: selectTab == 0
+                                      ? "ProfAccount"
+                                      : "Structure",
+                                  objectData: myData,
+                                  numberOfPage: numberPage,
+                                  dropdownValueOfLimit: dropdownValue,
+                                );
+                              },
+                              onTapMin: () {
+                                setState(() {
+                                  numberPage--;
+                                  myData['offset'] =
+                                      (numberPage * dropdownValue) -
+                                          dropdownValue;
+                                });
+                                // createMyData();
+                                BlocProvider.of<ProjectProcessCubit>(context)
+                                    .getTableProjectProcess(
+                                  selectTab: selectTab,
+                                  objectData: myData,
+                                  link: selectTab == 0
+                                      ? "ProfAccount"
+                                      : "Structure",
+                                  numberOfPage: numberPage,
+                                  dropdownValueOfLimit: dropdownValue,
+                                );
+                              },
+                              onTapAdd: () {
+                                setState(() {
+                                  numberPage++;
+                                  myData['offset'] =
+                                      (numberPage * dropdownValue) -
+                                          dropdownValue;
+                                });
+                                // createMyData();
+                                BlocProvider.of<ProjectProcessCubit>(context)
+                                    .getTableProjectProcess(
+                                  selectTab: selectTab,
+                                  objectData: myData,
+                                  link: selectTab == 0
+                                      ? "ProfAccount"
+                                      : "Structure",
+                                  numberOfPage: numberPage,
+                                  dropdownValueOfLimit: dropdownValue,
+                                );
+                              },
+                            ),
+                            tabsWidget: TabsWidget(
+                              selectTab: selectTab,
+                              onTap: (index) {
+                                setState(() {
+                                  selectTab = index;
+                                });
+                                switch (index) {
+                                  case 0:
+                                    createMyData(data: {
+                                      "employee": false,
+                                      "limit": dropdownValue,
+                                      "offset": (numberPage * dropdownValue) -
+                                          dropdownValue,
+                                      "statment": "",
+                                      "selectcolumns": "",
+                                      "IsDepartment": false,
+                                      "AuthorizationID": 0,
+                                      "ViewEmployeeColumn": "",
+                                      "OrderBy": "EDate",
+                                      "IsDesc": true,
+                                      "tableName": "ProfAccount",
+                                      "listName": "ProfAccountProject",
+                                    });
+                                    BlocProvider.of<GetHeaderTableCubit>(
+                                            context)
+                                        .getHeaderTable(
+                                            listName: "ProfAccountProject");
+                                    BlocProvider.of<ProjectProcessCubit>(
+                                            context)
+                                        .getTableProjectProcess(
+                                      selectTab: selectTab,
+                                      objectData: myData,
+                                      link: "ProfAccount",
+                                      numberOfPage: numberPage,
+                                      dropdownValueOfLimit: dropdownValue,
+                                    );
+                                    break;
+                                  case 1:
+                                    String projectID = widgetsData.firstWhere(
+                                      (element) =>
+                                          (element['widget'] as ColumnList)
+                                              .columnName ==
+                                          "ProductID",
+                                    )['value'];
 
-                                  createMyData(data: {
-                                    "employee": false,
-                                    "limit": dropdownValue,
-                                    "offset": (numberPage * dropdownValue) -
-                                        dropdownValue,
-                                    "statment": "",
-                                    "selectcolumns": "",
-                                    "IsDepartment": false,
-                                    "AuthorizationID": 0,
-                                    "ViewEmployeeColumn": "",
-                                    "OrderBy": "ProjectID",
-                                    "IsDesc": true,
-                                    "tableName": "[ExtractionDetailsReport]",
-                                    "listName": "ExtractionDetailsReportList",
-                                    "tailcondition":
-                                        "ExtractionID is not null AND ProjectID= $projectID",
-                                  });
-                                  BlocProvider.of<GetHeaderTableCubit>(context)
-                                      .getHeaderTable(
-                                          listName:
-                                              "ExtractionDetailsReportList");
-                                  BlocProvider.of<ProjectProcessCubit>(context)
-                                      .getTableProjectProcess(
-                                    selectTab: selectTab,
-                                    objectData: myData,
-                                    link: "Structure",
-                                    numberOfPage: numberPage,
-                                    dropdownValueOfLimit: dropdownValue,
-                                  );
-                                  break;
-                                case 2:
-                                  String projectID = widgetsData.firstWhere(
-                                    (element) =>
-                                        (element['widget'] as ColumnList)
-                                            .columnName ==
-                                        "ProductID",
-                                  )['value'];
-                                  createMyData(data: {
-                                    // "pageId": 289,
-                                    "employee": false,
-                                    "limit": dropdownValue,
-                                    "offset": (numberPage * dropdownValue) -
-                                        dropdownValue,
-                                    "statment": "",
-                                    "selectcolumns": "",
-                                    "IsDepartment": false,
-                                    "AuthorizationID": 0,
-                                    "ViewEmployeeColumn": "",
-                                    "OrderBy": "ProjectID",
-                                    "company": true,
-                                    "companyname": "ComID",
-                                    "IsDesc": true,
-                                    "listName": "ExtractionTotalReportList",
-                                    "tableName": "[ExtractionTotalReport]",
-                                    "tailcondition":
-                                        "ExtractionMasterID is not null AND ProjectID=$projectID",
-                                  });
-                                  BlocProvider.of<GetHeaderTableCubit>(context)
-                                      .getHeaderTable(
-                                          listName:
-                                              "ExtractionTotalReportList");
-                                  BlocProvider.of<ProjectProcessCubit>(context)
-                                      .getTableProjectProcess(
-                                    selectTab: selectTab,
-                                    objectData: myData,
-                                    numberOfPage: numberPage,
-                                    link: "Structure",
-                                    dropdownValueOfLimit: dropdownValue,
-                                  );
-                                  break;
-                                case 3:
-                                  String productID = widgetsData.firstWhere(
-                                    (element) =>
-                                        (element['widget'] as ColumnList)
-                                            .columnName ==
-                                        "ProductID",
-                                  )['value'];
-                                  createMyData(data: {
-                                    // "pageId": widget.pageData.pageId,
-                                    "employee": false,
-                                    "limit": dropdownValue,
-                                    "offset": (numberPage * dropdownValue) -
-                                        dropdownValue,
-                                    "statment": "",
-                                    "selectcolumns": "",
-                                    "IsDepartment": false,
-                                    "AuthorizationID": 0,
-                                    "ViewEmployeeColumn": "",
-                                    "OrderBy": "PRID",
-                                    "company": true,
-                                    "companyname": "ComID",
-                                    "IsDesc": true,
-                                    "listName": "SupplierPaymentReport",
-                                    "tableName": "[PaymentReciveView]",
-                                    "tailcondition": "ProductID=$productID",
-                                  });
-                                  BlocProvider.of<GetHeaderTableCubit>(context)
-                                      .getHeaderTable(
-                                          listName: "SupplierPaymentReport");
-                                  BlocProvider.of<ProjectProcessCubit>(context)
-                                      .getTableProjectProcess(
-                                    selectTab: selectTab,
-                                    objectData: myData,
-                                    numberOfPage: numberPage,
-                                    link: "Structure",
-                                    dropdownValueOfLimit: dropdownValue,
-                                  );
-                                  break;
-                              }
-                            },
+                                    createMyData(data: {
+                                      "employee": false,
+                                      "limit": dropdownValue,
+                                      "offset": (numberPage * dropdownValue) -
+                                          dropdownValue,
+                                      "statment": "",
+                                      "selectcolumns": "",
+                                      "IsDepartment": false,
+                                      "AuthorizationID": 0,
+                                      "ViewEmployeeColumn": "",
+                                      "OrderBy": "ProjectID",
+                                      "IsDesc": true,
+                                      "tableName": "[ExtractionDetailsReport]",
+                                      "listName": "ExtractionDetailsReportList",
+                                      "tailcondition":
+                                          "ExtractionID is not null AND ProjectID= $projectID",
+                                    });
+                                    BlocProvider.of<GetHeaderTableCubit>(
+                                            context)
+                                        .getHeaderTable(
+                                            listName:
+                                                "ExtractionDetailsReportList");
+                                    BlocProvider.of<ProjectProcessCubit>(
+                                            context)
+                                        .getTableProjectProcess(
+                                      selectTab: selectTab,
+                                      objectData: myData,
+                                      link: "Structure",
+                                      numberOfPage: numberPage,
+                                      dropdownValueOfLimit: dropdownValue,
+                                    );
+                                    break;
+                                  case 2:
+                                    String projectID = widgetsData.firstWhere(
+                                      (element) =>
+                                          (element['widget'] as ColumnList)
+                                              .columnName ==
+                                          "ProductID",
+                                    )['value'];
+                                    createMyData(data: {
+                                      // "pageId": 289,
+                                      "employee": false,
+                                      "limit": dropdownValue,
+                                      "offset": (numberPage * dropdownValue) -
+                                          dropdownValue,
+                                      "statment": "",
+                                      "selectcolumns": "",
+                                      "IsDepartment": false,
+                                      "AuthorizationID": 0,
+                                      "ViewEmployeeColumn": "",
+                                      "OrderBy": "ProjectID",
+                                      "company": true,
+                                      "companyname": "ComID",
+                                      "IsDesc": true,
+                                      "listName": "ExtractionTotalReportList",
+                                      "tableName": "[ExtractionTotalReport]",
+                                      "tailcondition":
+                                          "ExtractionMasterID is not null AND ProjectID=$projectID",
+                                    });
+                                    BlocProvider.of<GetHeaderTableCubit>(
+                                            context)
+                                        .getHeaderTable(
+                                            listName:
+                                                "ExtractionTotalReportList");
+                                    BlocProvider.of<ProjectProcessCubit>(
+                                            context)
+                                        .getTableProjectProcess(
+                                      selectTab: selectTab,
+                                      objectData: myData,
+                                      numberOfPage: numberPage,
+                                      link: "Structure",
+                                      dropdownValueOfLimit: dropdownValue,
+                                    );
+                                    break;
+                                  case 3:
+                                    String productID = widgetsData.firstWhere(
+                                      (element) =>
+                                          (element['widget'] as ColumnList)
+                                              .columnName ==
+                                          "ProductID",
+                                    )['value'];
+                                    createMyData(data: {
+                                      // "pageId": widget.pageData.pageId,
+                                      "employee": false,
+                                      "limit": dropdownValue,
+                                      "offset": (numberPage * dropdownValue) -
+                                          dropdownValue,
+                                      "statment": "",
+                                      "selectcolumns": "",
+                                      "IsDepartment": false,
+                                      "AuthorizationID": 0,
+                                      "ViewEmployeeColumn": "",
+                                      "OrderBy": "PRID",
+                                      "company": true,
+                                      "companyname": "ComID",
+                                      "IsDesc": true,
+                                      "listName": "SupplierPaymentReport",
+                                      "tableName": "[PaymentReciveView]",
+                                      "tailcondition": "ProductID=$productID",
+                                    });
+                                    BlocProvider.of<GetHeaderTableCubit>(
+                                            context)
+                                        .getHeaderTable(
+                                            listName: "SupplierPaymentReport");
+                                    BlocProvider.of<ProjectProcessCubit>(
+                                            context)
+                                        .getTableProjectProcess(
+                                      selectTab: selectTab,
+                                      objectData: myData,
+                                      numberOfPage: numberPage,
+                                      link: "Structure",
+                                      dropdownValueOfLimit: dropdownValue,
+                                    );
+                                    break;
+                                }
+                              },
+                            ),
                           ),
                         );
                       } else if (state is ProjectProcessFailure) {
