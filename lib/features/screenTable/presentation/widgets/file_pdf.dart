@@ -26,31 +26,35 @@ class FilePdf extends StatelessWidget {
   final String lang;
 
   const FilePdf({
-    super.key, required this.pageData, required this.lang,
+    super.key,
+    required this.pageData,
+    required this.lang,
   });
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-      GetFileExcelCubit(
+      create: (context) => GetFileExcelCubit(
         getIt.get<ScreenRepoImpl>(),
-      )
-        ..getFileExcel(pageData: pageData),
+      )..getFileExcel(pageData: pageData),
       child: BlocConsumer<GetFileExcelCubit, GetFileExcelState>(
-        listener: (BuildContext context, GetFileExcelState state) async{
-          if(state is GetFileExcelSuccess){
-            String jsonString = jsonEncode(state.screenModel.toJson()); // ضع هنا نص JSON المأخوذ من API أو ملف
-            String massage=await convertExcelToPdf(context,jsonString, lang); // لاستخدام الأسماء العربية
-              Navigator.pop(context);
-              showSnackBar(context: context,message: massage,);
-
+        listener: (BuildContext context, GetFileExcelState state) async {
+          if (state is GetFileExcelSuccess) {
+            String jsonString = jsonEncode(state.screenModel
+                .toJson()); // ضع هنا نص JSON المأخوذ من API أو ملف
+            String massage = await convertExcelToPdf(
+                context, jsonString, lang); // لاستخدام الأسماء العربية
+            Navigator.pop(context);
+            showSnackBar(
+              context: context,
+              message: massage,
+            );
           }
         },
         builder: (context, state) {
-          if(state is GetFileExcelFailure){
+          if (state is GetFileExcelFailure) {
             return CustomErrorMassage(errorMassage: state.errorMassage);
-          }else{
+          } else {
             return Column(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -418,9 +422,8 @@ class FilePdf extends StatelessWidget {
 //     await OpenFile.open(filePath);
 //   }
 
-
-
-  Future<String> convertExcelToPdf(BuildContext context, String jsonString, String language) async {
+  Future<String> convertExcelToPdf(
+      BuildContext context, String jsonString, String language) async {
     if (!await requestStoragePermission()) {
       return S.of(context).permission_denied;
     }
@@ -432,27 +435,27 @@ class FilePdf extends StatelessWidget {
     List<String> columnLabels;
     // final xls.Workbook workbook = xls.Workbook();
     // final xls.Worksheet sheet = workbook.worksheets[0];
-    if(columnList.length>=10){
+    if (columnList.length >= 10) {
       Map<String, String> columnHeaders = {
-        for (var col in columnList.sublist(0,10))
-          if(col['visible']==true)
-            col['ColumnName']: language == 'ar' ? col['arColumnLabel'] : col['enColumnLabel']
+        for (var col in columnList.sublist(0, 10))
+          if (col['visible'] == true)
+            col['ColumnName']:
+                language == 'ar' ? col['arColumnLabel'] : col['enColumnLabel']
       };
-       columnKeys = columnHeaders.keys.toList();
-       columnLabels = columnKeys.map((key) => columnHeaders[key] ?? key).toList();
-
-    }else{
+      columnKeys = columnHeaders.keys.toList();
+      columnLabels =
+          columnKeys.map((key) => columnHeaders[key] ?? key).toList();
+    } else {
       Map<String, String> columnHeaders = {
         for (var col in columnList)
-          if(col['visible']==true)
-            col['ColumnName']: language == 'ar' ? col['arColumnLabel'] : col['enColumnLabel']
+          if (col['visible'] == true)
+            col['ColumnName']:
+                language == 'ar' ? col['arColumnLabel'] : col['enColumnLabel']
       };
-       columnKeys = columnHeaders.keys.toList();
-       columnLabels = columnKeys.map((key) => columnHeaders[key] ?? key).toList();
-
+      columnKeys = columnHeaders.keys.toList();
+      columnLabels =
+          columnKeys.map((key) => columnHeaders[key] ?? key).toList();
     }
-
-
 
     // for (int i = 0; i < columnLabels.length; i++) {
     //   sheet.getRangeByIndex(1, i + 1).setText(columnLabels[i]);
@@ -474,7 +477,7 @@ class FilePdf extends StatelessWidget {
     // 🟢 تحميل الخط العربي
     final ByteData fontData = await rootBundle.load(AppAssets.font);
     final Uint8List fontBytes = fontData.buffer.asUint8List();
-    final PdfFont arabicFont = PdfTrueTypeFont(fontBytes, 12);
+    final PdfFont arabicFont = PdfTrueTypeFont(fontBytes, 10);
 
     // 🟢 تطبيق الخط على الجدول
     pdfGrid.style = PdfGridStyle(font: arabicFont);
@@ -504,7 +507,7 @@ class FilePdf extends StatelessWidget {
     // 🟢 رسم الجدول مع خاصية التقسيم الآلي للصفحات
     pdfGrid.draw(
       page: pdfDoc.pages.add(),
-      bounds: const Rect.fromLTWH(0, 0, 500, 700),
+      // bounds: const Rect.fromLTWH(0, 0, 500, 700),
       format: PdfLayoutFormat(layoutType: PdfLayoutType.paginate),
     );
 
@@ -513,14 +516,15 @@ class FilePdf extends StatelessWidget {
 
     // 🟢 حفظ الملف
     Directory? dir = await FileManager.getAppStorageDirectory();
-    String fileName = language == AppStrings.arLangKey ? pageData.nameAr : pageData.nameEn;
+    String fileName =
+        language == AppStrings.arLangKey ? pageData.nameAr : pageData.nameEn;
     String path = "${dir.path}/$fileName.pdf";
-    if(await File(path).exists()){
+    if (await File(path).exists()) {
       File(path).delete();
       File(path)
         ..createSync(recursive: true)
         ..writeAsBytesSync(pdfBytes);
-    }else{
+    } else {
       File(path)
         ..createSync(recursive: true)
         ..writeAsBytesSync(pdfBytes);
@@ -543,6 +547,7 @@ class FilePdf extends StatelessWidget {
 
     return status.isGranted;
   }
+
   Future<void> openFile(String filePath) async {
     await OpenFile.open(filePath);
   }
