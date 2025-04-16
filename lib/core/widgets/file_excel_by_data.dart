@@ -91,10 +91,9 @@ class FileExcelByData extends StatelessWidget {
     // إنشاء خريطة تربط كل ColumnName باسم العمود المناسب بناءً على اللغة المختارة
     Map<String, String> columnHeaders = {
       for (var col in columnList)
-        if (col['visible'] == true)
-          col['ColumnName']: language == AppStrings.arLangKey
-              ? col['arColumnLabel']
-              : col['enColumnLabel']
+        col['ColumnName']: language == AppStrings.arLangKey
+            ? col['arColumnLabel']
+            : col['enColumnLabel']
     };
 
     // استخراج أسماء الأعمدة بالترتيب
@@ -177,9 +176,14 @@ class FileExcelByData extends StatelessWidget {
           "CompanyKey": companyKey,
         },
       );
+      List<dynamic> headerFiltered = header.where((item) {
+        return item['visible'] == true &&
+            // item['MobileVisable'] == true &&
+            item['Cvisable'] == true;
+      }).toList();
       // String jsonString = jsonEncode();
       String massage = await convertJsonToExcel(
-          context, header, response['dynamicList'], lang);
+          context, headerFiltered, response['dynamicList'], lang);
       return massage;
     } catch (e) {
       throw Exception('Error fetching data: $e');

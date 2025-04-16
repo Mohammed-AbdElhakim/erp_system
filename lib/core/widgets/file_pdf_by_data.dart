@@ -112,6 +112,9 @@ class FilePdfByData extends StatelessWidget {
           columnKeys.map((key) => columnHeaders[key] ?? key).toList();
     }
 
+    columnKeys = columnKeys.reversed.toList();
+    columnLabels = columnLabels.reversed.toList();
+
     final PdfDocument pdfDoc = PdfDocument();
     final PdfGrid pdfGrid = PdfGrid();
     pdfGrid.columns.add(count: columnLabels.length);
@@ -221,7 +224,7 @@ class FilePdfByData extends StatelessWidget {
       );
       List<dynamic> headerFiltered = header.where((item) {
         return item['visible'] == true &&
-            item['MobileVisable'] == true &&
+            // item['MobileVisable'] == true &&
             item['Cvisable'] == true;
       }).toList();
       // String jsonString = jsonEncode();

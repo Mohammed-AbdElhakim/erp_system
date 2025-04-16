@@ -245,9 +245,9 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                 if (state is GetHeaderTableSuccess) {
                   List<HeaderModel> headerList = [];
                   for (var item in state.headerList) {
-                    if (item.mobileVisable == true &&
-                        item.visible == true &&
-                        item.cvisable == true) {
+                    if (
+                        // item.mobileVisable == true &&
+                        item.visible == true && item.cvisable == true) {
                       headerList.add(item);
                     }
                   }

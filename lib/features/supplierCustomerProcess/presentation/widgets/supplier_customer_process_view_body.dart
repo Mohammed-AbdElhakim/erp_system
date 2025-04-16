@@ -244,9 +244,9 @@ class _SupplierCustomerProcessViewBodyState
                 if (state is GetHeaderTableSuccess) {
                   List<HeaderModel> headerList = [];
                   for (var item in state.headerList) {
-                    if (item.mobileVisable == true &&
-                        item.visible == true &&
-                        item.cvisable == true) {
+                    if (
+                        // item.mobileVisable == true &&
+                        item.visible == true && item.cvisable == true) {
                       headerList.add(item);
                     }
                   }
