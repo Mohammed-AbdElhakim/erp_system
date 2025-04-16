@@ -30,6 +30,7 @@ import '../manager/accountProf/account_prof_cubit.dart';
 import '../manager/addEdit/add_edit_cubit.dart';
 import 'build_alert_add_in_dropdown.dart';
 import 'custom_table_account_prof.dart';
+import 'custom_floating_action_button.dart';
 
 class AccountProfViewBody extends StatefulWidget {
   const AccountProfViewBody(
@@ -64,6 +65,7 @@ class _AccountProfViewBodyState extends State<AccountProfViewBody> {
   List<int> listNumberItemInList = [10, 25, 50, 100];
   late int numberPage;
   late int dropdownValue;
+
   @override
   void didChangeDependencies() {
     lang = Localizations.localeOf(context).toString();
@@ -678,58 +680,66 @@ class _AccountProfViewBodyState extends State<AccountProfViewBody> {
                   allPages = (numberOfRecords! % dropdownValue) == 0
                       ? (numberOfRecords ~/ dropdownValue)
                       : (numberOfRecords ~/ dropdownValue) + 1;
-                  return CustomTableAccountProf(
-                    pageData: widget.pageData,
-                    listData: listData!,
-                    listColumn: widget.listColumnInTable,
-                    allDropdownModelList:
-                        AccountProfView.myAllDropdownModelList,
-                    paginationWidget: PaginationWidget(
-                      allPages: allPages,
-                      dropdownValue: dropdownValue,
-                      listNumberItemInList: listNumberItemInList,
-                      myPage: numberPage,
-                      numberOfRecords: numberOfRecords,
-                      onChangeLimit: (limit) {
-                        setState(() {
-                          dropdownValue = limit;
-                          numberPage = 1;
-                          allPages = (numberOfRecords % dropdownValue) == 0
-                              ? (numberOfRecords ~/ dropdownValue)
-                              : (numberOfRecords ~/ dropdownValue) + 1;
-                        });
-                        createMyData();
-                        BlocProvider.of<AccountProfCubit>(context)
-                            .getTableAccountProf(
-                          objectData: myData,
-                          numberOfPage: numberPage,
-                          dropdownValueOfLimit: dropdownValue,
-                        );
-                      },
-                      onTapMin: () {
-                        setState(() {
-                          numberPage--;
-                        });
-                        createMyData();
-                        BlocProvider.of<AccountProfCubit>(context)
-                            .getTableAccountProf(
-                          objectData: myData,
-                          numberOfPage: numberPage,
-                          dropdownValueOfLimit: dropdownValue,
-                        );
-                      },
-                      onTapAdd: () {
-                        setState(() {
-                          numberPage++;
-                        });
-                        createMyData();
-                        BlocProvider.of<AccountProfCubit>(context)
-                            .getTableAccountProf(
-                          objectData: myData,
-                          numberOfPage: numberPage,
-                          dropdownValueOfLimit: dropdownValue,
-                        );
-                      },
+                  return Scaffold(
+                    floatingActionButton: CustomFloatingActionButton(
+                      data: myData,
+                      pageData: widget.pageData,
+                      link: "ProfAccount",
+                      selectTab: 0,
+                    ),
+                    body: CustomTableAccountProf(
+                      pageData: widget.pageData,
+                      listData: listData!,
+                      listColumn: widget.listColumnInTable,
+                      allDropdownModelList:
+                          AccountProfView.myAllDropdownModelList,
+                      paginationWidget: PaginationWidget(
+                        allPages: allPages,
+                        dropdownValue: dropdownValue,
+                        listNumberItemInList: listNumberItemInList,
+                        myPage: numberPage,
+                        numberOfRecords: numberOfRecords,
+                        onChangeLimit: (limit) {
+                          setState(() {
+                            dropdownValue = limit;
+                            numberPage = 1;
+                            allPages = (numberOfRecords % dropdownValue) == 0
+                                ? (numberOfRecords ~/ dropdownValue)
+                                : (numberOfRecords ~/ dropdownValue) + 1;
+                          });
+                          createMyData();
+                          BlocProvider.of<AccountProfCubit>(context)
+                              .getTableAccountProf(
+                            objectData: myData,
+                            numberOfPage: numberPage,
+                            dropdownValueOfLimit: dropdownValue,
+                          );
+                        },
+                        onTapMin: () {
+                          setState(() {
+                            numberPage--;
+                          });
+                          createMyData();
+                          BlocProvider.of<AccountProfCubit>(context)
+                              .getTableAccountProf(
+                            objectData: myData,
+                            numberOfPage: numberPage,
+                            dropdownValueOfLimit: dropdownValue,
+                          );
+                        },
+                        onTapAdd: () {
+                          setState(() {
+                            numberPage++;
+                          });
+                          createMyData();
+                          BlocProvider.of<AccountProfCubit>(context)
+                              .getTableAccountProf(
+                            objectData: myData,
+                            numberOfPage: numberPage,
+                            dropdownValueOfLimit: dropdownValue,
+                          );
+                        },
+                      ),
                     ),
                   );
                 } else if (state is AccountProfFailure) {
@@ -760,6 +770,7 @@ class _AccountProfViewBodyState extends State<AccountProfViewBody> {
       "OrderBy": widget.pageData.orderBy,
       "IsDesc": widget.pageData.isDesc,
       "tableName": widget.pageData.tableName,
+      "listName": widget.pageData.listName,
     });
     for (var i in widgetsData) {
       params["${(i['widget'] as ColumnList).columnName}"] = i['value'];
