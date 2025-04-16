@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:erp_system/core/models/menu_model/pages.dart';
 import 'package:erp_system/core/utils/app_assets.dart';
@@ -44,7 +42,6 @@ class FilePdfByData extends StatelessWidget {
         future: fetchData(context),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            print("========= waiting ============");
             return Column(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -61,12 +58,10 @@ class FilePdfByData extends StatelessWidget {
               ],
             );
           } else if (snapshot.hasError) {
-            print("========= Error ============");
             return CustomErrorMassage(
               errorMassage: '${snapshot.error}',
             );
           } else if (snapshot.connectionState == ConnectionState.done) {
-            print("========= Done ============");
             Navigator.pop(context);
             SchedulerBinding.instance.addPostFrameCallback((_) {
               showSnackBar(
@@ -75,10 +70,9 @@ class FilePdfByData extends StatelessWidget {
               );
             });
 
-            return SizedBox();
+            return const SizedBox();
           } else {
-            print("========= wwwwwwww ============");
-            return SizedBox();
+            return const SizedBox();
           }
         });
   }
@@ -209,7 +203,7 @@ class FilePdfByData extends StatelessWidget {
       String token =
           await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       data["limit"] = 0;
-      var rrr = jsonEncode(data);
+      // var rrr = jsonEncode(data);
       Map<String, dynamic> response = await ApiService(Dio()).post(
         endPoint: "web/$link/getDataGlobal",
         data: data,

@@ -107,7 +107,6 @@ class _CustomFloatingActionButtonState
         dropdownValueOfLimit: 10,
       );
     } else if (icon == FontAwesomeIcons.fileExcel) {
-      print("========== Excel ===========");
       showDialog(
         context: context,
         barrierDismissible: false,
@@ -122,7 +121,6 @@ class _CustomFloatingActionButtonState
         ),
       );
     } else if (icon == FontAwesomeIcons.filePdf) {
-      print("========== Pdf ===========");
       showDialog(
         context: context,
         barrierDismissible: false,
@@ -137,7 +135,6 @@ class _CustomFloatingActionButtonState
         ),
       );
     } else if (icon == Icons.print) {
-      print("========== Print ===========");
       // List<dynamic> myRowData = ScreenTable.rowData;
       // if (myRowData.isNotEmpty) {
       //   if (myRowData.length > 1) {
