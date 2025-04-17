@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../features/Reports/presentation/views/reports_view.dart';
 import '../../features/accountProf/presentation/views/account_prof_view.dart';
 import '../../features/attendance/presentation/views/attendance_view.dart';
+import '../../features/cashMoney/presentation/views/cash_money_view.dart';
 import '../../features/cashier/presentation/views/cashier_view.dart';
 import '../../features/chart/presentation/views/chart_view.dart';
 import '../../features/customerAccount/presentation/views/customer_account_view.dart';
@@ -41,6 +42,8 @@ class ScreenView extends StatelessWidget {
         return ChartView(pageData: pageData);
       case "DailyFrenshCash":
         return DailyFrenchCashView(pageData: pageData);
+      case "cashMony":
+        return CashMoneyView(pageData: pageData);
       case "general":
         switch (pageData.tableSrc) {
           case "profit":
