@@ -49,6 +49,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Company Identifier",
     ),
     "dashboard": MessageLookupByLibrary.simpleMessage("Dashboard"),
+    "date": MessageLookupByLibrary.simpleMessage("Date"),
     "date_from": MessageLookupByLibrary.simpleMessage("Date From: "),
     "date_of_request": MessageLookupByLibrary.simpleMessage("Date of Request"),
     "date_to": MessageLookupByLibrary.simpleMessage("Date To: "),
@@ -114,6 +115,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Not available at this location.",
     ),
     "no_print_file": MessageLookupByLibrary.simpleMessage("No print file."),
+    "notes": MessageLookupByLibrary.simpleMessage("Notes"),
     "notifications": MessageLookupByLibrary.simpleMessage("Notifications"),
     "ok": MessageLookupByLibrary.simpleMessage("Ok"),
     "on_progress": MessageLookupByLibrary.simpleMessage("Work has begun on it"),
@@ -136,6 +138,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "revision": MessageLookupByLibrary.simpleMessage("Reviewed"),
     "salary_items": MessageLookupByLibrary.simpleMessage("Salary Items"),
     "save": MessageLookupByLibrary.simpleMessage("Save"),
+    "save_ok": MessageLookupByLibrary.simpleMessage("Saved successfully"),
     "search": MessageLookupByLibrary.simpleMessage("Search....."),
     "select_client": MessageLookupByLibrary.simpleMessage(
       "Please select a client.",
@@ -151,8 +154,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "tab2": MessageLookupByLibrary.simpleMessage("Add-ons"),
     "tab3": MessageLookupByLibrary.simpleMessage("Deductions"),
     "task": MessageLookupByLibrary.simpleMessage("Task: "),
+    "time_period": MessageLookupByLibrary.simpleMessage("Time Period"),
     "to": MessageLookupByLibrary.simpleMessage("TO"),
     "to_do": MessageLookupByLibrary.simpleMessage("Didn\'t start"),
+    "treasury_liquidation": MessageLookupByLibrary.simpleMessage(
+      "Treasury liquidation",
+    ),
     "under_revision": MessageLookupByLibrary.simpleMessage("Under revision"),
     "username_or_email": MessageLookupByLibrary.simpleMessage(
       "Username or Email",
@@ -160,6 +167,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "vacation_balance": MessageLookupByLibrary.simpleMessage(
       "Vacation Balance",
     ),
+    "value": MessageLookupByLibrary.simpleMessage("Value"),
     "warning": MessageLookupByLibrary.simpleMessage("Warning"),
     "welcome": MessageLookupByLibrary.simpleMessage("WELCOME !"),
     "welcome_in": MessageLookupByLibrary.simpleMessage("Welcome in "),

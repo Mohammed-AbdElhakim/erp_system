@@ -14,15 +14,12 @@ class ChartRepoImpl implements ChartRepo {
   final ApiService apiService;
 
   ChartRepoImpl(this.apiService);
+
   @override
-  Future<Either<Failure, ChartModel>> getChartData(
-      {required String tableOrView}) async {
+  Future<Either<Failure, ChartModel>> getChartData({required String tableOrView}) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       // var rrr = jsonEncode(tapModel.toJson());
       Map<String, dynamic> data = await apiService.post(
         endPoint: "web/Structure/getDataGlobal",
@@ -51,11 +48,8 @@ class ChartRepoImpl implements ChartRepo {
   @override
   Future<Either<Failure, ChartMasterModel>> getChartMaster() async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       // var rrr = jsonEncode(tapModel.toJson());
       Map<String, dynamic> data = await apiService.post(
         endPoint: "web/Structure/getDataGlobal",
@@ -84,11 +78,8 @@ class ChartRepoImpl implements ChartRepo {
   @override
   Future<Either<Failure, ChartPageModel>> getChartPage() async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       // var rrr = jsonEncode(tapModel.toJson());
       Map<String, dynamic> data = await apiService.post(
         endPoint: "web/Structure/getDataGlobal",

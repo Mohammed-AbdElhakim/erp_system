@@ -21,11 +21,8 @@ class CashierRepoImpl implements CashierRepo {
   @override
   Future<Either<Failure, ModalityModel>> getModality() async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       // var rrr = jsonEncode(tapModel.toJson());
       Map<String, dynamic> data = await apiService.post(
         endPoint: "web/Structure/getDataGlobal",
@@ -54,11 +51,8 @@ class CashierRepoImpl implements CashierRepo {
   @override
   Future<Either<Failure, ProCompanyModel>> getProCompany() async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       // var rrr = jsonEncode(tapModel.toJson());
       Map<String, dynamic> data = await apiService.post(
         endPoint: "web/Structure/getDataGlobal",
@@ -87,11 +81,8 @@ class CashierRepoImpl implements CashierRepo {
   @override
   Future<Either<Failure, ProductModel>> getProduct() async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       // var rrr = jsonEncode(tapModel.toJson());
       Map<String, dynamic> data = await apiService.post(
         endPoint: "web/Structure/getDataGlobal",
@@ -118,14 +109,10 @@ class CashierRepoImpl implements CashierRepo {
   }
 
   @override
-  Future<Either<Failure, List<AllDropdownModel>>> getAllDropdownList(
-      {required int pageID}) async {
+  Future<Either<Failure, List<AllDropdownModel>>> getAllDropdownList({required int pageID}) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       List<dynamic> data = await apiService.get(
         endPoint: "home/GetPageDropDown?pageId=$pageID",
         headers: {
@@ -155,14 +142,10 @@ class CashierRepoImpl implements CashierRepo {
   }
 
   @override
-  Future<Either<Failure, TapModel>> getPageDetails(
-      {required int pageID}) async {
+  Future<Either<Failure, TapModel>> getPageDetails({required int pageID}) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await apiService.get(
         endPoint: "home/GetPageDetails?pageid=$pageID",
         headers: {
@@ -192,11 +175,8 @@ class CashierRepoImpl implements CashierRepo {
     required String pageListName,
   }) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       List<dynamic> data = await apiService.get(
         endPoint: "web/Structure/getListSetups/$pageListName",
         headers: {
@@ -225,15 +205,10 @@ class CashierRepoImpl implements CashierRepo {
   }
 
   @override
-  Future<Either<Failure, String>> addProduct(
-      {required Map<String, dynamic> body,
-      required String controllerName}) async {
+  Future<Either<Failure, String>> addProduct({required Map<String, dynamic> body, required String controllerName}) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
 
       var data = await apiService.post(
         endPoint: "web/$controllerName",
@@ -264,11 +239,8 @@ class CashierRepoImpl implements CashierRepo {
     required Map<String, dynamic> body,
   }) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
 
       var data = await apiService.post(
         endPoint: "home/AddEdit?controllerName=$controllerName",

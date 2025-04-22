@@ -5,6 +5,7 @@ import '../../features/Reports/data/repositories/reports_repo_impl.dart';
 import '../../features/accountProf/data/repositories/account_prof_repo_impl.dart';
 import '../../features/attendance/data/repositories/attendance_repo_impl.dart';
 import '../../features/auth/data/repositories/login/login_repo_impl.dart';
+import '../../features/cashMoney/data/repositories/cashMoney/cash_money_repo_impl.dart';
 import '../../features/cashier/data/repositories/cashier_repo_impl.dart';
 import '../../features/chart/data/repositories/chart_repo_impl.dart';
 import '../../features/customerAccount/data/repositories/customer_account_repo_impl.dart';
@@ -42,7 +43,9 @@ void setupServiceLocator() {
     ),
   );
   getIt.registerSingleton<GeneralRepoImpl>(
-    GeneralRepoImpl(getIt.get<ApiService>()),
+    GeneralRepoImpl(
+      getIt.get<ApiService>(),
+    ),
   );
 
   getIt.registerSingleton<MenuRepoImpl>(
@@ -172,6 +175,11 @@ void setupServiceLocator() {
 
   getIt.registerSingleton<SupplierCustomerProcessRepoImpl>(
     SupplierCustomerProcessRepoImpl(
+      getIt.get<ApiService>(),
+    ),
+  );
+  getIt.registerSingleton<CashMoneyRepoImpl>(
+    CashMoneyRepoImpl(
       getIt.get<ApiService>(),
     ),
   );

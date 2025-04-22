@@ -1,23 +1,23 @@
 class MoneyAccountModel {
-  List<MoneyAccountList>? dynamicList;
+  List<MoneyAccountList>? moneyAccountList;
   int? numberofrecords;
 
-  MoneyAccountModel({this.dynamicList, this.numberofrecords});
+  MoneyAccountModel({this.moneyAccountList, this.numberofrecords});
 
   MoneyAccountModel.fromJson(Map<String, dynamic> json) {
     if (json['dynamicList'] != null) {
-      dynamicList = <MoneyAccountList>[];
+      moneyAccountList = <MoneyAccountList>[];
       json['dynamicList'].forEach((v) {
-        dynamicList!.add(new MoneyAccountList.fromJson(v));
+        moneyAccountList!.add(MoneyAccountList.fromJson(v));
       });
     }
     numberofrecords = json['numberofrecords'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (dynamicList != null) {
-      data['dynamicList'] = dynamicList!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (moneyAccountList != null) {
+      data['dynamicList'] = moneyAccountList!.map((v) => v.toJson()).toList();
     }
     data['numberofrecords'] = numberofrecords;
     return data;
@@ -39,17 +39,17 @@ class MoneyAccountList {
   String? cMName;
   String? sheetName;
   int? sheet;
-  int? acCode;
-  int? acIndex;
+  double? acCode;
+  double? acIndex;
   String? setting;
   String? eSName;
-  int? indexchar;
+  String? indexchar;
   bool? openAccount;
   String? openDate;
   bool? openIsDepit;
   String? fullName;
   int? lastcount;
-  int? monyindex;
+  double? monyindex;
   String? addPerm;
   String? salesPerm;
   String? showPerm;
@@ -121,8 +121,13 @@ class MoneyAccountList {
     acNameKSA = json['AcNameKSA'];
   }
 
+  @override
+  String toString() {
+    return acName!;
+  }
+
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['AcID'] = acID;
     data['AcName'] = acName;
     data['CreditORDepit'] = creditORDepit;

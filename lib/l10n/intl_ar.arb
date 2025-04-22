@@ -2,7 +2,7 @@
   "host_view": "المضيف",
   "welcome": "مرحباً !",
   "login": "تسجيل الدخول",
-  "dynamic_pro":"Dynamic Pro",
+  "dynamic_pro": "Dynamic Pro",
   "username_or_email": "اسم المستخدم او البريد الإلكتروني",
   "password": "كلمة المرور",
   "change_host": "تغير المضيف",
@@ -41,8 +41,8 @@
   "multiple_choices": "إختيارات متعددة",
   "basic_data": "بيانات أساسية",
   "Total_number_of_entries": "إجمالي عدد الإدخالات : ",
-  "field_is_required":"هذا الحقل مطلوب",
-  "sure":"تأكيد",
+  "field_is_required": "هذا الحقل مطلوب",
+  "sure": "تأكيد",
   "massage_no_edit": "لا يمكن تعديل اكثر من عنصر.",
   "massage_no_print": "لا يمكن طباعة اكثر من عنصر.",
   "massage_delete": "هل تريد بتأكيد حذف العنصر المحدد؟",
@@ -66,43 +66,34 @@
   "tab1": "التشوينات",
   "tab2": "الاضافات",
   "tab3": "الاستقطاعات",
-
   "notifications": "الإشعارات",
   "statistics": "الإحصائيات",
   "dashboard": "لوحة التحكم",
-
   "profile": "الملف الشخصي",
   "advance_balance": "رصيد السلف",
-  "vacation_balance":"رصيد الاجازات",
+  "vacation_balance": "رصيد الاجازات",
   "attendance_days": "أيام الحضور",
-  "salary_items":"مفرادات المرتب",
-
+  "salary_items": "مفرادات المرتب",
   "account": "الحساب",
-  "outgoing":"صادرة",
-  "incoming":"واردة",
-
+  "outgoing": "صادرة",
+  "incoming": "واردة",
   "exporting_excel_file": "جاري تصدير ملف Excel...",
   "preparing_print_file": "جاري تجهيز ملف الطباعة...",
   "exporting_pdf_file": "جاري تصدير ملف Pdf...",
-  "permission_denied":"تم رفض الإذن.",
+  "permission_denied": "تم رفض الإذن.",
   "file_saved_in": "تم حفظ الملف في: ",
   "file_print_saved_in": "تم طباعة الملف و تم حفظ الملف في: ",
   "no_print_file": "لا يوجد ملف طباعة.",
-
   "employees": "الموظفيين",
   "employee_name": "اسم الموظف",
   "date_of_request": "تاريخ الطلب",
   "request_of_extend": "طلب مد الوقت",
   "save": "حفظ",
-  "add_new": "إضافة جديد"
-
-
-
-
-
-
-
-
-
-
+  "add_new": "إضافة جديد",
+  "time_period": "المدة الزمنية",
+  "treasury_liquidation": "تصفية الخزينة",
+  "notes": "ملاحظات",
+  "value": "القيمة",
+  "date": "التاريخ",
+  "save_ok": "تم الحفظ بنجاح"
 }

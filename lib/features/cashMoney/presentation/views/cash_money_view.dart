@@ -19,12 +19,13 @@ class CashMoneyView extends StatefulWidget {
 }
 
 class _CashMoneyViewState extends State<CashMoneyView> {
-  late final String lang;
+  String? lang;
+  final ScrollController scrollController = ScrollController();
 
   @override
-  void initState() {
+  void didChangeDependencies() {
     lang = Localizations.localeOf(context).toString();
-    super.initState();
+    super.didChangeDependencies();
   }
 
   @override
@@ -37,6 +38,7 @@ class _CashMoneyViewState extends State<CashMoneyView> {
           title: lang == AppStrings.enLangKey ? widget.pageData.nameEn : widget.pageData.nameAr,
         ),
         body: SingleChildScrollView(
+          controller: scrollController,
           child: Column(
             children: [
               isPortrait
@@ -55,7 +57,10 @@ class _CashMoneyViewState extends State<CashMoneyView> {
                   : const SizedBox(
                       height: 25,
                     ),
-              const CashMoneyViewBody()
+              CashMoneyViewBody(
+                scrollController: scrollController,
+                pageData: widget.pageData,
+              )
             ],
           ),
         ),

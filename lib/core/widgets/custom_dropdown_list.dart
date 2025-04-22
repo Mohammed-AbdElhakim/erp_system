@@ -82,14 +82,14 @@ class CustomDropdownList<T> extends StatelessWidget {
                         ),
                         items: listData,
                         onChanged: (value) {
-                          onChanged!(value as T);
+                          if (onChanged != null) onChanged!(value as T);
                         },
                       )
                     : CustomDropdown<T>.multiSelectSearch(
                         hintText: '',
                         initialItems: initialDropValueList,
                         onListChanged: (valueList) {
-                          onListChanged!(valueList);
+                          if (onListChanged != null) onListChanged!(valueList);
                         },
                         // initialItem: dropValue,
                         closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),

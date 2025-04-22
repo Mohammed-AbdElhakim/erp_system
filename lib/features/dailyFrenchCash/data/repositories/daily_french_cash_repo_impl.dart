@@ -14,12 +14,12 @@ class DailyFrenchCashRepoImpl implements DailyFrenchCashRepo {
   final ApiService apiService;
 
   DailyFrenchCashRepoImpl(this.apiService);
+
   @override
   Future<Either<Failure, DailyFrenchCashModel>> getDailyFrenchCash(
       {required BodyRequestDailyFrenchCash bodyRequestDailyFrenchCash}) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       // var rrr = jsonEncode(bodyRequestDailyFrenchCash.toJson());
       Map<String, dynamic> data = await apiService.post(
@@ -50,8 +50,7 @@ class DailyFrenchCashRepoImpl implements DailyFrenchCashRepo {
   @override
   Future<Either<Failure, AccountsModel>> getAccountsList() async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await apiService.post(
         endPoint: "web/Structure/getDataGlobal",

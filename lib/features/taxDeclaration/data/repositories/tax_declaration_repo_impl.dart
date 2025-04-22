@@ -1,4 +1,3 @@
-
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 
@@ -17,11 +16,9 @@ class TaxDeclarationRepoImpl implements TaxDeclarationRepo {
   TaxDeclarationRepoImpl(this.apiService);
 
   @override
-  Future<Either<Failure, List<AllDropdownModel>>> getAllDropdownList(
-      {required int pageID}) async {
+  Future<Either<Failure, List<AllDropdownModel>>> getAllDropdownList({required int pageID}) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       List<dynamic> data = await apiService.get(
         endPoint: "home/GetPageDropDown?pageId=$pageID",
@@ -56,8 +53,7 @@ class TaxDeclarationRepoImpl implements TaxDeclarationRepo {
     required String listName,
   }) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       List<dynamic> data = await apiService.get(
         endPoint: "web/Structure/getListSetups/$listName",
@@ -103,8 +99,7 @@ class TaxDeclarationRepoImpl implements TaxDeclarationRepo {
     required String viewEmployeeColumn,
   }) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await apiService.post(
         endPoint: "home/getGeneralTable",
@@ -150,8 +145,7 @@ class TaxDeclarationRepoImpl implements TaxDeclarationRepo {
     required Map<String, dynamic> body,
   }) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
 
       var data = await apiService.post(
@@ -181,8 +175,7 @@ class TaxDeclarationRepoImpl implements TaxDeclarationRepo {
   Future<Either<Failure, Map<String, dynamic>>> getTableTaxDeclaration(
       {required Map<String, dynamic> objectData, required String link}) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       // var rrr = jsonEncode(objectData);
       Map<String, dynamic> data = await apiService.post(

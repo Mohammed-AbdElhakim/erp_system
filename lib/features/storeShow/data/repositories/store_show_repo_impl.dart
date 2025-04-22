@@ -16,14 +16,10 @@ class StoreShowRepoImpl implements StoreShowRepo {
   StoreShowRepoImpl(this.apiService);
 
   @override
-  Future<Either<Failure, List<AllDropdownModel>>> getAllDropdownList(
-      {required int pageID}) async {
+  Future<Either<Failure, List<AllDropdownModel>>> getAllDropdownList({required int pageID}) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       List<dynamic> data = await apiService.get(
         endPoint: "home/GetPageDropDown?pageId=$pageID",
         headers: {
@@ -68,11 +64,8 @@ class StoreShowRepoImpl implements StoreShowRepo {
     required String viewEmployeeColumn,
   }) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await apiService.post(
         endPoint: "home/getGeneralTable",
         data: {
@@ -117,11 +110,8 @@ class StoreShowRepoImpl implements StoreShowRepo {
     required Map<String, dynamic> body,
   }) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
 
       var data = await apiService.post(
         endPoint: "home/AddEdit?controllerName=$controllerName",
@@ -147,14 +137,10 @@ class StoreShowRepoImpl implements StoreShowRepo {
   }
 
   @override
-  Future<Either<Failure, StoreShowModel>> getTableStoreShow(
-      {required Map<String, dynamic> objectData}) async {
+  Future<Either<Failure, StoreShowModel>> getTableStoreShow({required Map<String, dynamic> objectData}) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await apiService.post(
         endPoint: "web/Structure/getDataGlobal",
         data: objectData,

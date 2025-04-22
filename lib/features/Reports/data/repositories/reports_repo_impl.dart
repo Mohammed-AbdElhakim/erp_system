@@ -17,14 +17,10 @@ class ReportsRepoImpl implements ReportsRepo {
   ReportsRepoImpl(this.apiService);
 
   @override
-  Future<Either<Failure, List<ReportModel>>> getReports(
-      {required int pageId}) async {
+  Future<Either<Failure, List<ReportModel>>> getReports({required int pageId}) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       List<dynamic> data = await apiService.get(
         endPoint: "web/PivotStructure/getPivot/$pageId",
         headers: {
@@ -53,16 +49,11 @@ class ReportsRepoImpl implements ReportsRepo {
   }
 
   @override
-  Future<Either<Failure, TableModel>> getTableReports(
-      {required int reportId}) async {
+  Future<Either<Failure, TableModel>> getTableReports({required int reportId}) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
-      Map<String, dynamic> data = await apiService
-          .post(endPoint: "web/PivotStructure/getDataGlobal", headers: {
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      Map<String, dynamic> data = await apiService.post(endPoint: "web/PivotStructure/getDataGlobal", headers: {
         "Authorization": "Bearer $token",
         "CompanyKey": companyKey,
       }, data: {
@@ -87,14 +78,10 @@ class ReportsRepoImpl implements ReportsRepo {
   }
 
   @override
-  Future<Either<Failure, List<AllDropdownModel>>> getAllDropdownList(
-      {required int pageID}) async {
+  Future<Either<Failure, List<AllDropdownModel>>> getAllDropdownList({required int pageID}) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       List<dynamic> data = await apiService.get(
         endPoint: "home/GetPageDropDown?pageId=$pageID",
         headers: {
@@ -140,11 +127,8 @@ class ReportsRepoImpl implements ReportsRepo {
     required String tailcondition,
   }) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await apiService.post(
         endPoint: "home/getGeneralTable",
         data: {

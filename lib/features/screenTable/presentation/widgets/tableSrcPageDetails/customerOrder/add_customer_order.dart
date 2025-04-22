@@ -32,14 +32,15 @@ import 'customer_order_table_add_edit.dart';
 // import 'sales_table_add_edit_.dart';
 
 class AddCustomerOrder extends StatefulWidget {
-  const AddCustomerOrder(
-      {super.key, required this.pageData, required this.listKey, this.tapData});
+  const AddCustomerOrder({super.key, required this.pageData, required this.listKey, this.tapData});
+
   final ListTaps? tapData;
   final Pages pageData;
   final List<dynamic> listKey;
   static List<dynamic> listBarcodeData = [];
   static List<dynamic> listProduct = [];
   static List<dynamic> listProductPrices = [];
+
   // static List<dynamic> listCustomerAccountLocation = [];
   // static int userId = -1;
 
@@ -55,6 +56,7 @@ class _AddCustomerOrderState extends State<AddCustomerOrder> {
   late List<AllDropdownModel> myAllDropdownModelList;
   double? lat;
   double? long;
+
   // bool isGetLocationAndListLocation = false;
   List<String> listHeaderSales = [
     "الاجمالى",
@@ -110,15 +112,10 @@ class _AddCustomerOrderState extends State<AddCustomerOrder> {
 
           for (var item in state.listSetupModel) {
             category.add(item.categoryTitle ?? '');
-            if (item.insertVisable == true &&
-                item.cvisable == true &&
-                item.visible == true &&
-                item.isGeneral != true) {
+            if (item.insertVisable == true && item.cvisable == true && item.visible == true && item.isGeneral != true) {
               listColumn.add(item);
               listKey.add(item.columnName);
-              listHeader.add(lang == AppStrings.enLangKey
-                  ? item.enColumnLabel!
-                  : item.arColumnLabel!);
+              listHeader.add(lang == AppStrings.enLangKey ? item.enColumnLabel! : item.arColumnLabel!);
             }
           }
           List<String> categoryList = category.toSet().toList();
@@ -145,29 +142,19 @@ class _AddCustomerOrderState extends State<AddCustomerOrder> {
                               );
                               return widgetList.isNotEmpty
                                   ? Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 16),
+                                      padding: const EdgeInsets.only(bottom: 16),
                                       child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Container(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 12,
-                                                      vertical: 8),
+                                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                                               decoration: BoxDecoration(
                                                   // color: AppColors.grey.withOpacity(.4),
-                                                  color: AppColors.grey
-                                                      .withAlpha(102),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          15)),
+                                                  color: AppColors.grey.withAlpha(102),
+                                                  borderRadius: BorderRadius.circular(15)),
                                               child: Text(
                                                 categoryName,
-                                                style: AppStyles.textStyle18
-                                                    .copyWith(
-                                                        color: Colors.black),
+                                                style: AppStyles.textStyle18.copyWith(color: Colors.black),
                                               )),
                                           ...widgetList,
                                         ],
@@ -190,46 +177,22 @@ class _AddCustomerOrderState extends State<AddCustomerOrder> {
                                         for (var i in tableList) {
                                           salessetState(() {
                                             total = total +
-                                                ((double.parse(i['DetailValue']
-                                                                .toString()
-                                                                .isEmpty
+                                                ((double.parse(i['DetailValue'].toString().isEmpty ? "0.0" : i['DetailValue']) -
+                                                        double.parse(i['DetailDiscount'].toString().isEmpty
                                                             ? "0.0"
-                                                            : i[
-                                                                'DetailValue']) -
-                                                        double.parse(
-                                                            i['DetailDiscount']
-                                                                    .toString()
-                                                                    .isEmpty
-                                                                ? "0.0"
-                                                                : i[
-                                                                    'DetailDiscount'])) *
-                                                    double.parse(i[
-                                                                'DetailQuantity']
-                                                            .toString()
-                                                            .isEmpty
-                                                        ? "1.0"
-                                                        : i['DetailQuantity']));
+                                                            : i['DetailDiscount'])) *
+                                                    double.parse(
+                                                        i['DetailQuantity'].toString().isEmpty ? "1.0" : i['DetailQuantity']));
                                             restController.text = restValue(
                                                     total: total,
-                                                    shippingPrice:
-                                                        shippingCostsController
-                                                                .text.isEmpty
-                                                            ? 0.0
-                                                            : double.parse(
-                                                                shippingCostsController
-                                                                    .text),
-                                                    discountPercent:
-                                                        discountPercentController
-                                                                .text.isEmpty
-                                                            ? 0.0
-                                                            : double.parse(
-                                                                discountPercentController
-                                                                    .text),
-                                                    cashCollected: paidController
-                                                            .text.isEmpty
+                                                    shippingPrice: shippingCostsController.text.isEmpty
                                                         ? 0.0
-                                                        : double.parse(
-                                                            paidController.text))
+                                                        : double.parse(shippingCostsController.text),
+                                                    discountPercent: discountPercentController.text.isEmpty
+                                                        ? 0.0
+                                                        : double.parse(discountPercentController.text),
+                                                    cashCollected:
+                                                        paidController.text.isEmpty ? 0.0 : double.parse(paidController.text))
                                                 .toString();
                                             // totalController.text =
                                             //     total.toString();
@@ -248,8 +211,7 @@ class _AddCustomerOrderState extends State<AddCustomerOrder> {
                                     listKey: listKey,
                                     listHeader: listHeader,
                                     listColumn: listColumn,
-                                    allDropdownModelList:
-                                        ScreenTable.myAllDropdownModelList,
+                                    allDropdownModelList: ScreenTable.myAllDropdownModelList,
                                     typeView: "Add",
                                   ),
                                 );
@@ -263,75 +225,46 @@ class _AddCustomerOrderState extends State<AddCustomerOrder> {
                                 (index) => Container(
                                       decoration: BoxDecoration(
                                           border: BorderDirectional(
-                                        top: const BorderSide(
-                                            color: Colors.grey),
-                                        start: const BorderSide(
-                                            color: Colors.grey),
-                                        end: const BorderSide(
-                                            color: Colors.grey),
-                                        bottom:
-                                            index == listHeaderSales.length - 1
-                                                ? const BorderSide(
-                                                    color: Colors.grey)
-                                                : BorderSide.none,
+                                        top: const BorderSide(color: Colors.grey),
+                                        start: const BorderSide(color: Colors.grey),
+                                        end: const BorderSide(color: Colors.grey),
+                                        bottom: index == listHeaderSales.length - 1
+                                            ? const BorderSide(color: Colors.grey)
+                                            : BorderSide.none,
                                       )),
                                       child: Row(
                                         children: [
                                           Expanded(
                                             child: Container(
                                               height: 55,
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 8,
-                                                      vertical: 5),
+                                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
                                               decoration: BoxDecoration(
-                                                  border:
-                                                      const BorderDirectional(
-                                                    end: BorderSide(
-                                                        color: Colors.grey,
-                                                        width: .5),
+                                                  border: const BorderDirectional(
+                                                    end: BorderSide(color: Colors.grey, width: .5),
                                                   ),
                                                   color:
-                                                      listHeaderSales[index] ==
-                                                                  "الاجمالى" ||
-                                                              listHeaderSales[
-                                                                      index] ==
-                                                                  "الباقي"
+                                                      listHeaderSales[index] == "الاجمالى" || listHeaderSales[index] == "الباقي"
                                                           ? Colors.cyanAccent
                                                           : null),
-                                              alignment: AlignmentDirectional
-                                                  .centerStart,
-                                              child:
-                                                  Text(listHeaderSales[index]),
+                                              alignment: AlignmentDirectional.centerStart,
+                                              child: Text(listHeaderSales[index]),
                                             ),
                                           ),
                                           Expanded(
                                             flex: 2,
                                             child: Container(
                                               height: 55,
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 8,
-                                                      vertical: 5),
+                                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
                                               decoration: BoxDecoration(
-                                                  border:
-                                                      const BorderDirectional(
-                                                    start: BorderSide(
-                                                        color: Colors.grey,
-                                                        width: .7),
+                                                  border: const BorderDirectional(
+                                                    start: BorderSide(color: Colors.grey, width: .7),
                                                   ),
                                                   color:
-                                                      listHeaderSales[index] ==
-                                                                  "الاجمالى" ||
-                                                              listHeaderSales[
-                                                                      index] ==
-                                                                  "الباقي"
+                                                      listHeaderSales[index] == "الاجمالى" || listHeaderSales[index] == "الباقي"
                                                           ? Colors.cyanAccent
                                                           : null),
                                               alignment: Alignment.center,
-                                              child: getWidgetSales(
-                                                  title: listHeaderSales[index],
-                                                  listSetup: listSetup),
+                                              child: getWidgetSales(title: listHeaderSales[index], listSetup: listSetup),
                                             ),
                                           ),
                                         ],
@@ -355,8 +288,7 @@ class _AddCustomerOrderState extends State<AddCustomerOrder> {
                             noGradient: true,
                             color: Colors.transparent,
                             noShadow: true,
-                            textStyle: AppStyles.textStyle16
-                                .copyWith(color: Colors.grey),
+                            textStyle: AppStyles.textStyle16.copyWith(color: Colors.grey),
                             onTap: () {
                               Navigator.pop(context);
                             },
@@ -364,30 +296,24 @@ class _AddCustomerOrderState extends State<AddCustomerOrder> {
                           const SizedBox(
                             width: 50,
                           ),
-                          BlocConsumer<AddEditExpensesCubit,
-                              AddEditExpensesState>(
+                          BlocConsumer<AddEditExpensesCubit, AddEditExpensesState>(
                             listener: (context, state) {
                               if (state is AddEditExpensesSuccess) {
-                                BlocProvider.of<GetTableCubit>(context)
-                                    .getTable(
-                                        pageId: widget.pageData.pageId,
-                                        employee: false,
-                                        isdesc: widget.pageData.isDesc,
-                                        limit: 10,
-                                        offset: 0,
-                                        orderby: widget.pageData.orderBy,
-                                        statment: '',
-                                        selectcolumns: '',
-                                        departmentName:
-                                            widget.pageData.departmentName,
-                                        isDepartment:
-                                            widget.pageData.isDepartment,
-                                        authorizationID:
-                                            widget.pageData.authorizationID,
-                                        viewEmployeeColumn:
-                                            widget.pageData.viewEmployeeColumn,
-                                        numberOfPage: 1,
-                                        dropdownValueOfLimit: 10);
+                                BlocProvider.of<GetTableCubit>(context).getTable(
+                                    pageId: widget.pageData.pageId,
+                                    employee: false,
+                                    isdesc: widget.pageData.isDesc,
+                                    limit: 10,
+                                    offset: 0,
+                                    orderby: widget.pageData.orderBy,
+                                    statment: '',
+                                    selectcolumns: '',
+                                    departmentName: widget.pageData.departmentName,
+                                    isDepartment: widget.pageData.isDepartment,
+                                    authorizationID: widget.pageData.authorizationID,
+                                    viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
+                                    numberOfPage: 1,
+                                    dropdownValueOfLimit: 10);
                                 Navigator.pop(context);
                               } else if (state is AddEditExpensesFailure) {
                                 CustomAlertDialog.alertWithButton(
@@ -410,34 +336,19 @@ class _AddCustomerOrderState extends State<AddCustomerOrder> {
                                       singleObject.addAll({
                                         "TotalOrder": total,
                                         "MasterDescount": double.parse(
-                                            discountController.text.isEmpty
-                                                ? "0.0"
-                                                : discountController.text
-                                                    .trim()),
+                                            discountController.text.isEmpty ? "0.0" : discountController.text.trim()),
                                         "ShippingPrice": double.parse(
-                                            shippingCostsController.text.isEmpty
-                                                ? "0.0"
-                                                : shippingCostsController.text
-                                                    .trim()),
-                                        "POPaid": double.parse(
-                                            paidController.text.isEmpty
-                                                ? "0.0"
-                                                : paidController.text.trim()),
-                                        "remind": double.parse(
-                                            restController.text.isEmpty
-                                                ? "0.0"
-                                                : restController.text.trim()),
+                                            shippingCostsController.text.isEmpty ? "0.0" : shippingCostsController.text.trim()),
+                                        "POPaid": double.parse(paidController.text.isEmpty ? "0.0" : paidController.text.trim()),
+                                        "remind": double.parse(restController.text.isEmpty ? "0.0" : restController.text.trim()),
                                         "SafeAccount": dropdownAccount,
                                         "ConTypeId": dropdownConTypeId,
                                       });
 
-                                      BlocProvider.of<AddEditExpensesCubit>(
-                                              context)
-                                          .add(
-                                              singleObject: singleObject,
-                                              tableList: tableList,
-                                              controllerName: widget
-                                                  .tapData!.controllerName);
+                                      BlocProvider.of<AddEditExpensesCubit>(context).add(
+                                          singleObject: singleObject,
+                                          tableList: tableList,
+                                          controllerName: widget.tapData!.controllerName);
                                     }
                                   },
                                 );
@@ -469,17 +380,10 @@ class _AddCustomerOrderState extends State<AddCustomerOrder> {
     List<Widget> list = [];
 
     for (var item in listData) {
-      String title = lang == AppStrings.arLangKey
-          ? item.arColumnLabel!
-          : item.enColumnLabel!;
-      bool condition = item.insertVisable == true &&
-          item.cvisable == false &&
-          item.visible == false &&
-          item.isGeneral == true;
+      String title = lang == AppStrings.arLangKey ? item.arColumnLabel! : item.enColumnLabel!;
+      bool condition = item.insertVisable == true && item.cvisable == false && item.visible == false && item.isGeneral == true;
       //text
-      if (item.insertType == "text" &&
-          item.categoryTitle == categoryName &&
-          condition) {
+      if (item.insertType == "text" && item.categoryTitle == categoryName && condition) {
         list.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -507,8 +411,7 @@ class _AddCustomerOrderState extends State<AddCustomerOrder> {
                   onSaved: (newValue) {
                     if (newValue!.isNotEmpty) {
                       setState(() {
-                        singleObject
-                            .addAll({item.columnName!.toString(): newValue});
+                        singleObject.addAll({item.columnName!.toString(): newValue});
                       });
                     }
                   },
@@ -519,9 +422,7 @@ class _AddCustomerOrderState extends State<AddCustomerOrder> {
         );
       }
       //number
-      if (item.insertType == "number" &&
-          item.categoryTitle == categoryName &&
-          condition) {
+      if (item.insertType == "number" && item.categoryTitle == categoryName && condition) {
         list.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -549,8 +450,7 @@ class _AddCustomerOrderState extends State<AddCustomerOrder> {
                   onSaved: (newValue) {
                     if (newValue!.isNotEmpty) {
                       setState(() {
-                        singleObject
-                            .addAll({item.columnName!.toString(): newValue});
+                        singleObject.addAll({item.columnName!.toString(): newValue});
                       });
                     }
                   },
@@ -561,9 +461,7 @@ class _AddCustomerOrderState extends State<AddCustomerOrder> {
         );
       }
       //Date
-      if (item.insertType == "date" &&
-          item.categoryTitle == categoryName &&
-          condition) {
+      if (item.insertType == "date" && item.categoryTitle == categoryName && condition) {
         String date = '';
         list.add(
           Padding(
@@ -597,29 +495,24 @@ class _AddCustomerOrderState extends State<AddCustomerOrder> {
                         );
                         if (dateTime != null) {
                           dsetState(() {
-                            date =
-                                DateFormat("yyyy-MM-dd", 'en').format(dateTime);
+                            date = DateFormat("yyyy-MM-dd", 'en').format(dateTime);
                           });
 
                           dsetState(() {
-                            singleObject.addAll({
-                              item.columnName!.toString(): dateTime.toString()
-                            });
+                            singleObject.addAll({item.columnName!.toString(): dateTime.toString()});
                           });
                         }
                       },
                       child: Container(
                           height: 40,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(color: AppColors.blueDark)),
+                              borderRadius: BorderRadius.circular(12), border: Border.all(color: AppColors.blueDark)),
                           alignment: Alignment.center,
                           padding: const EdgeInsets.all(8),
                           child: Text(
                             date,
                             textAlign: TextAlign.center,
-                            style: AppStyles.textStyle14
-                                .copyWith(color: Colors.black),
+                            style: AppStyles.textStyle14.copyWith(color: Colors.black),
                           )),
                     );
                   },
@@ -631,9 +524,7 @@ class _AddCustomerOrderState extends State<AddCustomerOrder> {
       }
 
       //dropdown
-      if (item.insertType == "dropdown" &&
-          item.categoryTitle == categoryName &&
-          condition) {
+      if (item.insertType == "dropdown" && item.categoryTitle == categoryName && condition) {
         List<ListDrop>? listDrop = [];
         List<ItemDrop>? myListDrop = [];
 
@@ -649,8 +540,7 @@ class _AddCustomerOrderState extends State<AddCustomerOrder> {
           }
         }
         for (var ii in listDrop!) {
-          if (ii.columnName == item.columnName &&
-              ii.nameAr == item.arColumnLabel) {
+          if (ii.columnName == item.columnName && ii.nameAr == item.arColumnLabel) {
             myListDrop = ii.list;
           }
         }
@@ -717,21 +607,16 @@ class _AddCustomerOrderState extends State<AddCustomerOrder> {
                   height: 40,
                   child: CustomDropdown<String>.search(
                     hintText: '',
-                    closedHeaderPadding:
-                        const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                    closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                     decoration: CustomDropdownDecoration(
-                      headerStyle:
-                          AppStyles.textStyle16.copyWith(color: Colors.black),
+                      headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
                       closedFillColor: Colors.transparent,
                       closedBorder: Border.all(color: AppColors.blueDark),
                     ),
-                    items: myListDrop!.isEmpty
-                        ? [""]
-                        : List.generate(myListDrop.length,
-                            (index) => myListDrop![index].text ?? ''),
+                    items:
+                        myListDrop!.isEmpty ? [""] : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
                     onChanged: (value) {
-                      ItemDrop ii = myListDrop!
-                          .firstWhere((element) => element.text == value);
+                      ItemDrop ii = myListDrop!.firstWhere((element) => element.text == value);
                       singleObject.addAll({item.searchName!.toString(): ii.id});
                       // if (item.columnName == "CustomerID") {
                       //   AddCustomerOrder.userId = int.parse(ii.id ?? "-1");
@@ -745,9 +630,7 @@ class _AddCustomerOrderState extends State<AddCustomerOrder> {
         );
       }
       //checkbox
-      if (item.insertType == "checkbox" &&
-          item.categoryTitle == categoryName &&
-          condition) {
+      if (item.insertType == "checkbox" && item.categoryTitle == categoryName && condition) {
         bool checkboxValue = false;
         list.add(
           StatefulBuilder(
@@ -760,8 +643,7 @@ class _AddCustomerOrderState extends State<AddCustomerOrder> {
                     children: [
                       Text(
                         title,
-                        style:
-                            AppStyles.textStyle14.copyWith(color: Colors.black),
+                        style: AppStyles.textStyle14.copyWith(color: Colors.black),
                       ),
                       if (item.isRquired == true)
                         const Icon(
@@ -776,8 +658,7 @@ class _AddCustomerOrderState extends State<AddCustomerOrder> {
                       checkboxValue = !checkboxValue;
                     });
                     csetState(() {
-                      singleObject
-                          .addAll({item.columnName!.toString(): checkboxValue});
+                      singleObject.addAll({item.columnName!.toString(): checkboxValue});
                     });
                   });
             },
@@ -847,8 +728,7 @@ class _AddCustomerOrderState extends State<AddCustomerOrder> {
         );
 
       case "الضريبة":
-        ItemListSetupModel item =
-            listSetup.firstWhere((element) => element.columnName == "Tax");
+        ItemListSetupModel item = listSetup.firstWhere((element) => element.columnName == "Tax");
         List<ListDrop>? listDrop = [];
         List<ItemDrop>? myListDrop = [];
 
@@ -864,23 +744,18 @@ class _AddCustomerOrderState extends State<AddCustomerOrder> {
           }
         }
         for (var ii in listDrop!) {
-          if (ii.columnName == item.columnName &&
-              ii.nameAr == item.arColumnLabel) {
+          if (ii.columnName == item.columnName && ii.nameAr == item.arColumnLabel) {
             myListDrop = ii.list;
           }
         }
         return CustomDropdown<String>.search(
           hintText: '',
-          closedHeaderPadding:
-              const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+          closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
           decoration: CustomDropdownDecoration(
               headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
               closedFillColor: Colors.transparent,
               closedBorder: Border.all(color: AppColors.blueDark)),
-          items: myListDrop!.isEmpty
-              ? [""]
-              : List.generate(
-                  myListDrop.length, (index) => myListDrop![index].text ?? ''),
+          items: myListDrop!.isEmpty ? [""] : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
           onChanged: (value) {},
         );
       case "المدفوع":
@@ -898,8 +773,7 @@ class _AddCustomerOrderState extends State<AddCustomerOrder> {
           ),
         );
       case "الحساب":
-        ItemListSetupModel item = listSetup
-            .firstWhere((element) => element.columnName == "SafeAccount");
+        ItemListSetupModel item = listSetup.firstWhere((element) => element.columnName == "SafeAccount");
         List<ListDrop>? listDrop = [];
         List<ItemDrop>? myListDrop = [];
 
@@ -915,26 +789,20 @@ class _AddCustomerOrderState extends State<AddCustomerOrder> {
           }
         }
         for (var ii in listDrop!) {
-          if (ii.columnName == item.columnName &&
-              ii.nameAr == item.arColumnLabel) {
+          if (ii.columnName == item.columnName && ii.nameAr == item.arColumnLabel) {
             myListDrop = ii.list;
           }
         }
         return CustomDropdown<String>.search(
           hintText: '',
-          closedHeaderPadding:
-              const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+          closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
           decoration: CustomDropdownDecoration(
               headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
               closedFillColor: Colors.transparent,
               closedBorder: Border.all(color: AppColors.blueDark)),
-          items: myListDrop!.isEmpty
-              ? [""]
-              : List.generate(
-                  myListDrop.length, (index) => myListDrop![index].text ?? ''),
+          items: myListDrop!.isEmpty ? [""] : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
           onChanged: (value) {
-            ItemDrop ii =
-                myListDrop!.firstWhere((element) => element.text == value);
+            ItemDrop ii = myListDrop!.firstWhere((element) => element.text == value);
             dropdownAccount = ii.id!;
           },
         );
@@ -955,8 +823,7 @@ class _AddCustomerOrderState extends State<AddCustomerOrder> {
         );
 
       case "طريقة البيع":
-        ItemListSetupModel item = listSetup
-            .firstWhere((element) => element.columnName == "ConTypeId");
+        ItemListSetupModel item = listSetup.firstWhere((element) => element.columnName == "ConTypeId");
         List<ListDrop>? listDrop = [];
         List<ItemDrop>? myListDrop = [];
 
@@ -972,26 +839,20 @@ class _AddCustomerOrderState extends State<AddCustomerOrder> {
           }
         }
         for (var ii in listDrop!) {
-          if (ii.columnName == item.columnName &&
-              ii.nameAr == item.arColumnLabel) {
+          if (ii.columnName == item.columnName && ii.nameAr == item.arColumnLabel) {
             myListDrop = ii.list;
           }
         }
         return CustomDropdown<String>.search(
           hintText: '',
-          closedHeaderPadding:
-              const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+          closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
           decoration: CustomDropdownDecoration(
               headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
               closedFillColor: Colors.transparent,
               closedBorder: Border.all(color: AppColors.blueDark)),
-          items: myListDrop!.isEmpty
-              ? [""]
-              : List.generate(
-                  myListDrop.length, (index) => myListDrop![index].text ?? ''),
+          items: myListDrop!.isEmpty ? [""] : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
           onChanged: (value) {
-            ItemDrop ii =
-                myListDrop!.firstWhere((element) => element.text == value);
+            ItemDrop ii = myListDrop!.firstWhere((element) => element.text == value);
             dropdownConTypeId = ii.id!;
           },
         );
@@ -1001,12 +862,8 @@ class _AddCustomerOrderState extends State<AddCustomerOrder> {
   void changePaid(String newValue, StateSetter wsetState) {
     restController.text = restValue(
             total: total,
-            shippingPrice: shippingCostsController.text.isEmpty
-                ? 0.0
-                : double.parse(shippingCostsController.text),
-            discountPercent: discountPercentController.text.isEmpty
-                ? 0.0
-                : double.parse(discountPercentController.text),
+            shippingPrice: shippingCostsController.text.isEmpty ? 0.0 : double.parse(shippingCostsController.text),
+            discountPercent: discountPercentController.text.isEmpty ? 0.0 : double.parse(discountPercentController.text),
             cashCollected: newValue.isEmpty ? 0.0 : double.parse(newValue))
         .toString();
     wsetState(() {});
@@ -1016,50 +873,31 @@ class _AddCustomerOrderState extends State<AddCustomerOrder> {
     restController.text = restValue(
             total: total,
             shippingPrice: newValue.isEmpty ? 0.0 : double.parse(newValue),
-            discountPercent: discountPercentController.text.isEmpty
-                ? 0.0
-                : double.parse(discountPercentController.text),
-            cashCollected: paidController.text.isEmpty
-                ? 0.0
-                : double.parse(paidController.text))
+            discountPercent: discountPercentController.text.isEmpty ? 0.0 : double.parse(discountPercentController.text),
+            cashCollected: paidController.text.isEmpty ? 0.0 : double.parse(paidController.text))
         .toString();
     wsetState(() {});
   }
 
   void changeDiscountPercent(String newValue, StateSetter wsetState) {
-    discountController.text = discount(
-            total: total,
-            discountPercent: newValue.isEmpty ? 0.0 : double.parse(newValue))
-        .toString();
+    discountController.text = discount(total: total, discountPercent: newValue.isEmpty ? 0.0 : double.parse(newValue)).toString();
     restController.text = restValue(
             total: total,
-            shippingPrice: shippingCostsController.text.isEmpty
-                ? 0.0
-                : double.parse(shippingCostsController.text),
+            shippingPrice: shippingCostsController.text.isEmpty ? 0.0 : double.parse(shippingCostsController.text),
             discountPercent: newValue.isEmpty ? 0.0 : double.parse(newValue),
-            cashCollected: paidController.text.isEmpty
-                ? 0.0
-                : double.parse(paidController.text))
+            cashCollected: paidController.text.isEmpty ? 0.0 : double.parse(paidController.text))
         .toString();
     wsetState(() {});
   }
 
   void changeDiscount(String newValue, StateSetter wsetState) {
-    discountPercentController.text = discountPercent(
-            total: total,
-            discount: newValue.isEmpty ? 0.0 : double.parse(newValue))
-        .toString();
+    discountPercentController.text =
+        discountPercent(total: total, discount: newValue.isEmpty ? 0.0 : double.parse(newValue)).toString();
     restController.text = restValue(
             total: total,
-            shippingPrice: shippingCostsController.text.isEmpty
-                ? 0.0
-                : double.parse(shippingCostsController.text),
-            discountPercent: discountPercentController.text.isEmpty
-                ? 0.0
-                : double.parse(discountPercentController.text),
-            cashCollected: paidController.text.isEmpty
-                ? 0.0
-                : double.parse(paidController.text))
+            shippingPrice: shippingCostsController.text.isEmpty ? 0.0 : double.parse(shippingCostsController.text),
+            discountPercent: discountPercentController.text.isEmpty ? 0.0 : double.parse(discountPercentController.text),
+            cashCollected: paidController.text.isEmpty ? 0.0 : double.parse(paidController.text))
         .toString();
     wsetState(() {});
   }
@@ -1072,16 +910,12 @@ class _AddCustomerOrderState extends State<AddCustomerOrder> {
     return 100 * discount / total;
   }
 
-  double totalAfterDiscount(
-      {required double total, required double discountPercent}) {
+  double totalAfterDiscount({required double total, required double discountPercent}) {
     return total - discount(total: total, discountPercent: discountPercent);
   }
 
   double restValue(
-      {required double total,
-      required double shippingPrice,
-      required double discountPercent,
-      required double cashCollected}) {
+      {required double total, required double shippingPrice, required double discountPercent, required double cashCollected}) {
     return cashCollected -
         (totalAfterDiscount(
               discountPercent: discountPercent,
@@ -1152,11 +986,8 @@ class _AddCustomerOrderState extends State<AddCustomerOrder> {
 
   void getDataList() async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> dataProduct = await ApiService(Dio()).post(
         endPoint: "web/Structure/getDataGlobal",
         data: {"TableName": "Product"},
@@ -1233,11 +1064,8 @@ class _AddCustomerOrderState extends State<AddCustomerOrder> {
 
   void getColumnListAndAdd(Pages page) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).post(
         endPoint: "home/getGeneralTable",
         data: {
@@ -1291,11 +1119,8 @@ class _AddCustomerOrderState extends State<AddCustomerOrder> {
 
   Future<bool> getPermissions(int? pageId) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPagePermissions?pageId=$pageId",
         headers: {
@@ -1312,11 +1137,8 @@ class _AddCustomerOrderState extends State<AddCustomerOrder> {
 
   void getDropdownList(int pageId) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       List<dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPageDropDown?pageId=$pageId",
         headers: {
@@ -1338,79 +1160,79 @@ class _AddCustomerOrderState extends State<AddCustomerOrder> {
     }
   }
 
-  // bool? getCustomer(int userId) {
-  //   for (var item in AddCustomerOrder.listCustomerAccount) {
-  //     if (item['CustomerAccountID'] == userId) {
-  //       return item['Closelocation'];
-  //     }
-  //   }
-  //   return null;
-  // }
+// bool? getCustomer(int userId) {
+//   for (var item in AddCustomerOrder.listCustomerAccount) {
+//     if (item['CustomerAccountID'] == userId) {
+//       return item['Closelocation'];
+//     }
+//   }
+//   return null;
+// }
 
-  // Future<void> getCustomerLocation(int userId) async {
-  //   setState(() {
-  //     isGetLocationAndListLocation = true;
-  //   });
-  //   try {
-  //     String companyKey =
-  //         await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-  //             "";
-  //     String token =
-  //         await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
-  //     Map<String, dynamic> customerAccountLocation =
-  //         await ApiService(Dio()).post(
-  //       endPoint: "web/Structure/getDataGlobal",
-  //       data: {
-  //         "TableName": "CustomerAccountLocation",
-  //         "TailCondition": "CustomerID= $userId"
-  //       },
-  //       headers: {
-  //         "Authorization": "Bearer $token",
-  //         "CompanyKey": companyKey,
-  //       },
-  //     );
-  //     AddCustomerOrder.listCustomerAccountLocation =
-  //         customerAccountLocation['dynamicList'];
-  //     setState(() {
-  //       isGetLocationAndListLocation = false;
-  //     });
-  //   } catch (e) {
-  //     debugPrint(e.toString());
-  //   }
-  // }
+// Future<void> getCustomerLocation(int userId) async {
+//   setState(() {
+//     isGetLocationAndListLocation = true;
+//   });
+//   try {
+//     String companyKey =
+//         await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
+//             "";
+//     String token =
+//         await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+//     Map<String, dynamic> customerAccountLocation =
+//         await ApiService(Dio()).post(
+//       endPoint: "web/Structure/getDataGlobal",
+//       data: {
+//         "TableName": "CustomerAccountLocation",
+//         "TailCondition": "CustomerID= $userId"
+//       },
+//       headers: {
+//         "Authorization": "Bearer $token",
+//         "CompanyKey": companyKey,
+//       },
+//     );
+//     AddCustomerOrder.listCustomerAccountLocation =
+//         customerAccountLocation['dynamicList'];
+//     setState(() {
+//       isGetLocationAndListLocation = false;
+//     });
+//   } catch (e) {
+//     debugPrint(e.toString());
+//   }
+// }
 
-  // void checkLocation() async {
-  //   await getLocation();
-  //   await getCustomerLocation(AddCustomerOrder.userId);
-  //   double distance;
-  //   for (var location in AddCustomerOrder.listCustomerAccountLocation) {
-  //     distance = (Geolocator.distanceBetween(
-  //           lat ?? 0.0,
-  //           long ?? 0.0,
-  //           location['LocationLat'],
-  //           location['LocationLong'],
-  //         )) /
-  //         1000;
-  //     // radius.add(distance);
-  //     if (distance == location['Radius'] ||
-  //         distance < location['Radius'] ||
-  //         distance == 0.0) {
-  //       BlocProvider.of<AddEditExpensesCubit>(context).add(
-  //           singleObject: singleObject,
-  //           tableList: tableList,
-  //           controllerName: widget.tapData!.controllerName);
-  //     } else {
-  //       CustomAlertDialog.alertWithButton(
-  //           context: context,
-  //           type: AlertType.error,
-  //           isCloseButton: false,
-  //           isOverlayTapDismiss: false,
-  //           title: S.of(context).error,
-  //           desc: S.of(context).no_location,
-  //           onPressed: () {
-  //             Navigator.of(context).pop();
-  //           });
-  //     }
-  //   }
-  // }
+// void checkLocation() async {
+//   await getLocation();
+//   await getCustomerLocation(AddCustomerOrder.userId);
+//   double distance;
+//   for (var location in AddCustomerOrder.listCustomerAccountLocation) {
+//     distance = (Geolocator.distanceBetween(
+//           lat ?? 0.0,
+//           long ?? 0.0,
+//           location['LocationLat'],
+//           location['LocationLong'],
+//         )) /
+//         1000;
+//     // radius.add(distance);
+//     if (distance == location['Radius'] ||
+//         distance < location['Radius'] ||
+//         distance == 0.0) {
+//       BlocProvider.of<AddEditExpensesCubit>(context).add(
+//           singleObject: singleObject,
+//           tableList: tableList,
+//           controllerName: widget.tapData!.controllerName);
+//     } else {
+//       CustomAlertDialog.alertWithButton(
+//           context: context,
+//           type: AlertType.error,
+//           isCloseButton: false,
+//           isOverlayTapDismiss: false,
+//           title: S.of(context).error,
+//           desc: S.of(context).no_location,
+//           onPressed: () {
+//             Navigator.of(context).pop();
+//           });
+//     }
+//   }
+// }
 }

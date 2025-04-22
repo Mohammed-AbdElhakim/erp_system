@@ -48,10 +48,7 @@ class FilePdfByData extends StatelessWidget {
               children: [
                 Text(
                   S.of(context).exporting_pdf_file,
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.blueLight),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.blueLight),
                 ),
                 const SizedBox(height: 8),
                 const CustomLoadingWidget()
@@ -77,8 +74,8 @@ class FilePdfByData extends StatelessWidget {
         });
   }
 
-  Future<String> convertExcelToPdf(BuildContext context, List<dynamic> header,
-      List<dynamic> responseData, String language) async {
+  Future<String> convertExcelToPdf(
+      BuildContext context, List<dynamic> header, List<dynamic> responseData, String language) async {
     if (!await requestStoragePermission()) {
       return S.of(context).permission_denied;
     }
@@ -95,21 +92,16 @@ class FilePdfByData extends StatelessWidget {
     if (columnList.length >= 10) {
       Map<String, String> columnHeaders = {
         for (var col in columnList.sublist(0, 10))
-          col['ColumnName']:
-              language == 'ar' ? col['arColumnLabel'] : col['enColumnLabel']
+          col['ColumnName']: language == 'ar' ? col['arColumnLabel'] : col['enColumnLabel']
       };
       columnKeys = columnHeaders.keys.toList();
-      columnLabels =
-          columnKeys.map((key) => columnHeaders[key] ?? key).toList();
+      columnLabels = columnKeys.map((key) => columnHeaders[key] ?? key).toList();
     } else {
       Map<String, String> columnHeaders = {
-        for (var col in columnList)
-          col['ColumnName']:
-              language == 'ar' ? col['arColumnLabel'] : col['enColumnLabel']
+        for (var col in columnList) col['ColumnName']: language == 'ar' ? col['arColumnLabel'] : col['enColumnLabel']
       };
       columnKeys = columnHeaders.keys.toList();
-      columnLabels =
-          columnKeys.map((key) => columnHeaders[key] ?? key).toList();
+      columnLabels = columnKeys.map((key) => columnHeaders[key] ?? key).toList();
     }
 
     columnKeys = columnKeys.reversed.toList();
@@ -161,9 +153,7 @@ class FilePdfByData extends StatelessWidget {
 
     // 🟢 حفظ الملف
     Directory? dir = await FileManager.getAppStorageDirectory();
-    String fileName = lang == AppStrings.arLangKey
-        ? "${pageData.nameAr} - $tabIndex"
-        : "${pageData.nameEn} - $tabIndex";
+    String fileName = lang == AppStrings.arLangKey ? "${pageData.nameAr} - $tabIndex" : "${pageData.nameEn} - $tabIndex";
     String path = "${dir.path}/$fileName.pdf";
     if (await File(path).exists()) {
       File(path).delete();
@@ -200,11 +190,8 @@ class FilePdfByData extends StatelessWidget {
 
   Future<String> fetchData(BuildContext context) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       data["limit"] = 0;
       // var rrr = jsonEncode(data);
       Map<String, dynamic> response = await ApiService(Dio()).post(
@@ -228,8 +215,7 @@ class FilePdfByData extends StatelessWidget {
             item['Cvisable'] == true;
       }).toList();
       // String jsonString = jsonEncode();
-      String massage = await convertExcelToPdf(
-          context, headerFiltered, response['dynamicList'], lang);
+      String massage = await convertExcelToPdf(context, headerFiltered, response['dynamicList'], lang);
       return massage;
     } catch (e) {
       throw Exception('$e');

@@ -34,19 +34,18 @@ import 'widgets/tab1.dart';
 import 'widgets/tab2.dart';
 
 class AddExtractionSupplierTable extends StatefulWidget {
-  const AddExtractionSupplierTable(
-      {super.key, this.tapData, required this.pageData, required this.listKey});
+  const AddExtractionSupplierTable({super.key, this.tapData, required this.pageData, required this.listKey});
+
   final ListTaps? tapData;
   final Pages pageData;
   final List<dynamic> listKey;
   static List<dynamic> listProduct = [];
+
   @override
-  State<AddExtractionSupplierTable> createState() =>
-      _AddExtractionSupplierTableState();
+  State<AddExtractionSupplierTable> createState() => _AddExtractionSupplierTableState();
 }
 
-class _AddExtractionSupplierTableState
-    extends State<AddExtractionSupplierTable> {
+class _AddExtractionSupplierTableState extends State<AddExtractionSupplierTable> {
   String? lang;
   GlobalKey<FormState> formKey = GlobalKey();
   Map<String, dynamic> singleObject = {};
@@ -84,15 +83,10 @@ class _AddExtractionSupplierTableState
 
           for (var item in state.listSetupModel) {
             category.add(item.categoryTitle ?? '');
-            if (item.insertVisable == true &&
-                item.cvisable == true &&
-                item.visible == true &&
-                item.isGeneral != true) {
+            if (item.insertVisable == true && item.cvisable == true && item.visible == true && item.isGeneral != true) {
               listColumn.add(item);
               listKey.add(item.columnName);
-              listHeader.add(lang == AppStrings.enLangKey
-                  ? item.enColumnLabel!
-                  : item.arColumnLabel!);
+              listHeader.add(lang == AppStrings.enLangKey ? item.enColumnLabel! : item.arColumnLabel!);
             }
           }
           List<String> categoryList = category.toSet().toList();
@@ -119,29 +113,19 @@ class _AddExtractionSupplierTableState
                               );
                               return widgetList.isNotEmpty
                                   ? Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 16),
+                                      padding: const EdgeInsets.only(bottom: 16),
                                       child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Container(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 12,
-                                                      vertical: 8),
+                                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                                               decoration: BoxDecoration(
                                                   // color: AppColors.grey.withOpacity(.4),
-                                                  color: AppColors.grey
-                                                      .withAlpha(102),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          15)),
+                                                  color: AppColors.grey.withAlpha(102),
+                                                  borderRadius: BorderRadius.circular(15)),
                                               child: Text(
                                                 categoryName,
-                                                style: AppStyles.textStyle18
-                                                    .copyWith(
-                                                        color: Colors.black),
+                                                style: AppStyles.textStyle18.copyWith(color: Colors.black),
                                               )),
                                           ...widgetList,
                                         ],
@@ -162,8 +146,7 @@ class _AddExtractionSupplierTableState
                                         builder: (context) {
                                           return AlertDialog(
                                               content: Tab1(
-                                            myAllDropdownModelList:
-                                                myAllDropdownModelList,
+                                            myAllDropdownModelList: myAllDropdownModelList,
                                             oldData: tableListTab1,
                                             onTapAction: (data) {
                                               setState(() {
@@ -192,8 +175,7 @@ class _AddExtractionSupplierTableState
                                             return AlertDialog(
                                                 content: Tab2(
                                               title: S.of(context).tab2,
-                                              myAllDropdownModelList:
-                                                  myAllDropdownModelList,
+                                              myAllDropdownModelList: myAllDropdownModelList,
                                               oldData: tableListTab2,
                                               onTapAction: (data) {
                                                 setState(() {
@@ -223,8 +205,7 @@ class _AddExtractionSupplierTableState
                                             return AlertDialog(
                                                 content: Tab2(
                                               title: S.of(context).tab3,
-                                              myAllDropdownModelList:
-                                                  myAllDropdownModelList,
+                                              myAllDropdownModelList: myAllDropdownModelList,
                                               oldData: tableListTab3,
                                               onTapAction: (data) {
                                                 setState(() {
@@ -256,8 +237,7 @@ class _AddExtractionSupplierTableState
                                     listKey: listKey,
                                     listHeader: listHeader,
                                     listColumn: listColumn,
-                                    allDropdownModelList:
-                                        ScreenTable.myAllDropdownModelList,
+                                    allDropdownModelList: ScreenTable.myAllDropdownModelList,
                                     typeView: "Add",
                                   ),
                                 );
@@ -289,8 +269,7 @@ class _AddExtractionSupplierTableState
                             noGradient: true,
                             color: Colors.transparent,
                             noShadow: true,
-                            textStyle: AppStyles.textStyle16
-                                .copyWith(color: Colors.grey),
+                            textStyle: AppStyles.textStyle16.copyWith(color: Colors.grey),
                             onTap: () {
                               Navigator.pop(context);
                             },
@@ -298,30 +277,24 @@ class _AddExtractionSupplierTableState
                           const SizedBox(
                             width: 50,
                           ),
-                          BlocConsumer<AddEditExpensesCubit,
-                              AddEditExpensesState>(
+                          BlocConsumer<AddEditExpensesCubit, AddEditExpensesState>(
                             listener: (context, state) {
                               if (state is AddEditExpensesSuccess) {
-                                BlocProvider.of<GetTableCubit>(context)
-                                    .getTable(
-                                        pageId: widget.pageData.pageId,
-                                        employee: false,
-                                        isdesc: widget.pageData.isDesc,
-                                        limit: 10,
-                                        offset: 0,
-                                        orderby: widget.pageData.orderBy,
-                                        statment: '',
-                                        selectcolumns: '',
-                                        departmentName:
-                                            widget.pageData.departmentName,
-                                        isDepartment:
-                                            widget.pageData.isDepartment,
-                                        authorizationID:
-                                            widget.pageData.authorizationID,
-                                        viewEmployeeColumn:
-                                            widget.pageData.viewEmployeeColumn,
-                                        numberOfPage: 1,
-                                        dropdownValueOfLimit: 10);
+                                BlocProvider.of<GetTableCubit>(context).getTable(
+                                    pageId: widget.pageData.pageId,
+                                    employee: false,
+                                    isdesc: widget.pageData.isDesc,
+                                    limit: 10,
+                                    offset: 0,
+                                    orderby: widget.pageData.orderBy,
+                                    statment: '',
+                                    selectcolumns: '',
+                                    departmentName: widget.pageData.departmentName,
+                                    isDepartment: widget.pageData.isDepartment,
+                                    authorizationID: widget.pageData.authorizationID,
+                                    viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
+                                    numberOfPage: 1,
+                                    dropdownValueOfLimit: 10);
                                 Navigator.pop(context);
                               } else if (state is AddEditExpensesFailure) {
                                 CustomAlertDialog.alertWithButton(
@@ -347,13 +320,10 @@ class _AddExtractionSupplierTableState
                                         "deductions": tableListTab3,
                                       });
 
-                                      BlocProvider.of<AddEditExpensesCubit>(
-                                              context)
-                                          .add(
-                                              singleObject: singleObject,
-                                              tableList: tableList,
-                                              controllerName: widget
-                                                  .tapData!.controllerName);
+                                      BlocProvider.of<AddEditExpensesCubit>(context).add(
+                                          singleObject: singleObject,
+                                          tableList: tableList,
+                                          controllerName: widget.tapData!.controllerName);
                                     }
                                   },
                                 );
@@ -385,18 +355,11 @@ class _AddExtractionSupplierTableState
     List<Widget> list = [];
 
     for (var item in listData) {
-      String title = lang == AppStrings.arLangKey
-          ? item.arColumnLabel!
-          : item.enColumnLabel!;
-      bool condition = item.insertVisable == true &&
-          item.cvisable == false &&
-          item.visible == false &&
-          item.isGeneral == true;
+      String title = lang == AppStrings.arLangKey ? item.arColumnLabel! : item.enColumnLabel!;
+      bool condition = item.insertVisable == true && item.cvisable == false && item.visible == false && item.isGeneral == true;
 
       //text
-      if (item.insertType == "text" &&
-          item.categoryTitle == categoryName &&
-          condition) {
+      if (item.insertType == "text" && item.categoryTitle == categoryName && condition) {
         list.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -424,8 +387,7 @@ class _AddExtractionSupplierTableState
                   onSaved: (newValue) {
                     if (newValue!.isNotEmpty) {
                       setState(() {
-                        singleObject
-                            .addAll({item.columnName!.toString(): newValue});
+                        singleObject.addAll({item.columnName!.toString(): newValue});
                       });
                     }
                   },
@@ -436,9 +398,7 @@ class _AddExtractionSupplierTableState
         );
       }
       //number
-      if (item.insertType == "number" &&
-          item.categoryTitle == categoryName &&
-          condition) {
+      if (item.insertType == "number" && item.categoryTitle == categoryName && condition) {
         list.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -466,8 +426,7 @@ class _AddExtractionSupplierTableState
                   onSaved: (newValue) {
                     if (newValue!.isNotEmpty) {
                       setState(() {
-                        singleObject
-                            .addAll({item.columnName!.toString(): newValue});
+                        singleObject.addAll({item.columnName!.toString(): newValue});
                       });
                     }
                   },
@@ -478,9 +437,7 @@ class _AddExtractionSupplierTableState
         );
       }
       //Date
-      if (item.insertType == "date" &&
-          item.categoryTitle == categoryName &&
-          condition) {
+      if (item.insertType == "date" && item.categoryTitle == categoryName && condition) {
         String date = '';
         list.add(
           Padding(
@@ -514,29 +471,24 @@ class _AddExtractionSupplierTableState
                         );
                         if (dateTime != null) {
                           dsetState(() {
-                            date =
-                                DateFormat("yyyy-MM-dd", 'en').format(dateTime);
+                            date = DateFormat("yyyy-MM-dd", 'en').format(dateTime);
                           });
 
                           dsetState(() {
-                            singleObject.addAll({
-                              item.columnName!.toString(): dateTime.toString()
-                            });
+                            singleObject.addAll({item.columnName!.toString(): dateTime.toString()});
                           });
                         }
                       },
                       child: Container(
                           height: 40,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(color: AppColors.blueDark)),
+                              borderRadius: BorderRadius.circular(12), border: Border.all(color: AppColors.blueDark)),
                           alignment: Alignment.center,
                           padding: const EdgeInsets.all(8),
                           child: Text(
                             date,
                             textAlign: TextAlign.center,
-                            style: AppStyles.textStyle14
-                                .copyWith(color: Colors.black),
+                            style: AppStyles.textStyle14.copyWith(color: Colors.black),
                           )),
                     );
                   },
@@ -548,9 +500,7 @@ class _AddExtractionSupplierTableState
       }
 
       //dropdown
-      if (item.insertType == "dropdown" &&
-          item.categoryTitle == categoryName &&
-          condition) {
+      if (item.insertType == "dropdown" && item.categoryTitle == categoryName && condition) {
         List<ListDrop>? listDrop = [];
         List<ItemDrop>? myListDrop = [];
 
@@ -633,21 +583,16 @@ class _AddExtractionSupplierTableState
                   height: 40,
                   child: CustomDropdown<String>.search(
                     hintText: '',
-                    closedHeaderPadding:
-                        const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                    closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                     decoration: CustomDropdownDecoration(
-                      headerStyle:
-                          AppStyles.textStyle16.copyWith(color: Colors.black),
+                      headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
                       closedFillColor: Colors.transparent,
                       closedBorder: Border.all(color: AppColors.blueDark),
                     ),
-                    items: myListDrop!.isEmpty
-                        ? [""]
-                        : List.generate(myListDrop.length,
-                            (index) => myListDrop![index].text ?? ''),
+                    items:
+                        myListDrop!.isEmpty ? [""] : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
                     onChanged: (value) {
-                      ItemDrop ii = myListDrop!
-                          .firstWhere((element) => element.text == value);
+                      ItemDrop ii = myListDrop!.firstWhere((element) => element.text == value);
                       singleObject.addAll({item.searchName!.toString(): ii.id});
                       if (item.columnName == "ProjectID") {
                         projectName = value;
@@ -661,9 +606,7 @@ class _AddExtractionSupplierTableState
         );
       }
       //checkbox
-      if (item.insertType == "checkbox" &&
-          item.categoryTitle == categoryName &&
-          condition) {
+      if (item.insertType == "checkbox" && item.categoryTitle == categoryName && condition) {
         bool checkboxValue = false;
         list.add(
           StatefulBuilder(
@@ -676,8 +619,7 @@ class _AddExtractionSupplierTableState
                     children: [
                       Text(
                         title,
-                        style:
-                            AppStyles.textStyle14.copyWith(color: Colors.black),
+                        style: AppStyles.textStyle14.copyWith(color: Colors.black),
                       ),
                       if (item.isRquired == true)
                         const Icon(
@@ -692,8 +634,7 @@ class _AddExtractionSupplierTableState
                       checkboxValue = !checkboxValue;
                     });
                     csetState(() {
-                      singleObject
-                          .addAll({item.columnName!.toString(): checkboxValue});
+                      singleObject.addAll({item.columnName!.toString(): checkboxValue});
                     });
                   });
             },
@@ -706,11 +647,8 @@ class _AddExtractionSupplierTableState
 
   void getDataList() async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> dataProduct = await ApiService(Dio()).post(
         endPoint: "web/Structure/getDataGlobal",
         data: {"TableName": "Product"},
@@ -728,11 +666,8 @@ class _AddExtractionSupplierTableState
 
   void getColumnListAndAdd(Pages page) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).post(
         endPoint: "home/getGeneralTable",
         data: {
@@ -786,11 +721,8 @@ class _AddExtractionSupplierTableState
 
   Future<bool> getPermissions(int? pageId) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPagePermissions?pageId=$pageId",
         headers: {
@@ -807,11 +739,8 @@ class _AddExtractionSupplierTableState
 
   void getDropdownList(int pageId) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       List<dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPageDropDown?pageId=$pageId",
         headers: {

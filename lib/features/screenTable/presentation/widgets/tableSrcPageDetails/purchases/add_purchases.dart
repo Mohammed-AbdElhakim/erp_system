@@ -31,8 +31,8 @@ import '../build_alert_add_in_dropdown.dart';
 import 'purchases_table_add_edit_.dart';
 
 class AddPurchases extends StatefulWidget {
-  const AddPurchases(
-      {super.key, required this.pageData, required this.listKey, this.tapData});
+  const AddPurchases({super.key, required this.pageData, required this.listKey, this.tapData});
+
   final ListTaps? tapData;
   final Pages pageData;
   final List<dynamic> listKey;
@@ -67,6 +67,7 @@ class _AddPurchasesState extends State<AddPurchases> {
   TextEditingController rateTaxController = TextEditingController();
   TextEditingController discountController = TextEditingController();
   TextEditingController deadlineSupplierController = TextEditingController();
+
   @override
   void didChangeDependencies() {
     lang = Localizations.localeOf(context).toString();
@@ -94,15 +95,10 @@ class _AddPurchasesState extends State<AddPurchases> {
 
           for (var item in state.listSetupModel) {
             category.add(item.categoryTitle ?? '');
-            if (item.insertVisable == true &&
-                item.cvisable == true &&
-                item.visible == true &&
-                item.isGeneral != true) {
+            if (item.insertVisable == true && item.cvisable == true && item.visible == true && item.isGeneral != true) {
               listColumn.add(item);
               listKey.add(item.columnName);
-              listHeader.add(lang == AppStrings.enLangKey
-                  ? item.enColumnLabel!
-                  : item.arColumnLabel!);
+              listHeader.add(lang == AppStrings.enLangKey ? item.enColumnLabel! : item.arColumnLabel!);
             }
           }
           List<String> categoryList = category.toSet().toList();
@@ -129,29 +125,19 @@ class _AddPurchasesState extends State<AddPurchases> {
                               );
                               return widgetList.isNotEmpty
                                   ? Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 16),
+                                      padding: const EdgeInsets.only(bottom: 16),
                                       child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Container(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 12,
-                                                      vertical: 8),
+                                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                                               decoration: BoxDecoration(
                                                   // color: AppColors.grey.withOpacity(.4),
-                                                  color: AppColors.grey
-                                                      .withAlpha(102),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          15)),
+                                                  color: AppColors.grey.withAlpha(102),
+                                                  borderRadius: BorderRadius.circular(15)),
                                               child: Text(
                                                 categoryName,
-                                                style: AppStyles.textStyle18
-                                                    .copyWith(
-                                                        color: Colors.black),
+                                                style: AppStyles.textStyle18.copyWith(color: Colors.black),
                                               )),
                                           ...widgetList,
                                         ],
@@ -172,35 +158,24 @@ class _AddPurchasesState extends State<AddPurchases> {
                                       if (tableList.isNotEmpty) {
                                         for (var i in tableList) {
                                           salessetState(() {
-                                            total = total +
-                                                (double.parse(
-                                                        i['CostCurrancy']) *
-                                                    double.parse(
-                                                        i['Quntity'] ?? "1"));
-                                            valueAddedTaxController.text =
-                                                valueFromRate(
+                                            total = total + (double.parse(i['CostCurrancy']) * double.parse(i['Quntity'] ?? "1"));
+                                            valueAddedTaxController.text = valueFromRate(
                                               totalValue: totalAfterDiscount(
                                                 total: total.toString(),
-                                                discount:
-                                                    discountController.text,
+                                                discount: discountController.text,
                                               ),
-                                              valueRate:
-                                                  rateValueAddedTaxController
-                                                      .text,
+                                              valueRate: rateValueAddedTaxController.text,
                                             );
                                             taxController.text = valueFromRate(
                                               totalValue: totalAfterDiscount(
                                                 total: total.toString(),
-                                                discount:
-                                                    discountController.text,
+                                                discount: discountController.text,
                                               ),
                                               valueRate: taxController.text,
                                             );
-                                            deadlineSupplierController.text =
-                                                deadlineSupplier(
+                                            deadlineSupplierController.text = deadlineSupplier(
                                               total: total.toString(),
-                                              valueAddedTax:
-                                                  valueAddedTaxController.text,
+                                              valueAddedTax: valueAddedTaxController.text,
                                               tax: taxController.text,
                                               discount: discountController.text,
                                               cashPaid: cashPaidController.text,
@@ -219,8 +194,7 @@ class _AddPurchasesState extends State<AddPurchases> {
                                     listKey: listKey,
                                     listHeader: listHeader,
                                     listColumn: listColumn,
-                                    allDropdownModelList:
-                                        ScreenTable.myAllDropdownModelList,
+                                    allDropdownModelList: ScreenTable.myAllDropdownModelList,
                                     typeView: "Add",
                                   ),
                                 );
@@ -238,16 +212,11 @@ class _AddPurchasesState extends State<AddPurchases> {
                                 (index) => Container(
                                       decoration: BoxDecoration(
                                           border: BorderDirectional(
-                                        top: const BorderSide(
-                                            color: Colors.grey),
-                                        start: const BorderSide(
-                                            color: Colors.grey),
-                                        end: const BorderSide(
-                                            color: Colors.grey),
-                                        bottom: index ==
-                                                listHeaderPurchases.length - 1
-                                            ? const BorderSide(
-                                                color: Colors.grey)
+                                        top: const BorderSide(color: Colors.grey),
+                                        start: const BorderSide(color: Colors.grey),
+                                        end: const BorderSide(color: Colors.grey),
+                                        bottom: index == listHeaderPurchases.length - 1
+                                            ? const BorderSide(color: Colors.grey)
                                             : BorderSide.none,
                                       )),
                                       child: Row(
@@ -255,59 +224,34 @@ class _AddPurchasesState extends State<AddPurchases> {
                                           Expanded(
                                             child: Container(
                                               height: 55,
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 8,
-                                                      vertical: 5),
+                                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
                                               decoration: BoxDecoration(
-                                                  border:
-                                                      const BorderDirectional(
-                                                    end: BorderSide(
-                                                        color: Colors.grey,
-                                                        width: .5),
+                                                  border: const BorderDirectional(
+                                                    end: BorderSide(color: Colors.grey, width: .5),
                                                   ),
-                                                  color: listHeaderPurchases[
-                                                                  index] ==
-                                                              "الاجمالى" ||
-                                                          listHeaderPurchases[
-                                                                  index] ==
-                                                              "الاجل للمورد"
+                                                  color: listHeaderPurchases[index] == "الاجمالى" ||
+                                                          listHeaderPurchases[index] == "الاجل للمورد"
                                                       ? Colors.cyanAccent
                                                       : null),
-                                              alignment: AlignmentDirectional
-                                                  .centerStart,
-                                              child: Text(
-                                                  listHeaderPurchases[index]),
+                                              alignment: AlignmentDirectional.centerStart,
+                                              child: Text(listHeaderPurchases[index]),
                                             ),
                                           ),
                                           Expanded(
                                             flex: 2,
                                             child: Container(
                                               height: 55,
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 8,
-                                                      vertical: 5),
+                                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
                                               decoration: BoxDecoration(
-                                                  border:
-                                                      const BorderDirectional(
-                                                    start: BorderSide(
-                                                        color: Colors.grey,
-                                                        width: .7),
+                                                  border: const BorderDirectional(
+                                                    start: BorderSide(color: Colors.grey, width: .7),
                                                   ),
-                                                  color: listHeaderPurchases[
-                                                                  index] ==
-                                                              "الاجمالى" ||
-                                                          listHeaderPurchases[
-                                                                  index] ==
-                                                              "الاجل للمورد"
+                                                  color: listHeaderPurchases[index] == "الاجمالى" ||
+                                                          listHeaderPurchases[index] == "الاجل للمورد"
                                                       ? Colors.cyanAccent
                                                       : null),
                                               alignment: Alignment.center,
-                                              child: getWidgetPurchases(
-                                                  title: listHeaderPurchases[
-                                                      index],
-                                                  listSetup: listSetup),
+                                              child: getWidgetPurchases(title: listHeaderPurchases[index], listSetup: listSetup),
                                             ),
                                           ),
                                         ],
@@ -331,8 +275,7 @@ class _AddPurchasesState extends State<AddPurchases> {
                             noGradient: true,
                             color: Colors.transparent,
                             noShadow: true,
-                            textStyle: AppStyles.textStyle16
-                                .copyWith(color: Colors.grey),
+                            textStyle: AppStyles.textStyle16.copyWith(color: Colors.grey),
                             onTap: () {
                               Navigator.pop(context);
                             },
@@ -340,30 +283,24 @@ class _AddPurchasesState extends State<AddPurchases> {
                           const SizedBox(
                             width: 50,
                           ),
-                          BlocConsumer<AddEditExpensesCubit,
-                              AddEditExpensesState>(
+                          BlocConsumer<AddEditExpensesCubit, AddEditExpensesState>(
                             listener: (context, state) {
                               if (state is AddEditExpensesSuccess) {
-                                BlocProvider.of<GetTableCubit>(context)
-                                    .getTable(
-                                        pageId: widget.pageData.pageId,
-                                        employee: false,
-                                        isdesc: widget.pageData.isDesc,
-                                        limit: 10,
-                                        offset: 0,
-                                        orderby: widget.pageData.orderBy,
-                                        statment: '',
-                                        selectcolumns: '',
-                                        departmentName:
-                                            widget.pageData.departmentName,
-                                        isDepartment:
-                                            widget.pageData.isDepartment,
-                                        authorizationID:
-                                            widget.pageData.authorizationID,
-                                        viewEmployeeColumn:
-                                            widget.pageData.viewEmployeeColumn,
-                                        numberOfPage: 1,
-                                        dropdownValueOfLimit: 10);
+                                BlocProvider.of<GetTableCubit>(context).getTable(
+                                    pageId: widget.pageData.pageId,
+                                    employee: false,
+                                    isdesc: widget.pageData.isDesc,
+                                    limit: 10,
+                                    offset: 0,
+                                    orderby: widget.pageData.orderBy,
+                                    statment: '',
+                                    selectcolumns: '',
+                                    departmentName: widget.pageData.departmentName,
+                                    isDepartment: widget.pageData.isDepartment,
+                                    authorizationID: widget.pageData.authorizationID,
+                                    viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
+                                    numberOfPage: 1,
+                                    dropdownValueOfLimit: 10);
                                 Navigator.pop(context);
                               } else if (state is AddEditExpensesFailure) {
                                 CustomAlertDialog.alertWithButton(
@@ -385,48 +322,24 @@ class _AddPurchasesState extends State<AddPurchases> {
                                       formKey.currentState!.save();
                                       singleObject.addAll({
                                         "TotalCurrancy": total,
-                                        "Tax": double.parse(
-                                            valueAddedTaxController.text
-                                                    .trim()
-                                                    .isEmpty
-                                                ? "0"
-                                                : valueAddedTaxController.text
-                                                    .trim()),
-                                        "AddTax": double.parse(
-                                            taxController.text.trim().isEmpty
-                                                ? "0"
-                                                : taxController.text.trim()),
+                                        "Tax": double.parse(valueAddedTaxController.text.trim().isEmpty
+                                            ? "0"
+                                            : valueAddedTaxController.text.trim()),
+                                        "AddTax":
+                                            double.parse(taxController.text.trim().isEmpty ? "0" : taxController.text.trim()),
                                         "POPaidCurrancy": double.parse(
-                                            cashPaidController.text
-                                                    .trim()
-                                                    .isEmpty
-                                                ? "0"
-                                                : cashPaidController.text
-                                                    .trim()),
+                                            cashPaidController.text.trim().isEmpty ? "0" : cashPaidController.text.trim()),
                                         "DiscountCurrancy": double.parse(
-                                            discountController.text
-                                                    .trim()
-                                                    .isEmpty
-                                                ? "0"
-                                                : discountController.text
-                                                    .trim()),
-                                        "RemindCurrancy": double.parse(
-                                            deadlineSupplierController.text
-                                                    .trim()
-                                                    .isEmpty
-                                                ? "0"
-                                                : deadlineSupplierController
-                                                    .text
-                                                    .trim()),
+                                            discountController.text.trim().isEmpty ? "0" : discountController.text.trim()),
+                                        "RemindCurrancy": double.parse(deadlineSupplierController.text.trim().isEmpty
+                                            ? "0"
+                                            : deadlineSupplierController.text.trim()),
                                       });
 
-                                      BlocProvider.of<AddEditExpensesCubit>(
-                                              context)
-                                          .add(
-                                              singleObject: singleObject,
-                                              tableList: tableList,
-                                              controllerName: widget
-                                                  .tapData!.controllerName);
+                                      BlocProvider.of<AddEditExpensesCubit>(context).add(
+                                          singleObject: singleObject,
+                                          tableList: tableList,
+                                          controllerName: widget.tapData!.controllerName);
                                     }
                                   },
                                 );
@@ -458,18 +371,11 @@ class _AddPurchasesState extends State<AddPurchases> {
     List<Widget> list = [];
 
     for (var item in listData) {
-      String title = lang == AppStrings.arLangKey
-          ? item.arColumnLabel!
-          : item.enColumnLabel!;
-      bool condition = item.insertVisable == true &&
-          item.cvisable == false &&
-          item.visible == false &&
-          item.isGeneral == true;
+      String title = lang == AppStrings.arLangKey ? item.arColumnLabel! : item.enColumnLabel!;
+      bool condition = item.insertVisable == true && item.cvisable == false && item.visible == false && item.isGeneral == true;
 
       //text
-      if (item.insertType == "text" &&
-          item.categoryTitle == categoryName &&
-          condition) {
+      if (item.insertType == "text" && item.categoryTitle == categoryName && condition) {
         list.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -497,8 +403,7 @@ class _AddPurchasesState extends State<AddPurchases> {
                   onSaved: (newValue) {
                     if (newValue!.isNotEmpty) {
                       setState(() {
-                        singleObject
-                            .addAll({item.columnName!.toString(): newValue});
+                        singleObject.addAll({item.columnName!.toString(): newValue});
                       });
                     }
                   },
@@ -509,9 +414,7 @@ class _AddPurchasesState extends State<AddPurchases> {
         );
       }
       //number
-      if (item.insertType == "number" &&
-          item.categoryTitle == categoryName &&
-          condition) {
+      if (item.insertType == "number" && item.categoryTitle == categoryName && condition) {
         list.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -539,8 +442,7 @@ class _AddPurchasesState extends State<AddPurchases> {
                   onSaved: (newValue) {
                     if (newValue!.isNotEmpty) {
                       setState(() {
-                        singleObject
-                            .addAll({item.columnName!.toString(): newValue});
+                        singleObject.addAll({item.columnName!.toString(): newValue});
                       });
                     }
                   },
@@ -551,9 +453,7 @@ class _AddPurchasesState extends State<AddPurchases> {
         );
       }
       //Date
-      if (item.insertType == "date" &&
-          item.categoryTitle == categoryName &&
-          condition) {
+      if (item.insertType == "date" && item.categoryTitle == categoryName && condition) {
         String date = '';
         list.add(
           Padding(
@@ -587,29 +487,24 @@ class _AddPurchasesState extends State<AddPurchases> {
                         );
                         if (dateTime != null) {
                           dsetState(() {
-                            date =
-                                DateFormat("yyyy-MM-dd", 'en').format(dateTime);
+                            date = DateFormat("yyyy-MM-dd", 'en').format(dateTime);
                           });
 
                           dsetState(() {
-                            singleObject.addAll({
-                              item.columnName!.toString(): dateTime.toString()
-                            });
+                            singleObject.addAll({item.columnName!.toString(): dateTime.toString()});
                           });
                         }
                       },
                       child: Container(
                           height: 40,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(color: AppColors.blueDark)),
+                              borderRadius: BorderRadius.circular(12), border: Border.all(color: AppColors.blueDark)),
                           alignment: Alignment.center,
                           padding: const EdgeInsets.all(8),
                           child: Text(
                             date,
                             textAlign: TextAlign.center,
-                            style: AppStyles.textStyle14
-                                .copyWith(color: Colors.black),
+                            style: AppStyles.textStyle14.copyWith(color: Colors.black),
                           )),
                     );
                   },
@@ -621,9 +516,7 @@ class _AddPurchasesState extends State<AddPurchases> {
       }
 
       //dropdown
-      if (item.insertType == "dropdown" &&
-          item.categoryTitle == categoryName &&
-          condition) {
+      if (item.insertType == "dropdown" && item.categoryTitle == categoryName && condition) {
         List<ListDrop>? listDrop = [];
         List<ItemDrop>? myListDrop = [];
 
@@ -706,21 +599,16 @@ class _AddPurchasesState extends State<AddPurchases> {
                   height: 40,
                   child: CustomDropdown<String>.search(
                     hintText: '',
-                    closedHeaderPadding:
-                        const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                    closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                     decoration: CustomDropdownDecoration(
-                      headerStyle:
-                          AppStyles.textStyle16.copyWith(color: Colors.black),
+                      headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
                       closedFillColor: Colors.transparent,
                       closedBorder: Border.all(color: AppColors.blueDark),
                     ),
-                    items: myListDrop!.isEmpty
-                        ? [""]
-                        : List.generate(myListDrop.length,
-                            (index) => myListDrop![index].text ?? ''),
+                    items:
+                        myListDrop!.isEmpty ? [""] : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
                     onChanged: (value) {
-                      ItemDrop ii = myListDrop!
-                          .firstWhere((element) => element.text == value);
+                      ItemDrop ii = myListDrop!.firstWhere((element) => element.text == value);
                       singleObject.addAll({item.searchName!.toString(): ii.id});
                     },
                   ),
@@ -731,9 +619,7 @@ class _AddPurchasesState extends State<AddPurchases> {
         );
       }
       //checkbox
-      if (item.insertType == "checkbox" &&
-          item.categoryTitle == categoryName &&
-          condition) {
+      if (item.insertType == "checkbox" && item.categoryTitle == categoryName && condition) {
         bool checkboxValue = false;
         list.add(
           StatefulBuilder(
@@ -746,8 +632,7 @@ class _AddPurchasesState extends State<AddPurchases> {
                     children: [
                       Text(
                         title,
-                        style:
-                            AppStyles.textStyle14.copyWith(color: Colors.black),
+                        style: AppStyles.textStyle14.copyWith(color: Colors.black),
                       ),
                       if (item.isRquired == true)
                         const Icon(
@@ -762,8 +647,7 @@ class _AddPurchasesState extends State<AddPurchases> {
                       checkboxValue = !checkboxValue;
                     });
                     csetState(() {
-                      singleObject
-                          .addAll({item.columnName!.toString(): checkboxValue});
+                      singleObject.addAll({item.columnName!.toString(): checkboxValue});
                     });
                   });
             },
@@ -785,8 +669,7 @@ class _AddPurchasesState extends State<AddPurchases> {
           style: const TextStyle(color: Colors.red, fontSize: 20),
         );
       case "الخزينة":
-        ItemListSetupModel item = listSetup
-            .firstWhere((element) => element.columnName == "SafeAccounId");
+        ItemListSetupModel item = listSetup.firstWhere((element) => element.columnName == "SafeAccounId");
         List<ListDrop>? listDrop = [];
         List<ItemDrop>? myListDrop = [];
 
@@ -808,16 +691,12 @@ class _AddPurchasesState extends State<AddPurchases> {
         }
         return CustomDropdown<String>.search(
           hintText: '',
-          closedHeaderPadding:
-              const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+          closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
           decoration: CustomDropdownDecoration(
               headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
               closedFillColor: Colors.transparent,
               closedBorder: Border.all(color: AppColors.blueDark)),
-          items: myListDrop!.isEmpty
-              ? [""]
-              : List.generate(
-                  myListDrop.length, (index) => myListDrop![index].text ?? ''),
+          items: myListDrop!.isEmpty ? [""] : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
           onChanged: (value) {},
         );
       case "ضريبة القيمة المضافة":
@@ -832,9 +711,7 @@ class _AddPurchasesState extends State<AddPurchases> {
                   keyboardType: TextInputType.number,
                   onChanged: (newValue) {
                     valueAddedTaxController.text = valueFromRate(
-                        totalValue: totalAfterDiscount(
-                            total: total.toString(),
-                            discount: discountController.text),
+                        totalValue: totalAfterDiscount(total: total.toString(), discount: discountController.text),
                         valueRate: newValue);
                     deadlineSupplierController.text = deadlineSupplier(
                         total: total.toString(),
@@ -859,9 +736,7 @@ class _AddPurchasesState extends State<AddPurchases> {
                   keyboardType: TextInputType.number,
                   onChanged: (newValue) {
                     rateValueAddedTaxController.text = rate(
-                        totalValue: totalAfterDiscount(
-                            total: total.toString(),
-                            discount: discountController.text),
+                        totalValue: totalAfterDiscount(total: total.toString(), discount: discountController.text),
                         value: newValue);
                     deadlineSupplierController.text = deadlineSupplier(
                         total: total.toString(),
@@ -889,9 +764,7 @@ class _AddPurchasesState extends State<AddPurchases> {
                   keyboardType: TextInputType.number,
                   onChanged: (newValue) {
                     taxController.text = valueFromRate(
-                        totalValue: totalAfterDiscount(
-                            total: total.toString(),
-                            discount: discountController.text),
+                        totalValue: totalAfterDiscount(total: total.toString(), discount: discountController.text),
                         valueRate: newValue);
                     deadlineSupplierController.text = deadlineSupplier(
                         total: total.toString(),
@@ -915,9 +788,7 @@ class _AddPurchasesState extends State<AddPurchases> {
                   keyboardType: TextInputType.number,
                   onChanged: (newValue) {
                     rateTaxController.text = rate(
-                        totalValue: totalAfterDiscount(
-                            total: total.toString(),
-                            discount: discountController.text),
+                        totalValue: totalAfterDiscount(total: total.toString(), discount: discountController.text),
                         value: newValue);
                     deadlineSupplierController.text = deadlineSupplier(
                         total: total.toString(),
@@ -959,13 +830,10 @@ class _AddPurchasesState extends State<AddPurchases> {
             keyboardType: TextInputType.number,
             onChanged: (newValue) {
               valueAddedTaxController.text = valueFromRate(
-                  totalValue: totalAfterDiscount(
-                      total: total.toString(), discount: newValue),
+                  totalValue: totalAfterDiscount(total: total.toString(), discount: newValue),
                   valueRate: rateValueAddedTaxController.text);
               taxController.text = valueFromRate(
-                  totalValue: totalAfterDiscount(
-                      total: total.toString(), discount: newValue),
-                  valueRate: rateTaxController.text);
+                  totalValue: totalAfterDiscount(total: total.toString(), discount: newValue), valueRate: rateTaxController.text);
               deadlineSupplierController.text = deadlineSupplier(
                   total: total.toString(),
                   valueAddedTax: valueAddedTaxController.text,
@@ -1008,9 +876,7 @@ class _AddPurchasesState extends State<AddPurchases> {
     required String totalValue,
     required String value,
   }) {
-    double result = double.parse(value == "" ? "0" : value) /
-        double.parse(totalValue == "" ? "0" : totalValue) *
-        100;
+    double result = double.parse(value == "" ? "0" : value) / double.parse(totalValue == "" ? "0" : totalValue) * 100;
     return result.toString();
   }
 
@@ -1018,9 +884,7 @@ class _AddPurchasesState extends State<AddPurchases> {
     required String totalValue,
     required String valueRate,
   }) {
-    double result = double.parse(valueRate == "" ? "0" : valueRate) *
-        double.parse(totalValue == "" ? "0" : totalValue) /
-        100;
+    double result = double.parse(valueRate == "" ? "0" : valueRate) * double.parse(totalValue == "" ? "0" : totalValue) / 100;
     return result.toString();
   }
 
@@ -1028,18 +892,14 @@ class _AddPurchasesState extends State<AddPurchases> {
     required String total,
     required String discount,
   }) {
-    double result = double.parse(total == "" ? "0" : total) -
-        double.parse(discount == "" ? "0" : discount);
+    double result = double.parse(total == "" ? "0" : total) - double.parse(discount == "" ? "0" : discount);
     return result.toString();
   }
 
   void getDataList() async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> dataProduct = await ApiService(Dio()).post(
         endPoint: "web/Structure/getDataGlobal",
         data: {"TableName": "Product"},
@@ -1097,11 +957,8 @@ class _AddPurchasesState extends State<AddPurchases> {
 
   void getColumnListAndAdd(Pages page) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).post(
         endPoint: "home/getGeneralTable",
         data: {
@@ -1155,11 +1012,8 @@ class _AddPurchasesState extends State<AddPurchases> {
 
   Future<bool> getPermissions(int? pageId) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPagePermissions?pageId=$pageId",
         headers: {
@@ -1176,11 +1030,8 @@ class _AddPurchasesState extends State<AddPurchases> {
 
   void getDropdownList(int pageId) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       List<dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPageDropDown?pageId=$pageId",
         headers: {
@@ -1202,79 +1053,79 @@ class _AddPurchasesState extends State<AddPurchases> {
     }
   }
 
-  // bool? getCustomer(int userId) {
-  //   for (var item in AddSales.listCustomerAccount) {
-  //     if (item['CustomerAccountID'] == userId) {
-  //       return item['Closelocation'];
-  //     }
-  //   }
-  //   return null;
-  // }
+// bool? getCustomer(int userId) {
+//   for (var item in AddSales.listCustomerAccount) {
+//     if (item['CustomerAccountID'] == userId) {
+//       return item['Closelocation'];
+//     }
+//   }
+//   return null;
+// }
 
-  // Future<void> getCustomerLocation(int userId) async {
-  //   setState(() {
-  //     isGetLocationAndListLocation = true;
-  //   });
-  //   try {
-  //     String companyKey =
-  //         await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-  //             "";
-  //     String token =
-  //         await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
-  //     Map<String, dynamic> customerAccountLocation =
-  //         await ApiService(Dio()).post(
-  //       endPoint: "web/Structure/getDataGlobal",
-  //       data: {
-  //         "TableName": "CustomerAccountLocation",
-  //         "TailCondition": "CustomerID= $userId"
-  //       },
-  //       headers: {
-  //         "Authorization": "Bearer $token",
-  //         "CompanyKey": companyKey,
-  //       },
-  //     );
-  //     AddSales.listCustomerAccountLocation =
-  //         customerAccountLocation['dynamicList'];
-  //     setState(() {
-  //       isGetLocationAndListLocation = false;
-  //     });
-  //   } catch (e) {
-  //     debugPrint(e.toString());
-  //   }
-  // }
-  //
-  // void checkLocation() async {
-  //   await getLocation();
-  //   await getCustomerLocation(AddSales.userId);
-  //   double distance;
-  //   for (var location in AddSales.listCustomerAccountLocation) {
-  //     distance = (Geolocator.distanceBetween(
-  //           lat ?? 0.0,
-  //           long ?? 0.0,
-  //           location['LocationLat'],
-  //           location['LocationLong'],
-  //         )) /
-  //         1000;
-  //     // radius.add(distance);
-  //     if (distance == location['Radius'] ||
-  //         distance < location['Radius'] ||
-  //         distance == 0.0) {
-  //       BlocProvider.of<AddEditExpensesCubit>(context).add(
-  //           singleObject: singleObject,
-  //           tableList: tableList,
-  //           controllerName: widget.tapData!.controllerName);
-  //     } else {
-  //       CustomAlertDialog.alertWithButton(
-  //           context: context,
-  //           type: AlertType.error,
-  //           isCloseButton: false,
-  //           isOverlayTapDismiss: false,
-  //           title: S.of(context).error,
-  //           desc: S.of(context).no_location,
-  //           onPressed: () {
-  //             Navigator.of(context).pop();
-  //           });
-  //     }
-  //   }
-  // }
+// Future<void> getCustomerLocation(int userId) async {
+//   setState(() {
+//     isGetLocationAndListLocation = true;
+//   });
+//   try {
+//     String companyKey =
+//         await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
+//             "";
+//     String token =
+//         await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+//     Map<String, dynamic> customerAccountLocation =
+//         await ApiService(Dio()).post(
+//       endPoint: "web/Structure/getDataGlobal",
+//       data: {
+//         "TableName": "CustomerAccountLocation",
+//         "TailCondition": "CustomerID= $userId"
+//       },
+//       headers: {
+//         "Authorization": "Bearer $token",
+//         "CompanyKey": companyKey,
+//       },
+//     );
+//     AddSales.listCustomerAccountLocation =
+//         customerAccountLocation['dynamicList'];
+//     setState(() {
+//       isGetLocationAndListLocation = false;
+//     });
+//   } catch (e) {
+//     debugPrint(e.toString());
+//   }
+// }
+//
+// void checkLocation() async {
+//   await getLocation();
+//   await getCustomerLocation(AddSales.userId);
+//   double distance;
+//   for (var location in AddSales.listCustomerAccountLocation) {
+//     distance = (Geolocator.distanceBetween(
+//           lat ?? 0.0,
+//           long ?? 0.0,
+//           location['LocationLat'],
+//           location['LocationLong'],
+//         )) /
+//         1000;
+//     // radius.add(distance);
+//     if (distance == location['Radius'] ||
+//         distance < location['Radius'] ||
+//         distance == 0.0) {
+//       BlocProvider.of<AddEditExpensesCubit>(context).add(
+//           singleObject: singleObject,
+//           tableList: tableList,
+//           controllerName: widget.tapData!.controllerName);
+//     } else {
+//       CustomAlertDialog.alertWithButton(
+//           context: context,
+//           type: AlertType.error,
+//           isCloseButton: false,
+//           isOverlayTapDismiss: false,
+//           title: S.of(context).error,
+//           desc: S.of(context).no_location,
+//           onPressed: () {
+//             Navigator.of(context).pop();
+//           });
+//     }
+//   }
+// }
 }

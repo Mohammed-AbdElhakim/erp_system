@@ -699,6 +699,46 @@ class S {
   String get add_new {
     return Intl.message('Add New', name: 'add_new', desc: '', args: []);
   }
+
+  /// `Time Period`
+  String get time_period {
+    return Intl.message('Time Period', name: 'time_period', desc: '', args: []);
+  }
+
+  /// `Treasury liquidation`
+  String get treasury_liquidation {
+    return Intl.message(
+      'Treasury liquidation',
+      name: 'treasury_liquidation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Notes`
+  String get notes {
+    return Intl.message('Notes', name: 'notes', desc: '', args: []);
+  }
+
+  /// `Value`
+  String get value {
+    return Intl.message('Value', name: 'value', desc: '', args: []);
+  }
+
+  /// `Date`
+  String get date {
+    return Intl.message('Date', name: 'date', desc: '', args: []);
+  }
+
+  /// `Saved successfully`
+  String get save_ok {
+    return Intl.message(
+      'Saved successfully',
+      name: 'save_ok',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

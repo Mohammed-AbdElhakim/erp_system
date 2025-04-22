@@ -22,11 +22,8 @@ class TaskRepoImpl implements TaskRepo {
   @override
   Future<Either<Failure, List<TaskModel>>> getTask() async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       List<dynamic> data = await apiService.get(
         endPoint: "web/EmployeeCustomTask/getEmployeeTasks",
         headers: {
@@ -57,11 +54,8 @@ class TaskRepoImpl implements TaskRepo {
   @override
   Future<Either<Failure, TaskModel>> getTaskById(String id) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       List<dynamic> data = await apiService.get(
         endPoint: "web/EmployeeCustomTask/getEmployeeTasks/$id",
         headers: {
@@ -90,11 +84,8 @@ class TaskRepoImpl implements TaskRepo {
   @override
   Future<Either<Failure, String>> moveTaskToToDo(String id) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       await apiService.get(
         endPoint: "web/EmployeeCustomTask/changeIsDone/$id/toDo",
         headers: {
@@ -121,11 +112,8 @@ class TaskRepoImpl implements TaskRepo {
   @override
   Future<Either<Failure, String>> moveTaskToProgress(String id) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       await apiService.get(
         endPoint: "web/EmployeeCustomTask/changeIsDone/$id/progress",
         headers: {
@@ -152,11 +140,8 @@ class TaskRepoImpl implements TaskRepo {
   @override
   Future<Either<Failure, String>> moveTaskToUnderRevision(String id) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       await apiService.get(
         endPoint: "web/EmployeeCustomTask/changeIsDone/$id/underRevision",
         headers: {
@@ -183,11 +168,8 @@ class TaskRepoImpl implements TaskRepo {
   @override
   Future<Either<Failure, String>> moveTaskToDone(String id) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       await apiService.get(
         endPoint: "web/EmployeeCustomTask/changeIsDone/$id/underRevision",
         headers: {
@@ -214,11 +196,8 @@ class TaskRepoImpl implements TaskRepo {
   @override
   Future<Either<Failure, String>> deleteTask(String id) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       await apiService.get(
         endPoint: "web/TasksView/deleteTask/$id",
         headers: {
@@ -245,11 +224,8 @@ class TaskRepoImpl implements TaskRepo {
   @override
   Future<Either<Failure, EmployeesModel>> employees() async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await apiService.post(
         endPoint: "web/Structure/getDataGlobal",
         data: {
@@ -277,14 +253,10 @@ class TaskRepoImpl implements TaskRepo {
   }
 
   @override
-  Future<Either<Failure, String>> addNewEmployees(
-      String idTask, String idEmployee) async {
+  Future<Either<Failure, String>> addNewEmployees(String idTask, String idEmployee) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       await apiService.get(
         endPoint: "web/TasksView/AddingNewEmployee/$idEmployee/$idTask",
         headers: {
@@ -309,14 +281,10 @@ class TaskRepoImpl implements TaskRepo {
   }
 
   @override
-  Future<Either<Failure, List<GetEmployeesModel>>> getTaskEmployees(
-      String idTask) async {
+  Future<Either<Failure, List<GetEmployeesModel>>> getTaskEmployees(String idTask) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       List<dynamic> data = await apiService.get(
         endPoint: "web/TasksView/getTaskEmployees/$idTask",
         headers: {
@@ -345,14 +313,10 @@ class TaskRepoImpl implements TaskRepo {
   }
 
   @override
-  Future<Either<Failure, String>> deleteEmployees(
-      String idTask, String idEmployee) async {
+  Future<Either<Failure, String>> deleteEmployees(String idTask, String idEmployee) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       await apiService.get(
         endPoint: "web/TasksView/deleteEmployee/$idEmployee/$idTask",
         headers: {
@@ -384,19 +348,11 @@ class TaskRepoImpl implements TaskRepo {
     required int taskID,
   }) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await apiService.post(
         endPoint: "web/EmployeeCustomTask/addNewTimeLine",
-        data: {
-          "Description": description,
-          "RequestedDate": requestedDate,
-          "TTLID": tTLID,
-          "TaskID": taskID
-        },
+        data: {"Description": description, "RequestedDate": requestedDate, "TTLID": tTLID, "TaskID": taskID},
         headers: {
           "Authorization": "Bearer $token",
           "CompanyKey": companyKey,
@@ -421,11 +377,8 @@ class TaskRepoImpl implements TaskRepo {
   @override
   Future<Either<Failure, String>> deleteTime(String idTime) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       await apiService.delete(
         endPoint: "web/EmployeeCustomTask/deleteTimeLine/$idTime",
         headers: {
@@ -452,11 +405,8 @@ class TaskRepoImpl implements TaskRepo {
   @override
   Future<Either<Failure, List<AllTimeModel>>> getAllTime(String idTask) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       List<dynamic> data = await apiService.get(
         endPoint: "web/EmployeeCustomTask/getTaskTimeLine/$idTask",
         headers: {
@@ -487,11 +437,8 @@ class TaskRepoImpl implements TaskRepo {
   @override
   Future<Either<Failure, String>> deleteNote({required int noteID}) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       await apiService.delete(
         endPoint: "web/EmployeeCustomTask/deleteNote/$noteID",
         headers: {
@@ -516,14 +463,10 @@ class TaskRepoImpl implements TaskRepo {
   }
 
   @override
-  Future<Either<Failure, List<NoteModel>>> listOfNotes(
-      {required int taskID}) async {
+  Future<Either<Failure, List<NoteModel>>> listOfNotes({required int taskID}) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       List<dynamic> data = await apiService.get(
         endPoint: "web/EmployeeCustomTask/getTaskNotes/$taskID",
         headers: {
@@ -552,23 +495,13 @@ class TaskRepoImpl implements TaskRepo {
   }
 
   @override
-  Future<Either<Failure, Map<String, dynamic>>> addNote(
-      {required int taskID, required String note}) async {
+  Future<Either<Failure, Map<String, dynamic>>> addNote({required int taskID, required String note}) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await apiService.post(
         endPoint: "web/EmployeeCustomTask/addNewNote",
-        data: {
-          "NDate": null,
-          "Note": note,
-          "TNID": 0,
-          "TaskID": taskID,
-          "loading": false
-        },
+        data: {"NDate": null, "Note": note, "TNID": 0, "TaskID": taskID, "loading": false},
         headers: {
           "Authorization": "Bearer $token",
           "CompanyKey": companyKey,
@@ -592,17 +525,10 @@ class TaskRepoImpl implements TaskRepo {
 
   @override
   Future<Either<Failure, Map<String, dynamic>>> updateNote(
-      {required int taskID,
-      required int empID,
-      required int tNID,
-      required String dateNote,
-      required String note}) async {
+      {required int taskID, required int empID, required int tNID, required String dateNote, required String note}) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await apiService.post(
         endPoint: "web/EmployeeCustomTask/updateNote",
         data: {
@@ -647,20 +573,11 @@ class TaskRepoImpl implements TaskRepo {
       required String dateFrom,
       required String dateTo}) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await apiService.post(
         endPoint: "web/EmployeeCustomTask/addNewProg",
-        data: {
-          "DateFrom": dateFrom,
-          "DateTo": dateTo,
-          "Note": note,
-          "Proggress": progress,
-          "TaskID": taskID
-        },
+        data: {"DateFrom": dateFrom, "DateTo": dateTo, "Note": note, "Proggress": progress, "TaskID": taskID},
         headers: {
           "Authorization": "Bearer $token",
           "CompanyKey": companyKey,
@@ -683,15 +600,10 @@ class TaskRepoImpl implements TaskRepo {
   }
 
   @override
-  Future<Either<Failure, String>> deleteProgress(
-      {required int progressID}) async {
-
+  Future<Either<Failure, String>> deleteProgress({required int progressID}) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       await apiService.delete(
         endPoint: "web/EmployeeCustomTask/deleteprog/$progressID",
         headers: {
@@ -716,15 +628,10 @@ class TaskRepoImpl implements TaskRepo {
   }
 
   @override
-  Future<Either<Failure, List<ProgressModel>>> listOfProgress(
-      {required int taskID}) async{
-
+  Future<Either<Failure, List<ProgressModel>>> listOfProgress({required int taskID}) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       List<dynamic> data = await apiService.get(
         endPoint: "web/EmployeeCustomTask/getTaskprogress/$taskID",
         headers: {
@@ -761,26 +668,22 @@ class TaskRepoImpl implements TaskRepo {
       required String note,
       required String dateFrom,
       required String dateTo,
-      required String date}) async{
-
+      required String date}) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await apiService.post(
         endPoint: "web/EmployeeCustomTask/updateProg",
         data: {
-          "Date":date,
-          "DateFrom":dateFrom,
-          "DateTo":dateTo,
-          "EmpID":empID,
+          "Date": date,
+          "DateFrom": dateFrom,
+          "DateTo": dateTo,
+          "EmpID": empID,
           "IsOwner": true,
-          "Note":note,
-          "Proggress":progress,
+          "Note": note,
+          "Proggress": progress,
           "TPID": tPID,
-          "TaskID":taskID,
+          "TaskID": taskID,
           "isEdit": true,
           "isNew": false,
           "isRead": false,

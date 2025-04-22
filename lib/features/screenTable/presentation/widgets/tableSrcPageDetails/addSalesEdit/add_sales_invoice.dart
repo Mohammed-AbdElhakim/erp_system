@@ -34,8 +34,8 @@ import '../build_alert_add_in_dropdown.dart';
 import 'sales_table_add_edit_.dart';
 
 class AddSalesInvoice extends StatefulWidget {
-  const AddSalesInvoice(
-      {super.key, required this.pageData, required this.listKey, this.tapData});
+  const AddSalesInvoice({super.key, required this.pageData, required this.listKey, this.tapData});
+
   final ListTaps? tapData;
   final Pages pageData;
   final List<dynamic> listKey;
@@ -76,12 +76,12 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
   ];
 
   double total = 0.0;
+
   // double deadlineClient = 0.0;
   // TextEditingController totalController = TextEditingController();
   TextEditingController deadlineClientController = TextEditingController();
   TextEditingController cashCollectedController = TextEditingController();
-  TextEditingController numberOfInstallmentsController =
-      TextEditingController();
+  TextEditingController numberOfInstallmentsController = TextEditingController();
   TextEditingController installmentMonthsController = TextEditingController();
   TextEditingController discountTaxPercentController = TextEditingController();
   TextEditingController discountTaxController = TextEditingController();
@@ -91,6 +91,7 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
   TextEditingController taxController = TextEditingController();
   TextEditingController totalAfterTaxController = TextEditingController();
   TextEditingController shippingPriceController = TextEditingController();
+
   @override
   void didChangeDependencies() {
     lang = Localizations.localeOf(context).toString();
@@ -125,20 +126,14 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
 
           for (var item in state.listSetupModel) {
             category.add(item.categoryTitle ?? '');
-            if (item.insertVisable == true &&
-                item.cvisable == true &&
-                item.visible == true &&
-                item.isGeneral != true) {
+            if (item.insertVisable == true && item.cvisable == true && item.visible == true && item.isGeneral != true) {
               listColumn.add(item);
               listKey.add(item.columnName);
-              listHeader.add(lang == AppStrings.enLangKey
-                  ? item.enColumnLabel!
-                  : item.arColumnLabel!);
+              listHeader.add(lang == AppStrings.enLangKey ? item.enColumnLabel! : item.arColumnLabel!);
             }
           }
           List<String> categoryList = category.toSet().toList();
-          return BlocBuilder<GetSalesInvoiceDetailsCubit,
-              GetSalesInvoiceDetailsState>(
+          return BlocBuilder<GetSalesInvoiceDetailsCubit, GetSalesInvoiceDetailsState>(
             builder: (context, state) {
               if (state is GetSalesInvoiceDetailsFailure) {
                 return CustomErrorMassage(errorMassage: state.errorMassage);
@@ -167,40 +162,25 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  ...List.generate(categoryList.length,
-                                      (index) {
+                                  ...List.generate(categoryList.length, (index) {
                                     String categoryName = categoryList[index];
                                     List<Widget> widgetList = getMyWidgetList(
-                                        listData: listSetup,
-                                        categoryName: categoryName,
-                                        dataMaster: dataMaster[0]);
+                                        listData: listSetup, categoryName: categoryName, dataMaster: dataMaster[0]);
                                     return widgetList.isNotEmpty
                                         ? Padding(
-                                            padding: const EdgeInsets.only(
-                                                bottom: 16),
+                                            padding: const EdgeInsets.only(bottom: 16),
                                             child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                              crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
                                                 Container(
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                        horizontal: 12,
-                                                        vertical: 8),
+                                                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                                                     decoration: BoxDecoration(
                                                         // color: AppColors.grey.withOpacity(.4),
-                                                        color: AppColors.grey
-                                                            .withAlpha(102),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(15)),
+                                                        color: AppColors.grey.withAlpha(102),
+                                                        borderRadius: BorderRadius.circular(15)),
                                                     child: Text(
                                                       categoryName,
-                                                      style: AppStyles
-                                                          .textStyle18
-                                                          .copyWith(
-                                                              color:
-                                                                  Colors.black),
+                                                      style: AppStyles.textStyle18.copyWith(color: Colors.black),
                                                     )),
                                                 ...widgetList,
                                               ],
@@ -211,8 +191,7 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
                                   StatefulBuilder(
                                     builder: (context, ssetState) {
                                       return Padding(
-                                        padding:
-                                            const EdgeInsets.only(bottom: 16),
+                                        padding: const EdgeInsets.only(bottom: 16),
                                         child: SalesTableAddEdit(
                                           onTapAction: (data) {
                                             total = 0.0;
@@ -224,137 +203,69 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
                                               for (var i in tableList) {
                                                 salessetState(() {
                                                   total = total +
-                                                      (double.parse(
-                                                              i['PriceCurrancy']
-                                                                  .toString()) *
-                                                          double.parse(i[
-                                                                      'Qty'] ==
-                                                                  null
-                                                              ? "1"
-                                                              : i['Qty']
-                                                                  .toString()));
+                                                      (double.parse(i['PriceCurrancy'].toString()) *
+                                                          double.parse(i['Qty'] == null ? "1" : i['Qty'].toString()));
                                                   // totalController.text =
                                                   //     total.toString();
 
-                                                  discountController
-                                                      .text = discount(
+                                                  discountController.text = discount(
                                                           total: total,
-                                                          discountPercent:
-                                                              discountPercentController
-                                                                      .text
-                                                                      .isEmpty
-                                                                  ? 0
-                                                                  : double.parse(
-                                                                      discountPercentController
-                                                                          .text))
+                                                          discountPercent: discountPercentController.text.isEmpty
+                                                              ? 0
+                                                              : double.parse(discountPercentController.text))
                                                       .toString();
-                                                  discountTaxController
-                                                      .text = discountTax(
-                                                          discountTaxPercent:
-                                                              discountTaxPercentController
-                                                                      .text
-                                                                      .isEmpty
-                                                                  ? 0
-                                                                  : double.parse(
-                                                                      discountTaxPercentController
-                                                                          .text),
+                                                  discountTaxController.text = discountTax(
+                                                          discountTaxPercent: discountTaxPercentController.text.isEmpty
+                                                              ? 0
+                                                              : double.parse(discountTaxPercentController.text),
                                                           total: total,
-                                                          discountPercent:
-                                                              discountPercentController
-                                                                      .text
-                                                                      .isEmpty
-                                                                  ? 0
-                                                                  : double.parse(
-                                                                      discountPercentController
-                                                                          .text))
+                                                          discountPercent: discountPercentController.text.isEmpty
+                                                              ? 0
+                                                              : double.parse(discountPercentController.text))
                                                       .toString();
                                                   taxController.text = tax(
                                                     total: total,
-                                                    discountPercent:
-                                                        discountPercentController
-                                                                .text.isEmpty
-                                                            ? 0
-                                                            : double.parse(
-                                                                discountPercentController
-                                                                    .text),
-                                                    taxPercent: taxPercentController
-                                                            .text.isEmpty
+                                                    discountPercent: discountPercentController.text.isEmpty
                                                         ? 0
-                                                        : double.parse(
-                                                            taxPercentController
-                                                                .text),
+                                                        : double.parse(discountPercentController.text),
+                                                    taxPercent: taxPercentController.text.isEmpty
+                                                        ? 0
+                                                        : double.parse(taxPercentController.text),
                                                   ).toString();
 
-                                                  totalAfterTaxController.text =
-                                                      totalAfterTax(
+                                                  totalAfterTaxController.text = totalAfterTax(
                                                     total: total,
-                                                    shippingPrice:
-                                                        shippingPriceController
-                                                                .text.isEmpty
-                                                            ? 0
-                                                            : double.parse(
-                                                                shippingPriceController
-                                                                    .text),
-                                                    discountTaxPercent:
-                                                        discountTaxPercentController
-                                                                .text.isEmpty
-                                                            ? 0
-                                                            : double.parse(
-                                                                discountTaxPercentController
-                                                                    .text),
-                                                    discountPercent:
-                                                        discountPercentController
-                                                                .text.isEmpty
-                                                            ? 0
-                                                            : double.parse(
-                                                                discountPercentController
-                                                                    .text),
-                                                    taxPercent: taxPercentController
-                                                            .text.isEmpty
+                                                    shippingPrice: shippingPriceController.text.isEmpty
                                                         ? 0
-                                                        : double.parse(
-                                                            taxPercentController
-                                                                .text),
+                                                        : double.parse(shippingPriceController.text),
+                                                    discountTaxPercent: discountTaxPercentController.text.isEmpty
+                                                        ? 0
+                                                        : double.parse(discountTaxPercentController.text),
+                                                    discountPercent: discountPercentController.text.isEmpty
+                                                        ? 0
+                                                        : double.parse(discountPercentController.text),
+                                                    taxPercent: taxPercentController.text.isEmpty
+                                                        ? 0
+                                                        : double.parse(taxPercentController.text),
                                                   ).toString();
 
-                                                  deadlineClientController
-                                                          .text =
-                                                      deadlineClientValue(
+                                                  deadlineClientController.text = deadlineClientValue(
                                                     total: total,
-                                                    shippingPrice:
-                                                        shippingPriceController
-                                                                .text.isEmpty
-                                                            ? 0
-                                                            : double.parse(
-                                                                shippingPriceController
-                                                                    .text),
-                                                    discountTaxPercent:
-                                                        discountTaxPercentController
-                                                                .text.isEmpty
-                                                            ? 0
-                                                            : double.parse(
-                                                                discountTaxPercentController
-                                                                    .text),
-                                                    discountPercent:
-                                                        discountPercentController
-                                                                .text.isEmpty
-                                                            ? 0
-                                                            : double.parse(
-                                                                discountPercentController
-                                                                    .text),
-                                                    taxPercent: taxPercentController
-                                                            .text.isEmpty
+                                                    shippingPrice: shippingPriceController.text.isEmpty
                                                         ? 0
-                                                        : double.parse(
-                                                            taxPercentController
-                                                                .text),
-                                                    cashCollected:
-                                                        cashCollectedController
-                                                                .text.isEmpty
-                                                            ? 0
-                                                            : double.parse(
-                                                                cashCollectedController
-                                                                    .text),
+                                                        : double.parse(shippingPriceController.text),
+                                                    discountTaxPercent: discountTaxPercentController.text.isEmpty
+                                                        ? 0
+                                                        : double.parse(discountTaxPercentController.text),
+                                                    discountPercent: discountPercentController.text.isEmpty
+                                                        ? 0
+                                                        : double.parse(discountPercentController.text),
+                                                    taxPercent: taxPercentController.text.isEmpty
+                                                        ? 0
+                                                        : double.parse(taxPercentController.text),
+                                                    cashCollected: cashCollectedController.text.isEmpty
+                                                        ? 0
+                                                        : double.parse(cashCollectedController.text),
                                                   ).toString();
                                                 });
                                               }
@@ -372,8 +283,7 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
                                           listKey: listKey,
                                           listHeader: listHeader,
                                           listColumn: listColumn,
-                                          allDropdownModelList: ScreenTable
-                                              .myAllDropdownModelList,
+                                          allDropdownModelList: ScreenTable.myAllDropdownModelList,
                                           typeView: "AddSalesInvoice",
                                         ),
                                       );
@@ -391,16 +301,11 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
                                       (index) => Container(
                                             decoration: BoxDecoration(
                                                 border: BorderDirectional(
-                                              top: const BorderSide(
-                                                  color: Colors.grey),
-                                              start: const BorderSide(
-                                                  color: Colors.grey),
-                                              end: const BorderSide(
-                                                  color: Colors.grey),
-                                              bottom: index ==
-                                                      listHeaderSales.length - 1
-                                                  ? const BorderSide(
-                                                      color: Colors.grey)
+                                              top: const BorderSide(color: Colors.grey),
+                                              start: const BorderSide(color: Colors.grey),
+                                              end: const BorderSide(color: Colors.grey),
+                                              bottom: index == listHeaderSales.length - 1
+                                                  ? const BorderSide(color: Colors.grey)
                                                   : BorderSide.none,
                                             )),
                                             child: Row(
@@ -408,73 +313,40 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
                                                 Expanded(
                                                   child: Container(
                                                     height: 55,
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                        horizontal: 8,
-                                                        vertical: 5),
+                                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
                                                     decoration: BoxDecoration(
-                                                        border:
-                                                            const BorderDirectional(
-                                                          end: BorderSide(
-                                                              color:
-                                                                  Colors.grey,
-                                                              width: .5),
+                                                        border: const BorderDirectional(
+                                                          end: BorderSide(color: Colors.grey, width: .5),
                                                         ),
-                                                        color: listHeaderSales[
-                                                                        index] ==
-                                                                    "الاجمالى" ||
-                                                                listHeaderSales[
-                                                                        index] ==
-                                                                    "الاجل على العميل" ||
-                                                                listHeaderSales[
-                                                                        index] ==
-                                                                    "عدد الاقساط" ||
-                                                                listHeaderSales[
-                                                                        index] ==
-                                                                    "تاريخ اول قسط" ||
-                                                                listHeaderSales[
-                                                                        index] ==
-                                                                    "شهور القسط"
+                                                        color: listHeaderSales[index] == "الاجمالى" ||
+                                                                listHeaderSales[index] == "الاجل على العميل" ||
+                                                                listHeaderSales[index] == "عدد الاقساط" ||
+                                                                listHeaderSales[index] == "تاريخ اول قسط" ||
+                                                                listHeaderSales[index] == "شهور القسط"
                                                             ? Colors.cyanAccent
                                                             : null),
-                                                    alignment:
-                                                        AlignmentDirectional
-                                                            .centerStart,
-                                                    child: Text(
-                                                        listHeaderSales[index]),
+                                                    alignment: AlignmentDirectional.centerStart,
+                                                    child: Text(listHeaderSales[index]),
                                                   ),
                                                 ),
                                                 Expanded(
                                                   flex: 2,
                                                   child: Container(
                                                     height: 55,
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                        horizontal: 8,
-                                                        vertical: 5),
+                                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
                                                     decoration: BoxDecoration(
-                                                        border:
-                                                            const BorderDirectional(
-                                                          start: BorderSide(
-                                                              color:
-                                                                  Colors.grey,
-                                                              width: .7),
+                                                        border: const BorderDirectional(
+                                                          start: BorderSide(color: Colors.grey, width: .7),
                                                         ),
-                                                        color: listHeaderSales[
-                                                                        index] ==
-                                                                    "الاجمالى" ||
-                                                                listHeaderSales[
-                                                                        index] ==
-                                                                    "الاجل على العميل"
+                                                        color: listHeaderSales[index] == "الاجمالى" ||
+                                                                listHeaderSales[index] == "الاجل على العميل"
                                                             ? Colors.cyanAccent
                                                             : null),
                                                     alignment: Alignment.center,
                                                     child: getWidgetSales(
-                                                        title: listHeaderSales[
-                                                            index],
+                                                        title: listHeaderSales[index],
                                                         listSetup: listSetup,
-                                                        oldDataMaster:
-                                                            dataMaster[0]),
+                                                        oldDataMaster: dataMaster[0]),
                                                   ),
                                                 ),
                                               ],
@@ -498,8 +370,7 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
                                   noGradient: true,
                                   color: Colors.transparent,
                                   noShadow: true,
-                                  textStyle: AppStyles.textStyle16
-                                      .copyWith(color: Colors.grey),
+                                  textStyle: AppStyles.textStyle16.copyWith(color: Colors.grey),
                                   onTap: () {
                                     Navigator.pop(context);
                                   },
@@ -507,33 +378,26 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
                                 const SizedBox(
                                   width: 50,
                                 ),
-                                BlocConsumer<AddEditExpensesCubit,
-                                    AddEditExpensesState>(
+                                BlocConsumer<AddEditExpensesCubit, AddEditExpensesState>(
                                   listener: (context, state) {
                                     if (state is AddEditExpensesSuccess) {
-                                      BlocProvider.of<GetTableCubit>(context)
-                                          .getTable(
-                                              pageId: widget.pageData.pageId,
-                                              employee: false,
-                                              isdesc: widget.pageData.isDesc,
-                                              limit: 10,
-                                              offset: 0,
-                                              orderby: widget.pageData.orderBy,
-                                              statment: '',
-                                              selectcolumns: '',
-                                              departmentName: widget
-                                                  .pageData.departmentName,
-                                              isDepartment:
-                                                  widget.pageData.isDepartment,
-                                              authorizationID: widget
-                                                  .pageData.authorizationID,
-                                              viewEmployeeColumn: widget
-                                                  .pageData.viewEmployeeColumn,
-                                              numberOfPage: 1,
-                                              dropdownValueOfLimit: 10);
+                                      BlocProvider.of<GetTableCubit>(context).getTable(
+                                          pageId: widget.pageData.pageId,
+                                          employee: false,
+                                          isdesc: widget.pageData.isDesc,
+                                          limit: 10,
+                                          offset: 0,
+                                          orderby: widget.pageData.orderBy,
+                                          statment: '',
+                                          selectcolumns: '',
+                                          departmentName: widget.pageData.departmentName,
+                                          isDepartment: widget.pageData.isDepartment,
+                                          authorizationID: widget.pageData.authorizationID,
+                                          viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
+                                          numberOfPage: 1,
+                                          dropdownValueOfLimit: 10);
                                       Navigator.pop(context);
-                                    } else if (state
-                                        is AddEditExpensesFailure) {
+                                    } else if (state is AddEditExpensesFailure) {
                                       CustomAlertDialog.alertWithButton(
                                           context: context,
                                           type: AlertType.error,
@@ -545,14 +409,12 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
                                     if (state is AddEditExpensesLoading) {
                                       return const CustomLoadingWidget();
                                     } else {
-                                      if (isGetLocationAndListLocation ==
-                                          false) {
+                                      if (isGetLocationAndListLocation == false) {
                                         return CustomButton(
                                           text: S.of(context).btn_add,
                                           width: 80,
                                           onTap: () async {
-                                            if (formKey.currentState!
-                                                .validate()) {
+                                            if (formKey.currentState!.validate()) {
                                               formKey.currentState!.save();
                                               // singleObject.addAll({
                                               //   "TotalCurrancy": total,
@@ -596,22 +458,15 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
                                               //   // "DiscountDetailTotal":double.parse(),
                                               // });
 
-                                              bool? customerClose = getCustomer(
-                                                  AddSalesInvoice.userId);
+                                              bool? customerClose = getCustomer(AddSalesInvoice.userId);
 
                                               if (customerClose == true) {
                                                 checkLocation();
                                               } else {
-                                                BlocProvider.of<
-                                                            AddEditExpensesCubit>(
-                                                        context)
-                                                    .add(
-                                                        singleObject:
-                                                            singleObject,
-                                                        tableList: tableList,
-                                                        controllerName: widget
-                                                            .tapData!
-                                                            .controllerName);
+                                                BlocProvider.of<AddEditExpensesCubit>(context).add(
+                                                    singleObject: singleObject,
+                                                    tableList: tableList,
+                                                    controllerName: widget.tapData!.controllerName);
                                               }
 
                                               // ScaffoldMessenger.of(context)
@@ -657,21 +512,12 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
     List<Widget> list = [];
 
     for (var item in listData) {
-      String title = lang == AppStrings.arLangKey
-          ? item.arColumnLabel!
-          : item.enColumnLabel!;
-      bool condition = item.insertVisable == true &&
-          item.cvisable == false &&
-          item.visible == false &&
-          item.isGeneral == true;
+      String title = lang == AppStrings.arLangKey ? item.arColumnLabel! : item.enColumnLabel!;
+      bool condition = item.insertVisable == true && item.cvisable == false && item.visible == false && item.isGeneral == true;
       //text
-      if (item.insertType == "text" &&
-          item.categoryTitle == categoryName &&
-          condition) {
-        TextEditingController controller = TextEditingController(
-            text: dataMaster[item.columnName].toString() == "null"
-                ? ''
-                : dataMaster[item.columnName]);
+      if (item.insertType == "text" && item.categoryTitle == categoryName && condition) {
+        TextEditingController controller =
+            TextEditingController(text: dataMaster[item.columnName].toString() == "null" ? '' : dataMaster[item.columnName]);
         list.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -700,10 +546,8 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
                   onSaved: (newValue) {
                     if (newValue!.isNotEmpty) {
                       setState(() {
-                        dataMaster.updateAll((key, value) =>
-                            key == item.columnName!.toString()
-                                ? value = controller.text
-                                : value);
+                        dataMaster
+                            .updateAll((key, value) => key == item.columnName!.toString() ? value = controller.text : value);
                         singleObject = dataMaster;
                       });
                     }
@@ -715,13 +559,9 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
         );
       }
       //number
-      if (item.insertType == "number" &&
-          item.categoryTitle == categoryName &&
-          condition) {
+      if (item.insertType == "number" && item.categoryTitle == categoryName && condition) {
         TextEditingController controller = TextEditingController(
-            text: dataMaster[item.columnName].toString() == "null"
-                ? ''
-                : dataMaster[item.columnName].toString());
+            text: dataMaster[item.columnName].toString() == "null" ? '' : dataMaster[item.columnName].toString());
         list.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -750,10 +590,8 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
                   onSaved: (newValue) {
                     if (newValue!.isNotEmpty) {
                       setState(() {
-                        dataMaster.updateAll((key, value) =>
-                            key == item.columnName!.toString()
-                                ? value = controller.text
-                                : value);
+                        dataMaster
+                            .updateAll((key, value) => key == item.columnName!.toString() ? value = controller.text : value);
                         singleObject = dataMaster;
                       });
                     }
@@ -765,13 +603,10 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
         );
       }
       //Date
-      if (item.insertType == "date" &&
-          item.categoryTitle == categoryName &&
-          condition) {
+      if (item.insertType == "date" && item.categoryTitle == categoryName && condition) {
         String date;
         if (dataMaster[item.columnName] != null) {
-          date = DateFormat("yyyy-MM-dd", 'en').format(
-              DateTime.parse(dataMaster[item.columnName].toString()).toLocal());
+          date = DateFormat("yyyy-MM-dd", 'en').format(DateTime.parse(dataMaster[item.columnName].toString()).toLocal());
         } else {
           // date = DateFormat("yyyy-MM-dd", 'en').format(DateTime.now());
           date = '';
@@ -808,29 +643,24 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
                         );
                         if (dateTime != null) {
                           dsetState(() {
-                            date =
-                                DateFormat("yyyy-MM-dd", 'en').format(dateTime);
+                            date = DateFormat("yyyy-MM-dd", 'en').format(dateTime);
                           });
                           dsetState(() {
-                            dataMaster.updateAll((key, value) =>
-                                key == item.columnName!.toString()
-                                    ? value = dateTime.toString()
-                                    : value);
+                            dataMaster.updateAll(
+                                (key, value) => key == item.columnName!.toString() ? value = dateTime.toString() : value);
                             singleObject = dataMaster;
                           });
                         }
                       },
                       child: Container(
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              border: Border.all(color: AppColors.blueDark)),
+                              borderRadius: BorderRadius.circular(5), border: Border.all(color: AppColors.blueDark)),
                           alignment: Alignment.center,
                           padding: const EdgeInsets.all(8),
                           child: Text(
                             date,
                             textAlign: TextAlign.center,
-                            style: AppStyles.textStyle14
-                                .copyWith(color: Colors.black),
+                            style: AppStyles.textStyle14.copyWith(color: Colors.black),
                           )),
                     );
                   },
@@ -842,9 +672,7 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
       }
 
       //dropdown
-      if (item.insertType == "dropdown" &&
-          item.categoryTitle == categoryName &&
-          condition) {
+      if (item.insertType == "dropdown" && item.categoryTitle == categoryName && condition) {
         List<ListDrop>? listDrop = [];
         List<ItemDrop>? myListDrop = [];
 
@@ -944,33 +772,23 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
                 CustomDropdown<String>.search(
                   hintText: '',
                   initialItem: dropValue,
-                  closedHeaderPadding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                  closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                   decoration: CustomDropdownDecoration(
-                      headerStyle:
-                          AppStyles.textStyle16.copyWith(color: Colors.black),
+                      headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
                       closedFillColor: Colors.transparent,
                       closedBorder: Border.all(color: AppColors.blueDark)),
-                  items: myListDrop.isEmpty
-                      ? [""]
-                      : List.generate(myListDrop.length,
-                          (index) => myListDrop![index].text ?? ''),
+                  items: myListDrop.isEmpty ? [""] : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
                   onChanged: (value) {
-                    ItemDrop ii = myListDrop!
-                        .firstWhere((element) => element.text == value);
+                    ItemDrop ii = myListDrop!.firstWhere((element) => element.text == value);
                     // singleObject.addAll({item.searchName!.toString(): ii.id});
-                    dataMaster.updateAll((key, value) =>
-                        key == item.columnName!.toString()
-                            ? value = ii.id
-                            : value);
+                    dataMaster.updateAll((key, value) => key == item.columnName!.toString() ? value = ii.id : value);
                     singleObject = dataMaster;
 
                     if (item.columnName == "CustomerID") {
                       AddSalesInvoice.userId = int.parse(ii.id ?? "-1");
                     }
                     if (item.columnName == "SalesInvoiceID") {
-                      BlocProvider.of<GetSalesInvoiceDetailsCubit>(context)
-                          .getSalesInvoiceDetails(
+                      BlocProvider.of<GetSalesInvoiceDetailsCubit>(context).getSalesInvoiceDetails(
                         invoiceID: ii.id!,
                       );
                     }
@@ -982,9 +800,7 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
         );
       }
       //checkbox
-      if (item.insertType == "checkbox" &&
-          item.categoryTitle == categoryName &&
-          condition) {
+      if (item.insertType == "checkbox" && item.categoryTitle == categoryName && condition) {
         bool checkboxValue = dataMaster[item.columnName] ?? false;
         list.add(
           StatefulBuilder(
@@ -1002,10 +818,7 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
                       checkboxValue = !checkboxValue;
                     });
                     csetState(() {
-                      dataMaster.updateAll((key, value) =>
-                          key == item.columnName!.toString()
-                              ? value = checkboxValue
-                              : value);
+                      dataMaster.updateAll((key, value) => key == item.columnName!.toString() ? value = checkboxValue : value);
                       singleObject = dataMaster;
                     });
                   });
@@ -1018,9 +831,7 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
   }
 
   getWidgetSales(
-      {required String title,
-      required List<ItemListSetupModel> listSetup,
-      required Map<String, dynamic> oldDataMaster}) {
+      {required String title, required List<ItemListSetupModel> listSetup, required Map<String, dynamic> oldDataMaster}) {
     switch (title) {
       case "الاجمالى":
         // total = oldDataMaster['TotalCurrancy'] ?? 0.0;
@@ -1039,40 +850,22 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
             onChanged: (value) {
               totalAfterTaxController.text = totalAfterTax(
                 total: total,
-                shippingPrice: shippingPriceController.text.isEmpty
-                    ? 0
-                    : double.parse(shippingPriceController.text),
-                discountTaxPercent: discountTaxPercentController.text.isEmpty
-                    ? 0
-                    : double.parse(discountTaxPercentController.text),
-                discountPercent: discountPercentController.text.isEmpty
-                    ? 0
-                    : double.parse(discountPercentController.text),
-                taxPercent: taxPercentController.text.isEmpty
-                    ? 0
-                    : double.parse(taxPercentController.text),
+                shippingPrice: shippingPriceController.text.isEmpty ? 0 : double.parse(shippingPriceController.text),
+                discountTaxPercent:
+                    discountTaxPercentController.text.isEmpty ? 0 : double.parse(discountTaxPercentController.text),
+                discountPercent: discountPercentController.text.isEmpty ? 0 : double.parse(discountPercentController.text),
+                taxPercent: taxPercentController.text.isEmpty ? 0 : double.parse(taxPercentController.text),
               ).toString();
               deadlineClientController.text = deadlineClientValue(
                 total: total,
-                shippingPrice: shippingPriceController.text.isEmpty
-                    ? 0
-                    : double.parse(shippingPriceController.text),
-                discountTaxPercent: discountTaxPercentController.text.isEmpty
-                    ? 0
-                    : double.parse(discountTaxPercentController.text),
-                discountPercent: discountPercentController.text.isEmpty
-                    ? 0
-                    : double.parse(discountPercentController.text),
-                taxPercent: taxPercentController.text.isEmpty
-                    ? 0
-                    : double.parse(taxPercentController.text),
-                cashCollected: cashCollectedController.text.isEmpty
-                    ? 0
-                    : double.parse(cashCollectedController.text),
+                shippingPrice: shippingPriceController.text.isEmpty ? 0 : double.parse(shippingPriceController.text),
+                discountTaxPercent:
+                    discountTaxPercentController.text.isEmpty ? 0 : double.parse(discountTaxPercentController.text),
+                discountPercent: discountPercentController.text.isEmpty ? 0 : double.parse(discountPercentController.text),
+                taxPercent: taxPercentController.text.isEmpty ? 0 : double.parse(taxPercentController.text),
+                cashCollected: cashCollectedController.text.isEmpty ? 0 : double.parse(cashCollectedController.text),
               ).toString();
-              singleObject.updateAll((key, value) => key == "POPaid"
-                  ? double.parse(cashCollectedController.text)
-                  : value);
+              singleObject.updateAll((key, value) => key == "POPaid" ? double.parse(cashCollectedController.text) : value);
 
               wsetState(() {});
             },
@@ -1107,9 +900,7 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
               },
               child: Container(
                 height: 40,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: AppColors.blueDark)),
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(12), border: Border.all(color: AppColors.blueDark)),
                 alignment: Alignment.center,
                 padding: const EdgeInsets.all(8),
                 child: Text(
@@ -1135,8 +926,7 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
           "0.0",
         );
       case "الخزينة":
-        ItemListSetupModel item = listSetup
-            .firstWhere((element) => element.columnName == "SafeAccount");
+        ItemListSetupModel item = listSetup.firstWhere((element) => element.columnName == "SafeAccount");
         List<ListDrop>? listDrop = [];
         List<ItemDrop>? myListDrop = [];
 
@@ -1162,30 +952,20 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
               headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
               closedFillColor: Colors.transparent,
               closedBorder: Border.all(color: AppColors.blueDark)),
-          items: myListDrop!.isEmpty
-              ? [""]
-              : List.generate(
-                  myListDrop.length, (index) => myListDrop![index].text ?? ''),
+          items: myListDrop!.isEmpty ? [""] : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
           onChanged: (value) {},
         );
       case "ضريبة خصم منبع":
-        discountTaxController.text = oldDataMaster['TaxCurrancy'] != null
-            ? oldDataMaster['TaxCurrancy'].toString()
-            : "";
+        discountTaxController.text = oldDataMaster['TaxCurrancy'] != null ? oldDataMaster['TaxCurrancy'].toString() : "";
         discountTaxPercentController.text = oldDataMaster['TaxCurrancy'] != null
             ? discountTaxPercent(
                     totalAfterDiscount: totalAfterDiscount(
                         total: oldDataMaster['TotalCurrancy'] ?? 0.0,
-                        discountPercent: oldDataMaster['DiscountCurrancy'] !=
-                                null
+                        discountPercent: oldDataMaster['DiscountCurrancy'] != null
                             ? discountPercent(
-                                total: oldDataMaster['TotalCurrancy'] ?? 0.0,
-                                discount:
-                                    oldDataMaster['DiscountCurrancy'] ?? 0.0)
+                                total: oldDataMaster['TotalCurrancy'] ?? 0.0, discount: oldDataMaster['DiscountCurrancy'] ?? 0.0)
                             : 0.0),
-                    discountTax: discountTaxController.text.isEmpty
-                        ? 0.0
-                        : double.parse(discountTaxController.text))
+                    discountTax: discountTaxController.text.isEmpty ? 0.0 : double.parse(discountTaxController.text))
                 .toString()
             : "";
         return StatefulBuilder(
@@ -1199,59 +979,35 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
                   keyboardType: TextInputType.number,
                   onChanged: (newValue) {
                     discountTaxController.text = discountTax(
-                            discountTaxPercent:
-                                newValue.isEmpty ? 0 : double.parse(newValue),
+                            discountTaxPercent: newValue.isEmpty ? 0 : double.parse(newValue),
                             total: total,
-                            discountPercent: discountPercentController
-                                    .text.isEmpty
-                                ? 0
-                                : double.parse(discountPercentController.text))
+                            discountPercent:
+                                discountPercentController.text.isEmpty ? 0 : double.parse(discountPercentController.text))
                         .toString();
                     totalAfterTaxController.text = totalAfterTax(
                       total: total,
-                      shippingPrice: shippingPriceController.text.isEmpty
-                          ? 0
-                          : double.parse(shippingPriceController.text),
+                      shippingPrice: shippingPriceController.text.isEmpty ? 0 : double.parse(shippingPriceController.text),
                       discountTaxPercent:
-                          discountTaxPercentController.text.isEmpty
-                              ? 0
-                              : double.parse(discountTaxPercentController.text),
-                      discountPercent: discountPercentController.text.isEmpty
-                          ? 0
-                          : double.parse(discountPercentController.text),
-                      taxPercent: taxPercentController.text.isEmpty
-                          ? 0
-                          : double.parse(taxPercentController.text),
+                          discountTaxPercentController.text.isEmpty ? 0 : double.parse(discountTaxPercentController.text),
+                      discountPercent: discountPercentController.text.isEmpty ? 0 : double.parse(discountPercentController.text),
+                      taxPercent: taxPercentController.text.isEmpty ? 0 : double.parse(taxPercentController.text),
                     ).toString();
 
                     deadlineClientController.text = deadlineClientValue(
                       total: total,
-                      shippingPrice: shippingPriceController.text.isEmpty
-                          ? 0
-                          : double.parse(shippingPriceController.text),
+                      shippingPrice: shippingPriceController.text.isEmpty ? 0 : double.parse(shippingPriceController.text),
                       discountTaxPercent:
-                          discountTaxPercentController.text.isEmpty
-                              ? 0
-                              : double.parse(discountTaxPercentController.text),
-                      discountPercent: discountPercentController.text.isEmpty
-                          ? 0
-                          : double.parse(discountPercentController.text),
-                      taxPercent: taxPercentController.text.isEmpty
-                          ? 0
-                          : double.parse(taxPercentController.text),
-                      cashCollected: cashCollectedController.text.isEmpty
-                          ? 0
-                          : double.parse(cashCollectedController.text),
+                          discountTaxPercentController.text.isEmpty ? 0 : double.parse(discountTaxPercentController.text),
+                      discountPercent: discountPercentController.text.isEmpty ? 0 : double.parse(discountPercentController.text),
+                      taxPercent: taxPercentController.text.isEmpty ? 0 : double.parse(taxPercentController.text),
+                      cashCollected: cashCollectedController.text.isEmpty ? 0 : double.parse(cashCollectedController.text),
                     ).toString();
                     singleObject.updateAll((key, value) => key == "TaxCurrancy"
                         ? discountTax(
-                            discountTaxPercent:
-                                newValue.isEmpty ? 0 : double.parse(newValue),
+                            discountTaxPercent: newValue.isEmpty ? 0 : double.parse(newValue),
                             total: total,
-                            discountPercent: discountPercentController
-                                    .text.isEmpty
-                                ? 0
-                                : double.parse(discountPercentController.text))
+                            discountPercent:
+                                discountPercentController.text.isEmpty ? 0 : double.parse(discountPercentController.text))
                         : value);
 
                     wsetState(() {});
@@ -1273,53 +1029,30 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
                             totalAfterDiscount: totalAfterDiscount(
                                 total: total,
                                 discountPercent:
-                                    discountPercentController.text.isEmpty
-                                        ? 0
-                                        : double.parse(
-                                            discountPercentController.text)),
-                            discountTax:
-                                newValue.isEmpty ? 0 : double.parse(newValue))
+                                    discountPercentController.text.isEmpty ? 0 : double.parse(discountPercentController.text)),
+                            discountTax: newValue.isEmpty ? 0 : double.parse(newValue))
                         .toString();
 
                     totalAfterTaxController.text = totalAfterTax(
                       total: total,
-                      shippingPrice: shippingPriceController.text.isEmpty
-                          ? 0
-                          : double.parse(shippingPriceController.text),
+                      shippingPrice: shippingPriceController.text.isEmpty ? 0 : double.parse(shippingPriceController.text),
                       discountTaxPercent:
-                          discountTaxPercentController.text.isEmpty
-                              ? 0
-                              : double.parse(discountTaxPercentController.text),
-                      discountPercent: discountPercentController.text.isEmpty
-                          ? 0
-                          : double.parse(discountPercentController.text),
-                      taxPercent: taxPercentController.text.isEmpty
-                          ? 0
-                          : double.parse(taxPercentController.text),
+                          discountTaxPercentController.text.isEmpty ? 0 : double.parse(discountTaxPercentController.text),
+                      discountPercent: discountPercentController.text.isEmpty ? 0 : double.parse(discountPercentController.text),
+                      taxPercent: taxPercentController.text.isEmpty ? 0 : double.parse(taxPercentController.text),
                     ).toString();
 
                     deadlineClientController.text = deadlineClientValue(
                       total: total,
-                      shippingPrice: shippingPriceController.text.isEmpty
-                          ? 0
-                          : double.parse(shippingPriceController.text),
+                      shippingPrice: shippingPriceController.text.isEmpty ? 0 : double.parse(shippingPriceController.text),
                       discountTaxPercent:
-                          discountTaxPercentController.text.isEmpty
-                              ? 0
-                              : double.parse(discountTaxPercentController.text),
-                      discountPercent: discountPercentController.text.isEmpty
-                          ? 0
-                          : double.parse(discountPercentController.text),
-                      taxPercent: taxPercentController.text.isEmpty
-                          ? 0
-                          : double.parse(taxPercentController.text),
-                      cashCollected: cashCollectedController.text.isEmpty
-                          ? 0
-                          : double.parse(cashCollectedController.text),
+                          discountTaxPercentController.text.isEmpty ? 0 : double.parse(discountTaxPercentController.text),
+                      discountPercent: discountPercentController.text.isEmpty ? 0 : double.parse(discountPercentController.text),
+                      taxPercent: taxPercentController.text.isEmpty ? 0 : double.parse(taxPercentController.text),
+                      cashCollected: cashCollectedController.text.isEmpty ? 0 : double.parse(cashCollectedController.text),
                     ).toString();
-                    singleObject.updateAll((key, value) => key == "TaxCurrancy"
-                        ? double.parse(discountTaxController.text)
-                        : value);
+                    singleObject
+                        .updateAll((key, value) => key == "TaxCurrancy" ? double.parse(discountTaxController.text) : value);
 
                     wsetState(() {});
                   },
@@ -1329,16 +1062,11 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
           ),
         );
       case "خصم اجنبي":
-        discountController.text = oldDataMaster['DiscountCurrancy'] != null
-            ? oldDataMaster['DiscountCurrancy'].toString()
+        discountController.text = oldDataMaster['DiscountCurrancy'] != null ? oldDataMaster['DiscountCurrancy'].toString() : "";
+        discountPercentController.text = oldDataMaster['DiscountCurrancy'] != null
+            ? discountPercent(total: oldDataMaster['TotalCurrancy'] ?? 0.0, discount: oldDataMaster['DiscountCurrancy'] ?? 0.0)
+                .toString()
             : "";
-        discountPercentController.text =
-            oldDataMaster['DiscountCurrancy'] != null
-                ? discountPercent(
-                        total: oldDataMaster['TotalCurrancy'] ?? 0.0,
-                        discount: oldDataMaster['DiscountCurrancy'] ?? 0.0)
-                    .toString()
-                : "";
         return StatefulBuilder(
           builder: (context, wsetState) => Row(
             children: [
@@ -1349,53 +1077,28 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
                   isValidator: false,
                   keyboardType: TextInputType.number,
                   onChanged: (newValue) {
-                    discountController.text = discount(
-                            total: total,
-                            discountPercent:
-                                newValue.isEmpty ? 0 : double.parse(newValue))
-                        .toString();
+                    discountController.text =
+                        discount(total: total, discountPercent: newValue.isEmpty ? 0 : double.parse(newValue)).toString();
                     totalAfterTaxController.text = totalAfterTax(
                       total: total,
-                      shippingPrice: shippingPriceController.text.isEmpty
-                          ? 0
-                          : double.parse(shippingPriceController.text),
+                      shippingPrice: shippingPriceController.text.isEmpty ? 0 : double.parse(shippingPriceController.text),
                       discountTaxPercent:
-                          discountTaxPercentController.text.isEmpty
-                              ? 0
-                              : double.parse(discountTaxPercentController.text),
-                      discountPercent: discountPercentController.text.isEmpty
-                          ? 0
-                          : double.parse(discountPercentController.text),
-                      taxPercent: taxPercentController.text.isEmpty
-                          ? 0
-                          : double.parse(taxPercentController.text),
+                          discountTaxPercentController.text.isEmpty ? 0 : double.parse(discountTaxPercentController.text),
+                      discountPercent: discountPercentController.text.isEmpty ? 0 : double.parse(discountPercentController.text),
+                      taxPercent: taxPercentController.text.isEmpty ? 0 : double.parse(taxPercentController.text),
                     ).toString();
 
                     deadlineClientController.text = deadlineClientValue(
                       total: total,
-                      shippingPrice: shippingPriceController.text.isEmpty
-                          ? 0
-                          : double.parse(shippingPriceController.text),
+                      shippingPrice: shippingPriceController.text.isEmpty ? 0 : double.parse(shippingPriceController.text),
                       discountTaxPercent:
-                          discountTaxPercentController.text.isEmpty
-                              ? 0
-                              : double.parse(discountTaxPercentController.text),
-                      discountPercent: discountPercentController.text.isEmpty
-                          ? 0
-                          : double.parse(discountPercentController.text),
-                      taxPercent: taxPercentController.text.isEmpty
-                          ? 0
-                          : double.parse(taxPercentController.text),
-                      cashCollected: cashCollectedController.text.isEmpty
-                          ? 0
-                          : double.parse(cashCollectedController.text),
+                          discountTaxPercentController.text.isEmpty ? 0 : double.parse(discountTaxPercentController.text),
+                      discountPercent: discountPercentController.text.isEmpty ? 0 : double.parse(discountPercentController.text),
+                      taxPercent: taxPercentController.text.isEmpty ? 0 : double.parse(taxPercentController.text),
+                      cashCollected: cashCollectedController.text.isEmpty ? 0 : double.parse(cashCollectedController.text),
                     ).toString();
-                    singleObject.updateAll((key, value) => key ==
-                            "DiscountCurrancy"
-                        ? discount(
-                            total: total,
-                            discountPercent:
-                                newValue.isEmpty ? 0 : double.parse(newValue))
+                    singleObject.updateAll((key, value) => key == "DiscountCurrancy"
+                        ? discount(total: total, discountPercent: newValue.isEmpty ? 0 : double.parse(newValue))
                         : value);
                     wsetState(() {});
                   },
@@ -1418,44 +1121,24 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
                     ).toString();
                     totalAfterTaxController.text = totalAfterTax(
                       total: total,
-                      shippingPrice: shippingPriceController.text.isEmpty
-                          ? 0
-                          : double.parse(shippingPriceController.text),
+                      shippingPrice: shippingPriceController.text.isEmpty ? 0 : double.parse(shippingPriceController.text),
                       discountTaxPercent:
-                          discountTaxPercentController.text.isEmpty
-                              ? 0
-                              : double.parse(discountTaxPercentController.text),
-                      discountPercent: discountPercentController.text.isEmpty
-                          ? 0
-                          : double.parse(discountPercentController.text),
-                      taxPercent: taxPercentController.text.isEmpty
-                          ? 0
-                          : double.parse(taxPercentController.text),
+                          discountTaxPercentController.text.isEmpty ? 0 : double.parse(discountTaxPercentController.text),
+                      discountPercent: discountPercentController.text.isEmpty ? 0 : double.parse(discountPercentController.text),
+                      taxPercent: taxPercentController.text.isEmpty ? 0 : double.parse(taxPercentController.text),
                     ).toString();
 
                     deadlineClientController.text = deadlineClientValue(
                       total: total,
-                      shippingPrice: shippingPriceController.text.isEmpty
-                          ? 0
-                          : double.parse(shippingPriceController.text),
+                      shippingPrice: shippingPriceController.text.isEmpty ? 0 : double.parse(shippingPriceController.text),
                       discountTaxPercent:
-                          discountTaxPercentController.text.isEmpty
-                              ? 0
-                              : double.parse(discountTaxPercentController.text),
-                      discountPercent: discountPercentController.text.isEmpty
-                          ? 0
-                          : double.parse(discountPercentController.text),
-                      taxPercent: taxPercentController.text.isEmpty
-                          ? 0
-                          : double.parse(taxPercentController.text),
-                      cashCollected: cashCollectedController.text.isEmpty
-                          ? 0
-                          : double.parse(cashCollectedController.text),
+                          discountTaxPercentController.text.isEmpty ? 0 : double.parse(discountTaxPercentController.text),
+                      discountPercent: discountPercentController.text.isEmpty ? 0 : double.parse(discountPercentController.text),
+                      taxPercent: taxPercentController.text.isEmpty ? 0 : double.parse(taxPercentController.text),
+                      cashCollected: cashCollectedController.text.isEmpty ? 0 : double.parse(cashCollectedController.text),
                     ).toString();
-                    singleObject.updateAll((key, value) =>
-                        key == "DiscountCurrancy"
-                            ? double.parse(discountController.text)
-                            : value);
+                    singleObject
+                        .updateAll((key, value) => key == "DiscountCurrancy" ? double.parse(discountController.text) : value);
                     wsetState(() {});
                   },
                 ),
@@ -1464,15 +1147,12 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
           ),
         );
       case "ضريبة القيمة المضافة":
-        taxController.text = oldDataMaster['AddTaxCurrancy'] != null
-            ? oldDataMaster['AddTaxCurrancy'].toString()
-            : "";
+        taxController.text = oldDataMaster['AddTaxCurrancy'] != null ? oldDataMaster['AddTaxCurrancy'].toString() : "";
         taxPercentController.text = oldDataMaster['AddTaxCurrancy'] != null
             ? taxPercent(
                     total: oldDataMaster['TotalCurrancy'] ?? 0.0,
-                    tax: double.parse(oldDataMaster['AddTaxCurrancy'] == null
-                        ? "0.0"
-                        : oldDataMaster['AddTaxCurrancy'].toString()))
+                    tax: double.parse(
+                        oldDataMaster['AddTaxCurrancy'] == null ? "0.0" : oldDataMaster['AddTaxCurrancy'].toString()))
                 .toString()
             : "";
         return StatefulBuilder(
@@ -1486,60 +1166,35 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
                   keyboardType: TextInputType.number,
                   onChanged: (newValue) {
                     taxController.text = tax(
-                            taxPercent:
-                                newValue.isEmpty ? 0 : double.parse(newValue),
+                            taxPercent: newValue.isEmpty ? 0 : double.parse(newValue),
                             total: total,
-                            discountPercent: discountPercentController
-                                    .text.isEmpty
-                                ? 0
-                                : double.parse(discountPercentController.text))
+                            discountPercent:
+                                discountPercentController.text.isEmpty ? 0 : double.parse(discountPercentController.text))
                         .toString();
                     totalAfterTaxController.text = totalAfterTax(
                       total: total,
-                      shippingPrice: shippingPriceController.text.isEmpty
-                          ? 0
-                          : double.parse(shippingPriceController.text),
+                      shippingPrice: shippingPriceController.text.isEmpty ? 0 : double.parse(shippingPriceController.text),
                       discountTaxPercent:
-                          discountTaxPercentController.text.isEmpty
-                              ? 0
-                              : double.parse(discountTaxPercentController.text),
-                      discountPercent: discountPercentController.text.isEmpty
-                          ? 0
-                          : double.parse(discountPercentController.text),
-                      taxPercent: taxPercentController.text.isEmpty
-                          ? 0
-                          : double.parse(taxPercentController.text),
+                          discountTaxPercentController.text.isEmpty ? 0 : double.parse(discountTaxPercentController.text),
+                      discountPercent: discountPercentController.text.isEmpty ? 0 : double.parse(discountPercentController.text),
+                      taxPercent: taxPercentController.text.isEmpty ? 0 : double.parse(taxPercentController.text),
                     ).toString();
 
                     deadlineClientController.text = deadlineClientValue(
                       total: total,
-                      shippingPrice: shippingPriceController.text.isEmpty
-                          ? 0
-                          : double.parse(shippingPriceController.text),
+                      shippingPrice: shippingPriceController.text.isEmpty ? 0 : double.parse(shippingPriceController.text),
                       discountTaxPercent:
-                          discountTaxPercentController.text.isEmpty
-                              ? 0
-                              : double.parse(discountTaxPercentController.text),
-                      discountPercent: discountPercentController.text.isEmpty
-                          ? 0
-                          : double.parse(discountPercentController.text),
-                      taxPercent: taxPercentController.text.isEmpty
-                          ? 0
-                          : double.parse(taxPercentController.text),
-                      cashCollected: cashCollectedController.text.isEmpty
-                          ? 0
-                          : double.parse(cashCollectedController.text),
+                          discountTaxPercentController.text.isEmpty ? 0 : double.parse(discountTaxPercentController.text),
+                      discountPercent: discountPercentController.text.isEmpty ? 0 : double.parse(discountPercentController.text),
+                      taxPercent: taxPercentController.text.isEmpty ? 0 : double.parse(taxPercentController.text),
+                      cashCollected: cashCollectedController.text.isEmpty ? 0 : double.parse(cashCollectedController.text),
                     ).toString();
-                    singleObject.updateAll((key, value) => key ==
-                            "AddTaxCurrancy"
+                    singleObject.updateAll((key, value) => key == "AddTaxCurrancy"
                         ? tax(
-                            taxPercent:
-                                newValue.isEmpty ? 0 : double.parse(newValue),
+                            taxPercent: newValue.isEmpty ? 0 : double.parse(newValue),
                             total: total,
-                            discountPercent: discountPercentController
-                                    .text.isEmpty
-                                ? 0
-                                : double.parse(discountPercentController.text))
+                            discountPercent:
+                                discountPercentController.text.isEmpty ? 0 : double.parse(discountPercentController.text))
                         : value);
                     wsetState(() {});
                   },
@@ -1560,53 +1215,30 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
                       total: total,
                       tax: tax(
                         total: total,
-                        discountPercent: discountPercentController.text.isEmpty
-                            ? 0
-                            : double.parse(discountPercentController.text),
-                        taxPercent:
-                            newValue.isEmpty ? 0 : double.parse(newValue),
+                        discountPercent:
+                            discountPercentController.text.isEmpty ? 0 : double.parse(discountPercentController.text),
+                        taxPercent: newValue.isEmpty ? 0 : double.parse(newValue),
                       ),
                     ).toString();
                     totalAfterTaxController.text = totalAfterTax(
                       total: total,
-                      shippingPrice: shippingPriceController.text.isEmpty
-                          ? 0
-                          : double.parse(shippingPriceController.text),
+                      shippingPrice: shippingPriceController.text.isEmpty ? 0 : double.parse(shippingPriceController.text),
                       discountTaxPercent:
-                          discountTaxPercentController.text.isEmpty
-                              ? 0
-                              : double.parse(discountTaxPercentController.text),
-                      discountPercent: discountPercentController.text.isEmpty
-                          ? 0
-                          : double.parse(discountPercentController.text),
-                      taxPercent: taxPercentController.text.isEmpty
-                          ? 0
-                          : double.parse(taxPercentController.text),
+                          discountTaxPercentController.text.isEmpty ? 0 : double.parse(discountTaxPercentController.text),
+                      discountPercent: discountPercentController.text.isEmpty ? 0 : double.parse(discountPercentController.text),
+                      taxPercent: taxPercentController.text.isEmpty ? 0 : double.parse(taxPercentController.text),
                     ).toString();
 
                     deadlineClientController.text = deadlineClientValue(
                       total: total,
-                      shippingPrice: shippingPriceController.text.isEmpty
-                          ? 0
-                          : double.parse(shippingPriceController.text),
+                      shippingPrice: shippingPriceController.text.isEmpty ? 0 : double.parse(shippingPriceController.text),
                       discountTaxPercent:
-                          discountTaxPercentController.text.isEmpty
-                              ? 0
-                              : double.parse(discountTaxPercentController.text),
-                      discountPercent: discountPercentController.text.isEmpty
-                          ? 0
-                          : double.parse(discountPercentController.text),
-                      taxPercent: taxPercentController.text.isEmpty
-                          ? 0
-                          : double.parse(taxPercentController.text),
-                      cashCollected: cashCollectedController.text.isEmpty
-                          ? 0
-                          : double.parse(cashCollectedController.text),
+                          discountTaxPercentController.text.isEmpty ? 0 : double.parse(discountTaxPercentController.text),
+                      discountPercent: discountPercentController.text.isEmpty ? 0 : double.parse(discountPercentController.text),
+                      taxPercent: taxPercentController.text.isEmpty ? 0 : double.parse(taxPercentController.text),
+                      cashCollected: cashCollectedController.text.isEmpty ? 0 : double.parse(cashCollectedController.text),
                     ).toString();
-                    singleObject.updateAll((key, value) =>
-                        key == "AddTaxCurrancy"
-                            ? double.parse(taxController.text)
-                            : value);
+                    singleObject.updateAll((key, value) => key == "AddTaxCurrancy" ? double.parse(taxController.text) : value);
                     wsetState(() {});
                   },
                 ),
@@ -1616,9 +1248,7 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
         );
       case "اجمالي بعد الضرائب":
         totalAfterTaxController.text =
-            oldDataMaster['TotalOrderBeforCurrancy'] != null
-                ? oldDataMaster['TotalOrderBeforCurrancy'].toString()
-                : "";
+            oldDataMaster['TotalOrderBeforCurrancy'] != null ? oldDataMaster['TotalOrderBeforCurrancy'].toString() : "";
         return CustomTextFormField(
           controller: totalAfterTaxController,
           hintText: '',
@@ -1629,8 +1259,7 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
           fillColor: Colors.grey.shade300,
         );
       case "مصاريف الشحن":
-        shippingPriceController.text =
-            oldDataMaster['shippingPrice'].toString();
+        shippingPriceController.text = oldDataMaster['shippingPrice'].toString();
         return StatefulBuilder(
           builder: (context, wsetState) => CustomTextFormField(
             controller: shippingPriceController,
@@ -1640,48 +1269,29 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
             onChanged: (newValue) {
               totalAfterTaxController.text = totalAfterTax(
                 total: total,
-                shippingPrice: shippingPriceController.text.isEmpty
-                    ? 0
-                    : double.parse(shippingPriceController.text),
-                discountTaxPercent: discountTaxPercentController.text.isEmpty
-                    ? 0
-                    : double.parse(discountTaxPercentController.text),
-                discountPercent: discountPercentController.text.isEmpty
-                    ? 0
-                    : double.parse(discountPercentController.text),
-                taxPercent: taxPercentController.text.isEmpty
-                    ? 0
-                    : double.parse(taxPercentController.text),
+                shippingPrice: shippingPriceController.text.isEmpty ? 0 : double.parse(shippingPriceController.text),
+                discountTaxPercent:
+                    discountTaxPercentController.text.isEmpty ? 0 : double.parse(discountTaxPercentController.text),
+                discountPercent: discountPercentController.text.isEmpty ? 0 : double.parse(discountPercentController.text),
+                taxPercent: taxPercentController.text.isEmpty ? 0 : double.parse(taxPercentController.text),
               ).toString();
 
               deadlineClientController.text = deadlineClientValue(
                 total: total,
-                shippingPrice: shippingPriceController.text.isEmpty
-                    ? 0
-                    : double.parse(shippingPriceController.text),
-                discountTaxPercent: discountTaxPercentController.text.isEmpty
-                    ? 0
-                    : double.parse(discountTaxPercentController.text),
-                discountPercent: discountPercentController.text.isEmpty
-                    ? 0
-                    : double.parse(discountPercentController.text),
-                taxPercent: taxPercentController.text.isEmpty
-                    ? 0
-                    : double.parse(taxPercentController.text),
-                cashCollected: cashCollectedController.text.isEmpty
-                    ? 0
-                    : double.parse(cashCollectedController.text),
+                shippingPrice: shippingPriceController.text.isEmpty ? 0 : double.parse(shippingPriceController.text),
+                discountTaxPercent:
+                    discountTaxPercentController.text.isEmpty ? 0 : double.parse(discountTaxPercentController.text),
+                discountPercent: discountPercentController.text.isEmpty ? 0 : double.parse(discountPercentController.text),
+                taxPercent: taxPercentController.text.isEmpty ? 0 : double.parse(taxPercentController.text),
+                cashCollected: cashCollectedController.text.isEmpty ? 0 : double.parse(cashCollectedController.text),
               ).toString();
-              singleObject.updateAll((key, value) =>
-                  key == "shippingPrice" ? double.parse(newValue) : value);
+              singleObject.updateAll((key, value) => key == "shippingPrice" ? double.parse(newValue) : value);
               wsetState(() {});
             },
           ),
         );
       case "الاجل على العميل":
-        deadlineClientController.text = oldDataMaster['remind'] != null
-            ? oldDataMaster['remind'].toString()
-            : "0.0";
+        deadlineClientController.text = oldDataMaster['remind'] != null ? oldDataMaster['remind'].toString() : "0.0";
         return CustomTextFormField(
           controller: deadlineClientController,
           hintText: '',
@@ -1698,27 +1308,16 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
     return discountPercent * total / 100;
   }
 
-  double totalAfterDiscount(
-      {required double total, required double discountPercent}) {
+  double totalAfterDiscount({required double total, required double discountPercent}) {
     return total - discount(total: total, discountPercent: discountPercent);
   }
 
-  double discountTax(
-      {required double discountTaxPercent,
-      required double total,
-      required double discountPercent}) {
-    return discountTaxPercent *
-        totalAfterDiscount(discountPercent: discountPercent, total: total) /
-        100;
+  double discountTax({required double discountTaxPercent, required double total, required double discountPercent}) {
+    return discountTaxPercent * totalAfterDiscount(discountPercent: discountPercent, total: total) / 100;
   }
 
-  double tax(
-      {required double total,
-      required double taxPercent,
-      required double discountPercent}) {
-    return taxPercent *
-        totalAfterDiscount(discountPercent: discountPercent, total: total) /
-        100;
+  double tax({required double total, required double taxPercent, required double discountPercent}) {
+    return taxPercent * totalAfterDiscount(discountPercent: discountPercent, total: total) / 100;
   }
 
   double totalAfterTax(
@@ -1728,14 +1327,8 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
       required double discountPercent,
       required double taxPercent}) {
     return total -
-        discountTax(
-            total: total,
-            discountPercent: discountPercent,
-            discountTaxPercent: discountTaxPercent) +
-        tax(
-            total: total,
-            taxPercent: taxPercent,
-            discountPercent: discountPercent) +
+        discountTax(total: total, discountPercent: discountPercent, discountTaxPercent: discountTaxPercent) +
+        tax(total: total, taxPercent: taxPercent, discountPercent: discountPercent) +
         shippingPrice;
   }
 
@@ -1760,8 +1353,7 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
     return 100 * discount / total;
   }
 
-  double discountTaxPercent(
-      {required double totalAfterDiscount, required double discountTax}) {
+  double discountTaxPercent({required double totalAfterDiscount, required double discountTax}) {
     return 100 * discountTax / totalAfterDiscount;
   }
 
@@ -1771,11 +1363,8 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
 
   void getDataList() async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> dataProduct = await ApiService(Dio()).post(
         endPoint: "web/Structure/getDataGlobal",
         data: {"TableName": "Product"},
@@ -1852,11 +1441,8 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
 
   void getColumnListAndAdd(Pages page) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).post(
         endPoint: "home/getGeneralTable",
         data: {
@@ -1910,11 +1496,8 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
 
   Future<bool> getPermissions(int? pageId) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPagePermissions?pageId=$pageId",
         headers: {
@@ -1931,11 +1514,8 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
 
   void getDropdownList(int pageId) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       List<dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPageDropDown?pageId=$pageId",
         headers: {
@@ -1971,25 +1551,17 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
       isGetLocationAndListLocation = true;
     });
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
-      Map<String, dynamic> customerAccountLocation =
-          await ApiService(Dio()).post(
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      Map<String, dynamic> customerAccountLocation = await ApiService(Dio()).post(
         endPoint: "web/Structure/getDataGlobal",
-        data: {
-          "TableName": "CustomerAccountLocation",
-          "TailCondition": "CustomerID= $userId"
-        },
+        data: {"TableName": "CustomerAccountLocation", "TailCondition": "CustomerID= $userId"},
         headers: {
           "Authorization": "Bearer $token",
           "CompanyKey": companyKey,
         },
       );
-      AddSalesInvoice.listCustomerAccountLocation =
-          customerAccountLocation['dynamicList'];
+      AddSalesInvoice.listCustomerAccountLocation = customerAccountLocation['dynamicList'];
       setState(() {
         isGetLocationAndListLocation = false;
       });
@@ -2011,13 +1583,9 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
           )) /
           1000;
       // radius.add(distance);
-      if (distance == location['Radius'] ||
-          distance < location['Radius'] ||
-          distance == 0.0) {
-        BlocProvider.of<AddEditExpensesCubit>(context).add(
-            singleObject: singleObject,
-            tableList: tableList,
-            controllerName: widget.tapData!.controllerName);
+      if (distance == location['Radius'] || distance < location['Radius'] || distance == 0.0) {
+        BlocProvider.of<AddEditExpensesCubit>(context)
+            .add(singleObject: singleObject, tableList: tableList, controllerName: widget.tapData!.controllerName);
       } else {
         CustomAlertDialog.alertWithButton(
             context: context,

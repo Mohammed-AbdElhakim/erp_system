@@ -31,8 +31,8 @@ import '../build_alert_add_in_dropdown.dart';
 import 'custom_table_add_edit_.dart';
 
 class AddExcelViewBody extends StatefulWidget {
-  const AddExcelViewBody(
-      {super.key, required this.pageData, required this.listKey, this.tapData});
+  const AddExcelViewBody({super.key, required this.pageData, required this.listKey, this.tapData});
+
   final ListTaps? tapData;
   final Pages pageData;
   final List<dynamic> listKey;
@@ -40,6 +40,7 @@ class AddExcelViewBody extends StatefulWidget {
   static List<dynamic> listBarcodeData = [];
   static List<dynamic> listProduct = [];
   static List<dynamic> listProductPrices = [];
+
   @override
   State<AddExcelViewBody> createState() => _AddExcelViewBodyState();
 }
@@ -84,15 +85,10 @@ class _AddExcelViewBodyState extends State<AddExcelViewBody> {
           List<String> listHeader = [];
           for (var item in state.listSetupModel) {
             category.add(item.categoryTitle ?? "");
-            if (item.insertVisable == true &&
-                item.cvisable == true &&
-                item.visible == true &&
-                item.isGeneral != true) {
+            if (item.insertVisable == true && item.cvisable == true && item.visible == true && item.isGeneral != true) {
               listColumn.add(item);
               listKey.add(item.columnName);
-              listHeader.add(lang == AppStrings.enLangKey
-                  ? item.enColumnLabel!
-                  : item.arColumnLabel!);
+              listHeader.add(lang == AppStrings.enLangKey ? item.enColumnLabel! : item.arColumnLabel!);
             }
           }
           List<String> categoryList = category.toSet().toList();
@@ -120,23 +116,17 @@ class _AddExcelViewBodyState extends State<AddExcelViewBody> {
                                 ? Padding(
                                     padding: const EdgeInsets.only(bottom: 16),
                                     child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Container(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 12, vertical: 8),
+                                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                                             decoration: BoxDecoration(
                                                 // color: AppColors.grey.withOpacity(.4),
-                                                color: AppColors.grey
-                                                    .withAlpha(102),
-                                                borderRadius:
-                                                    BorderRadius.circular(15)),
+                                                color: AppColors.grey.withAlpha(102),
+                                                borderRadius: BorderRadius.circular(15)),
                                             child: Text(
                                               categoryName,
-                                              style: AppStyles.textStyle18
-                                                  .copyWith(
-                                                      color: Colors.black),
+                                              style: AppStyles.textStyle18.copyWith(color: Colors.black),
                                             )),
                                         ...widgetList,
                                       ],
@@ -160,8 +150,7 @@ class _AddExcelViewBodyState extends State<AddExcelViewBody> {
                                   listKey: listKey,
                                   listHeader: listHeader,
                                   listColumn: listColumn,
-                                  allDropdownModelList:
-                                      ScreenTable.myAllDropdownModelList,
+                                  allDropdownModelList: ScreenTable.myAllDropdownModelList,
                                   typeView: "Add",
                                 ),
                               );
@@ -182,8 +171,7 @@ class _AddExcelViewBodyState extends State<AddExcelViewBody> {
                           noGradient: true,
                           color: Colors.transparent,
                           noShadow: true,
-                          textStyle: AppStyles.textStyle16
-                              .copyWith(color: Colors.grey),
+                          textStyle: AppStyles.textStyle16.copyWith(color: Colors.grey),
                           onTap: () {
                             Navigator.pop(context);
                           },
@@ -191,8 +179,7 @@ class _AddExcelViewBodyState extends State<AddExcelViewBody> {
                         const SizedBox(
                           width: 50,
                         ),
-                        BlocConsumer<AddEditExpensesCubit,
-                            AddEditExpensesState>(
+                        BlocConsumer<AddEditExpensesCubit, AddEditExpensesState>(
                           listener: (context, state) {
                             if (state is AddEditExpensesSuccess) {
                               BlocProvider.of<GetTableCubit>(context).getTable(
@@ -204,22 +191,16 @@ class _AddExcelViewBodyState extends State<AddExcelViewBody> {
                                   orderby: widget.pageData.orderBy,
                                   statment: '',
                                   selectcolumns: '',
-                                  departmentName:
-                                      widget.pageData.departmentName,
+                                  departmentName: widget.pageData.departmentName,
                                   isDepartment: widget.pageData.isDepartment,
-                                  authorizationID:
-                                      widget.pageData.authorizationID,
-                                  viewEmployeeColumn:
-                                      widget.pageData.viewEmployeeColumn,
+                                  authorizationID: widget.pageData.authorizationID,
+                                  viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
                                   numberOfPage: 1,
                                   dropdownValueOfLimit: 10);
                               Navigator.pop(context);
                             } else if (state is AddEditExpensesFailure) {
                               CustomAlertDialog.alertWithButton(
-                                  context: context,
-                                  type: AlertType.error,
-                                  title: S.of(context).error,
-                                  desc: state.errorMassage);
+                                  context: context, type: AlertType.error, title: S.of(context).error, desc: state.errorMassage);
                             }
                           },
                           builder: (context, state) {
@@ -233,13 +214,10 @@ class _AddExcelViewBodyState extends State<AddExcelViewBody> {
                                   if (formKey.currentState!.validate()) {
                                     formKey.currentState!.save();
 
-                                    BlocProvider.of<AddEditExpensesCubit>(
-                                            context)
-                                        .add(
+                                    BlocProvider.of<AddEditExpensesCubit>(context).add(
                                       singleObject: singleObject,
                                       tableList: tableList,
-                                      controllerName:
-                                          widget.tapData!.controllerName,
+                                      controllerName: widget.tapData!.controllerName,
                                     );
                                   }
                                 },
@@ -271,17 +249,10 @@ class _AddExcelViewBodyState extends State<AddExcelViewBody> {
     List<Widget> list = [];
 
     for (var item in listData) {
-      String title = lang == AppStrings.arLangKey
-          ? item.arColumnLabel!
-          : item.enColumnLabel!;
-      bool condition = item.insertVisable == true &&
-          item.cvisable == false &&
-          item.visible == false &&
-          item.isGeneral == true;
+      String title = lang == AppStrings.arLangKey ? item.arColumnLabel! : item.enColumnLabel!;
+      bool condition = item.insertVisable == true && item.cvisable == false && item.visible == false && item.isGeneral == true;
       //text
-      if (item.insertType == "text" &&
-          item.categoryTitle == categoryName &&
-          condition) {
+      if (item.insertType == "text" && item.categoryTitle == categoryName && condition) {
         list.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -309,8 +280,7 @@ class _AddExcelViewBodyState extends State<AddExcelViewBody> {
                   onSaved: (newValue) {
                     if (newValue!.isNotEmpty) {
                       setState(() {
-                        singleObject
-                            .addAll({item.columnName!.toString(): newValue});
+                        singleObject.addAll({item.columnName!.toString(): newValue});
                       });
                     }
                   },
@@ -321,9 +291,7 @@ class _AddExcelViewBodyState extends State<AddExcelViewBody> {
         );
       }
       //number
-      if (item.insertType == "number" &&
-          item.categoryTitle == categoryName &&
-          condition) {
+      if (item.insertType == "number" && item.categoryTitle == categoryName && condition) {
         list.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -351,8 +319,7 @@ class _AddExcelViewBodyState extends State<AddExcelViewBody> {
                   onSaved: (newValue) {
                     if (newValue!.isNotEmpty) {
                       setState(() {
-                        singleObject
-                            .addAll({item.columnName!.toString(): newValue});
+                        singleObject.addAll({item.columnName!.toString(): newValue});
                       });
                     }
                   },
@@ -363,9 +330,7 @@ class _AddExcelViewBodyState extends State<AddExcelViewBody> {
         );
       }
       //Date
-      if (item.insertType == "date" &&
-          item.categoryTitle == categoryName &&
-          condition) {
+      if (item.insertType == "date" && item.categoryTitle == categoryName && condition) {
         String date = '';
         list.add(
           Padding(
@@ -399,29 +364,24 @@ class _AddExcelViewBodyState extends State<AddExcelViewBody> {
                         );
                         if (dateTime != null) {
                           dsetState(() {
-                            date =
-                                DateFormat("yyyy-MM-dd", 'en').format(dateTime);
+                            date = DateFormat("yyyy-MM-dd", 'en').format(dateTime);
                           });
 
                           dsetState(() {
-                            singleObject.addAll({
-                              item.columnName!.toString(): dateTime.toString()
-                            });
+                            singleObject.addAll({item.columnName!.toString(): dateTime.toString()});
                           });
                         }
                       },
                       child: Container(
                           height: 40,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(color: AppColors.blueDark)),
+                              borderRadius: BorderRadius.circular(12), border: Border.all(color: AppColors.blueDark)),
                           alignment: Alignment.center,
                           padding: const EdgeInsets.all(8),
                           child: Text(
                             date,
                             textAlign: TextAlign.center,
-                            style: AppStyles.textStyle14
-                                .copyWith(color: Colors.black),
+                            style: AppStyles.textStyle14.copyWith(color: Colors.black),
                           )),
                     );
                   },
@@ -433,9 +393,7 @@ class _AddExcelViewBodyState extends State<AddExcelViewBody> {
       }
 
       //dropdown
-      if (item.insertType == "dropdown" &&
-          item.categoryTitle == categoryName &&
-          condition) {
+      if (item.insertType == "dropdown" && item.categoryTitle == categoryName && condition) {
         List<ListDrop>? listDrop = [];
         List<ItemDrop>? myListDrop = [];
 
@@ -451,8 +409,7 @@ class _AddExcelViewBodyState extends State<AddExcelViewBody> {
           }
         }
         for (var ii in listDrop!) {
-          if (ii.columnName == item.columnName &&
-              ii.nameAr == item.arColumnLabel) {
+          if (ii.columnName == item.columnName && ii.nameAr == item.arColumnLabel) {
             myListDrop = ii.list;
           }
         }
@@ -516,11 +473,9 @@ class _AddExcelViewBodyState extends State<AddExcelViewBody> {
                 ),
                 CustomDropdown<String>.search(
                   hintText: '',
-                  closedHeaderPadding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                  closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                   decoration: CustomDropdownDecoration(
-                      headerStyle:
-                          AppStyles.textStyle16.copyWith(color: Colors.black),
+                      headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
                       closedFillColor: Colors.transparent,
                       closedBorder: Border.all(color: AppColors.blueDark)),
                   // validator: (value) {
@@ -530,13 +485,9 @@ class _AddExcelViewBodyState extends State<AddExcelViewBody> {
                   //     return null;
                   //   }
                   // },
-                  items: myListDrop!.isEmpty
-                      ? [""]
-                      : List.generate(myListDrop.length,
-                          (index) => myListDrop![index].text ?? ''),
+                  items: myListDrop!.isEmpty ? [""] : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
                   onChanged: (value) {
-                    ItemDrop ii = myListDrop!
-                        .firstWhere((element) => element.text == value);
+                    ItemDrop ii = myListDrop!.firstWhere((element) => element.text == value);
                     singleObject.addAll({item.searchName!.toString(): ii.id});
                   },
                 ),
@@ -546,9 +497,7 @@ class _AddExcelViewBodyState extends State<AddExcelViewBody> {
         );
       }
       //checkbox
-      if (item.insertType == "checkbox" &&
-          item.categoryTitle == categoryName &&
-          condition) {
+      if (item.insertType == "checkbox" && item.categoryTitle == categoryName && condition) {
         bool checkboxValue = false;
         list.add(
           StatefulBuilder(
@@ -561,8 +510,7 @@ class _AddExcelViewBodyState extends State<AddExcelViewBody> {
                     children: [
                       Text(
                         title,
-                        style:
-                            AppStyles.textStyle14.copyWith(color: Colors.black),
+                        style: AppStyles.textStyle14.copyWith(color: Colors.black),
                       ),
                       if (item.isRquired == true)
                         const Icon(
@@ -577,8 +525,7 @@ class _AddExcelViewBodyState extends State<AddExcelViewBody> {
                       checkboxValue = !checkboxValue;
                     });
                     csetState(() {
-                      singleObject
-                          .addAll({item.columnName!.toString(): checkboxValue});
+                      singleObject.addAll({item.columnName!.toString(): checkboxValue});
                     });
                   });
             },
@@ -591,11 +538,8 @@ class _AddExcelViewBodyState extends State<AddExcelViewBody> {
 
   void getColumnListAndAdd(Pages page) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).post(
         endPoint: "home/getGeneralTable",
         data: {
@@ -649,11 +593,8 @@ class _AddExcelViewBodyState extends State<AddExcelViewBody> {
 
   Future<bool> getPermissions(int? pageId) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPagePermissions?pageId=$pageId",
         headers: {
@@ -670,11 +611,8 @@ class _AddExcelViewBodyState extends State<AddExcelViewBody> {
 
   void getDropdownList(int pageId) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       List<dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPageDropDown?pageId=$pageId",
         headers: {
@@ -698,11 +636,8 @@ class _AddExcelViewBodyState extends State<AddExcelViewBody> {
 
   void getDataList() async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> dataProduct = await ApiService(Dio()).post(
         endPoint: "web/Structure/getDataGlobal",
         data: {"TableName": "Product"},

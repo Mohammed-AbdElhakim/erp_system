@@ -2,7 +2,7 @@
   "host_view": "Host",
   "welcome": "WELCOME !",
   "login": "LOG IN",
-  "dynamic_pro":"Dynamic Pro",
+  "dynamic_pro": "Dynamic Pro",
   "username_or_email": "Username or Email",
   "password": "Password",
   "change_host": "Change Host",
@@ -34,27 +34,27 @@
   "btn_delete": "Delete",
   "from": "From",
   "to": "TO",
-  "massage_choose_edit":"Please select the item you want to edit.",
-  "massage_choose_print":"Please select the item you want to print.",
-  "massage_choose_delete":"Please select the item you want to delete.",
+  "massage_choose_edit": "Please select the item you want to edit.",
+  "massage_choose_print": "Please select the item you want to print.",
+  "massage_choose_delete": "Please select the item you want to delete.",
   "massage_number_zero": "Eliminate zero balances.",
   "multiple_choices": "Multiple choices",
   "basic_data": "Basic data",
   "Total_number_of_entries": "Total number of entries : ",
-  "field_is_required":"Field is required",
-  "sure":"sure",
+  "field_is_required": "Field is required",
+  "sure": "sure",
   "massage_no_edit": "It is not possible to modify more than one item.",
   "massage_no_print": "It is not possible to print more than one item.",
   "massage_delete": "Do you want to confirm the deletion of the selected item?",
   "show_more": "Show more",
-  "show_less":"Show less",
+  "show_less": "Show less",
   "clean": "Clean",
   "to_do": "Didn't start",
   "on_progress": "Work has begun on it",
   "under_revision": "Under revision",
   "revision": "Reviewed",
-  "description_task": "Description: " ,
-  "task": "Task: " ,
+  "description_task": "Description: ",
+  "task": "Task: ",
   "start_date": "Start Date: ",
   "end_date": "End Date: ",
   "select_client": "Please select a client.",
@@ -66,24 +66,17 @@
   "tab1": "Distortions",
   "tab2": "Add-ons",
   "tab3": "Deductions",
-
   "notifications": "Notifications",
   "statistics": "Statistics",
   "dashboard": "Dashboard",
-
-
   "profile": "Profile",
   "advance_balance": "Advance Balance",
-  "vacation_balance":"Vacation Balance",
+  "vacation_balance": "Vacation Balance",
   "attendance_days": "Attendance Days",
-  "salary_items":"Salary Items",
-
-
+  "salary_items": "Salary Items",
   "account": "Account",
-  "outgoing":"outgoing",
-  "incoming":"incoming",
-
-
+  "outgoing": "outgoing",
+  "incoming": "incoming",
   "exporting_excel_file": "Exporting Excel File...",
   "preparing_print_file": "Preparing the print file...",
   "exporting_pdf_file": "Exporting Pdf File...",
@@ -91,15 +84,16 @@
   "file_saved_in": "File saved in: ",
   "file_print_saved_in": "The file was printed and saved in: ",
   "no_print_file": "No print file.",
-
-
   "employees": "Employees",
   "employee_name": "Employee Name",
   "date_of_request": "Date of Request",
   "request_of_extend": "Request of Extend",
-  "save":"Save",
-  "add_new": "Add New"
-
-
-
+  "save": "Save",
+  "add_new": "Add New",
+  "time_period": "Time Period",
+  "treasury_liquidation": "Treasury liquidation",
+  "notes": "Notes",
+  "value": "Value",
+  "date": "Date",
+  "save_ok": "Saved successfully"
 }

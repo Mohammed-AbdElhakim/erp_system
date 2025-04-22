@@ -45,10 +45,7 @@ class FileExcelByData extends StatelessWidget {
               children: [
                 Text(
                   S.of(context).exporting_excel_file,
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.blueLight),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.blueLight),
                 ),
                 const SizedBox(height: 8),
                 const CustomLoadingWidget()
@@ -75,8 +72,8 @@ class FileExcelByData extends StatelessWidget {
         });
   }
 
-  Future<String> convertJsonToExcel(BuildContext context, List<dynamic> header,
-      List<dynamic> responseData, String language) async {
+  Future<String> convertJsonToExcel(
+      BuildContext context, List<dynamic> header, List<dynamic> responseData, String language) async {
     if (!await requestStoragePermission()) {
       return S.of(context).permission_denied;
     }
@@ -91,32 +88,25 @@ class FileExcelByData extends StatelessWidget {
     // إنشاء خريطة تربط كل ColumnName باسم العمود المناسب بناءً على اللغة المختارة
     Map<String, String> columnHeaders = {
       for (var col in columnList)
-        col['ColumnName']: language == AppStrings.arLangKey
-            ? col['arColumnLabel']
-            : col['enColumnLabel']
+        col['ColumnName']: language == AppStrings.arLangKey ? col['arColumnLabel'] : col['enColumnLabel']
     };
 
     // استخراج أسماء الأعمدة بالترتيب
     List<String> columnKeys = columnHeaders.keys.toList();
-    List<String> columnLabels =
-        columnKeys.map((key) => columnHeaders[key] ?? key).toList();
+    List<String> columnLabels = columnKeys.map((key) => columnHeaders[key] ?? key).toList();
 
     // إضافة العناوين إلى أول صف في Excel
     sheet.appendRow(columnLabels.map((label) => TextCellValue(label)).toList());
 
     // إضافة البيانات إلى الجدول
     for (var item in dataList) {
-      sheet.appendRow(columnKeys
-          .map((key) => TextCellValue(item[key]?.toString() ?? ''))
-          .toList());
+      sheet.appendRow(columnKeys.map((key) => TextCellValue(item[key]?.toString() ?? '')).toList());
     }
 
     // حفظ الملف
     // Directory? dir = await getApplicationDocumentsDirectory();
     Directory? dir = await FileManager.getAppStorageDirectory();
-    String fileName = lang == AppStrings.arLangKey
-        ? "${pageData.nameAr} - $tabIndex"
-        : "${pageData.nameEn} - $tabIndex";
+    String fileName = lang == AppStrings.arLangKey ? "${pageData.nameAr} - $tabIndex" : "${pageData.nameEn} - $tabIndex";
     String path = "${dir.path}/$fileName.xlsx";
     if (await File(path).exists()) {
       File(path).delete();
@@ -154,11 +144,8 @@ class FileExcelByData extends StatelessWidget {
 
   Future<String> fetchData(BuildContext context) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       data["limit"] = 0;
       // var rrr = jsonEncode(data);
       Map<String, dynamic> response = await ApiService(Dio()).post(
@@ -182,8 +169,7 @@ class FileExcelByData extends StatelessWidget {
             item['Cvisable'] == true;
       }).toList();
       // String jsonString = jsonEncode();
-      String massage = await convertJsonToExcel(
-          context, headerFiltered, response['dynamicList'], lang);
+      String massage = await convertJsonToExcel(context, headerFiltered, response['dynamicList'], lang);
       return massage;
     } catch (e) {
       throw Exception('Error fetching data: $e');
