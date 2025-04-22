@@ -28,6 +28,7 @@ class CustomTableGroup extends StatefulWidget {
     required this.allDropdownModelList,
     required this.pageData,
   });
+
   final Pages pageData;
   final List<String> listHeader;
   final List<dynamic> listData;
@@ -37,6 +38,7 @@ class CustomTableGroup extends StatefulWidget {
   final List<AllDropdownModel> allDropdownModelList;
   final Widget paginationWidget;
   final OnTapHeader<String> onTapHeader;
+
   // final OnTapRow<List<Map<String, dynamic>>> onTapRow;
   final OnTapRow<List<int>> onTapRow;
 
@@ -49,8 +51,10 @@ class _CustomTableGroupState extends State<CustomTableGroup> {
   ScrollController? headerScrollController;
   ScrollController? dataScrollController;
   ScrollController? sumScrollController;
+
   // int? indexColorRow;
   List<bool> selectedRows = [];
+
   // List<Map<String, dynamic>> rowsData = [];
   List<int> rowsData = [];
 
@@ -90,8 +94,7 @@ class _CustomTableGroupState extends State<CustomTableGroup> {
         // }
       },
     );
-    tableDataSource.addColumnGroup(
-        ColumnGroup(name: widget.pageData.outSiderGroupColumn, sortGroupRows: false));
+    tableDataSource.addColumnGroup(ColumnGroup(name: widget.pageData.outSiderGroupColumn, sortGroupRows: false));
 
     super.initState();
   }
@@ -143,6 +146,15 @@ class _CustomTableGroupState extends State<CustomTableGroup> {
           columns: [
             GridColumn(
               width: 0,
+              columnName: widget.pageData.outSiderGroupColumn,
+              label: Container(
+                padding: const EdgeInsets.all(8),
+                alignment: Alignment.center,
+                child: Text(widget.pageData.outSiderGroupColumn),
+              ),
+            ),
+            GridColumn(
+              width: 0,
               columnName: widget.pageData.primary,
               label: Container(
                 padding: const EdgeInsets.all(8),
@@ -185,8 +197,7 @@ class _CustomTableGroupState extends State<CustomTableGroup> {
                     dataRowMinHeight: 50,
                     dataRowMaxHeight: 50,
                     headingRowHeight: 35,
-                    headingRowColor:
-                        WidgetStateProperty.all(AppColors.blueLight),
+                    headingRowColor: WidgetStateProperty.all(AppColors.blueLight),
                     columns: [
                       ...List.generate(
                         widget.listHeader.length,
@@ -195,22 +206,16 @@ class _CustomTableGroupState extends State<CustomTableGroup> {
                             label: InkWell(
                               onTap: () {
                                 buildShowDialog(context,
-                                    text: widget.listSum![0]
-                                            [widget.listKey[index]]
-                                        .toString(),
-                                    allDropdownModelList:
-                                        widget.allDropdownModelList,
+                                    text: widget.listSum![0][widget.listKey[index]].toString(),
+                                    allDropdownModelList: widget.allDropdownModelList,
                                     listName: widget.pageData.listName);
                               },
                               child: SizedBox(
                                 width: 130,
                                 child: Text(
-                                  widget.listSum![0][widget.listKey[index]] ==
-                                          null
+                                  widget.listSum![0][widget.listKey[index]] == null
                                       ? ""
-                                      : widget.listSum![0]
-                                              [widget.listKey[index]]
-                                          .toString(),
+                                      : widget.listSum![0][widget.listKey[index]].toString(),
                                   // widget.listHeader[index],
                                   textAlign: TextAlign.center,
                                   style: AppStyles.textStyle14,
@@ -234,8 +239,7 @@ class _CustomTableGroupState extends State<CustomTableGroup> {
     );
   }
 
-  bool containsAllKeyValuePairs(
-      Map<String, dynamic> map1, Map<String, dynamic> map2) {
+  bool containsAllKeyValuePairs(Map<String, dynamic> map1, Map<String, dynamic> map2) {
     return map2.entries.every((entry) {
       final key = entry.key;
       final value = entry.value;
@@ -252,6 +256,7 @@ class TableDataSource extends DataGridSource {
   final Pages pageData;
   final List<AllDropdownModel> allDropdownModelList;
   final OnTapRow<int> onTapRowGroup;
+
   TableDataSource({
     required this.listColumn,
     required this.context,
@@ -263,11 +268,11 @@ class TableDataSource extends DataGridSource {
   }) {
     dataGridRows = data.map<DataGridRow>((e) {
       return DataGridRow(cells: [
+        DataGridCell(columnName: pageData.outSiderGroupColumn, value: e[pageData.outSiderGroupColumn]),
         DataGridCell(columnName: pageData.primary, value: e[pageData.primary]),
         ...List.generate(
           keys.length,
-          (index) => DataGridCell(
-              columnName: keys[index], value: "${e[keys[index]] ?? ""}"),
+          (index) => DataGridCell(columnName: keys[index], value: "${e[keys[index]] ?? ""}"),
         )
       ]);
     }).toList();
@@ -282,16 +287,13 @@ class TableDataSource extends DataGridSource {
   DataGridRowAdapter buildRow(DataGridRow row) {
     int indexRow = dataGridRows.indexOf(row);
     return DataGridRowAdapter(
-        color: data[indexRow][pageData.columnColor] != null
-            ? hexToColor(data[indexRow][pageData.columnColor])
-            : null,
+        color: data[indexRow][pageData.columnColor] != null ? hexToColor(data[indexRow][pageData.columnColor]) : null,
         cells: row.getCells().map<Widget>((e) {
           ColumnList columnList;
-          if (e.columnName.toString() == pageData.primary) {
+          if (e.columnName.toString() == pageData.primary || e.columnName.toString() == pageData.outSiderGroupColumn) {
             columnList = listColumn[0];
           } else {
-            columnList = listColumn
-                .firstWhere((element) => element.columnName == e.columnName);
+            columnList = listColumn.firstWhere((element) => element.columnName == e.columnName);
           }
 
           return InkWell(
@@ -320,12 +322,10 @@ class TableDataSource extends DataGridSource {
   }
 
   @override
-  Widget? buildGroupCaptionCellWidget(
-      RowColumnIndex rowColumnIndex, String summaryValue) {
+  Widget? buildGroupCaptionCellWidget(RowColumnIndex rowColumnIndex, String summaryValue) {
     String? titleGroup = RegExp(r'\d+').firstMatch(summaryValue)?.group(0);
     // String titleGroup = summaryValue.split(":")[1].trim().split('-')[0].trim();
-    Map<String, dynamic> item = data.firstWhere(
-        (element) => element[pageData.outSiderGroupColumn] == int.parse(titleGroup!));
+    Map<String, dynamic> item = data.firstWhere((element) => element[pageData.outSiderGroupColumn] == int.parse(titleGroup!));
     bool select = false;
     return StatefulBuilder(
       builder: (context, ssetState) {
@@ -337,8 +337,7 @@ class TableDataSource extends DataGridSource {
             onTapRowGroup(item['PaymentID']);
           },
           child: Container(
-            color:
-                select == true ? AppColors.blueGreyDark : Colors.blue.shade100,
+            color: select == true ? AppColors.blueGreyDark : Colors.blue.shade100,
             alignment: AlignmentDirectional.centerStart,
             child: Row(
               children: [
@@ -369,10 +368,7 @@ class TableDataSource extends DataGridSource {
   }) {
     switch (columnList.insertType) {
       case "date":
-        String date = value.isNotEmpty
-            ? DateFormat("yyyy-MM-dd", "en")
-                .format(DateTime.parse(value).toLocal())
-            : '';
+        String date = value.isNotEmpty ? DateFormat("yyyy-MM-dd", "en").format(DateTime.parse(value).toLocal()) : '';
         return Text(
           textAlign: TextAlign.center,
           maxLines: 1,
@@ -408,8 +404,7 @@ class TableDataSource extends DataGridSource {
           }
 
           for (var item in listDrop!) {
-            if (item.columnName == columnList.columnName &&
-                item.nameAr == columnList.arColumnLabel) {
+            if (item.columnName == columnList.columnName && item.nameAr == columnList.arColumnLabel) {
               myListDrop = item.list;
             }
           }
