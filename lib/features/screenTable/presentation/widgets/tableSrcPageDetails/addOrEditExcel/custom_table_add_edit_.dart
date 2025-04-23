@@ -31,6 +31,7 @@ class CustomTableAddEdit extends StatefulWidget {
     required this.oldTableList,
     required this.typeView,
   });
+
   final ListTaps? tapData;
   final Pages pageData;
   final List<String> listHeader;
@@ -55,6 +56,7 @@ class _CustomTableAddEditState extends State<CustomTableAddEdit> {
   late int productId;
   int indexSelect = -1;
   bool select = false;
+
   @override
   void initState() {
     headerScrollController = controllerGroup.addAndGet();
@@ -149,8 +151,7 @@ class _CustomTableAddEditState extends State<CustomTableAddEdit> {
                 backgroundColor: AppColors.blue,
               ),
             ),
-            if (widget.tapData!.tableSrc == "ProductProcess" ||
-                widget.tapData!.tableSrc == "ProductProcessOut")
+            if (widget.tapData!.tableSrc == "ProductProcess" || widget.tapData!.tableSrc == "ProductProcessOut")
               IconButton(
                 onPressed: () async {
                   final resultScanner = await Navigator.push(
@@ -237,6 +238,9 @@ class _CustomTableAddEditState extends State<CustomTableAddEdit> {
                   showDialog(
                     context: context,
                     builder: (context) {
+                      if (indexSelect < 0) {
+                        return const SizedBox(); // أو اعرض رسالة/Widget بديل
+                      }
                       return AlertDialog(
                         content: AlertDialogEditWidget(
                           tapData: widget.tapData,
@@ -259,8 +263,9 @@ class _CustomTableAddEditState extends State<CustomTableAddEdit> {
                             }
                           },
                           dataOld: widget.typeView == "Add"
-                              ? tableListInAddView[indexSelect]
-                              : tableListInEditView[indexSelect],
+                              ? (indexSelect >= 0 ? tableListInAddView[indexSelect] : {})
+                              : (indexSelect >= 0 ? tableListInEditView[indexSelect] : {}),
+                          // dataOld: widget.typeView == "Add" ? tableListInAddView[indexSelect] : tableListInEditView[indexSelect],
                         ),
                       );
                     },
@@ -350,9 +355,7 @@ class _CustomTableAddEditState extends State<CustomTableAddEdit> {
                   )
                 ],
                 rows: List.generate(
-                  widget.typeView == "Add"
-                      ? tableListInAddView.length
-                      : tableListInEditView.length,
+                  widget.typeView == "Add" ? tableListInAddView.length : tableListInEditView.length,
                   (index) {
                     return DataRow(
                       cells: [
@@ -390,20 +393,14 @@ class _CustomTableAddEditState extends State<CustomTableAddEdit> {
                                         buildShowDialogText(
                                           context,
                                           text: widget.typeView == "Add"
-                                              ? tableListInAddView[index]
-                                                  [widget.listColumn[i].columnName]
-                                              : tableListInEditView[index]
-                                                  [widget.listColumn[i].columnName],
+                                              ? (tableListInAddView[index][widget.listColumn[i].columnName] ?? "").toString()
+                                              : (tableListInEditView[index][widget.listColumn[i].columnName] ?? "").toString(),
                                         );
                                       }
                                     : null,
                                 child: Container(
-                                  color: indexSelect == index
-                                      ? AppColors.blueGreyDark
-                                      : Colors.transparent,
-                                  width: widget.listColumn[i].toString().length > 12
-                                      ? 100
-                                      : null,
+                                  color: indexSelect == index ? AppColors.blueGreyDark : Colors.transparent,
+                                  width: widget.listColumn[i].toString().length > 12 ? 100 : null,
                                   alignment: Alignment.center,
                                   child: buildMyWidget(widget.listColumn[i], index),
                                 ),
@@ -471,13 +468,9 @@ class _CustomTableAddEditState extends State<CustomTableAddEdit> {
 
   buildMyWidget(ItemListSetupModel columnList, int indexRow) {
     String data;
-    Map<String, dynamic> dataRow = widget.typeView == "Add"
-        ? tableListInAddView[indexRow]
-        : tableListInEditView[indexRow];
+    Map<String, dynamic> dataRow = widget.typeView == "Add" ? tableListInAddView[indexRow] : tableListInEditView[indexRow];
     if (dataRow.containsKey(columnList.columnName)) {
-      data = dataRow[columnList.columnName] == null
-          ? ""
-          : dataRow[columnList.columnName].toString();
+      data = dataRow[columnList.columnName] == null ? "" : dataRow[columnList.columnName].toString();
     } else {
       data = '';
     }
@@ -502,9 +495,7 @@ class _CustomTableAddEditState extends State<CustomTableAddEdit> {
 
     switch (columnList.insertType) {
       case "date":
-        String date = data.isNotEmpty
-            ? DateFormat("yyyy-MM-dd", "en").format(DateTime.parse(data).toLocal())
-            : '';
+        String date = data.isNotEmpty ? DateFormat("yyyy-MM-dd", "en").format(DateTime.parse(data).toLocal()) : '';
         return Text(
           textAlign: TextAlign.center,
           maxLines: 1,
@@ -545,8 +536,7 @@ class _CustomTableAddEditState extends State<CustomTableAddEdit> {
         }
 
         for (var item in listDrop!) {
-          if (item.columnName == columnList.columnName &&
-              item.nameAr == columnList.arColumnLabel) {
+          if (item.columnName == columnList.columnName && item.nameAr == columnList.arColumnLabel) {
             myListDrop = item.list;
           }
         }
