@@ -1,4 +1,3 @@
-import 'package:erp_system/features/screenTable/presentation/widgets/tableSrcPageDetails/purchases/add_purchases.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:linked_scroll_controller/linked_scroll_controller.dart';
