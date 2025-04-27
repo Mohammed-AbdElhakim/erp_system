@@ -21,13 +21,10 @@ import '../widgets/tableSrcPageDetails/productProcess/add_product_process.dart';
 import '../widgets/tableSrcPageDetails/productProcessOut/add_product_process_out.dart';
 import '../widgets/tableSrcPageDetails/productionProsecc/add_production_prosecc.dart';
 import '../widgets/tableSrcPageDetails/purchases/add_purchases.dart';
+import '../widgets/tableSrcPageDetails/supplyOrder/add_supply_order.dart';
 
 class AddView extends StatelessWidget {
-  const AddView(
-      {super.key,
-      required this.columnList,
-      required this.pageData,
-      required this.listKey});
+  const AddView({super.key, required this.columnList, required this.pageData, required this.listKey});
 
   final List<ColumnList> columnList;
   final Pages pageData;
@@ -45,30 +42,19 @@ class AddView extends StatelessWidget {
         body: MultiBlocProvider(
           providers: [
             BlocProvider(
-              create: (context) =>
-                  GetPageDetailsCubit(getIt.get<ScreenRepoImpl>())
-                    ..getPageDetails(pageData.pageId),
+              create: (context) => GetPageDetailsCubit(getIt.get<ScreenRepoImpl>())..getPageDetails(pageData.pageId),
             ),
             BlocProvider(
-              create: (context) =>
-                  GetSalesInvoiceDetailsCubit(getIt.get<ScreenRepoImpl>()),
+              create: (context) => GetSalesInvoiceDetailsCubit(getIt.get<ScreenRepoImpl>()),
             ),
           ],
           child: BlocBuilder<GetPageDetailsCubit, GetPageDetailsState>(
             builder: (context, state) {
               if (state is GetPageDetailsSuccess) {
-                String listName = state.tapModel.list.isEmpty
-                    ? ""
-                    : state.tapModel.list[0].listName;
+                String listName = state.tapModel.list.isEmpty ? "" : state.tapModel.list[0].listName;
                 return BlocProvider(
-                  create: (context) =>
-                      GetListSetupsCubit(getIt.get<ScreenRepoImpl>())
-                        ..getListSetups(listName),
-                  child: getMyWidget(
-                      state.tapModel.list.isEmpty
-                          ? ""
-                          : state.tapModel.list[0].tableSrc,
-                      state),
+                  create: (context) => GetListSetupsCubit(getIt.get<ScreenRepoImpl>())..getListSetups(listName),
+                  child: getMyWidget(state.tapModel.list.isEmpty ? "" : state.tapModel.list[0].tableSrc, state),
                 );
               } else if (state is GetPageDetailsFailure) {
                 return CustomErrorMassage(errorMassage: state.errorMassage);
@@ -113,29 +99,24 @@ class AddView extends StatelessWidget {
           listKey: listKey,
         );
       case "extractionSupplierTable":
-        return AddExtractionSupplierTable(
-            tapData: state.tapModel.list[0],
-            pageData: pageData,
-            listKey: listKey);
+        return AddExtractionSupplierTable(tapData: state.tapModel.list[0], pageData: pageData, listKey: listKey);
       case "ProductProcess":
-        return AddProductProcess(
-            tapData: state.tapModel.list[0],
-            pageData: pageData,
-            listKey: listKey);
+        return AddProductProcess(tapData: state.tapModel.list[0], pageData: pageData, listKey: listKey);
       case "ProductProcessOut":
-        return AddProductProcessOut(
-            tapData: state.tapModel.list[0],
-            pageData: pageData,
-            listKey: listKey);
+        return AddProductProcessOut(tapData: state.tapModel.list[0], pageData: pageData, listKey: listKey);
 
       case "productionProsecc":
-        return AddProductionProsecc(
-            tapData: state.tapModel.list[0],
-            pageData: pageData,
-            listKey: listKey);
+        return AddProductionProsecc(tapData: state.tapModel.list[0], pageData: pageData, listKey: listKey);
       case "CustomerOrder":
         //أوامر البيع
         return AddCustomerOrder(
+          tapData: state.tapModel.list[0],
+          pageData: pageData,
+          listKey: listKey,
+        );
+      //اذن توريد مورد
+      case "SupplyOrder":
+        return AddSupplyOrder(
           tapData: state.tapModel.list[0],
           pageData: pageData,
           listKey: listKey,

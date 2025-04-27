@@ -5,6 +5,7 @@ import 'package:erp_system/core/widgets/custom_loading_widget.dart';
 import 'package:erp_system/features/screenTable/data/repositories/screen_repo_impl.dart';
 import 'package:erp_system/features/screenTable/presentation/manager/getListSetups/get_list_setups_cubit.dart';
 import 'package:erp_system/features/screenTable/presentation/manager/getPageDetails/get_page_details_cubit.dart';
+import 'package:erp_system/features/screenTable/presentation/widgets/tableSrcPageDetails/supplyOrder/edit_supply_order.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -21,11 +22,7 @@ import '../widgets/tableSrcPageDetails/productionProsecc/edit_production_prosecc
 import '../widgets/tableSrcPageDetails/purchases/edit_purchases.dart';
 
 class EditView extends StatefulWidget {
-  const EditView(
-      {super.key,
-      required this.columnList,
-      required this.pageData,
-      required this.listKey});
+  const EditView({super.key, required this.columnList, required this.pageData, required this.listKey});
 
   final List<ColumnList> columnList;
   final Pages pageData;
@@ -46,24 +43,14 @@ class _EditViewState extends State<EditView> {
             title: "",
           ),
           body: BlocProvider(
-            create: (context) =>
-                GetPageDetailsCubit(getIt.get<ScreenRepoImpl>())
-                  ..getPageDetails(widget.pageData.pageId),
+            create: (context) => GetPageDetailsCubit(getIt.get<ScreenRepoImpl>())..getPageDetails(widget.pageData.pageId),
             child: BlocBuilder<GetPageDetailsCubit, GetPageDetailsState>(
               builder: (context, state) {
                 if (state is GetPageDetailsSuccess) {
-                  String listName = state.tapModel.list.isEmpty
-                      ? ""
-                      : state.tapModel.list[0].listName;
+                  String listName = state.tapModel.list.isEmpty ? "" : state.tapModel.list[0].listName;
                   return BlocProvider(
-                    create: (context) =>
-                        GetListSetupsCubit(getIt.get<ScreenRepoImpl>())
-                          ..getListSetups(listName),
-                    child: getMyWidget(
-                        state.tapModel.list.isEmpty
-                            ? ""
-                            : state.tapModel.list[0].tableSrc,
-                        state),
+                    create: (context) => GetListSetupsCubit(getIt.get<ScreenRepoImpl>())..getListSetups(listName),
+                    child: getMyWidget(state.tapModel.list.isEmpty ? "" : state.tapModel.list[0].tableSrc, state),
                   );
                 } else if (state is GetPageDetailsFailure) {
                   return CustomErrorMassage(errorMassage: state.errorMassage);
@@ -98,28 +85,23 @@ class _EditViewState extends State<EditView> {
           listKey: widget.listKey,
         );
       case "extractionSupplierTable":
-        return EditExtractionSupplierTable(
-            tapData: state.tapModel.list[0],
-            pageData: widget.pageData,
-            listKey: widget.listKey);
+        return EditExtractionSupplierTable(tapData: state.tapModel.list[0], pageData: widget.pageData, listKey: widget.listKey);
       case "ProductProcess":
-        return EditProductProcess(
-            tapData: state.tapModel.list[0],
-            pageData: widget.pageData,
-            listKey: widget.listKey);
+        return EditProductProcess(tapData: state.tapModel.list[0], pageData: widget.pageData, listKey: widget.listKey);
       case "ProductProcessOut":
-        return EditProductProcessOut(
-            tapData: state.tapModel.list[0],
-            pageData: widget.pageData,
-            listKey: widget.listKey);
+        return EditProductProcessOut(tapData: state.tapModel.list[0], pageData: widget.pageData, listKey: widget.listKey);
       case "productionProsecc":
-        return EditProductionProsecc(
-            tapData: state.tapModel.list[0],
-            pageData: widget.pageData,
-            listKey: widget.listKey);
+        return EditProductionProsecc(tapData: state.tapModel.list[0], pageData: widget.pageData, listKey: widget.listKey);
       case "CustomerOrder":
         //أوامر البيع
         return EditCustomerOrder(
+          tapData: state.tapModel.list[0],
+          pageData: widget.pageData,
+          listKey: widget.listKey,
+        );
+      //اذن توريد مورد
+      case "SupplyOrder":
+        return EditSupplyOrder(
           tapData: state.tapModel.list[0],
           pageData: widget.pageData,
           listKey: widget.listKey,
