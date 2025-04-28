@@ -20,6 +20,7 @@ import '../widgets/tableSrcPageDetails/productProcess/edit_product_process.dart'
 import '../widgets/tableSrcPageDetails/productProcessOut/edit_product_process_out.dart';
 import '../widgets/tableSrcPageDetails/productionProsecc/edit_production_prosecc.dart';
 import '../widgets/tableSrcPageDetails/purchases/edit_purchases.dart';
+import '../widgets/tableSrcPageDetails/supplierOffer/edit_supplier_offer.dart';
 
 class EditView extends StatefulWidget {
   const EditView({super.key, required this.columnList, required this.pageData, required this.listKey});
@@ -102,6 +103,13 @@ class _EditViewState extends State<EditView> {
       //اذن توريد مورد
       case "SupplyOrder":
         return EditSupplyOrder(
+          tapData: state.tapModel.list[0],
+          pageData: widget.pageData,
+          listKey: widget.listKey,
+        );
+      //عروض اسعار عملاء
+      case "supplierOffer":
+        return EditSupplierOffer(
           tapData: state.tapModel.list[0],
           pageData: widget.pageData,
           listKey: widget.listKey,

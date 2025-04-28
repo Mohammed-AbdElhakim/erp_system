@@ -21,6 +21,7 @@ import '../widgets/tableSrcPageDetails/productProcess/add_product_process.dart';
 import '../widgets/tableSrcPageDetails/productProcessOut/add_product_process_out.dart';
 import '../widgets/tableSrcPageDetails/productionProsecc/add_production_prosecc.dart';
 import '../widgets/tableSrcPageDetails/purchases/add_purchases.dart';
+import '../widgets/tableSrcPageDetails/supplierOffer/add_supplier_offer.dart';
 import '../widgets/tableSrcPageDetails/supplyOrder/add_supply_order.dart';
 
 class AddView extends StatelessWidget {
@@ -117,6 +118,13 @@ class AddView extends StatelessWidget {
       //اذن توريد مورد
       case "SupplyOrder":
         return AddSupplyOrder(
+          tapData: state.tapModel.list[0],
+          pageData: pageData,
+          listKey: listKey,
+        );
+      //عروض اسعار عملاء
+      case "supplierOffer":
+        return AddSupplierOffer(
           tapData: state.tapModel.list[0],
           pageData: pageData,
           listKey: listKey,
