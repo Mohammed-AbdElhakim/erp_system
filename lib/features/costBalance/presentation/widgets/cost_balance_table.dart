@@ -1,6 +1,3 @@
-import 'dart:math';
-
-import 'package:erp_system/features/costBalance/presentation/widgets/pagination_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:linked_scroll_controller/linked_scroll_controller.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
@@ -10,7 +7,6 @@ import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/widgets/custom_text_form_field.dart';
-import '../../../../generated/l10n.dart';
 import '../../data/models/cost_balance_model.dart';
 import 'cost_balance_data_source.dart';
 import 'footer_table.dart';

@@ -7,10 +7,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/helper/SharedPreferences/pref.dart';
 import '../../../../core/utils/api_service.dart';
-import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../../../../core/utils/app_styles.dart';
-import '../../../../core/widgets/custom_date.dart';
 import '../../../../core/widgets/custom_dropdown_list.dart';
 import '../../../../core/widgets/custom_error_massage.dart';
 import '../../../../core/widgets/custom_loading_widget.dart';
@@ -88,7 +86,6 @@ class _CostBalanceViewBodyState extends State<CostBalanceViewBody> {
                             customerIDs.isNotEmpty ||
                             productID != 0 ||
                             supplierID != 0) {
-                          print("====================$dateFrom");
                           BlocProvider.of<CostBalanceCubit>(context).getCostBalance(
                             bodyRequest: bodyRequest,
                           );
@@ -117,7 +114,6 @@ class _CostBalanceViewBodyState extends State<CostBalanceViewBody> {
                                 customerIDs.isNotEmpty ||
                                 productID != 0 ||
                                 supplierID != 0)) {
-                          print("====================$dateTo");
                           BlocProvider.of<CostBalanceCubit>(context).getCostBalance(
                             bodyRequest: bodyRequest,
                           );
@@ -141,7 +137,6 @@ class _CostBalanceViewBodyState extends State<CostBalanceViewBody> {
                     }
                   });
                   if (dateFrom.isNotEmpty) {
-                    print("====================$costItemID");
                     BlocProvider.of<CostBalanceCubit>(context).getCostBalance(
                       bodyRequest: bodyRequest,
                     );
@@ -163,7 +158,6 @@ class _CostBalanceViewBodyState extends State<CostBalanceViewBody> {
                     }
                   });
                   if (dateFrom.isNotEmpty) {
-                    print("====================${currencyIDS.first}");
                     BlocProvider.of<CostBalanceCubit>(context).getCostBalance(
                       bodyRequest: bodyRequest,
                     );
@@ -206,7 +200,6 @@ class _CostBalanceViewBodyState extends State<CostBalanceViewBody> {
                     }
                   });
                   if (dateFrom.isNotEmpty) {
-                    print("====================$productID");
                     BlocProvider.of<CostBalanceCubit>(context).getCostBalance(
                       bodyRequest: bodyRequest,
                     );
@@ -228,7 +221,6 @@ class _CostBalanceViewBodyState extends State<CostBalanceViewBody> {
                     }
                   });
                   if (dateFrom.isNotEmpty) {
-                    print("====================$productID");
                     BlocProvider.of<CostBalanceCubit>(context).getCostBalance(
                       bodyRequest: bodyRequest,
                     );
@@ -249,7 +241,6 @@ class _CostBalanceViewBodyState extends State<CostBalanceViewBody> {
                     }
                   });
                   if (dateFrom.isNotEmpty) {
-                    print("====================$supplierID");
                     BlocProvider.of<CostBalanceCubit>(context).getCostBalance(
                       bodyRequest: bodyRequest,
                     );
