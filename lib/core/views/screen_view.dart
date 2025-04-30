@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 
 import '../../features/Reports/presentation/views/reports_view.dart';
@@ -45,6 +46,8 @@ class ScreenView extends StatelessWidget {
         return DailyFrenchCashView(pageData: pageData);
       case "cashMony":
         return CashMoneyView(pageData: pageData);
+      case "trialCustomers":
+        return InventoryProduct(pageData: pageData);
       case "general":
         switch (pageData.tableSrc) {
           case "profit":
@@ -69,6 +72,7 @@ class ScreenView extends StatelessWidget {
             return StoreShowView(pageData: pageData);
           case "ProjectProcess":
             return ProjectProcessView(pageData: pageData);
+          case "trialSupplier":
           case "inventoryProduct":
             return InventoryProduct(pageData: pageData);
           case "TaxDeclaration":

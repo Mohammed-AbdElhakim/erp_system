@@ -13,6 +13,7 @@ import '../../data/repositories/trial_balance_repo_impl.dart';
 import '../manager/inventoryProduct/inventory_product_cubit.dart';
 import '../widgets/inventory_product_body.dart';
 
+// هذه الصفحه ل ميزان المراجعة للمنتجات و ميزان مراجعة للعملاء و ميزان مراجعه للموردين
 class InventoryProduct extends StatefulWidget {
   const InventoryProduct({super.key, required this.pageData});
 
@@ -50,9 +51,7 @@ class _InventoryProductState extends State<InventoryProduct> {
                         child: Padding(
                           padding: const EdgeInsets.only(top: 12),
                           child: Text(
-                            lang == AppStrings.enLangKey
-                                ? widget.pageData.nameEn
-                                : widget.pageData.nameAr,
+                            lang == AppStrings.enLangKey ? widget.pageData.nameEn : widget.pageData.nameAr,
                             maxLines: 1,
                             textAlign: TextAlign.center,
                             style: AppStyles.textStyle26,
@@ -62,7 +61,9 @@ class _InventoryProductState extends State<InventoryProduct> {
                     : const SizedBox(
                         height: 25,
                       ),
-                const InventoryProductBody(),
+                InventoryProductBody(
+                  pageData: widget.pageData,
+                ),
               ],
             ),
           ),

@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:dio/dio.dart';
+import 'package:erp_system/core/models/menu_model/pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -21,7 +22,9 @@ import '../manager/inventoryProduct/inventory_product_cubit.dart';
 import 'inventory_product_table.dart';
 
 class InventoryProductBody extends StatefulWidget {
-  const InventoryProductBody({super.key});
+  const InventoryProductBody({super.key, required this.pageData});
+
+  final Pages pageData;
 
   @override
   State<InventoryProductBody> createState() => _InventoryProductBodyState();
@@ -30,10 +33,25 @@ class InventoryProductBody extends StatefulWidget {
 class _InventoryProductBodyState extends State<InventoryProductBody> {
   String dateFrom = "", dateTo = "";
   int storePram = 0;
+  late int type;
   List<DropdownItem> dropdownItems = [];
+
   @override
   void initState() {
     fetchDropdownItems();
+    if (widget.pageData.url == "trialCustomers") {
+      //ميزان مراجعة للعملاء
+      type = 2;
+    } else if (widget.pageData.url == "general") {
+      if (widget.pageData.tableSrc == "trialSupplier") {
+        //ميزان مراجعه للموردين
+        type = 3;
+      } else if (widget.pageData.tableSrc == "inventoryProduct") {
+        //ميزان المراجعة للمنتجات
+        type = 6;
+      }
+    }
+
     super.initState();
   }
 
@@ -58,10 +76,9 @@ class _InventoryProductBodyState extends State<InventoryProductBody> {
                               dateFrom = date;
                             });
                             if (dateTo.isNotEmpty) {
-                              BlocProvider.of<InventoryProductCubit>(context)
-                                  .getInventoryProduct(
-                                inventoryProductBody: InventoryProductBodyModel(
-                                    datefrom: dateFrom, dateto: dateTo, pram: storePram),
+                              BlocProvider.of<InventoryProductCubit>(context).getInventoryProduct(
+                                inventoryProductBody:
+                                    InventoryProductBodyModel(datefrom: dateFrom, dateto: dateTo, pram: storePram, type: type),
                               );
                             }
                           },
@@ -83,13 +100,9 @@ class _InventoryProductBodyState extends State<InventoryProductBody> {
                               dateTo = date;
                             });
                             if (dateFrom.isNotEmpty) {
-                              BlocProvider.of<InventoryProductCubit>(context)
-                                  .getInventoryProduct(
-                                inventoryProductBody: InventoryProductBodyModel(
-                                  datefrom: dateFrom,
-                                  dateto: dateTo,
-                                  pram: storePram,
-                                ),
+                              BlocProvider.of<InventoryProductCubit>(context).getInventoryProduct(
+                                inventoryProductBody:
+                                    InventoryProductBodyModel(datefrom: dateFrom, dateto: dateTo, pram: storePram, type: type),
                               );
                             }
                           },
@@ -100,53 +113,52 @@ class _InventoryProductBodyState extends State<InventoryProductBody> {
                 ],
               ),
               const SizedBox(height: 8),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text("المخزن"),
-                  StatefulBuilder(
-                    builder: (context, dropSetState) {
-                      return SizedBox(
-                        height: 40,
-                        child: CustomDropdown<DropdownItem>.search(
-                          hintText: '',
-                          closedHeaderPadding:
-                              const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                          decoration: CustomDropdownDecoration(
-                            headerStyle:
-                                AppStyles.textStyle16.copyWith(color: Colors.black),
-                            closedFillColor: Colors.transparent,
-                            closedBorder: Border.all(color: AppColors.blueDark),
-                          ),
-                          items: dropdownItems,
-                          onChanged: (selectValue) {
-                            dropSetState(() {
-                              storePram = int.parse(selectValue!.value!);
-                              if (dateTo.isNotEmpty && dateFrom.isNotEmpty) {
-                                BlocProvider.of<InventoryProductCubit>(context)
-                                    .getInventoryProduct(
-                                  inventoryProductBody: InventoryProductBodyModel(
+              if (widget.pageData.tableSrc == "inventoryProduct") //لصفحه ميزان المراجعة للمنتجات
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text("المخزن"),
+                    StatefulBuilder(
+                      builder: (context, dropSetState) {
+                        return SizedBox(
+                          height: 40,
+                          child: CustomDropdown<DropdownItem>.search(
+                            hintText: '',
+                            closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                            decoration: CustomDropdownDecoration(
+                              headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
+                              closedFillColor: Colors.transparent,
+                              closedBorder: Border.all(color: AppColors.blueDark),
+                            ),
+                            items: dropdownItems,
+                            onChanged: (selectValue) {
+                              dropSetState(() {
+                                storePram = int.parse(selectValue!.value!);
+                                if (dateTo.isNotEmpty && dateFrom.isNotEmpty) {
+                                  BlocProvider.of<InventoryProductCubit>(context).getInventoryProduct(
+                                    inventoryProductBody: InventoryProductBodyModel(
                                       datefrom: dateFrom,
                                       dateto: dateTo,
-                                      pram: storePram),
-                                );
-                              }
-                            });
-                          },
-                        ),
-                      );
-                    },
-                  ),
-                ],
-              ),
+                                      pram: storePram,
+                                      type: type,
+                                    ),
+                                  );
+                                }
+                              });
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
             ],
           ),
         ),
         BlocBuilder<InventoryProductCubit, InventoryProductState>(
           builder: (context, state) {
             if (state is InventoryProductSuccess) {
-              List<InventoryProductModel> inventoryProductList =
-                  state.inventoryProductModel;
+              List<InventoryProductModel> inventoryProductList = state.inventoryProductModel;
               return InventoryProductTable(
                 inventoryProductList: inventoryProductList,
                 // selectionItemsShow: selectionItems,
@@ -169,20 +181,17 @@ class _InventoryProductBodyState extends State<InventoryProductBody> {
 
   void fetchDropdownItems() async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> dropdownData = await ApiService(Dio()).get(
-        endPoint:
-            "home/getDropDown?DroModel=storeView&DroValue=SID&DroText=SName&DroCondition=&DroCompany=",
+        endPoint: "home/getDropDown?DroModel=storeView&DroValue=SID&DroText=SName&DroCondition=&DroCompany=",
         headers: {
           "Authorization": "Bearer $token",
           "CompanyKey": companyKey,
         },
       );
       setState(() {
-        dropdownItems =
-            DropdownModel.fromJson(dropdownData).list!; // عدّل المفتاح حسب API
+        dropdownItems = DropdownModel.fromJson(dropdownData).list!; // عدّل المفتاح حسب API
       });
     } catch (e) {
       log('Error fetching data: $e');

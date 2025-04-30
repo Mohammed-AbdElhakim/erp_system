@@ -1,13 +1,16 @@
 class InventoryProductBodyModel {
   late final String datefrom;
   late final String dateto;
+
   // late final int comID;
   // late final bool iszero;
   // late final int limit;
   // late final int page;
   late final int pram;
+
   // late final int totalRecords;
   late final int type;
+
   // late final bool iscompany;
 
   InventoryProductBodyModel({
@@ -19,7 +22,7 @@ class InventoryProductBodyModel {
     // required this.page,
     required this.pram,
     // required this.totalRecords,
-    this.type = 6,
+    required this.type,
     // required this.iscompany
   });
 

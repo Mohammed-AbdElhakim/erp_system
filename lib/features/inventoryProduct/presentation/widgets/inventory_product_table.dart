@@ -22,7 +22,9 @@ class InventoryProductTable extends StatefulWidget {
     required this.inventoryProductList,
     // required this.selectionItemsShow,
   });
+
   final List<InventoryProductModel> inventoryProductList;
+
   // final List<String> selectionItemsShow;
 
   @override
@@ -59,12 +61,9 @@ class _InventoryProductTableState extends State<InventoryProductTable> {
   Widget build(BuildContext context) {
     final int start = (_page - 1) * _perPage;
     final int end = min(start + _perPage, inventoryProductListShow.length);
-    final List<InventoryProductModel> dataToShow =
-        inventoryProductListShow.sublist(start, end);
+    final List<InventoryProductModel> dataToShow = inventoryProductListShow.sublist(start, end);
     inventoryProductDataSource = InventoryProductDataSource(
-        inventoryProduct: dataToShow,
-        controllerSearch: controllerSearch.text,
-        selectionItemsShow: selectionItems);
+        inventoryProduct: dataToShow, controllerSearch: controllerSearch.text, selectionItemsShow: selectionItems);
     return Column(
       children: [
         Row(
@@ -72,8 +71,7 @@ class _InventoryProductTableState extends State<InventoryProductTable> {
           children: [
             Expanded(
               child: StatefulBuilder(
-                builder:
-                    (BuildContext context, void Function(void Function()) nsetState) {
+                builder: (BuildContext context, void Function(void Function()) nsetState) {
                   return CheckboxListTile(
                       contentPadding: EdgeInsets.zero,
                       value: checkboxValue,
@@ -87,9 +85,7 @@ class _InventoryProductTableState extends State<InventoryProductTable> {
                           checkboxValue = !checkboxValue;
                         });
                         if (checkboxValue) {
-                          inventoryProductListShow = widget.inventoryProductList
-                              .where((element) => element.mony! > 0)
-                              .toList();
+                          inventoryProductListShow = widget.inventoryProductList.where((element) => element.mony! != 0).toList();
                         } else {
                           inventoryProductListShow = widget.inventoryProductList;
                         }
@@ -138,8 +134,7 @@ class _InventoryProductTableState extends State<InventoryProductTable> {
               stackedHeaderRows: <StackedHeaderRow>[buildCustomStackedHeaderRow()],
               selectionMode: SelectionMode.singleDeselect,
               onCellLongPress: (DataGridCellLongPressDetails details) {
-                final String value = inventoryProductDataSource
-                    .effectiveRows[details.rowColumnIndex.rowIndex - 2]
+                final String value = inventoryProductDataSource.effectiveRows[details.rowColumnIndex.rowIndex - 2]
                     .getCells()[details.rowColumnIndex.columnIndex]
                     .value
                     .toString();
@@ -209,9 +204,7 @@ class _InventoryProductTableState extends State<InventoryProductTable> {
             onChanged: (value) {
               setState(() {
                 inventoryProductDataSource = InventoryProductDataSource(
-                    inventoryProduct: inventoryProductListShow,
-                    controllerSearch: value,
-                    selectionItemsShow: selectionItems);
+                    inventoryProduct: inventoryProductListShow, controllerSearch: value, selectionItemsShow: selectionItems);
               });
             },
           ),
@@ -271,22 +264,17 @@ class _InventoryProductTableState extends State<InventoryProductTable> {
 
   StackedHeaderRow buildCustomStackedHeaderRow() {
     return StackedHeaderRow(cells: [
-      StackedHeaderCell(
-          columnNames: ['acName'],
-          child: Center(child: Text('الحساب', style: AppStyles.textStyle14))),
+      StackedHeaderCell(columnNames: ['acName'], child: Center(child: Text('الحساب', style: AppStyles.textStyle14))),
       if (selectionItems.contains(AppStrings.openingBalances))
         StackedHeaderCell(
             columnNames: ['depitBefor', 'creditBefor'],
-            child:
-                Center(child: Text('الأرصدة الافتتاحية', style: AppStyles.textStyle14))),
+            child: Center(child: Text('الأرصدة الافتتاحية', style: AppStyles.textStyle14))),
       if (selectionItems.contains(AppStrings.movement))
         StackedHeaderCell(
-            columnNames: ['depitMony', 'creditMony'],
-            child: Center(child: Text('الحركة', style: AppStyles.textStyle14))),
+            columnNames: ['depitMony', 'creditMony'], child: Center(child: Text('الحركة', style: AppStyles.textStyle14))),
       if (selectionItems.contains(AppStrings.totals))
         StackedHeaderCell(
-            columnNames: ['depitSum', 'creditSum'],
-            child: Center(child: Text('مجاميع', style: AppStyles.textStyle14))),
+            columnNames: ['depitSum', 'creditSum'], child: Center(child: Text('مجاميع', style: AppStyles.textStyle14))),
       if (selectionItems.contains(AppStrings.closingBalances))
         StackedHeaderCell(
             columnNames: ['depitAfter', 'creditAfter'],
