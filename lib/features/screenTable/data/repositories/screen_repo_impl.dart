@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:dartz/dartz.dart';
@@ -400,7 +401,7 @@ class ScreenRepoImpl implements ScreenRepo {
     try {
       String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
-      // var rrr = jsonEncode(body);
+      var rrr = jsonEncode(body);
       var data = await apiService.post(
         endPoint: "web/$controllerName",
         data: body,

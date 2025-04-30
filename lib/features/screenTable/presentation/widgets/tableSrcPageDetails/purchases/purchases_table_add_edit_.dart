@@ -32,6 +32,7 @@ class PurchasesTableAddEdit extends StatefulWidget {
     required this.oldTableList,
     required this.typeView,
   });
+
   final ListTaps? tapData;
   final Pages pageData;
   final List<String> listHeader;
@@ -62,6 +63,7 @@ class _PurchasesTableAddEditState extends State<PurchasesTableAddEdit> {
 
   int indexSelect = -1;
   bool select = false;
+
   @override
   void initState() {
     headerScrollController = controllerGroup.addAndGet();
@@ -95,8 +97,7 @@ class _PurchasesTableAddEditState extends State<PurchasesTableAddEdit> {
                         listKey: widget.listKey,
                         listHeader: widget.listHeader,
                         listColumn: widget.listColumn,
-                        allDropdownModelList:
-                            ScreenTable.myAllDropdownModelList,
+                        allDropdownModelList: ScreenTable.myAllDropdownModelList,
                         pageData: widget.pageData,
                         onTapAdd: (data) {
                           if (widget.typeView == "Add") {
@@ -162,8 +163,7 @@ class _PurchasesTableAddEditState extends State<PurchasesTableAddEdit> {
                       widget.onTapAction(tableListInAddView);
                     } else {
                       Map<String, dynamic> data = tableListInAddView.firstWhere(
-                        (element) =>
-                            element['ProductID'] == proData['ProductID'],
+                        (element) => element['ProductID'] == proData['ProductID'],
                         orElse: () => {},
                       );
                       if (data.isEmpty) {
@@ -181,10 +181,8 @@ class _PurchasesTableAddEditState extends State<PurchasesTableAddEdit> {
                       tableListInEditView.add(proData);
                       widget.onTapAction(tableListInEditView);
                     } else {
-                      Map<String, dynamic> data =
-                          tableListInEditView.firstWhere(
-                        (element) =>
-                            element['ProductID'] == proData['ProductID'],
+                      Map<String, dynamic> data = tableListInEditView.firstWhere(
+                        (element) => element['ProductID'] == proData['ProductID'],
                         orElse: () => {},
                       );
                       if (data.isEmpty) {
@@ -214,6 +212,9 @@ class _PurchasesTableAddEditState extends State<PurchasesTableAddEdit> {
                   showDialog(
                     context: context,
                     builder: (context) {
+                      if (indexSelect < 0) {
+                        return const SizedBox();
+                      }
                       return AlertDialog(
                         content: PurchasesAlertDialogEditWidget(
                           typeView: widget.typeView,
@@ -221,8 +222,7 @@ class _PurchasesTableAddEditState extends State<PurchasesTableAddEdit> {
                           listKey: widget.listKey,
                           listHeader: widget.listHeader,
                           listColumn: widget.listColumn,
-                          allDropdownModelList:
-                              ScreenTable.myAllDropdownModelList,
+                          allDropdownModelList: ScreenTable.myAllDropdownModelList,
                           pageData: widget.pageData,
                           onTapAdd: (data) {
                             if (widget.typeView == "Add") {
@@ -238,8 +238,9 @@ class _PurchasesTableAddEditState extends State<PurchasesTableAddEdit> {
                             }
                           },
                           dataOld: widget.typeView == "Add"
-                              ? tableListInAddView[indexSelect]
-                              : tableListInEditView[indexSelect],
+                              ? (indexSelect >= 0 ? tableListInAddView[indexSelect] : {})
+                              : (indexSelect >= 0 ? tableListInEditView[indexSelect] : {}),
+                          // dataOld: widget.typeView == "Add" ? tableListInAddView[indexSelect] : tableListInEditView[indexSelect],
                         ),
                       );
                     },
@@ -329,9 +330,7 @@ class _PurchasesTableAddEditState extends State<PurchasesTableAddEdit> {
                   )
                 ],
                 rows: List.generate(
-                  widget.typeView == "Add"
-                      ? tableListInAddView.length
-                      : tableListInEditView.length,
+                  widget.typeView == "Add" ? tableListInAddView.length : tableListInEditView.length,
                   (index) {
                     return DataRow(
                       cells: [
@@ -364,32 +363,21 @@ class _PurchasesTableAddEditState extends State<PurchasesTableAddEdit> {
                             SizedBox(
                               width: 130,
                               child: InkWell(
-                                onTap: widget.listColumn[i].insertType! !=
-                                        "date"
+                                onTap: widget.listColumn[i].insertType! != "date"
                                     ? () {
                                         buildShowDialogText(
                                           context,
                                           text: widget.typeView == "Add"
-                                              ? tableListInAddView[index][widget
-                                                  .listColumn[i].columnName]
-                                              : tableListInEditView[index][
-                                                  widget.listColumn[i]
-                                                      .columnName],
+                                              ? tableListInAddView[index][widget.listColumn[i].columnName]
+                                              : tableListInEditView[index][widget.listColumn[i].columnName],
                                         );
                                       }
                                     : null,
                                 child: Container(
-                                  color: indexSelect == index
-                                      ? AppColors.blueGreyDark
-                                      : Colors.transparent,
-                                  width:
-                                      widget.listColumn[i].toString().length >
-                                              12
-                                          ? 100
-                                          : null,
+                                  color: indexSelect == index ? AppColors.blueGreyDark : Colors.transparent,
+                                  width: widget.listColumn[i].toString().length > 12 ? 100 : null,
                                   alignment: Alignment.center,
-                                  child: buildMyWidget(
-                                      widget.listColumn[i], index),
+                                  child: buildMyWidget(widget.listColumn[i], index),
                                 ),
                               ),
                             ),
@@ -455,9 +443,7 @@ class _PurchasesTableAddEditState extends State<PurchasesTableAddEdit> {
 
   buildMyWidget(ItemListSetupModel columnList, int indexRow) {
     String data;
-    Map<String, dynamic> dataRow = widget.typeView == "Add"
-        ? tableListInAddView[indexRow]
-        : tableListInEditView[indexRow];
+    Map<String, dynamic> dataRow = widget.typeView == "Add" ? tableListInAddView[indexRow] : tableListInEditView[indexRow];
     if (dataRow.containsKey(columnList.columnName)) {
       data = dataRow[columnList.columnName].toString();
     } else {
@@ -466,17 +452,13 @@ class _PurchasesTableAddEditState extends State<PurchasesTableAddEdit> {
 
     switch (columnList.insertType) {
       case "date":
-        String date = data.isNotEmpty
-            ? DateFormat("yyyy-MM-dd", "en")
-                .format(DateTime.parse(data).toLocal())
-            : '';
+        String date = data.isNotEmpty ? DateFormat("yyyy-MM-dd", "en").format(DateTime.parse(data).toLocal()) : '';
         return Text(
           textAlign: TextAlign.center,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           date == "0001-12-31" || date == "0000-12-31" ? '' : date,
-          style: TextStyle(
-              color: indexSelect == indexRow ? Colors.white : Colors.black),
+          style: TextStyle(color: indexSelect == indexRow ? Colors.white : Colors.black),
         );
       case "checkbox":
         if (data == "true") {
@@ -510,8 +492,7 @@ class _PurchasesTableAddEditState extends State<PurchasesTableAddEdit> {
           }
         }
         for (var ii in listDrop!) {
-          if (ii.columnName == columnList.columnName &&
-              ii.nameAr == columnList.arColumnLabel) {
+          if (ii.columnName == columnList.columnName && ii.nameAr == columnList.arColumnLabel) {
             myListDrop = ii.list;
           }
         }
@@ -539,8 +520,7 @@ class _PurchasesTableAddEditState extends State<PurchasesTableAddEdit> {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           val,
-          style: TextStyle(
-              color: indexSelect == indexRow ? Colors.white : Colors.black),
+          style: TextStyle(color: indexSelect == indexRow ? Colors.white : Colors.black),
         );
       default:
         return Text(
@@ -548,8 +528,7 @@ class _PurchasesTableAddEditState extends State<PurchasesTableAddEdit> {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           data,
-          style: TextStyle(
-              color: indexSelect == indexRow ? Colors.white : Colors.black),
+          style: TextStyle(color: indexSelect == indexRow ? Colors.white : Colors.black),
         );
     }
   }
