@@ -95,5 +95,11 @@
   "notes": "Notes",
   "value": "Value",
   "date": "Date",
-  "save_ok": "Saved successfully"
+  "save_ok": "Saved successfully",
+  "cost_item": "Cost Center",
+  "currency": "Currency",
+  "customer": "Customer",
+  "products": "Products",
+  "projects": "Projects",
+  "supplier": "Supplier"
 }

@@ -739,6 +739,36 @@ class S {
       args: [],
     );
   }
+
+  /// `Cost Center`
+  String get cost_item {
+    return Intl.message('Cost Center', name: 'cost_item', desc: '', args: []);
+  }
+
+  /// `Currency`
+  String get currency {
+    return Intl.message('Currency', name: 'currency', desc: '', args: []);
+  }
+
+  /// `Customer`
+  String get customer {
+    return Intl.message('Customer', name: 'customer', desc: '', args: []);
+  }
+
+  /// `Products`
+  String get products {
+    return Intl.message('Products', name: 'products', desc: '', args: []);
+  }
+
+  /// `Projects`
+  String get projects {
+    return Intl.message('Projects', name: 'projects', desc: '', args: []);
+  }
+
+  /// `Supplier`
+  String get supplier {
+    return Intl.message('Supplier', name: 'supplier', desc: '', args: []);
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

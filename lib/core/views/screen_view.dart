@@ -6,6 +6,7 @@ import '../../features/attendance/presentation/views/attendance_view.dart';
 import '../../features/cashMoney/presentation/views/cash_money_view.dart';
 import '../../features/cashier/presentation/views/cashier_view.dart';
 import '../../features/chart/presentation/views/chart_view.dart';
+import '../../features/costBalance/presentation/views/cost_balance_view.dart';
 import '../../features/customerAccount/presentation/views/customer_account_view.dart';
 import '../../features/dailyFrenchCash/presentation/views/daily_french_cash_view.dart';
 import '../../features/generalBalance/presentation/views/general_balance_view.dart';
@@ -73,9 +74,9 @@ class ScreenView extends StatelessWidget {
           case "TaxDeclaration":
             return TaxDeclarationView(pageData: pageData);
           case "supplierCustomerProccess":
-            return SupplierCustomerProcessView(
-              pageData: pageData,
-            );
+            return SupplierCustomerProcessView(pageData: pageData);
+          case "CostBalance":
+            return CostBalanceView(pageData: pageData);
           default:
             return ScreenTable(pageData: pageData);
         }

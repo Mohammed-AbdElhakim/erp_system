@@ -48,6 +48,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "company_identifier": MessageLookupByLibrary.simpleMessage(
       "Company Identifier",
     ),
+    "cost_item": MessageLookupByLibrary.simpleMessage("Cost Center"),
+    "currency": MessageLookupByLibrary.simpleMessage("Currency"),
+    "customer": MessageLookupByLibrary.simpleMessage("Customer"),
     "dashboard": MessageLookupByLibrary.simpleMessage("Dashboard"),
     "date": MessageLookupByLibrary.simpleMessage("Date"),
     "date_from": MessageLookupByLibrary.simpleMessage("Date From: "),
@@ -130,7 +133,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "product_not_available": MessageLookupByLibrary.simpleMessage(
       "Product is not available.",
     ),
+    "products": MessageLookupByLibrary.simpleMessage("Products"),
     "profile": MessageLookupByLibrary.simpleMessage("Profile"),
+    "projects": MessageLookupByLibrary.simpleMessage("Projects"),
     "refresh": MessageLookupByLibrary.simpleMessage("Refresh"),
     "request_of_extend": MessageLookupByLibrary.simpleMessage(
       "Request of Extend",
@@ -148,6 +153,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "show_more": MessageLookupByLibrary.simpleMessage("Show more"),
     "start_date": MessageLookupByLibrary.simpleMessage("Start Date: "),
     "statistics": MessageLookupByLibrary.simpleMessage("Statistics"),
+    "supplier": MessageLookupByLibrary.simpleMessage("Supplier"),
     "sure": MessageLookupByLibrary.simpleMessage("sure"),
     "swipe_to": MessageLookupByLibrary.simpleMessage("Swipe To"),
     "tab1": MessageLookupByLibrary.simpleMessage("Distortions"),

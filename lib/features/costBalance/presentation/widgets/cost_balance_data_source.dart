@@ -1,0 +1,148 @@
+import 'package:flutter/material.dart';
+import 'package:syncfusion_flutter_datagrid/datagrid.dart';
+
+import '../../../../core/utils/app_strings.dart';
+import '../../data/models/cost_balance_model.dart';
+
+class CostBalanceDataSource extends DataGridSource {
+  final List<CostBalanceModel> costBalance;
+
+  // final String controllerLevel;
+  final String controllerSearch;
+  final String controllerLevel;
+  final List<String> selectionItemsShow;
+
+  CostBalanceDataSource({
+    required this.costBalance,
+    // required this.controllerLevel,
+    required this.controllerSearch,
+    required this.controllerLevel,
+    required this.selectionItemsShow,
+  }) {
+    late List<CostBalanceModel> costBalanceFinallyList;
+    if (controllerSearch.isEmpty && controllerLevel.isEmpty) {
+      costBalanceFinallyList = costBalance;
+    } else if (controllerSearch.isNotEmpty && controllerLevel.isNotEmpty) {
+      costBalanceFinallyList = costBalance
+          .where(
+            (element) =>
+                (element.acName!.toUpperCase().contains(controllerSearch.toUpperCase()) ||
+                    element.acIndex!.toString().toUpperCase().contains(controllerSearch.toUpperCase())) &&
+                element.level! <= int.parse(controllerLevel),
+          )
+          .toList();
+    } else if (controllerSearch.isNotEmpty) {
+      costBalanceFinallyList = costBalance
+          .where(
+            (element) =>
+                element.acName!.toUpperCase().contains(controllerSearch.toUpperCase()) ||
+                element.acIndex!.toString().toUpperCase().contains(controllerSearch.toUpperCase()),
+          )
+          .toList();
+    } else if (controllerLevel.isNotEmpty) {
+      costBalanceFinallyList = costBalance.where((element) => element.level! <= int.parse(controllerLevel)).toList();
+    }
+
+    dataGridRows = costBalanceFinallyList
+        .map<DataGridRow>((dataGridRow) => DataGridRow(cells: [
+              DataGridCell<String>(columnName: 'acName', value: getMyString(dataGridRow)),
+              if (selectionItemsShow.contains(AppStrings.openingBalances))
+                DataGridCell<double>(columnName: 'depitBefor', value: dataGridRow.beforCorD == true ? dataGridRow.beformony : 0),
+              if (selectionItemsShow.contains(AppStrings.openingBalances))
+                DataGridCell<double>(
+                    columnName: 'creditBefor', value: dataGridRow.beforCorD == false ? dataGridRow.beformony : 0),
+              if (selectionItemsShow.contains(AppStrings.movement))
+                DataGridCell<double>(columnName: 'depitMony', value: dataGridRow.depitmony),
+              if (selectionItemsShow.contains(AppStrings.movement))
+                DataGridCell<double>(columnName: 'creditMony', value: dataGridRow.creditmony),
+              if (selectionItemsShow.contains(AppStrings.totals))
+                DataGridCell<double>(
+                    columnName: 'depitSum',
+                    value: (dataGridRow.depitmony! + (dataGridRow.beforCorD == true ? dataGridRow.beformony! : 0))),
+              if (selectionItemsShow.contains(AppStrings.totals))
+                DataGridCell<double>(
+                    columnName: 'creditSum',
+                    value: (dataGridRow.creditmony! + (dataGridRow.beforCorD == false ? dataGridRow.beformony! : 0))),
+              if (selectionItemsShow.contains(AppStrings.closingBalances))
+                DataGridCell<double>(
+                    columnName: 'depitAfter',
+                    value: dataGridRow.creditORDepit == true
+                        ? dataGridRow.mony! > 0
+                            ? dataGridRow.mony
+                            : 0
+                        : dataGridRow.mony! > 0
+                            ? dataGridRow.mony
+                            : 0
+                    // value: dataGridRow.creditORDepit == true
+                    //     ? dataGridRow.mony! > 0
+                    //         ? dataGridRow.mony
+                    //         : 0
+                    //     : 0
+                    ),
+              if (selectionItemsShow.contains(AppStrings.closingBalances))
+                DataGridCell<double>(
+                    columnName: 'creditAfter',
+                    value: dataGridRow.creditORDepit == true
+                        ? dataGridRow.mony! < 0
+                            ? dataGridRow.mony! * -1
+                            : 0
+                        : dataGridRow.mony! < 0
+                            ? dataGridRow.mony! * -1
+                            : 0
+                    // value: dataGridRow.creditORDepit == true
+                    //     ? dataGridRow.mony! < 0
+                    //         ? dataGridRow.mony! * -1
+                    //         : 0
+                    //     : 0
+                    ),
+            ]))
+        .toList();
+  }
+
+  List<DataGridRow> dataGridRows = [];
+
+  @override
+  List<DataGridRow> get rows => dataGridRows;
+
+  @override
+  DataGridRowAdapter? buildRow(DataGridRow row) {
+    return DataGridRowAdapter(
+        cells: row.getCells().map<Widget>((dataGridCell) {
+      return dataGridCell.columnName == "acName"
+          ? Container(
+              alignment: AlignmentDirectional.centerStart,
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Text(
+                  dataGridCell.value.toString(),
+                  style: const TextStyle(color: Color(0xFF02009D)),
+                ),
+              ),
+            )
+          : Center(
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Text(
+                    dataGridCell.value.toString(),
+                  ),
+                ),
+              ),
+            );
+    }).toList());
+  }
+
+  getMyString(CostBalanceModel dataGridRow) {
+    String levelSpace;
+    int numberOfSpaces;
+    for (int i = 1;; i++) {
+      if (dataGridRow.level == i) {
+        numberOfSpaces = (i - 1) * 3;
+        levelSpace = ''.padLeft(numberOfSpaces, ' ');
+        return "$levelSpace ${dataGridRow.acName} ${dataGridRow.acIndex}";
+      }
+    }
+  }
+}

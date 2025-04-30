@@ -155,7 +155,7 @@ class _CashMoneyViewBodyState extends State<CashMoneyViewBody> {
                           listData: moneyAccountList,
                           onChanged: (value) {
                             setState(() {
-                              accountFrom = value.acID;
+                              accountFrom = value?.acID;
                             });
                             bodyRequestToGetDataTable['Params'] = {
                               "Accountids": [accountFrom],
@@ -241,7 +241,7 @@ class _CashMoneyViewBodyState extends State<CashMoneyViewBody> {
                           listData: moneyAccountList,
                           onChanged: (value) {
                             setState(() {
-                              accountTo = value.acID;
+                              accountTo = value?.acID;
                             });
                             customScrollAnimate();
                           },
