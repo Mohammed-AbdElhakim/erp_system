@@ -32,11 +32,7 @@ import 'build_alert_add_in_dropdown.dart';
 import 'custom_table_product_card.dart';
 
 class ProductCardViewBody extends StatefulWidget {
-  const ProductCardViewBody(
-      {super.key,
-      required this.listColumn,
-      required this.pageData,
-      required this.listColumnInTable});
+  const ProductCardViewBody({super.key, required this.listColumn, required this.pageData, required this.listColumnInTable});
 
   final List<ColumnList> listColumn;
   final List<ColumnList> listColumnInTable;
@@ -64,6 +60,7 @@ class _ProductCardViewBodyState extends State<ProductCardViewBody> {
   List<int> listNumberItemInList = [10, 25, 50, 100];
   late int numberPage;
   late int dropdownValue;
+
   @override
   void didChangeDependencies() {
     lang = Localizations.localeOf(context).toString();
@@ -153,8 +150,7 @@ class _ProductCardViewBodyState extends State<ProductCardViewBody> {
     dropdownValue = listNumberItemInList[0];
   }
 
-  Widget buildCategoryChildren(
-      MapEntry<String, List<Map<String, dynamic>>> entry) {
+  Widget buildCategoryChildren(MapEntry<String, List<Map<String, dynamic>>> entry) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Column(
@@ -165,15 +161,11 @@ class _ProductCardViewBodyState extends State<ProductCardViewBody> {
             (index) {
               final widgetData = entry.value[index];
               ColumnList itemColumnList = widgetData['widget'];
-              String title = lang == AppStrings.arLangKey
-                  ? itemColumnList.arColumnLabel!
-                  : itemColumnList.enColumnLabel!;
+              String title = lang == AppStrings.arLangKey ? itemColumnList.arColumnLabel! : itemColumnList.enColumnLabel!;
               if (itemColumnList.insertType == "text") {
-                return buildTextAndNumberWidget(
-                    title, itemColumnList, widgetData, TextInputType.text);
+                return buildTextAndNumberWidget(title, itemColumnList, widgetData, TextInputType.text);
               } else if (itemColumnList.insertType == "number") {
-                return buildTextAndNumberWidget(
-                    title, itemColumnList, widgetData, TextInputType.number);
+                return buildTextAndNumberWidget(title, itemColumnList, widgetData, TextInputType.number);
               } else if (itemColumnList.insertType == "checkbox") {
                 return buildCheckBoxWidget(widgetData, title, itemColumnList);
               } else if (itemColumnList.insertType == "date") {
@@ -190,8 +182,8 @@ class _ProductCardViewBodyState extends State<ProductCardViewBody> {
     );
   }
 
-  Widget buildTextAndNumberWidget(String title, ColumnList itemColumnList,
-      Map<String, dynamic> widgetData, TextInputType? keyboardType) {
+  Widget buildTextAndNumberWidget(
+      String title, ColumnList itemColumnList, Map<String, dynamic> widgetData, TextInputType? keyboardType) {
     return StatefulBuilder(
       builder: (context, tNSetState) {
         return Padding(
@@ -232,12 +224,8 @@ class _ProductCardViewBodyState extends State<ProductCardViewBody> {
     );
   }
 
-  Widget buildDateWidget(String title, ColumnList itemColumnList,
-      Map<String, dynamic> widgetData) {
-    String date = widgetData['value'] != ""
-        ? DateFormat("yyyy-MM-dd", 'en')
-            .format(DateTime.parse(widgetData['value']))
-        : "";
+  Widget buildDateWidget(String title, ColumnList itemColumnList, Map<String, dynamic> widgetData) {
+    String date = widgetData['value'] != "" ? DateFormat("yyyy-MM-dd", 'en').format(DateTime.parse(widgetData['value'])) : "";
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5),
       child: Column(
@@ -277,16 +265,14 @@ class _ProductCardViewBodyState extends State<ProductCardViewBody> {
                 },
                 child: Container(
                     height: 40,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: AppColors.blueDark)),
+                    decoration:
+                        BoxDecoration(borderRadius: BorderRadius.circular(12), border: Border.all(color: AppColors.blueDark)),
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(8),
                     child: Text(
                       date,
                       textAlign: TextAlign.center,
-                      style:
-                          AppStyles.textStyle14.copyWith(color: Colors.black),
+                      style: AppStyles.textStyle14.copyWith(color: Colors.black),
                     )),
               );
             },
@@ -310,7 +296,7 @@ class _ProductCardViewBodyState extends State<ProductCardViewBody> {
       }
     }
     for (var ii in listDrop!) {
-      if (ii.columnName == itemColumnList.columnName) {
+      if (ii.columnName == itemColumnList.columnName && ii.nameAr == itemColumnList.arColumnLabel) {
         myListDrop = ii.list;
       }
     }
@@ -406,22 +392,18 @@ class _ProductCardViewBodyState extends State<ProductCardViewBody> {
                                 }
                               }
                             : null,
-                        closedHeaderPadding: const EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 8),
+                        closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                         decoration: CustomDropdownDecoration(
-                          headerStyle: AppStyles.textStyle16
-                              .copyWith(color: Colors.black),
+                          headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
                           closedFillColor: Colors.transparent,
                           closedBorder: Border.all(color: AppColors.blueDark),
                         ),
                         items: myListDrop!.isEmpty
                             ? [""]
-                            : List.generate(myListDrop.length,
-                                (index) => myListDrop![index].text ?? ''),
+                            : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
                         onChanged: (value) {
                           dropSetState(() {
-                            ItemDrop ii = myListDrop!
-                                .firstWhere((element) => element.text == value);
+                            ItemDrop ii = myListDrop!.firstWhere((element) => element.text == value);
                             widgetData['value'] = "";
                             widgetData['value'] = ii.id;
                           });
@@ -452,18 +434,15 @@ class _ProductCardViewBodyState extends State<ProductCardViewBody> {
                           });
                         },
                         // initialItem: dropValue,
-                        closedHeaderPadding: const EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 8),
+                        closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                         decoration: CustomDropdownDecoration(
-                          headerStyle: AppStyles.textStyle16
-                              .copyWith(color: Colors.black),
+                          headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
                           closedFillColor: Colors.transparent,
                           closedBorder: Border.all(color: AppColors.blueDark),
                         ),
                         items: myListDrop!.isEmpty
                             ? [""]
-                            : List.generate(myListDrop.length,
-                                (index) => myListDrop![index].text ?? ''),
+                            : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
                       ),
               );
             },
@@ -473,8 +452,7 @@ class _ProductCardViewBodyState extends State<ProductCardViewBody> {
     );
   }
 
-  StatefulBuilder buildCheckBoxWidget(Map<String, dynamic> widgetData,
-      String title, ColumnList itemColumnList) {
+  StatefulBuilder buildCheckBoxWidget(Map<String, dynamic> widgetData, String title, ColumnList itemColumnList) {
     return StatefulBuilder(
       builder: (context, csetState) {
         return CheckboxListTile(
@@ -517,11 +495,8 @@ class _ProductCardViewBodyState extends State<ProductCardViewBody> {
 
   Future<bool> getPermissions(int? pageId) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPagePermissions?pageId=$pageId",
         headers: {
@@ -538,11 +513,8 @@ class _ProductCardViewBodyState extends State<ProductCardViewBody> {
 
   void getColumnListAndAdd(Pages page) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).post(
         endPoint: "home/getGeneralTable",
         data: {
@@ -590,11 +562,8 @@ class _ProductCardViewBodyState extends State<ProductCardViewBody> {
 
   void getDropdownList(int pageId) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       List<dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPageDropDown?pageId=$pageId",
         headers: {
@@ -616,8 +585,7 @@ class _ProductCardViewBodyState extends State<ProductCardViewBody> {
     }
   }
 
-  Container buildCategoryName(
-      MapEntry<String, List<Map<String, dynamic>>> entry) {
+  Container buildCategoryName(MapEntry<String, List<Map<String, dynamic>>> entry) {
     return Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
@@ -683,19 +651,17 @@ class _ProductCardViewBodyState extends State<ProductCardViewBody> {
   _buildPage2() {
     return myData.isNotEmpty
         ? BlocProvider(
-            create: (context) =>
-                ProductCardCubit(getIt.get<ProductCardRepoImpl>())
-                  ..getTableProductCard(
-                    objectData: myData,
-                    numberOfPage: numberPage,
-                    dropdownValueOfLimit: dropdownValue,
-                  ),
+            create: (context) => ProductCardCubit(getIt.get<ProductCardRepoImpl>())
+              ..getTableProductCard(
+                objectData: myData,
+                numberOfPage: numberPage,
+                dropdownValueOfLimit: dropdownValue,
+              ),
             child: BlocBuilder<ProductCardCubit, ProductCardState>(
               builder: (context, state) {
                 if (state is ProductCardSuccess) {
                   int? numberOfRecords = state.productCardModel.numberofrecords;
-                  List<ProductCardItem>? listData =
-                      state.productCardModel.dynamicList;
+                  List<ProductCardItem>? listData = state.productCardModel.dynamicList;
 
                   numberPage = state.numberPage;
                   dropdownValue = state.dropdownValue;
@@ -706,8 +672,7 @@ class _ProductCardViewBodyState extends State<ProductCardViewBody> {
                     pageData: widget.pageData,
                     listData: listData!,
                     listColumn: widget.listColumnInTable,
-                    allDropdownModelList:
-                        ProductCardView.myAllDropdownModelList,
+                    allDropdownModelList: ProductCardView.myAllDropdownModelList,
                     paginationWidget: PaginationWidget(
                       allPages: allPages,
                       dropdownValue: dropdownValue,
@@ -723,8 +688,7 @@ class _ProductCardViewBodyState extends State<ProductCardViewBody> {
                               : (numberOfRecords ~/ dropdownValue) + 1;
                         });
                         createMyData();
-                        BlocProvider.of<ProductCardCubit>(context)
-                            .getTableProductCard(
+                        BlocProvider.of<ProductCardCubit>(context).getTableProductCard(
                           objectData: myData,
                           numberOfPage: numberPage,
                           dropdownValueOfLimit: dropdownValue,
@@ -735,8 +699,7 @@ class _ProductCardViewBodyState extends State<ProductCardViewBody> {
                           numberPage--;
                         });
                         createMyData();
-                        BlocProvider.of<ProductCardCubit>(context)
-                            .getTableProductCard(
+                        BlocProvider.of<ProductCardCubit>(context).getTableProductCard(
                           objectData: myData,
                           numberOfPage: numberPage,
                           dropdownValueOfLimit: dropdownValue,
@@ -747,8 +710,7 @@ class _ProductCardViewBodyState extends State<ProductCardViewBody> {
                           numberPage++;
                         });
                         createMyData();
-                        BlocProvider.of<ProductCardCubit>(context)
-                            .getTableProductCard(
+                        BlocProvider.of<ProductCardCubit>(context).getTableProductCard(
                           objectData: myData,
                           numberOfPage: numberPage,
                           dropdownValueOfLimit: dropdownValue,
