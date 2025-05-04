@@ -125,7 +125,7 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
           List<String> listHeader = [];
 
           for (var item in state.listSetupModel) {
-            category.add(item.categoryTitle ?? '');
+            category.add(item.categoryTitle ?? "");
             if (item.insertVisable == true && item.cvisable == true && item.visible == true && item.isGeneral != true) {
               listColumn.add(item);
               listKey.add(item.columnName);
@@ -140,10 +140,12 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
               } else if (state is GetSalesInvoiceDetailsLoading) {
                 return const CustomLoadingWidget();
               } else {
-                List<Map<String, dynamic>> dataMaster = [{}];
+                List<Map<String, dynamic>> dataMaster = [];
 
                 if (state is GetSalesInvoiceDetailsSuccess) {
                   dataMaster = state.expensesDetailsModel.dynamicList!;
+                  tableList = state.expensesDetailsModel.dynamicList!;
+                  singleObject = state.expensesDetailsModel.dynamicList![0];
                   total = dataMaster[0]['TotalCurrancy'] ?? 0.0;
                 }
 
@@ -165,7 +167,9 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
                                   ...List.generate(categoryList.length, (index) {
                                     String categoryName = categoryList[index];
                                     List<Widget> widgetList = getMyWidgetList(
-                                        listData: listSetup, categoryName: categoryName, dataMaster: dataMaster[0]);
+                                        listData: listSetup,
+                                        categoryName: categoryName,
+                                        dataMaster: dataMaster.isNotEmpty ? dataMaster[0] : {});
                                     return widgetList.isNotEmpty
                                         ? Padding(
                                             padding: const EdgeInsets.only(bottom: 16),
@@ -346,7 +350,7 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
                                                     child: getWidgetSales(
                                                         title: listHeaderSales[index],
                                                         listSetup: listSetup,
-                                                        oldDataMaster: dataMaster[0]),
+                                                        oldDataMaster: dataMaster.isNotEmpty ? dataMaster[0] : {}),
                                                   ),
                                                 ),
                                               ],
@@ -513,9 +517,12 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
 
     for (var item in listData) {
       String title = lang == AppStrings.arLangKey ? item.arColumnLabel! : item.enColumnLabel!;
-      bool condition = item.insertVisable == true && item.cvisable == false && item.visible == false && item.isGeneral == true;
+      String category = item.categoryTitle ?? "";
+      // bool condition = item.insertVisable == true && item.cvisable == false && item.visible == false && item.isGeneral == true;
+      bool condition =
+          category == categoryName && item.insertVisable == true && item.insertDefult == true && item.isGeneral == true;
       //text
-      if (item.insertType == "text" && item.categoryTitle == categoryName && condition) {
+      if (item.insertType == "text" && condition) {
         TextEditingController controller =
             TextEditingController(text: dataMaster[item.columnName].toString() == "null" ? '' : dataMaster[item.columnName]);
         list.add(
@@ -559,7 +566,7 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
         );
       }
       //number
-      if (item.insertType == "number" && item.categoryTitle == categoryName && condition) {
+      if (item.insertType == "number" && condition) {
         TextEditingController controller = TextEditingController(
             text: dataMaster[item.columnName].toString() == "null" ? '' : dataMaster[item.columnName].toString());
         list.add(
@@ -603,7 +610,7 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
         );
       }
       //Date
-      if (item.insertType == "date" && item.categoryTitle == categoryName && condition) {
+      if (item.insertType == "date" && condition) {
         String date;
         if (dataMaster[item.columnName] != null) {
           date = DateFormat("yyyy-MM-dd", 'en').format(DateTime.parse(dataMaster[item.columnName].toString()).toLocal());
@@ -654,7 +661,7 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
                       },
                       child: Container(
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5), border: Border.all(color: AppColors.blueDark)),
+                              borderRadius: BorderRadius.circular(12), border: Border.all(color: AppColors.blueDark)),
                           alignment: Alignment.center,
                           padding: const EdgeInsets.all(8),
                           child: Text(
@@ -672,7 +679,7 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
       }
 
       //dropdown
-      if (item.insertType == "dropdown" && item.categoryTitle == categoryName && condition) {
+      if (item.insertType == "dropdown" && condition) {
         List<ListDrop>? listDrop = [];
         List<ItemDrop>? myListDrop = [];
 
@@ -800,7 +807,7 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
         );
       }
       //checkbox
-      if (item.insertType == "checkbox" && item.categoryTitle == categoryName && condition) {
+      if (item.insertType == "checkbox" && condition) {
         bool checkboxValue = dataMaster[item.columnName] ?? false;
         list.add(
           StatefulBuilder(
@@ -840,7 +847,7 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
           style: const TextStyle(color: Colors.red, fontSize: 20),
         );
       case "المحصل نقدا":
-        cashCollectedController.text = oldDataMaster['POPaid'].toString();
+        cashCollectedController.text = oldDataMaster['POPaid'] != null ? oldDataMaster['POPaid'].toString() : "";
         return StatefulBuilder(
           builder: (context, wsetState) => CustomTextFormField(
             controller: cashCollectedController,
@@ -1259,7 +1266,7 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
           fillColor: Colors.grey.shade300,
         );
       case "مصاريف الشحن":
-        shippingPriceController.text = oldDataMaster['shippingPrice'].toString();
+        shippingPriceController.text = oldDataMaster['shippingPrice'] != null ? oldDataMaster['shippingPrice'].toString() : "";
         return StatefulBuilder(
           builder: (context, wsetState) => CustomTextFormField(
             controller: shippingPriceController,
