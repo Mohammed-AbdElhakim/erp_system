@@ -272,7 +272,9 @@ class TableDataSource extends DataGridSource {
         DataGridCell(columnName: pageData.primary, value: e[pageData.primary]),
         ...List.generate(
           keys.length,
-          (index) => DataGridCell(columnName: keys[index], value: "${e[keys[index]] ?? ""}"),
+          (index) {
+            return DataGridCell(columnName: keys[index], value: "${e[keys[index]] ?? ""}");
+          },
         )
       ]);
     }).toList();
@@ -309,7 +311,7 @@ class TableDataSource extends DataGridSource {
             child: Container(
               alignment: Alignment.center,
               padding: const EdgeInsets.all(8),
-              child: e.columnName.toString() == pageData.primary
+              child: e.columnName.toString() == pageData.primary || e.columnName.toString() == pageData.outSiderGroupColumn
                   ? Text(e.value.toString())
                   : buildMyWidget(
                       value: e.value.toString(),
