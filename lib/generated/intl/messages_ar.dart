@@ -43,6 +43,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "بمجرد النقر فوق \"حسناً\"، سيتم حذف المضيف الحالي ومعرف الشركة نهائيًا.",
     ),
     "change_language": MessageLookupByLibrary.simpleMessage("تغير اللغة"),
+    "choose": MessageLookupByLibrary.simpleMessage("اختر"),
     "choose_project": MessageLookupByLibrary.simpleMessage(
       "يرجى اختيار المشورع",
     ),

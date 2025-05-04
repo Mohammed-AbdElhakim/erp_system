@@ -92,6 +92,7 @@ class _AddPurchasesState extends State<AddPurchases> {
           List<dynamic> listKey = [];
           List<String> category = [];
           List<String> listHeader = [];
+          List<String> listIsRequired = [];
 
           for (var item in state.listSetupModel) {
             category.add(item.categoryTitle ?? '');
@@ -100,20 +101,27 @@ class _AddPurchasesState extends State<AddPurchases> {
               listKey.add(item.columnName);
               listHeader.add(lang == AppStrings.enLangKey ? item.enColumnLabel! : item.arColumnLabel!);
             }
+            if (item.insertVisable == true &&
+                item.cvisable == false &&
+                item.visible == false &&
+                item.isGeneral == true &&
+                item.isRquired == true) {
+              listIsRequired.add(item.columnName!);
+            }
           }
           List<String> categoryList = category.toSet().toList();
           return StatefulBuilder(
             builder: (context, salessetState) => Padding(
               padding: const EdgeInsets.all(12.0),
-              child: Form(
-                key: formKey,
-                child: Stack(
-                  alignment: Alignment.center,
-                  clipBehavior: Clip.none,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 60),
-                      child: SingleChildScrollView(
+              child: Stack(
+                alignment: Alignment.center,
+                clipBehavior: Clip.none,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 60),
+                    child: SingleChildScrollView(
+                      child: Form(
+                        key: formKey,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -264,93 +272,103 @@ class _AddPurchasesState extends State<AddPurchases> {
                         ),
                       ),
                     ),
-                    Positioned(
-                      bottom: 0,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          CustomButton(
-                            text: S.of(context).cancel,
-                            width: 80,
-                            noGradient: true,
-                            color: Colors.transparent,
-                            noShadow: true,
-                            textStyle: AppStyles.textStyle16.copyWith(color: Colors.grey),
-                            onTap: () {
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        CustomButton(
+                          text: S.of(context).cancel,
+                          width: 80,
+                          noGradient: true,
+                          color: Colors.transparent,
+                          noShadow: true,
+                          textStyle: AppStyles.textStyle16.copyWith(color: Colors.grey),
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                        const SizedBox(
+                          width: 50,
+                        ),
+                        BlocConsumer<AddEditExpensesCubit, AddEditExpensesState>(
+                          listener: (context, state) {
+                            if (state is AddEditExpensesSuccess) {
+                              BlocProvider.of<GetTableCubit>(context).getTable(
+                                  pageId: widget.pageData.pageId,
+                                  employee: false,
+                                  isdesc: widget.pageData.isDesc,
+                                  limit: 10,
+                                  offset: 0,
+                                  orderby: widget.pageData.orderBy,
+                                  statment: '',
+                                  selectcolumns: '',
+                                  departmentName: widget.pageData.departmentName,
+                                  isDepartment: widget.pageData.isDepartment,
+                                  authorizationID: widget.pageData.authorizationID,
+                                  viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
+                                  numberOfPage: 1,
+                                  dropdownValueOfLimit: 10);
                               Navigator.pop(context);
-                            },
-                          ),
-                          const SizedBox(
-                            width: 50,
-                          ),
-                          BlocConsumer<AddEditExpensesCubit, AddEditExpensesState>(
-                            listener: (context, state) {
-                              if (state is AddEditExpensesSuccess) {
-                                BlocProvider.of<GetTableCubit>(context).getTable(
-                                    pageId: widget.pageData.pageId,
-                                    employee: false,
-                                    isdesc: widget.pageData.isDesc,
-                                    limit: 10,
-                                    offset: 0,
-                                    orderby: widget.pageData.orderBy,
-                                    statment: '',
-                                    selectcolumns: '',
-                                    departmentName: widget.pageData.departmentName,
-                                    isDepartment: widget.pageData.isDepartment,
-                                    authorizationID: widget.pageData.authorizationID,
-                                    viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
-                                    numberOfPage: 1,
-                                    dropdownValueOfLimit: 10);
-                                Navigator.pop(context);
-                              } else if (state is AddEditExpensesFailure) {
-                                CustomAlertDialog.alertWithButton(
-                                    context: context,
-                                    type: AlertType.error,
-                                    title: S.of(context).error,
-                                    desc: state.errorMassage);
-                              }
-                            },
-                            builder: (context, state) {
-                              if (state is AddEditExpensesLoading) {
-                                return const CustomLoadingWidget();
-                              } else {
-                                return CustomButton(
-                                  text: S.of(context).btn_add,
-                                  width: 80,
-                                  onTap: () async {
-                                    if (formKey.currentState!.validate()) {
-                                      formKey.currentState!.save();
-                                      singleObject.addAll({
-                                        "TotalCurrancy": total,
-                                        "Tax": double.parse(valueAddedTaxController.text.trim().isEmpty
-                                            ? "0"
-                                            : valueAddedTaxController.text.trim()),
-                                        "AddTax":
-                                            double.parse(taxController.text.trim().isEmpty ? "0" : taxController.text.trim()),
-                                        "POPaidCurrancy": double.parse(
-                                            cashPaidController.text.trim().isEmpty ? "0" : cashPaidController.text.trim()),
-                                        "DiscountCurrancy": double.parse(
-                                            discountController.text.trim().isEmpty ? "0" : discountController.text.trim()),
-                                        "RemindCurrancy": double.parse(deadlineSupplierController.text.trim().isEmpty
-                                            ? "0"
-                                            : deadlineSupplierController.text.trim()),
-                                      });
+                            } else if (state is AddEditExpensesFailure) {
+                              CustomAlertDialog.alertWithButton(
+                                  context: context, type: AlertType.error, title: S.of(context).error, desc: state.errorMassage);
+                            }
+                          },
+                          builder: (context, state) {
+                            if (state is AddEditExpensesLoading) {
+                              return const CustomLoadingWidget();
+                            } else {
+                              return CustomButton(
+                                text: S.of(context).btn_add,
+                                width: 80,
+                                onTap: () async {
+                                  if (formKey.currentState!.validate()) {
+                                    formKey.currentState!.save();
 
+                                    singleObject.addAll({
+                                      "TotalCurrancy": total,
+                                      "Tax": double.parse(valueAddedTaxController.text.trim().isEmpty
+                                          ? "0"
+                                          : valueAddedTaxController.text.trim()),
+                                      "AddTax": double.parse(taxController.text.trim().isEmpty ? "0" : taxController.text.trim()),
+                                      "POPaidCurrancy": double.parse(
+                                          cashPaidController.text.trim().isEmpty ? "0" : cashPaidController.text.trim()),
+                                      "DiscountCurrancy": double.parse(
+                                          discountController.text.trim().isEmpty ? "0" : discountController.text.trim()),
+                                      "RemindCurrancy": double.parse(deadlineSupplierController.text.trim().isEmpty
+                                          ? "0"
+                                          : deadlineSupplierController.text.trim()),
+                                    });
+                                    //////////////////////////////
+                                    final result = checkWordsInMapKeys(listIsRequired, singleObject);
+
+                                    if (result['allFound'] == true) {
                                       BlocProvider.of<AddEditExpensesCubit>(context).add(
                                           singleObject: singleObject,
                                           tableList: tableList,
                                           controllerName: widget.tapData!.controllerName);
+                                    } else {
+                                      List<String> columnName = getNameColumn(listIsRequired, listSetup);
+                                      CustomAlertDialog.alertWithButton(
+                                          context: context,
+                                          type: AlertType.error,
+                                          title: S.of(context).error,
+                                          desc: "${S.of(context).choose}\n${columnName.join("\n")}");
                                     }
-                                  },
-                                );
-                              }
-                            },
-                          ),
-                        ],
-                      ),
+
+                                    ////////////////////
+                                  }
+                                },
+                              );
+                            }
+                          },
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           );
@@ -1051,6 +1069,28 @@ class _AddPurchasesState extends State<AddPurchases> {
     } catch (e) {
       debugPrint(e.toString());
     }
+  }
+
+  Map<String, dynamic> checkWordsInMapKeys(List<String> list, Map<String, dynamic> map) {
+    List<String> notFound = list.where((word) => !map.containsKey(word)).toList();
+    return {
+      'allFound': notFound.isEmpty,
+      'notFoundWords': notFound,
+    };
+  }
+
+  List<String> getNameColumn(List<String> listKeys, List<ItemListSetupModel> listSetup) {
+    return listKeys
+        .map((columnName) {
+          final ItemListSetupModel matchedItem = listSetup.firstWhere(
+            (item) => item.columnName == columnName,
+            orElse: () => ItemListSetupModel.empty(),
+          );
+
+          return lang == 'ar' ? (matchedItem.arColumnLabel ?? '') : (matchedItem.enColumnLabel ?? '');
+        })
+        .where((label) => label.isNotEmpty)
+        .toList();
   }
 
 // bool? getCustomer(int userId) {

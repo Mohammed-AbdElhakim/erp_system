@@ -769,6 +769,11 @@ class S {
   String get supplier {
     return Intl.message('Supplier', name: 'supplier', desc: '', args: []);
   }
+
+  /// `Choose`
+  String get choose {
+    return Intl.message('Choose', name: 'choose', desc: '', args: []);
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

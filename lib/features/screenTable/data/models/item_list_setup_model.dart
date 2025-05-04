@@ -68,6 +68,12 @@ class ItemListSetupModel {
       this.masterInsertVisible,
       this.isTotal});
 
+  factory ItemListSetupModel.empty() {
+    return ItemListSetupModel(
+      columnName: '',
+    );
+  }
+
   ItemListSetupModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     listName = json['ListName'];

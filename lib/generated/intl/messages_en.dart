@@ -43,6 +43,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Once you click OK, your current host and company ID will be permanently deleted.",
     ),
     "change_language": MessageLookupByLibrary.simpleMessage("Change Language"),
+    "choose": MessageLookupByLibrary.simpleMessage("Choose"),
     "choose_project": MessageLookupByLibrary.simpleMessage("Choose Project"),
     "clean": MessageLookupByLibrary.simpleMessage("Clean"),
     "company_identifier": MessageLookupByLibrary.simpleMessage(

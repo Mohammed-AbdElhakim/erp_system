@@ -101,5 +101,6 @@
   "customer": "Customer",
   "products": "Products",
   "projects": "Projects",
-  "supplier": "Supplier"
+  "supplier": "Supplier",
+  "choose": "Choose"
 }
