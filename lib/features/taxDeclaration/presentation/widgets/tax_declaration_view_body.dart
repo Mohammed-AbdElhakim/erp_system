@@ -66,6 +66,7 @@ class _TaxDeclarationViewBodyState extends State<TaxDeclarationViewBody> {
   late int numberPage;
   late int dropdownValue;
   late int selectTab;
+
   @override
   void didChangeDependencies() {
     lang = Localizations.localeOf(context).toString();
@@ -219,20 +220,18 @@ class _TaxDeclarationViewBodyState extends State<TaxDeclarationViewBody> {
         ? MultiBlocProvider(
             providers: [
               BlocProvider(
-                create: (context) =>
-                    TaxDeclarationCubit(getIt.get<TaxDeclarationRepoImpl>())
-                      ..getTableTaxDeclaration(
-                        selectTab: selectTab,
-                        objectData: myData,
-                        link: "TotalPurchaseAndSalesTax",
-                        numberOfPage: numberPage,
-                        dropdownValueOfLimit: dropdownValue,
-                      ),
+                create: (context) => TaxDeclarationCubit(getIt.get<TaxDeclarationRepoImpl>())
+                  ..getTableTaxDeclaration(
+                    selectTab: selectTab,
+                    objectData: myData,
+                    link: "TotalPurchaseAndSalesTax",
+                    numberOfPage: numberPage,
+                    dropdownValueOfLimit: dropdownValue,
+                  ),
               ),
               BlocProvider(
                 create: (context) =>
-                    GetHeaderTableCubit(getIt.get<TaxDeclarationRepoImpl>())
-                      ..getHeaderTable(listName: "GetFilteredEntries"),
+                    GetHeaderTableCubit(getIt.get<TaxDeclarationRepoImpl>())..getHeaderTable(listName: "GetFilteredEntries"),
               ),
             ],
             child: BlocBuilder<GetHeaderTableCubit, GetHeaderTableState>(
@@ -240,18 +239,14 @@ class _TaxDeclarationViewBodyState extends State<TaxDeclarationViewBody> {
                 if (state is GetHeaderTableSuccess) {
                   List<HeaderModel> headerList = [];
                   for (var item in state.headerList) {
-                    if (item.mobileVisable == true &&
-                        item.visible == true &&
-                        item.cvisable == true) {
+                    if (item.mobileVisable == true && item.visible == true && item.cvisable == true) {
                       headerList.add(item);
                     }
                   }
                   return BlocBuilder<TaxDeclarationCubit, TaxDeclarationState>(
                     builder: (context, state) {
                       if (state is TaxDeclarationSuccess) {
-                        int? numberOfRecords = selectTab == 0 || selectTab == 3
-                            ? -1
-                            : state.taxDeclarationModel.numberofrecords;
+                        int? numberOfRecords = selectTab == 0 || selectTab == 3 ? -1 : state.taxDeclarationModel.numberofrecords;
                         List<dynamic>? listData = state.taxDeclarationModel.dynamicList;
 
                         numberPage = state.numberPage;
@@ -281,8 +276,7 @@ class _TaxDeclarationViewBodyState extends State<TaxDeclarationViewBody> {
                                           : (numberOfRecords ~/ dropdownValue) + 1;
                                     });
                                     // createMyData();
-                                    BlocProvider.of<TaxDeclarationCubit>(context)
-                                        .getTableTaxDeclaration(
+                                    BlocProvider.of<TaxDeclarationCubit>(context).getTableTaxDeclaration(
                                       selectTab: selectTab,
                                       link: selectTab == 0
                                           ? "TotalPurchaseAndSalesTax"
@@ -299,8 +293,7 @@ class _TaxDeclarationViewBodyState extends State<TaxDeclarationViewBody> {
                                       numberPage--;
                                     });
                                     // createMyData();
-                                    BlocProvider.of<TaxDeclarationCubit>(context)
-                                        .getTableTaxDeclaration(
+                                    BlocProvider.of<TaxDeclarationCubit>(context).getTableTaxDeclaration(
                                       selectTab: selectTab,
                                       objectData: myData,
                                       link: selectTab == 0
@@ -317,8 +310,7 @@ class _TaxDeclarationViewBodyState extends State<TaxDeclarationViewBody> {
                                       numberPage++;
                                     });
                                     // createMyData();
-                                    BlocProvider.of<TaxDeclarationCubit>(context)
-                                        .getTableTaxDeclaration(
+                                    BlocProvider.of<TaxDeclarationCubit>(context).getTableTaxDeclaration(
                                       selectTab: selectTab,
                                       objectData: myData,
                                       link: selectTab == 0
@@ -342,8 +334,7 @@ class _TaxDeclarationViewBodyState extends State<TaxDeclarationViewBody> {
                                   createMyData(data: {
                                     "employee": false,
                                     "limit": dropdownValue,
-                                    "offset":
-                                        (numberPage * dropdownValue) - dropdownValue,
+                                    "offset": (numberPage * dropdownValue) - dropdownValue,
                                     "statment": "",
                                     "selectcolumns": "",
                                     "IsDepartment": false,
@@ -354,10 +345,8 @@ class _TaxDeclarationViewBodyState extends State<TaxDeclarationViewBody> {
                                     "tableName": "GetFilteredEntries",
                                     "listName": "GetFilteredEntries",
                                   });
-                                  BlocProvider.of<GetHeaderTableCubit>(context)
-                                      .getHeaderTable(listName: "GetFilteredEntries");
-                                  BlocProvider.of<TaxDeclarationCubit>(context)
-                                      .getTableTaxDeclaration(
+                                  BlocProvider.of<GetHeaderTableCubit>(context).getHeaderTable(listName: "GetFilteredEntries");
+                                  BlocProvider.of<TaxDeclarationCubit>(context).getTableTaxDeclaration(
                                     selectTab: selectTab,
                                     objectData: myData,
                                     link: "TotalPurchaseAndSalesTax",
@@ -366,14 +355,12 @@ class _TaxDeclarationViewBodyState extends State<TaxDeclarationViewBody> {
                                   );
                                   break;
                                 case 1:
-                                  String tailCondition =
-                                      getTailConditionInCase1AndCase2();
+                                  String tailCondition = getTailConditionInCase1AndCase2();
 
                                   createMyData(data: {
                                     "employee": false,
                                     "limit": dropdownValue,
-                                    "offset":
-                                        (numberPage * dropdownValue) - dropdownValue,
+                                    "offset": (numberPage * dropdownValue) - dropdownValue,
                                     "statment": "",
                                     "selectcolumns": "",
                                     "IsDepartment": false,
@@ -385,10 +372,8 @@ class _TaxDeclarationViewBodyState extends State<TaxDeclarationViewBody> {
                                     "listName": "PurchaseTaxDetailView",
                                     "tailcondition": tailCondition,
                                   });
-                                  BlocProvider.of<GetHeaderTableCubit>(context)
-                                      .getHeaderTable(listName: "PurchaseTaxDetailView");
-                                  BlocProvider.of<TaxDeclarationCubit>(context)
-                                      .getTableTaxDeclaration(
+                                  BlocProvider.of<GetHeaderTableCubit>(context).getHeaderTable(listName: "PurchaseTaxDetailView");
+                                  BlocProvider.of<TaxDeclarationCubit>(context).getTableTaxDeclaration(
                                     selectTab: selectTab,
                                     objectData: myData,
                                     link: "Structure",
@@ -397,15 +382,13 @@ class _TaxDeclarationViewBodyState extends State<TaxDeclarationViewBody> {
                                   );
                                   break;
                                 case 2:
-                                  String tailCondition =
-                                      getTailConditionInCase1AndCase2();
+                                  String tailCondition = getTailConditionInCase1AndCase2();
 
                                   createMyData(data: {
                                     // "pageId": 289,
                                     "employee": false,
                                     "limit": dropdownValue,
-                                    "offset":
-                                        (numberPage * dropdownValue) - dropdownValue,
+                                    "offset": (numberPage * dropdownValue) - dropdownValue,
                                     "statment": "",
                                     "selectcolumns": "",
                                     "IsDepartment": false,
@@ -419,10 +402,8 @@ class _TaxDeclarationViewBodyState extends State<TaxDeclarationViewBody> {
                                     "tableName": "SalesTaxDetailView",
                                     "tailcondition": tailCondition,
                                   });
-                                  BlocProvider.of<GetHeaderTableCubit>(context)
-                                      .getHeaderTable(listName: "SalesTaxDetailView");
-                                  BlocProvider.of<TaxDeclarationCubit>(context)
-                                      .getTableTaxDeclaration(
+                                  BlocProvider.of<GetHeaderTableCubit>(context).getHeaderTable(listName: "SalesTaxDetailView");
+                                  BlocProvider.of<TaxDeclarationCubit>(context).getTableTaxDeclaration(
                                     selectTab: selectTab,
                                     objectData: myData,
                                     numberOfPage: numberPage,
@@ -435,8 +416,7 @@ class _TaxDeclarationViewBodyState extends State<TaxDeclarationViewBody> {
                                     // "pageId": widget.pageData.pageId,
                                     "employee": false,
                                     "limit": dropdownValue,
-                                    "offset":
-                                        (numberPage * dropdownValue) - dropdownValue,
+                                    "offset": (numberPage * dropdownValue) - dropdownValue,
                                     "statment": "",
                                     "selectcolumns": "",
                                     "IsDepartment": false,
@@ -449,16 +429,23 @@ class _TaxDeclarationViewBodyState extends State<TaxDeclarationViewBody> {
                                     "listName": "SP_GetTaxDiff",
                                     "tableName": "SP_GetTaxDiff",
                                   });
-                                  BlocProvider.of<GetHeaderTableCubit>(context)
-                                      .getHeaderTable(listName: "SP_GetTaxDiff");
-                                  BlocProvider.of<TaxDeclarationCubit>(context)
-                                      .getTableTaxDeclaration(
-                                    selectTab: selectTab,
-                                    objectData: myData,
-                                    numberOfPage: numberPage,
-                                    link: "TaxDiff",
-                                    dropdownValueOfLimit: dropdownValue,
-                                  );
+                                  if (myData['Params']['Accountid'] != "") {
+                                    BlocProvider.of<GetHeaderTableCubit>(context).getHeaderTable(listName: "SP_GetTaxDiff");
+                                    BlocProvider.of<TaxDeclarationCubit>(context).getTableTaxDeclaration(
+                                      selectTab: selectTab,
+                                      objectData: myData,
+                                      numberOfPage: numberPage,
+                                      link: "TaxDiff",
+                                      dropdownValueOfLimit: dropdownValue,
+                                    );
+                                  } else {
+                                    CustomAlertDialog.alertWithButton(
+                                        context: context,
+                                        type: AlertType.error,
+                                        title: S.of(context).error,
+                                        desc: "${S.of(context).choose}\n${S.of(context).account}");
+                                  }
+
                                   break;
                               }
                             },
@@ -493,15 +480,11 @@ class _TaxDeclarationViewBodyState extends State<TaxDeclarationViewBody> {
             (index) {
               final widgetData = entry.value[index];
               ColumnList itemColumnList = widgetData['widget'];
-              String title = lang == AppStrings.arLangKey
-                  ? itemColumnList.arColumnLabel!
-                  : itemColumnList.enColumnLabel!;
+              String title = lang == AppStrings.arLangKey ? itemColumnList.arColumnLabel! : itemColumnList.enColumnLabel!;
               if (itemColumnList.insertType == "text") {
-                return buildTextAndNumberWidget(
-                    title, itemColumnList, widgetData, TextInputType.text);
+                return buildTextAndNumberWidget(title, itemColumnList, widgetData, TextInputType.text);
               } else if (itemColumnList.insertType == "number") {
-                return buildTextAndNumberWidget(
-                    title, itemColumnList, widgetData, TextInputType.number);
+                return buildTextAndNumberWidget(title, itemColumnList, widgetData, TextInputType.number);
               } else if (itemColumnList.insertType == "checkbox") {
                 return buildCheckBoxWidget(widgetData, title, itemColumnList);
               } else if (itemColumnList.insertType == "date") {
@@ -518,8 +501,8 @@ class _TaxDeclarationViewBodyState extends State<TaxDeclarationViewBody> {
     );
   }
 
-  Widget buildTextAndNumberWidget(String title, ColumnList itemColumnList,
-      Map<String, dynamic> widgetData, TextInputType? keyboardType) {
+  Widget buildTextAndNumberWidget(
+      String title, ColumnList itemColumnList, Map<String, dynamic> widgetData, TextInputType? keyboardType) {
     return StatefulBuilder(
       builder: (context, tNSetState) {
         return Padding(
@@ -560,11 +543,8 @@ class _TaxDeclarationViewBodyState extends State<TaxDeclarationViewBody> {
     );
   }
 
-  Widget buildDateWidget(
-      String title, ColumnList itemColumnList, Map<String, dynamic> widgetData) {
-    String date = widgetData['value'] != ""
-        ? DateFormat("yyyy-MM-dd", 'en').format(DateTime.parse(widgetData['value']))
-        : "";
+  Widget buildDateWidget(String title, ColumnList itemColumnList, Map<String, dynamic> widgetData) {
+    String date = widgetData['value'] != "" ? DateFormat("yyyy-MM-dd", 'en').format(DateTime.parse(widgetData['value'])) : "";
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5),
       child: Column(
@@ -604,9 +584,8 @@ class _TaxDeclarationViewBodyState extends State<TaxDeclarationViewBody> {
                 },
                 child: Container(
                     height: 40,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: AppColors.blueDark)),
+                    decoration:
+                        BoxDecoration(borderRadius: BorderRadius.circular(12), border: Border.all(color: AppColors.blueDark)),
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(8),
                     child: Text(
@@ -723,22 +702,18 @@ class _TaxDeclarationViewBodyState extends State<TaxDeclarationViewBody> {
                     ? CustomDropdown<String>.search(
                         hintText: '',
                         initialItem: dropValue,
-                        closedHeaderPadding:
-                            const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                        closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                         decoration: CustomDropdownDecoration(
-                          headerStyle:
-                              AppStyles.textStyle16.copyWith(color: Colors.black),
+                          headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
                           closedFillColor: Colors.transparent,
                           closedBorder: Border.all(color: AppColors.blueDark),
                         ),
                         items: myListDrop!.isEmpty
                             ? [""]
-                            : List.generate(myListDrop.length,
-                                (index) => myListDrop![index].text ?? ''),
+                            : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
                         onChanged: (value) {
                           dropSetState(() {
-                            ItemDrop ii = myListDrop!
-                                .firstWhere((element) => element.text == value);
+                            ItemDrop ii = myListDrop!.firstWhere((element) => element.text == value);
                             widgetData['value'] = "";
                             widgetData['value'] = ii.id;
                           });
@@ -760,18 +735,15 @@ class _TaxDeclarationViewBodyState extends State<TaxDeclarationViewBody> {
                           });
                         },
                         // initialItem: dropValue,
-                        closedHeaderPadding:
-                            const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                        closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                         decoration: CustomDropdownDecoration(
-                          headerStyle:
-                              AppStyles.textStyle16.copyWith(color: Colors.black),
+                          headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
                           closedFillColor: Colors.transparent,
                           closedBorder: Border.all(color: AppColors.blueDark),
                         ),
                         items: myListDrop!.isEmpty
                             ? [""]
-                            : List.generate(myListDrop.length,
-                                (index) => myListDrop![index].text ?? ''),
+                            : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
                       ),
               );
             },
@@ -781,8 +753,7 @@ class _TaxDeclarationViewBodyState extends State<TaxDeclarationViewBody> {
     );
   }
 
-  StatefulBuilder buildCheckBoxWidget(
-      Map<String, dynamic> widgetData, String title, ColumnList itemColumnList) {
+  StatefulBuilder buildCheckBoxWidget(Map<String, dynamic> widgetData, String title, ColumnList itemColumnList) {
     return StatefulBuilder(
       builder: (context, csetState) {
         return CheckboxListTile(
@@ -825,8 +796,7 @@ class _TaxDeclarationViewBodyState extends State<TaxDeclarationViewBody> {
 
   Future<bool> getPermissions(int? pageId) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPagePermissions?pageId=$pageId",
@@ -844,8 +814,7 @@ class _TaxDeclarationViewBodyState extends State<TaxDeclarationViewBody> {
 
   void getColumnListAndAdd(Pages page) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).post(
         endPoint: "home/getGeneralTable",
@@ -894,8 +863,7 @@ class _TaxDeclarationViewBodyState extends State<TaxDeclarationViewBody> {
 
   void getDropdownList(int pageId) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       List<dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPageDropDown?pageId=$pageId",
