@@ -22,6 +22,7 @@ import '../widgets/tableSrcPageDetails/productProcess/add_product_process.dart';
 import '../widgets/tableSrcPageDetails/productProcessOut/add_product_process_out.dart';
 import '../widgets/tableSrcPageDetails/productionProsecc/add_production_prosecc.dart';
 import '../widgets/tableSrcPageDetails/purchases/add_purchases.dart';
+import '../widgets/tableSrcPageDetails/supplierMachine/add_supplier_machine.dart';
 import '../widgets/tableSrcPageDetails/supplierOffer/add_supplier_offer.dart';
 import '../widgets/tableSrcPageDetails/supplyOrder/add_supply_order.dart';
 
@@ -104,6 +105,9 @@ class AddView extends StatelessWidget {
       //حركات المعدات
       case "machineWork":
         return AddMachineWork(tapData: state.tapModel.list[0], pageData: pageData, listKey: listKey);
+      //محاسبة الموردين على المعدات
+      case 'suppliermachine':
+        return AddSupplierMachine(tapData: state.tapModel.list[0], pageData: pageData, listKey: listKey);
       default:
         return Center(child: Text("TableSrc Details =>$tableSrc"));
     }
