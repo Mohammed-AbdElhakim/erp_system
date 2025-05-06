@@ -1080,7 +1080,8 @@ class _AddPurchasesState extends State<AddPurchases> {
   }
 
   List<String> getNameColumn(List<String> listKeys, List<ItemListSetupModel> listSetup) {
-    return listKeys
+    List<String> result = listKeys.where((item) => !singleObject.containsKey(item)).toList();
+    return result
         .map((columnName) {
           final ItemListSetupModel matchedItem = listSetup.firstWhere(
             (item) => item.columnName == columnName,
