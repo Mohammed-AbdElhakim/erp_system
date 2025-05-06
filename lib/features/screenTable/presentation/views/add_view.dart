@@ -3,6 +3,7 @@ import 'package:erp_system/core/widgets/change_status_bar_color.dart';
 import 'package:erp_system/core/widgets/custom_error_massage.dart';
 import 'package:erp_system/core/widgets/custom_loading_widget.dart';
 import 'package:erp_system/features/screenTable/presentation/widgets/tableSrcPageDetails/customerOrder/add_customer_order.dart';
+import 'package:erp_system/features/screenTable/presentation/widgets/tableSrcPageDetails/machineWork/add_machine_work.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -73,63 +74,36 @@ class AddView extends StatelessWidget {
     switch (tableSrc) {
       case "tableExcel":
       case "entry":
-        return AddExcelViewBody(
-          tapData: state.tapModel.list[0],
-          pageData: pageData,
-          listKey: listKey,
-        );
+        return AddExcelViewBody(tapData: state.tapModel.list[0], pageData: pageData, listKey: listKey);
       case "salesDetails":
         if (pageData.nameAr == "مرتجعات البيع") {
-          return AddSalesInvoice(
-            tapData: state.tapModel.list[0],
-            pageData: pageData,
-            listKey: listKey,
-          );
+          return AddSalesInvoice(tapData: state.tapModel.list[0], pageData: pageData, listKey: listKey);
         } else {
-          return AddSales(
-            tapData: state.tapModel.list[0],
-            pageData: pageData,
-            listKey: listKey,
-          );
+          return AddSales(tapData: state.tapModel.list[0], pageData: pageData, listKey: listKey);
         }
 
       case "Purchases":
-        return AddPurchases(
-          tapData: state.tapModel.list[0],
-          pageData: pageData,
-          listKey: listKey,
-        );
+        return AddPurchases(tapData: state.tapModel.list[0], pageData: pageData, listKey: listKey);
       case "extractionSupplierTable":
         return AddExtractionSupplierTable(tapData: state.tapModel.list[0], pageData: pageData, listKey: listKey);
       case "ProductProcess":
         return AddProductProcess(tapData: state.tapModel.list[0], pageData: pageData, listKey: listKey);
       case "ProductProcessOut":
         return AddProductProcessOut(tapData: state.tapModel.list[0], pageData: pageData, listKey: listKey);
-
       case "productionProsecc":
         return AddProductionProsecc(tapData: state.tapModel.list[0], pageData: pageData, listKey: listKey);
       case "CustomerOrder":
         //أوامر البيع
-        return AddCustomerOrder(
-          tapData: state.tapModel.list[0],
-          pageData: pageData,
-          listKey: listKey,
-        );
+        return AddCustomerOrder(tapData: state.tapModel.list[0], pageData: pageData, listKey: listKey);
       //اذن توريد مورد
       case "SupplyOrder":
-        return AddSupplyOrder(
-          tapData: state.tapModel.list[0],
-          pageData: pageData,
-          listKey: listKey,
-        );
+        return AddSupplyOrder(tapData: state.tapModel.list[0], pageData: pageData, listKey: listKey);
       //عروض اسعار عملاء
       case "supplierOffer":
-        return AddSupplierOffer(
-          tapData: state.tapModel.list[0],
-          pageData: pageData,
-          listKey: listKey,
-        );
-
+        return AddSupplierOffer(tapData: state.tapModel.list[0], pageData: pageData, listKey: listKey);
+      //حركات المعدات
+      case "machineWork":
+        return AddMachineWork(tapData: state.tapModel.list[0], pageData: pageData, listKey: listKey);
       default:
         return Center(child: Text("TableSrc Details =>$tableSrc"));
     }

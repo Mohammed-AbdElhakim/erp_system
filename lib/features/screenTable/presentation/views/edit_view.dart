@@ -16,6 +16,7 @@ import '../widgets/tableSrcPageDetails/addOrEditExcel/edit_excel_view_body.dart'
 import '../widgets/tableSrcPageDetails/addSalesEdit/edit_sales.dart';
 import '../widgets/tableSrcPageDetails/customerOrder/edit_customer_order.dart';
 import '../widgets/tableSrcPageDetails/extractionSupplierTable/edit_extraction_supplier_table.dart';
+import '../widgets/tableSrcPageDetails/machineWork/edit_machine_work.dart';
 import '../widgets/tableSrcPageDetails/productProcess/edit_product_process.dart';
 import '../widgets/tableSrcPageDetails/productProcessOut/edit_product_process_out.dart';
 import '../widgets/tableSrcPageDetails/productionProsecc/edit_production_prosecc.dart';
@@ -68,23 +69,11 @@ class _EditViewState extends State<EditView> {
     switch (tableSrc) {
       case "tableExcel":
       case "entry":
-        return EditExcelViewBody(
-          tapData: state.tapModel.list[0],
-          pageData: widget.pageData,
-          listKey: widget.listKey,
-        );
+        return EditExcelViewBody(tapData: state.tapModel.list[0], pageData: widget.pageData, listKey: widget.listKey);
       case "salesDetails":
-        return EditSales(
-          tapData: state.tapModel.list[0],
-          pageData: widget.pageData,
-          listKey: widget.listKey,
-        );
+        return EditSales(tapData: state.tapModel.list[0], pageData: widget.pageData, listKey: widget.listKey);
       case "Purchases":
-        return EditPurchases(
-          tapData: state.tapModel.list[0],
-          pageData: widget.pageData,
-          listKey: widget.listKey,
-        );
+        return EditPurchases(tapData: state.tapModel.list[0], pageData: widget.pageData, listKey: widget.listKey);
       case "extractionSupplierTable":
         return EditExtractionSupplierTable(tapData: state.tapModel.list[0], pageData: widget.pageData, listKey: widget.listKey);
       case "ProductProcess":
@@ -95,25 +84,16 @@ class _EditViewState extends State<EditView> {
         return EditProductionProsecc(tapData: state.tapModel.list[0], pageData: widget.pageData, listKey: widget.listKey);
       case "CustomerOrder":
         //أوامر البيع
-        return EditCustomerOrder(
-          tapData: state.tapModel.list[0],
-          pageData: widget.pageData,
-          listKey: widget.listKey,
-        );
+        return EditCustomerOrder(tapData: state.tapModel.list[0], pageData: widget.pageData, listKey: widget.listKey);
       //اذن توريد مورد
       case "SupplyOrder":
-        return EditSupplyOrder(
-          tapData: state.tapModel.list[0],
-          pageData: widget.pageData,
-          listKey: widget.listKey,
-        );
+        return EditSupplyOrder(tapData: state.tapModel.list[0], pageData: widget.pageData, listKey: widget.listKey);
       //عروض اسعار عملاء
       case "supplierOffer":
-        return EditSupplierOffer(
-          tapData: state.tapModel.list[0],
-          pageData: widget.pageData,
-          listKey: widget.listKey,
-        );
+        return EditSupplierOffer(tapData: state.tapModel.list[0], pageData: widget.pageData, listKey: widget.listKey);
+      //حركات المعدات
+      case "machineWork":
+        return EditMachineWork(tapData: state.tapModel.list[0], pageData: widget.pageData, listKey: widget.listKey);
       default:
         return Center(child: Text("TableSrc Details =>$tableSrc"));
     }
