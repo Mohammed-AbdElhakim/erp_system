@@ -14,6 +14,7 @@ import '../../features/dailyFrenchCash/data/repositories/daily_french_cash_repo_
 import '../../features/dashboard/data/repositories/dashboard_repo_impl.dart';
 import '../../features/generalBalance/data/repositories/general_balance_repo_impl.dart';
 import '../../features/inventoryProduct/data/repositories/trial_balance_repo_impl.dart';
+import '../../features/machineWorkReport/data/repositories/machine_work_report_repo_impl.dart';
 import '../../features/notifications/data/repositories/notifications_repo_impl.dart';
 import '../../features/productCard/data/repositories/product_card_repo_impl.dart';
 import '../../features/profile/data/repositories/profile_repo_impl.dart';
@@ -187,6 +188,12 @@ void setupServiceLocator() {
 
   getIt.registerSingleton<CostBalanceRepoImpl>(
     CostBalanceRepoImpl(
+      getIt.get<ApiService>(),
+    ),
+  );
+
+  getIt.registerSingleton<MachineWorkReportRepoImpl>(
+    MachineWorkReportRepoImpl(
       getIt.get<ApiService>(),
     ),
   );
