@@ -102,5 +102,11 @@
   "products": "المنتجات",
   "projects": "المشاريع",
   "supplier": "المورد",
-  "choose": "اختر"
+  "choose": "اختر",
+  "group": "المجموعة",
+  "employee": "الموظف",
+  "start_time": "وقت البداية",
+  "end_time": "وقت النهاية",
+  "project": "المشروع",
+  "confirm": "حفظ"
 }

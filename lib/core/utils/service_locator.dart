@@ -8,6 +8,7 @@ import '../../features/auth/data/repositories/login/login_repo_impl.dart';
 import '../../features/cashMoney/data/repositories/cashMoney/cash_money_repo_impl.dart';
 import '../../features/cashier/data/repositories/cashier_repo_impl.dart';
 import '../../features/chart/data/repositories/chart_repo_impl.dart';
+import '../../features/confirmAttendance/data/repositories/confirm_attendance_repo_impl.dart';
 import '../../features/costBalance/data/repositories/cost_balance_repo_impl.dart';
 import '../../features/customerAccount/data/repositories/customer_account_repo_impl.dart';
 import '../../features/dailyFrenchCash/data/repositories/daily_french_cash_repo_impl.dart';
@@ -194,6 +195,12 @@ void setupServiceLocator() {
 
   getIt.registerSingleton<MachineWorkReportRepoImpl>(
     MachineWorkReportRepoImpl(
+      getIt.get<ApiService>(),
+    ),
+  );
+
+  getIt.registerSingleton<ConfirmAttendanceRepoImpl>(
+    ConfirmAttendanceRepoImpl(
       getIt.get<ApiService>(),
     ),
   );

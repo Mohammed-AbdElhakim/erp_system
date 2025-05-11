@@ -774,6 +774,36 @@ class S {
   String get choose {
     return Intl.message('Choose', name: 'choose', desc: '', args: []);
   }
+
+  /// `Group`
+  String get group {
+    return Intl.message('Group', name: 'group', desc: '', args: []);
+  }
+
+  /// `Employee`
+  String get employee {
+    return Intl.message('Employee', name: 'employee', desc: '', args: []);
+  }
+
+  /// `Start Time`
+  String get start_time {
+    return Intl.message('Start Time', name: 'start_time', desc: '', args: []);
+  }
+
+  /// `End Time`
+  String get end_time {
+    return Intl.message('End Time', name: 'end_time', desc: '', args: []);
+  }
+
+  /// `Project`
+  String get project {
+    return Intl.message('Project', name: 'project', desc: '', args: []);
+  }
+
+  /// `Confirm`
+  String get confirm {
+    return Intl.message('Confirm', name: 'confirm', desc: '', args: []);
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

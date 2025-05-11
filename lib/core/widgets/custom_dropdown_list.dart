@@ -11,7 +11,7 @@ typedef Changed<T> = void Function(T? value);
 class CustomDropdownList<T> extends StatefulWidget {
   const CustomDropdownList({
     super.key,
-    required this.title,
+    this.title,
     this.isRequired = false,
     this.isShowRefresh = false,
     this.onTapRefresh,
@@ -23,7 +23,7 @@ class CustomDropdownList<T> extends StatefulWidget {
     this.onChanged,
   });
 
-  final String title;
+  final String? title;
   final bool? isRequired;
   final bool? isShowRefresh;
   final TapRefresh? onTapRefresh;
@@ -54,34 +54,35 @@ class _CustomDropdownListState<T> extends State<CustomDropdownList<T>> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Text(
-                widget.title,
-                style: AppStyles.textStyle14.copyWith(color: Colors.grey),
-              ),
-              if (widget.isRequired == true)
-                const Icon(
-                  Icons.star,
-                  color: Colors.red,
-                  size: 10,
+          if (widget.title != null)
+            Row(
+              children: [
+                Text(
+                  widget.title!,
+                  style: AppStyles.textStyle14.copyWith(color: Colors.grey),
                 ),
-              const SizedBox(
-                width: 12,
-              ),
-              if (widget.isShowRefresh == true)
-                InkWell(
-                  onTap: () {
-                    if (widget.onTapRefresh != null) widget.onTapRefresh!();
-                  },
-                  child: const Icon(
-                    Icons.refresh,
-                    color: Colors.green,
-                    size: 24,
+                if (widget.isRequired == true)
+                  const Icon(
+                    Icons.star,
+                    color: Colors.red,
+                    size: 10,
                   ),
+                const SizedBox(
+                  width: 12,
                 ),
-            ],
-          ),
+                if (widget.isShowRefresh == true)
+                  InkWell(
+                    onTap: () {
+                      if (widget.onTapRefresh != null) widget.onTapRefresh!();
+                    },
+                    child: const Icon(
+                      Icons.refresh,
+                      color: Colors.green,
+                      size: 24,
+                    ),
+                  ),
+              ],
+            ),
           StatefulBuilder(
             builder: (context, dropSetState) {
               return SizedBox(
@@ -89,7 +90,7 @@ class _CustomDropdownListState<T> extends State<CustomDropdownList<T>> {
                 child: widget.isMultiSelect == false
                     ? CustomDropdown<T>.search(
                         hintText: '',
-                        initialItem: widget.initialDropValue,
+                        // initialItem: widget.initialDropValue,
                         closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                         decoration: CustomDropdownDecoration(
                           headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),

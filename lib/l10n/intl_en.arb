@@ -102,5 +102,11 @@
   "products": "Products",
   "projects": "Projects",
   "supplier": "Supplier",
-  "choose": "Choose"
+  "choose": "Choose",
+  "group": "Group",
+  "employee": "Employee",
+  "start_time": "Start Time",
+  "end_time": "End Time",
+  "project": "Project",
+  "confirm": "Confirm"
 }

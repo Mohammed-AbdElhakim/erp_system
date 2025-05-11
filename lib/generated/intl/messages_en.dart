@@ -49,6 +49,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "company_identifier": MessageLookupByLibrary.simpleMessage(
       "Company Identifier",
     ),
+    "confirm": MessageLookupByLibrary.simpleMessage("Confirm"),
     "cost_item": MessageLookupByLibrary.simpleMessage("Cost Center"),
     "currency": MessageLookupByLibrary.simpleMessage("Currency"),
     "customer": MessageLookupByLibrary.simpleMessage("Customer"),
@@ -60,9 +61,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "description_task": MessageLookupByLibrary.simpleMessage("Description: "),
     "distance": MessageLookupByLibrary.simpleMessage("Distance: "),
     "dynamic_pro": MessageLookupByLibrary.simpleMessage("Dynamic Pro"),
+    "employee": MessageLookupByLibrary.simpleMessage("Employee"),
     "employee_name": MessageLookupByLibrary.simpleMessage("Employee Name"),
     "employees": MessageLookupByLibrary.simpleMessage("Employees"),
     "end_date": MessageLookupByLibrary.simpleMessage("End Date: "),
+    "end_time": MessageLookupByLibrary.simpleMessage("End Time"),
     "english": MessageLookupByLibrary.simpleMessage("English"),
     "error": MessageLookupByLibrary.simpleMessage("Error"),
     "exporting_excel_file": MessageLookupByLibrary.simpleMessage(
@@ -79,6 +82,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "file_saved_in": MessageLookupByLibrary.simpleMessage("File saved in: "),
     "from": MessageLookupByLibrary.simpleMessage("From"),
+    "group": MessageLookupByLibrary.simpleMessage("Group"),
     "hi": MessageLookupByLibrary.simpleMessage("Hi, "),
     "host_view": MessageLookupByLibrary.simpleMessage("Host"),
     "incoming": MessageLookupByLibrary.simpleMessage("incoming"),
@@ -136,6 +140,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "products": MessageLookupByLibrary.simpleMessage("Products"),
     "profile": MessageLookupByLibrary.simpleMessage("Profile"),
+    "project": MessageLookupByLibrary.simpleMessage("Project"),
     "projects": MessageLookupByLibrary.simpleMessage("Projects"),
     "refresh": MessageLookupByLibrary.simpleMessage("Refresh"),
     "request_of_extend": MessageLookupByLibrary.simpleMessage(
@@ -153,6 +158,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "show_less": MessageLookupByLibrary.simpleMessage("Show less"),
     "show_more": MessageLookupByLibrary.simpleMessage("Show more"),
     "start_date": MessageLookupByLibrary.simpleMessage("Start Date: "),
+    "start_time": MessageLookupByLibrary.simpleMessage("Start Time"),
     "statistics": MessageLookupByLibrary.simpleMessage("Statistics"),
     "supplier": MessageLookupByLibrary.simpleMessage("Supplier"),
     "sure": MessageLookupByLibrary.simpleMessage("sure"),
