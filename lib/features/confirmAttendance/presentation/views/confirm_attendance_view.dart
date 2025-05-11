@@ -10,7 +10,7 @@ import '../../../../core/widgets/custom_app_bar.dart';
 import '../../data/repositories/confirm_attendance_repo_impl.dart';
 import '../manager/confirmAttendance/confirm_attendance_cubit.dart';
 import '../manager/getDataConfirmAttendance/confirm_attendance_cubit.dart';
-import 'confirm_attendance_view_body.dart';
+import '../widgets/confirm_attendance_view_body.dart';
 
 class ConfirmAttendanceView extends StatefulWidget {
   const ConfirmAttendanceView({super.key, required this.pageData});
