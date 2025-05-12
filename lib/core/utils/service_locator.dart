@@ -11,6 +11,7 @@ import '../../features/chart/data/repositories/chart_repo_impl.dart';
 import '../../features/confirmAttendance/data/repositories/confirm_attendance_repo_impl.dart';
 import '../../features/costBalance/data/repositories/cost_balance_repo_impl.dart';
 import '../../features/customerAccount/data/repositories/customer_account_repo_impl.dart';
+import '../../features/customerCrm/data/repositories/customer_crm_repo_impl.dart';
 import '../../features/dailyFrenchCash/data/repositories/daily_french_cash_repo_impl.dart';
 import '../../features/dashboard/data/repositories/dashboard_repo_impl.dart';
 import '../../features/generalBalance/data/repositories/general_balance_repo_impl.dart';
@@ -85,6 +86,11 @@ void setupServiceLocator() {
 
   getIt.registerSingleton<CustomerAccountRepoImpl>(
     CustomerAccountRepoImpl(
+      getIt.get<ApiService>(),
+    ),
+  );
+  getIt.registerSingleton<CustomerCrmRepoImpl>(
+    CustomerCrmRepoImpl(
       getIt.get<ApiService>(),
     ),
   );

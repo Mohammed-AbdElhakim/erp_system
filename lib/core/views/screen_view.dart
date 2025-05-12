@@ -9,6 +9,7 @@ import '../../features/chart/presentation/views/chart_view.dart';
 import '../../features/confirmAttendance/presentation/views/confirm_attendance_view.dart';
 import '../../features/costBalance/presentation/views/cost_balance_view.dart';
 import '../../features/customerAccount/presentation/views/customer_account_view.dart';
+import '../../features/customerCrm/presentation/views/customer_crm_view.dart';
 import '../../features/dailyFrenchCash/presentation/views/daily_french_cash_view.dart';
 import '../../features/generalBalance/presentation/views/general_balance_view.dart';
 import '../../features/inventoryProduct/presentation/views/inventory_product.dart';
@@ -69,6 +70,8 @@ class ScreenView extends StatelessWidget {
             return ReportsView(pageData: pageData);
           case "customerAccountReport":
             return CustomerAccountView(pageData: pageData);
+          case "customerCrm":
+            return CustomerCrmView(pageData: pageData);
           case "profAccount":
             return AccountProfView(pageData: pageData);
           case "supplierProccess":
