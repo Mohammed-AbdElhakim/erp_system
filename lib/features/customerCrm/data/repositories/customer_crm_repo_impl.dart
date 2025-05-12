@@ -7,7 +7,6 @@ import '../../../../core/utils/api_service.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../models/all_dropdown_model.dart';
 import '../models/header_model.dart';
-import '../models/screen_model.dart';
 import 'customer_crm_repo.dart';
 
 class CustomerCrmRepoImpl implements CustomerCrmRepo {
