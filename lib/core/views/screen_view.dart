@@ -14,6 +14,7 @@ import '../../features/dailyFrenchCash/presentation/views/daily_french_cash_view
 import '../../features/generalBalance/presentation/views/general_balance_view.dart';
 import '../../features/inventoryProduct/presentation/views/inventory_product.dart';
 import '../../features/machineWorkReport/presentation/views/machine_work_report_view.dart';
+import '../../features/offerStatus/presentation/views/offer_status_view.dart';
 import '../../features/productCard/presentation/views/product_card_view.dart';
 import '../../features/profit/presentation/views/profit_view.dart';
 import '../../features/projectProcess/presentation/views/project_process_view.dart';
@@ -53,9 +54,9 @@ class ScreenView extends StatelessWidget {
       case "machineWorkReport":
         return MachineWorkReportView(pageData: pageData);
       case "confirm-attendance":
-        return ConfirmAttendanceView(
-          pageData: pageData,
-        );
+        return ConfirmAttendanceView(pageData: pageData);
+      case "offerStatus":
+        return OfferStatusView(pageData: pageData);
       case "general":
         switch (pageData.tableSrc) {
           case "profit":

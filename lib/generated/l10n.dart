@@ -804,6 +804,26 @@ class S {
   String get confirm {
     return Intl.message('Confirm', name: 'confirm', desc: '', args: []);
   }
+
+  /// `Convert to supply order`
+  String get convert_to_supply_order {
+    return Intl.message(
+      'Convert to supply order',
+      name: 'convert_to_supply_order',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirmation of transfer to a supply order`
+  String get confirmation_set_order {
+    return Intl.message(
+      'Confirmation of transfer to a supply order',
+      name: 'confirmation_set_order',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -108,5 +108,7 @@
   "start_time": "وقت البداية",
   "end_time": "وقت النهاية",
   "project": "المشروع",
-  "confirm": "حفظ"
+  "confirm": "حفظ",
+  "convert_to_supply_order": "تحويل إلى اذن توريد",
+  "confirmation_set_order": "تأكيد التحويل الى اذن توريد"
 }

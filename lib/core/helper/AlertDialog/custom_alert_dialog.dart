@@ -22,10 +22,7 @@ class CustomAlertDialog {
       title: title,
       desc: desc,
       style: AlertStyle(
-          titleStyle: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: AppColors.blueLight),
+          titleStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.blueLight),
           descStyle: const TextStyle(
             fontSize: 18,
           ),
@@ -53,6 +50,32 @@ class CustomAlertDialog {
     ).show();
   }
 
+  static alertWithCustomButtons({
+    required BuildContext context,
+    required AlertType type,
+    required String title,
+    String? desc,
+    String? textButton,
+    required List<DialogButton>? buttons,
+    bool isOverlayTapDismiss = true,
+    bool isCloseButton = true,
+  }) {
+    return Alert(
+      context: context,
+      type: type,
+      title: title,
+      desc: desc,
+      style: AlertStyle(
+          titleStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.blueLight),
+          descStyle: const TextStyle(
+            fontSize: 18,
+          ),
+          isOverlayTapDismiss: isOverlayTapDismiss,
+          isCloseButton: isCloseButton),
+      buttons: buttons,
+    ).show();
+  }
+
   static alertDelete({
     required BuildContext context,
     required Widget contentButton,
@@ -64,10 +87,7 @@ class CustomAlertDialog {
       desc: S.of(context).massage_delete,
       content: contentButton,
       style: AlertStyle(
-          titleStyle: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: AppColors.blueLight),
+          titleStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.blueLight),
           descStyle: const TextStyle(
             fontSize: 18,
           ),
@@ -90,10 +110,7 @@ class CustomAlertDialog {
       title: title,
       content: content,
       style: AlertStyle(
-        titleStyle: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: AppColors.blueLight),
+        titleStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.blueLight),
         isOverlayTapDismiss: isOverlayTapDismiss,
         isCloseButton: isCloseButton,
         isButtonVisible: false,

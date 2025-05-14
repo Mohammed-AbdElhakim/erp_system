@@ -50,6 +50,12 @@ class MessageLookup extends MessageLookupByLibrary {
       "Company Identifier",
     ),
     "confirm": MessageLookupByLibrary.simpleMessage("Confirm"),
+    "confirmation_set_order": MessageLookupByLibrary.simpleMessage(
+      "Confirmation of transfer to a supply order",
+    ),
+    "convert_to_supply_order": MessageLookupByLibrary.simpleMessage(
+      "Convert to supply order",
+    ),
     "cost_item": MessageLookupByLibrary.simpleMessage("Cost Center"),
     "currency": MessageLookupByLibrary.simpleMessage("Currency"),
     "customer": MessageLookupByLibrary.simpleMessage("Customer"),

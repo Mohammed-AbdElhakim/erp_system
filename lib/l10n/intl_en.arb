@@ -108,5 +108,7 @@
   "start_time": "Start Time",
   "end_time": "End Time",
   "project": "Project",
-  "confirm": "Confirm"
+  "confirm": "Confirm",
+  "convert_to_supply_order": "Convert to supply order",
+  "confirmation_set_order": "Confirmation of transfer to a supply order"
 }

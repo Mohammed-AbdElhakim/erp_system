@@ -50,6 +50,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "clean": MessageLookupByLibrary.simpleMessage("مسح"),
     "company_identifier": MessageLookupByLibrary.simpleMessage("معرف شركة"),
     "confirm": MessageLookupByLibrary.simpleMessage("حفظ"),
+    "confirmation_set_order": MessageLookupByLibrary.simpleMessage(
+      "تأكيد التحويل الى اذن توريد",
+    ),
+    "convert_to_supply_order": MessageLookupByLibrary.simpleMessage(
+      "تحويل إلى اذن توريد",
+    ),
     "cost_item": MessageLookupByLibrary.simpleMessage("مركز التكلفة"),
     "currency": MessageLookupByLibrary.simpleMessage("العملة"),
     "customer": MessageLookupByLibrary.simpleMessage("العميل"),
