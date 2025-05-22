@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 
 import '../../features/Reports/data/repositories/reports_repo_impl.dart';
 import '../../features/accountProf/data/repositories/account_prof_repo_impl.dart';
+import '../../features/accountingTree/data/repositories/account_tree_repo_impl.dart';
 import '../../features/attendance/data/repositories/attendance_repo_impl.dart';
 import '../../features/auth/data/repositories/login/login_repo_impl.dart';
 import '../../features/cashMoney/data/repositories/cashMoney/cash_money_repo_impl.dart';
@@ -214,6 +215,12 @@ void setupServiceLocator() {
 
   getIt.registerSingleton<OfferMasterRepoImpl>(
     OfferMasterRepoImpl(
+      getIt.get<ApiService>(),
+    ),
+  );
+
+  getIt.registerSingleton<AccountTreeRepoImpl>(
+    AccountTreeRepoImpl(
       getIt.get<ApiService>(),
     ),
   );

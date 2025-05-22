@@ -1,0 +1,148 @@
+[33m64e5ebe[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m create and finish offer_status_view.dart
+[33m7b51c54[m refactor code
+[33m798f4d3[m create and finish customer_crm_view.dart
+[33m06e0bd6[m refactor code
+[33m5fb1f4e[m create and finish confirm_attendance_view.dart
+[33mea8890b[m create and finish machine_work_report_view.dart.
+[33mbdc8a07[m create supplier machine but not finish.
+[33m42c137c[m refactor get name column is required.
+[33mf33d287[m finish add and edit to add_machine_work.dart and edit_machine_work.dart.
+[33m921594f[m fixed hint in gradle (Warning: Flutter support for your project's Android Gradle Plugin version (7.3.0) will soon be dropped. Please upgrade your Android Gradle Plugin version to a version of at least 7.3.1 soon.).
+[33m578604d[m fixed error in tax_declaration_view_body.dart.
+[33mdebf558[m[33m ([m[1;31morigin/main[m[33m)[m fixed error in delay in loading dropdown in product_card_view_body.dart.
+[33md6eb2e0[m fixed error in add_sales_invoice.dart.
+[33mc7ff043[m fixed error.
+[33m764cc09[m fixed error required filed in purchases.
+[33m2ae7788[m fixed error in purchases_alert_dialog_edit_widget.dart when edit.
+[33maac7ec2[m refactor code
+[33m8483d4b[m refactor inventory_product.dart to run and show trialCustomers and trialSupplier with inventoryProduct.
+[33m03c1f40[m refactor code
+[33m420fea0[m create cost balance.
+[33mf3e5f3e[m finish add and edit to supplier offer.
+[33m152f334[m refactor code
+[33m74f2ee1[m finish add and edit to supply order
+[33md59fd27[m refactor code.
+[33m06c8145[m fixed error page Receipt of Add Order.
+[33m0aecb68[m fixed error page IN Payment  /Check.
+[33m6af82d8[m finish cash_money_view.dart
+[33m7a48643[m create cash_money_view.dart
+[33mc278a0b[m refactor TailCondition case2 (tab3) in supplier_customer_process.
+[33m7858fe2[m refactor code when show columns in tabs.
+[33m28f7c88[m refactor code.
+[33m39ee254[m create setting refresh, pdf and excel in account prof.
+[33m46e010f[m create setting refresh, pdf and excel in supplier process.
+[33m4175949[m create setting refresh, pdf and excel in project process.
+[33m866c4d0[m create setting refresh, pdf and excel in supplier customer process.
+[33mb805532[m create file_pdf_by_data.dart and file_excel_by_data.dart
+[33mb0735ac[m fixed error when create pdf
+[33m0f609ed[m remove DevicePreview
+[33mf214e27[m create setting in tasks (employees - time - progress - notes)
+[33mb3c7a5e[m fixed error when cell onLongPress.
+[33m1c2e49b[m Create table_general_group.dart
+[33m933940f[m dynamic group in table group.
+[33m6cb29fb[m refactor code.
+[33m218d6ef[m create print one row.
+[33m4fec657[m create in pdf ten columns.
+[33m86ac138[m refactor code.
+[33m3d91480[m refactor code exporting pdf file.
+[33m95f2b0f[m refactor exporting excel file and pdf file.
+[33m9f15e6f[m fixed error in pagination width.
+[33m2dd8c93[m change language in header.
+[33mdcba586[m change dropdown limit in views tabs.
+[33mdfeac97[m refactor exporting excel file and pdf file.
+[33me5bd960[m exporting excel file and pdf file.
+[33m3e4ad17[m Install the font in the application in case the user enlarges the font on the phone zoom in or out
+[33mf690e05[m run app after update android.
+[33m960ef39[m finish supplier customer process
+[33maef77c7[m refactor build daily french cash.
+[33mdea5c21[m finish build daily french cash.
+[33mc2aea11[m refactor if CategoryName is null will be Basic Data
+[33mf8f564d[m refactor purchases_alert_dialog_add_widget.dart and purchases_alert_dialog_edit_widget.dart
+[33mba00975[m create custom_table_daily_french_cash.dart
+[33m802fb2d[m refactor build_daily_french_cash_input.dart
+[33m6b41d0e[m create daily_french_cash_view.dart and inputs data
+[33m5bc0059[m finish build_daily_french_cash_input.dart
+[33m5520214[m refactor body request
+[33m8ae6d4a[m change type of list of id
+[33m15ecc9f[m initialized radio
+[33m372b41d[m return selected date
+[33mc65e50d[m return selected list
+[33m177dc01[m create build_radio_buttons_widget.dart
+[33mc65f7ac[m create account dropdown List
+[33m7807984[m create account cubit
+[33m3297b48[m add function in repo to get accounts list
+[33m80da787[m create accounts_model.dart
+[33m2aca686[m create build_date_widget.dart
+[33m28f60dd[m create daily_french_cash_view.dart
+[33mbf1504e[m add DailyFrenchCashRepoImpl to ServiceLocator.
+[33m9f0d61b[m create daily_french_cash_cubit.dart
+[33m59d3078[m create daily_french_cash_state.dart
+[33m6cbd16c[m create daily_french_cash_repo_impl.dart
+[33m9c0ab36[m create daily_french_cash_repo.dart
+[33m8315f30[m create body_request_daily_french_cash.dart
+[33md183f60[m create daily_french_cash_model.dart
+[33me81c74f[m finish tax declaration view.
+[33mcf302c6[m refactor edit excel view body.
+[33mf289b84[m refactor edit product process out.
+[33m5c7d3ec[m refactor table reports view.
+[33maad1d17[m refactor dropdown pagination in inventory product.
+[33mb5fbf9e[m refactor search in inventory product.
+[33m1981b47[m finish inventory product.
+[33ma97acfa[m refactor value null in custom table add edit.
+[33m63ec173[m refactor value null in customer order table add edit.
+[33md1b2462[m refactor pages for notifications model.
+[33m979ebb0[m refactor show data in project process (isGeneral==true).
+[33m3df70d5[m refactor supplier process.
+[33m1efc9d2[m rename file in project process.
+[33ma7cec16[m finish project process view.
+[33m5fbca0d[m refactor search in home with ar and en.
+[33me1296c7[m refactor Custom order.
+[33m3b1a8b2[m refactor dropdown page number in table.
+[33ma5703b3[m color row in table general and group.
+[33mb9b140b[m finish edit customer order.
+[33mf0511a3[m refactor customer account.
+[33m7c2f3a0[m finish add customer order.
+[33m9bea7c3[m fixed error delete in add table.
+[33m0b02ae3[m Create a sales returns page so that when you select the invoice, the data appears.
+[33me6af5de[m refactor code from withOpacity to withAlpha.
+[33m6f9e1e7[m fixed error in table excel.
+[33m3feedae[m fixed error in purchases in table.
+[33m64e2b83[m add deviceName,long and lat in send attendance.
+[33mce7e6e7[m get device name.
+[33m243b63f[m Hide keyboard shortcut when clicking outside TextFormField.
+[33m9b594ee[m fixed error to add more same Product and Multiple selection.
+[33m533e065[m fixed error input in dialog in sales.
+[33m2cd3ba6[m refactor error dropdown list when two list with the same name.
+[33m55e7606[m refactor build alert edit details.
+[33mf76b1cd[m refactor tap details widget.
+[33m32dc687[m refactor code after fixed error longPress with dropdown.
+[33mb384b41[m fixed error longPress with dropdown.
+[33m9f44cca[m refactor Failure in status 401 and 403
+[33m63d8873[m refactor Failure in status 401
+[33mfe4579d[m writ hit to date in tableName attribute
+[33m032cecc[m change object to get data table in store show and finish it.
+[33ma7a545b[m fix error double and int in store show model.
+[33m11deb82[m add store show view to screen view.
+[33m614c892[m create store show view body.
+[33m9f6dd58[m create store show view.
+[33m6ffaf84[m create custom table store show.
+[33mf29aadf[m refactor store show model.
+[33mcbbd2b5[m create pagination widget.
+[33m51db76a[m create build alert add in dropdown.
+[33md1657a5[m create store show cubit.
+[33m5876535[m create add edit cubit.
+[33m3e5de23[m create get all dropdown list cubit.
+[33m0eca146[m create get table cubit.
+[33m2f3b614[m add store show repo impl to service locator.
+[33m441bde8[m create store show repo impl.
+[33m2b2ef07[m create store show repo.
+[33m725d9d3[m create store show model.
+[33mee254cd[m create all dropdown model.
+[33mab9078f[m create permission model.
+[33m2bcad9b[m create screen model.
+[33m1864d57[m validator value dropdown list in  product card
+[33m0a4e39f[m refactor sort column table in product card view and sort input
+[33m8c98c7c[m sort column table in product card view
+[33m6195547[m finish product card view
+[33m3994b21[m fix error double and int in product card model
+[33m266affb[m c

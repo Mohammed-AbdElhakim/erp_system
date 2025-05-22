@@ -37,6 +37,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "btn_delete": MessageLookupByLibrary.simpleMessage("حذف"),
     "btn_edit": MessageLookupByLibrary.simpleMessage("تعديل"),
     "btn_search": MessageLookupByLibrary.simpleMessage("بحث"),
+    "btn_show": MessageLookupByLibrary.simpleMessage("عرض"),
     "cancel": MessageLookupByLibrary.simpleMessage("إلغاء"),
     "change_host": MessageLookupByLibrary.simpleMessage("تغير المضيف"),
     "change_host_description": MessageLookupByLibrary.simpleMessage(
@@ -106,6 +107,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "massage_delete": MessageLookupByLibrary.simpleMessage(
       "هل تريد بتأكيد حذف العنصر المحدد؟",
+    ),
+    "massage_delete2": MessageLookupByLibrary.simpleMessage(
+      "هل تريد بتأكيد الحذف؟",
     ),
     "massage_no_edit": MessageLookupByLibrary.simpleMessage(
       "لا يمكن تعديل اكثر من عنصر.",

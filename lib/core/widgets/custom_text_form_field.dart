@@ -20,7 +20,10 @@ class CustomTextFormField extends StatelessWidget {
     this.textStyle,
     this.filled,
     this.fillColor,
+    this.enabled,
+    this.initialValue,
   });
+
   final TextEditingController? controller;
   final String? validatorMassage;
   final String hintText;
@@ -35,6 +38,8 @@ class CustomTextFormField extends StatelessWidget {
   final TextStyle? textStyle;
   final bool? filled;
   final Color? fillColor;
+  final bool? enabled;
+  final String? initialValue;
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +59,7 @@ class CustomTextFormField extends StatelessWidget {
                 }
               }
             : null,
+        initialValue: initialValue,
         textAlign: TextAlign.center,
         onChanged: onChanged,
         onSaved: onSaved,
@@ -61,19 +67,17 @@ class CustomTextFormField extends StatelessWidget {
         obscureText: obscureText,
         textDirection: TextDirection.ltr,
         style: textStyle,
+        enabled: enabled,
         readOnly: readOnly ?? false,
         decoration: InputDecoration(
           hintText: hintText,
           hintStyle: TextStyle(color: AppColors.grey),
           filled: filled,
           fillColor: fillColor,
-          contentPadding:
-              const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
+          contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
           border: buildBorder(isBorder: isBorder),
-          enabledBorder:
-              buildBorder(color: AppColors.blueDark, isBorder: isBorder),
-          focusedBorder:
-              buildBorder(color: AppColors.blueDark, isBorder: isBorder),
+          enabledBorder: buildBorder(color: AppColors.blueDark, isBorder: isBorder),
+          focusedBorder: buildBorder(color: AppColors.blueDark, isBorder: isBorder),
           prefixIcon: prefixIcon,
         ),
       ),

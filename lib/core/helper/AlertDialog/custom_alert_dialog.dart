@@ -100,7 +100,7 @@ class CustomAlertDialog {
 
   static alertWithCustomContent({
     required BuildContext context,
-    required String title,
+    String? title,
     required Widget content,
     bool isOverlayTapDismiss = true,
     bool isCloseButton = true,

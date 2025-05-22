@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../features/Reports/presentation/views/reports_view.dart';
 import '../../features/accountProf/presentation/views/account_prof_view.dart';
+import '../../features/accountingTree/presentation/views/accounting_tree_view.dart';
 import '../../features/attendance/presentation/views/attendance_view.dart';
 import '../../features/cashMoney/presentation/views/cash_money_view.dart';
 import '../../features/cashier/presentation/views/cashier_view.dart';
@@ -92,6 +93,8 @@ class ScreenView extends StatelessWidget {
             return SupplierCustomerProcessView(pageData: pageData);
           case "CostBalance":
             return CostBalanceView(pageData: pageData);
+          case "accountingTree":
+            return AccountingTreeView(pageData: pageData);
           default:
             return ScreenTable(pageData: pageData);
         }

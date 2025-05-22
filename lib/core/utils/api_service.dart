@@ -8,6 +8,7 @@ class ApiService {
   final Dio _dio;
 
   ApiService(this._dio);
+
   Future<dynamic> get({
     required String endPoint,
     required Map<String, dynamic>? headers,
@@ -37,6 +38,7 @@ class ApiService {
     );
     return response.data;
   }
+
   Future<dynamic> postToPrint({
     required String endPoint,
     required Object? data,
@@ -72,11 +74,13 @@ class ApiService {
 
   Future<dynamic> delete({
     required String endPoint,
+    Object? data,
     required Map<String, dynamic>? headers,
   }) async {
     String host = await Pref.getStringFromPref(key: AppStrings.hostKey) ?? "";
     Response response = await _dio.delete(
       "$host$_baseUrl$endPoint",
+      data: data,
       options: Options(
         headers: headers,
       ),

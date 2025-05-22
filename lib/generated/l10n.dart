@@ -255,6 +255,11 @@ class S {
     return Intl.message('Delete', name: 'btn_delete', desc: '', args: []);
   }
 
+  /// `Show`
+  String get btn_show {
+    return Intl.message('Show', name: 'btn_show', desc: '', args: []);
+  }
+
   /// `From`
   String get from {
     return Intl.message('From', name: 'from', desc: '', args: []);
@@ -370,6 +375,16 @@ class S {
     return Intl.message(
       'Do you want to confirm the deletion of the selected item?',
       name: 'massage_delete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Do you want to confirm the deletion ?`
+  String get massage_delete2 {
+    return Intl.message(
+      'Do you want to confirm the deletion ?',
+      name: 'massage_delete2',
       desc: '',
       args: [],
     );

@@ -37,6 +37,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "btn_delete": MessageLookupByLibrary.simpleMessage("Delete"),
     "btn_edit": MessageLookupByLibrary.simpleMessage("Edit"),
     "btn_search": MessageLookupByLibrary.simpleMessage("Search"),
+    "btn_show": MessageLookupByLibrary.simpleMessage("Show"),
     "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
     "change_host": MessageLookupByLibrary.simpleMessage("Change Host"),
     "change_host_description": MessageLookupByLibrary.simpleMessage(
@@ -106,6 +107,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "massage_delete": MessageLookupByLibrary.simpleMessage(
       "Do you want to confirm the deletion of the selected item?",
+    ),
+    "massage_delete2": MessageLookupByLibrary.simpleMessage(
+      "Do you want to confirm the deletion ?",
     ),
     "massage_no_edit": MessageLookupByLibrary.simpleMessage(
       "It is not possible to modify more than one item.",

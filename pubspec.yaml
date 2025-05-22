@@ -76,6 +76,7 @@ dependencies:
   #  drag_and_drop_lists: ^0.4.2
   dotted_border: ^2.1.0
   #  super_drag_and_drop: ^0.8.24
+  animated_tree_view: ^2.3.0
 
   device_preview: ^1.2.0
 
