@@ -245,7 +245,7 @@ class _EditShipmentOrderState extends State<EditShipmentOrder> {
                                   },
                                 ),
                                 CustomButton(
-                                  text: "إلغاء",
+                                  text: S.of(context).cancel,
                                   width: 80,
                                   onTap: () {
                                     Navigator.pop(context);
