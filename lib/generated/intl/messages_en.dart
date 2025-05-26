@@ -142,6 +142,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "permission_denied": MessageLookupByLibrary.simpleMessage(
       "Permission Denied.",
     ),
+    "play": MessageLookupByLibrary.simpleMessage("Play"),
     "preparing_print_file": MessageLookupByLibrary.simpleMessage(
       "Preparing the print file...",
     ),
@@ -163,6 +164,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "search": MessageLookupByLibrary.simpleMessage("Search....."),
     "select_client": MessageLookupByLibrary.simpleMessage(
       "Please select a client.",
+    ),
+    "select_invoices": MessageLookupByLibrary.simpleMessage("Select invoices"),
+    "select_invoices_massage": MessageLookupByLibrary.simpleMessage(
+      "Select the invoices you want to add...",
     ),
     "show": MessageLookupByLibrary.simpleMessage("Show"),
     "show_less": MessageLookupByLibrary.simpleMessage("Show less"),

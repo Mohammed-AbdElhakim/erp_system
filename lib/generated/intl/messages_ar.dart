@@ -138,6 +138,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "outgoing": MessageLookupByLibrary.simpleMessage("صادرة"),
     "password": MessageLookupByLibrary.simpleMessage("كلمة المرور"),
     "permission_denied": MessageLookupByLibrary.simpleMessage("تم رفض الإذن."),
+    "play": MessageLookupByLibrary.simpleMessage("تشغيل"),
     "preparing_print_file": MessageLookupByLibrary.simpleMessage(
       "جاري تجهيز ملف الطباعة...",
     ),
@@ -157,6 +158,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "search": MessageLookupByLibrary.simpleMessage("بحث....."),
     "select_client": MessageLookupByLibrary.simpleMessage(
       "من فضلك اختر العميل.",
+    ),
+    "select_invoices": MessageLookupByLibrary.simpleMessage("اختر الفواتير"),
+    "select_invoices_massage": MessageLookupByLibrary.simpleMessage(
+      "اختر الفواتير المراد إضافتها...",
     ),
     "show": MessageLookupByLibrary.simpleMessage("عرض"),
     "show_less": MessageLookupByLibrary.simpleMessage("عرض أقل"),

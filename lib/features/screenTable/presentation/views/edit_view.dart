@@ -21,6 +21,7 @@ import '../widgets/tableSrcPageDetails/productProcess/edit_product_process.dart'
 import '../widgets/tableSrcPageDetails/productProcessOut/edit_product_process_out.dart';
 import '../widgets/tableSrcPageDetails/productionProsecc/edit_production_prosecc.dart';
 import '../widgets/tableSrcPageDetails/purchases/edit_purchases.dart';
+import '../widgets/tableSrcPageDetails/shipmentOrder/views/edit_shipment_order.dart';
 import '../widgets/tableSrcPageDetails/supplierOffer/edit_supplier_offer.dart';
 
 class EditView extends StatefulWidget {
@@ -94,6 +95,9 @@ class _EditViewState extends State<EditView> {
       //حركات المعدات
       case "machineWork":
         return EditMachineWork(tapData: state.tapModel.list[0], pageData: widget.pageData, listKey: widget.listKey);
+      //طلبيات الشحن
+      case 'shipmentOrder':
+        return EditShipmentOrder(tapData: state.tapModel.list[0], pageData: widget.pageData, listKey: widget.listKey);
       default:
         return Center(child: Text("TableSrc Details =>$tableSrc"));
     }

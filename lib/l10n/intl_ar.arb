@@ -112,5 +112,8 @@
   "project": "المشروع",
   "confirm": "حفظ",
   "convert_to_supply_order": "تحويل إلى اذن توريد",
-  "confirmation_set_order": "تأكيد التحويل الى اذن توريد"
+  "confirmation_set_order": "تأكيد التحويل الى اذن توريد",
+  "select_invoices": "اختر الفواتير",
+  "select_invoices_massage": "اختر الفواتير المراد إضافتها...",
+  "play": "تشغيل"
 }

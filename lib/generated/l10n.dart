@@ -839,6 +839,31 @@ class S {
       args: [],
     );
   }
+
+  /// `Select invoices`
+  String get select_invoices {
+    return Intl.message(
+      'Select invoices',
+      name: 'select_invoices',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select the invoices you want to add...`
+  String get select_invoices_massage {
+    return Intl.message(
+      'Select the invoices you want to add...',
+      name: 'select_invoices_massage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Play`
+  String get play {
+    return Intl.message('Play', name: 'play', desc: '', args: []);
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -112,5 +112,8 @@
   "project": "Project",
   "confirm": "Confirm",
   "convert_to_supply_order": "Convert to supply order",
-  "confirmation_set_order": "Confirmation of transfer to a supply order"
+  "confirmation_set_order": "Confirmation of transfer to a supply order",
+  "select_invoices": "Select invoices",
+  "select_invoices_massage": "Select the invoices you want to add...",
+  "play": "Play"
 }
