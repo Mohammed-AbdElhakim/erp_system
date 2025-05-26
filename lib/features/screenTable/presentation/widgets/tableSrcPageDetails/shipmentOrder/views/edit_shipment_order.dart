@@ -229,7 +229,6 @@ class _EditShipmentOrderState extends State<EditShipmentOrder> {
                                   listSelect.add(billsDataModel.toJson());
                                 }
                               },
-                              // heaterList: billsHeaderList,
                             ),
                             const SizedBox(height: 8),
                             Row(
