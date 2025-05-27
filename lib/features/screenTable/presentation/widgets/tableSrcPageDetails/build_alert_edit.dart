@@ -30,8 +30,8 @@ import '../../views/screen_table.dart';
 import 'build_alert_add_in_dropdown.dart';
 
 class BuildAlertEdit extends StatefulWidget {
-  const BuildAlertEdit(
-      {super.key, required this.columnList, required this.pageData});
+  const BuildAlertEdit({super.key, required this.columnList, required this.pageData});
+
   final List<ColumnList> columnList;
   final Pages pageData;
 
@@ -70,8 +70,8 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => GetByIdCubit(getIt.get<ScreenRepoImpl>())
-        ..getById(id: id, controllerName: widget.pageData.controllerName),
+      create: (context) =>
+          GetByIdCubit(getIt.get<ScreenRepoImpl>())..getById(id: id, controllerName: widget.pageData.controllerName),
       child: BlocBuilder<GetByIdCubit, GetByIdState>(
         builder: (context, state) {
           if (state is GetByIdSuccess) {
@@ -101,18 +101,14 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                                           rowData: state.valueGetById)
                                       .isNotEmpty)
                                     Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 12, vertical: 8),
+                                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                                         decoration: BoxDecoration(
                                             // color: AppColors.grey.withOpacity(.4),
-                                            color:
-                                                AppColors.grey.withAlpha(102),
-                                            borderRadius:
-                                                BorderRadius.circular(15)),
+                                            color: AppColors.grey.withAlpha(102),
+                                            borderRadius: BorderRadius.circular(15)),
                                         child: Text(
                                           categoryName,
-                                          style: AppStyles.textStyle18
-                                              .copyWith(color: Colors.black),
+                                          style: AppStyles.textStyle18.copyWith(color: Colors.black),
                                         )),
                                   ...getMyWidgetList(
                                       columnList: widget.columnList,
@@ -134,9 +130,7 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                                   isShow = !isShow;
                                 });
                               },
-                              child: Text(!isShow
-                                  ? S.of(context).show_more
-                                  : S.of(context).show_less),
+                              child: Text(!isShow ? S.of(context).show_more : S.of(context).show_less),
                             ),
                           ],
                         ),
@@ -154,8 +148,7 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                             noGradient: true,
                             color: Colors.transparent,
                             noShadow: true,
-                            textStyle: AppStyles.textStyle16
-                                .copyWith(color: Colors.grey),
+                            textStyle: AppStyles.textStyle16.copyWith(color: Colors.grey),
                             onTap: () {
                               Navigator.pop(context);
                             },
@@ -166,26 +159,21 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                           BlocConsumer<AddEditCubit, AddEditState>(
                             listener: (context, state) {
                               if (state is AddEditSuccess) {
-                                BlocProvider.of<GetTableCubit>(context)
-                                    .getTable(
-                                        pageId: widget.pageData.pageId,
-                                        employee: false,
-                                        isdesc: widget.pageData.isDesc,
-                                        limit: 10,
-                                        offset: 0,
-                                        orderby: widget.pageData.orderBy,
-                                        statment: '',
-                                        selectcolumns: '',
-                                        departmentName:
-                                            widget.pageData.departmentName,
-                                        isDepartment:
-                                            widget.pageData.isDepartment,
-                                        authorizationID:
-                                            widget.pageData.authorizationID,
-                                        viewEmployeeColumn:
-                                            widget.pageData.viewEmployeeColumn,
-                                        numberOfPage: 1,
-                                        dropdownValueOfLimit: 10);
+                                BlocProvider.of<GetTableCubit>(context).getTable(
+                                    pageId: widget.pageData.pageId,
+                                    employee: false,
+                                    isdesc: widget.pageData.isDesc,
+                                    limit: 10,
+                                    offset: 0,
+                                    orderby: widget.pageData.orderBy,
+                                    statment: '',
+                                    selectcolumns: '',
+                                    departmentName: widget.pageData.departmentName,
+                                    isDepartment: widget.pageData.isDepartment,
+                                    authorizationID: widget.pageData.authorizationID,
+                                    viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
+                                    numberOfPage: 1,
+                                    dropdownValueOfLimit: 10);
                                 widget.columnList.clear();
                                 Navigator.pop(context);
                               } else if (state is AddEditFailure) {
@@ -208,10 +196,7 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                                       formKey.currentState!.save();
 
                                       BlocProvider.of<AddEditCubit>(context)
-                                          .edit(
-                                              controllerName: widget
-                                                  .pageData.controllerName,
-                                              body: newRowData);
+                                          .edit(controllerName: widget.pageData.controllerName, body: newRowData);
                                     }
                                   },
                                 );
@@ -244,18 +229,14 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
     // List<Widget> listWidgets = [];
     List<Widget> list = [];
     for (var item in columnList) {
-      String title = lang == AppStrings.arLangKey
-          ? item.arColumnLabel!
-          : item.enColumnLabel!;
+      String title = lang == AppStrings.arLangKey ? item.arColumnLabel! : item.enColumnLabel!;
       //text
       if (item.insertType == "text" &&
           item.insertVisable == true &&
           item.categoryName == categoryName &&
           item.insertDefult == show) {
-        TextEditingController controller = TextEditingController(
-            text: rowData[item.columnName].toString() == "null"
-                ? ''
-                : rowData[item.columnName]);
+        TextEditingController controller =
+            TextEditingController(text: rowData[item.columnName].toString() == "null" ? '' : rowData[item.columnName]);
         list.add(Padding(
           padding: const EdgeInsets.symmetric(vertical: 5),
           child: Column(
@@ -283,10 +264,7 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                 onSaved: (newValue) {
                   if (newValue!.isNotEmpty) {
                     setState(() {
-                      rowData.updateAll((key, value) =>
-                          key == item.columnName!.toString()
-                              ? value = controller.text
-                              : value);
+                      rowData.updateAll((key, value) => key == item.columnName!.toString() ? value = controller.text : value);
                       newRowData = rowData;
                     });
                   }
@@ -301,10 +279,8 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
           item.insertVisable == true &&
           item.categoryName == categoryName &&
           item.insertDefult == show) {
-        TextEditingController controller = TextEditingController(
-            text: rowData[item.columnName].toString() == "null"
-                ? ''
-                : rowData[item.columnName].toString());
+        TextEditingController controller =
+            TextEditingController(text: rowData[item.columnName].toString() == "null" ? '' : rowData[item.columnName].toString());
 
         list.add(Padding(
           padding: const EdgeInsets.symmetric(vertical: 5),
@@ -333,10 +309,7 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                 onSaved: (newValue) {
                   if (newValue!.isNotEmpty) {
                     setState(() {
-                      rowData.updateAll((key, value) =>
-                          key == item.columnName!.toString()
-                              ? value = controller.text
-                              : value);
+                      rowData.updateAll((key, value) => key == item.columnName!.toString() ? value = controller.text : value);
                       newRowData = rowData;
                     });
                   }
@@ -353,8 +326,7 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
           item.insertDefult == show) {
         String date;
         if (rowData[item.columnName] != null) {
-          date = DateFormat("yyyy-MM-dd", 'en').format(
-              DateTime.parse(rowData[item.columnName].toString()).toLocal());
+          date = DateFormat("yyyy-MM-dd", 'en').format(DateTime.parse(rowData[item.columnName].toString()).toLocal());
         } else {
           // date = DateFormat("yyyy-MM-dd", 'en').format(DateTime.now());
           date = '';
@@ -391,32 +363,27 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                       );
                       if (dateTime != null) {
                         dsetState(() {
-                          date =
-                              DateFormat("yyyy-MM-dd", 'en').format(dateTime);
+                          date = DateFormat("yyyy-MM-dd", 'en').format(dateTime);
                           // dateFrom = dateTime.toString();
                         });
 
                         dsetState(() {
-                          rowData.updateAll((key, value) =>
-                              key == item.columnName!.toString()
-                                  ? value = dateTime.toString()
-                                  : value);
+                          rowData.updateAll(
+                              (key, value) => key == item.columnName!.toString() ? value = dateTime.toString() : value);
                           newRowData = rowData;
                         });
                       }
                     },
                     child: Container(
                         height: 40,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(color: AppColors.blueDark)),
+                        decoration:
+                            BoxDecoration(borderRadius: BorderRadius.circular(12), border: Border.all(color: AppColors.blueDark)),
                         alignment: Alignment.center,
                         padding: const EdgeInsets.all(8),
                         child: Text(
                           date,
                           textAlign: TextAlign.center,
-                          style: AppStyles.textStyle14
-                              .copyWith(color: Colors.black),
+                          style: AppStyles.textStyle14.copyWith(color: Colors.black),
                         )),
                   );
                 },
@@ -518,11 +485,9 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
               CustomDropdown<String>.search(
                 hintText: '',
                 initialItem: dropValue,
-                closedHeaderPadding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                 decoration: CustomDropdownDecoration(
-                    headerStyle:
-                        AppStyles.textStyle16.copyWith(color: Colors.black),
+                    headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
                     closedFillColor: Colors.transparent,
                     closedBorder: Border.all(color: AppColors.blueDark)),
                 validator: item.isRquired == true
@@ -534,10 +499,7 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                         }
                       }
                     : null,
-                items: myListDrop.isEmpty
-                    ? ['']
-                    : List.generate(myListDrop.length,
-                        (index) => myListDrop![index].text ?? ''),
+                items: myListDrop.isEmpty ? [''] : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
                 onChanged: (value) {
                   newRowData.addAll({item.searchName!.toString(): value});
                 },
@@ -568,10 +530,7 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                     checkboxValue = !checkboxValue;
                   });
                   csetState(() {
-                    rowData.updateAll((key, value) =>
-                        key == item.columnName!.toString()
-                            ? value = checkboxValue
-                            : value);
+                    rowData[item.columnName!.toString()] = checkboxValue;
                     newRowData = rowData;
                   });
                 });
@@ -585,11 +544,8 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
 
   void getColumnListAndAdd(Pages page) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).post(
         endPoint: "home/getGeneralTable",
         data: {
@@ -643,11 +599,8 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
 
   Future<bool> getPermissions(int? pageId) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPagePermissions?pageId=$pageId",
         headers: {
@@ -664,11 +617,8 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
 
   void getDropdownList(int pageId) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       List<dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPageDropDown?pageId=$pageId",
         headers: {
