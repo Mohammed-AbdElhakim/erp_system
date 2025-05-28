@@ -75,6 +75,7 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
       child: BlocBuilder<GetByIdCubit, GetByIdState>(
         builder: (context, state) {
           if (state is GetByIdSuccess) {
+            Map<String, dynamic> id = state.valueGetById;
             return SizedBox(
               height: MediaQuery.of(context).size.height * .75,
               child: Form(
@@ -261,12 +262,22 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                 controller: controller,
                 isValidator: item.isRquired!,
                 keyboardType: TextInputType.text,
+                // onSaved: (newValue) {
+                //   if (newValue!.isNotEmpty) {
+                //     setState(() {
+                //       rowData[item.columnName!.toString()] = controller.text;
+                //       newRowData = rowData;
+                //     });
+                //   }
+                // },
+                onChanged: (value) {
+                  rowData[item.columnName!] = value;
+                  newRowData = rowData;
+                },
                 onSaved: (newValue) {
                   if (newValue!.isNotEmpty) {
-                    setState(() {
-                      rowData.updateAll((key, value) => key == item.columnName!.toString() ? value = controller.text : value);
-                      newRowData = rowData;
-                    });
+                    rowData[item.columnName!] = controller.text;
+                    newRowData = rowData;
                   }
                 },
               )
@@ -306,12 +317,22 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                 keyboardType: TextInputType.number,
                 isValidator: item.isRquired!,
                 controller: controller,
+                // onSaved: (newValue) {
+                //   if (newValue!.isNotEmpty) {
+                //     setState(() {
+                //       rowData[item.columnName!.toString()] = controller.text;
+                //       newRowData = rowData;
+                //     });
+                //   }
+                // },
+                onChanged: (value) {
+                  rowData[item.columnName!] = value;
+                  newRowData = rowData;
+                },
                 onSaved: (newValue) {
                   if (newValue!.isNotEmpty) {
-                    setState(() {
-                      rowData.updateAll((key, value) => key == item.columnName!.toString() ? value = controller.text : value);
-                      newRowData = rowData;
-                    });
+                    rowData[item.columnName!] = controller.text;
+                    newRowData = rowData;
                   }
                 },
               ),
@@ -319,7 +340,7 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
           ),
         ));
       }
-      //Date
+      /*//Date
       if (item.insertType == "date" &&
           item.insertVisable == true &&
           item.categoryName == categoryName &&
@@ -368,8 +389,7 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                         });
 
                         dsetState(() {
-                          rowData.updateAll(
-                              (key, value) => key == item.columnName!.toString() ? value = dateTime.toString() : value);
+                          rowData[item.columnName!.toString()] = dateTime.toString();
                           newRowData = rowData;
                         });
                       }
@@ -391,14 +411,91 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
             ],
           ),
         ));
+      }*/
+      //Date
+      if (item.insertType == "date" &&
+          item.insertVisable == true &&
+          item.categoryName == categoryName &&
+          item.insertDefult == show) {
+        String date;
+        if (rowData[item.columnName] != null) {
+          date = DateFormat("yyyy-MM-dd", 'en').format(DateTime.parse(rowData[item.columnName].toString()).toLocal());
+        } else {
+          date = '';
+        }
+
+        list.add(Padding(
+          padding: const EdgeInsets.symmetric(vertical: 5),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    title,
+                    style: AppStyles.textStyle14.copyWith(color: Colors.grey),
+                  ),
+                  if (item.isRquired == true)
+                    const Icon(
+                      Icons.star,
+                      color: Colors.red,
+                      size: 10,
+                    )
+                ],
+              ),
+              StatefulBuilder(
+                builder: (context, dsetState) {
+                  return InkWell(
+                    onTap: () async {
+                      DateTime? dateTime = await showDatePicker(
+                        context: context,
+                        initialDate: rowData[item.columnName] != null
+                            ? DateTime.parse(rowData[item.columnName].toString())
+                            : DateTime.now(),
+                        firstDate: DateTime(1980),
+                        lastDate: DateTime(2100),
+                      );
+                      if (dateTime != null) {
+                        String formattedDate = DateFormat("yyyy-MM-dd", 'en').format(dateTime);
+                        dsetState(() {
+                          date = formattedDate;
+                        });
+
+                        setState(() {
+                          rowData[item.columnName!] = dateTime.toIso8601String();
+                          newRowData = rowData;
+                        });
+                      }
+                    },
+                    child: Container(
+                      height: 40,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: AppColors.blueDark),
+                      ),
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.all(8),
+                      child: Text(
+                        date,
+                        textAlign: TextAlign.center,
+                        style: AppStyles.textStyle14.copyWith(color: Colors.black),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+        ));
       }
+
       //dropdown
       if (item.insertType == "dropdown" &&
           item.insertVisable == true &&
           item.categoryName == categoryName &&
           item.insertDefult == show) {
         List<ListDrop>? listDrop = [];
-        List<ItemDrop>? myListDrop = [];
+        List<ItemDrop> myListDrop = [];
 
         for (var ii in myAllDropdownModelList) {
           if (ii.listName == widget.pageData.listName) {
@@ -407,7 +504,7 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
         }
         for (var ii in listDrop!) {
           if (ii.columnName == item.columnName) {
-            myListDrop = ii.list;
+            myListDrop = ii.list ?? [];
           }
         }
         String? dropValue;
@@ -500,8 +597,21 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                       }
                     : null,
                 items: myListDrop.isEmpty ? [''] : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
+                // onChanged: (value) {
+                //   // newRowData.addAll({item.searchName!.toString(): value});
+                //   // newRowData[item.searchName!.toString()] = value;
+                //   // final selectedItem = myListDrop.firstWhere(
+                //   //   (element) => element.text == value,
+                //   //   orElse: () => ItemDrop(id: "0", text: ''),
+                //   // );
+                //   // newRowData[item.searchName!.toString()] = int.parse(selectedItem.id!);
+                //   ItemDrop ii = myListDrop!.firstWhere((element) => element.text == value);
+                //   newRowData.addAll({item.searchName!.toString(): ii.id});
+                // },
                 onChanged: (value) {
-                  newRowData.addAll({item.searchName!.toString(): value});
+                  ItemDrop selected = myListDrop.firstWhere((element) => element.text == value);
+                  rowData[item.searchName!] = selected.id;
+                  newRowData = rowData;
                 },
               ),
             ],
