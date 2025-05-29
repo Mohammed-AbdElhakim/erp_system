@@ -35,6 +35,7 @@ class ProductProcessOutAlertDialogAddWidget extends StatefulWidget {
     this.tapData,
     required this.onTapAdd,
   });
+
   final ListTaps? tapData;
   final List<String> listHeader;
   final List<dynamic> listKey;
@@ -44,12 +45,10 @@ class ProductProcessOutAlertDialogAddWidget extends StatefulWidget {
   final OnTapAdd<Map<String, dynamic>> onTapAdd;
 
   @override
-  State<ProductProcessOutAlertDialogAddWidget> createState() =>
-      _ProductProcessOutAlertDialogAddWidgetState();
+  State<ProductProcessOutAlertDialogAddWidget> createState() => _ProductProcessOutAlertDialogAddWidgetState();
 }
 
-class _ProductProcessOutAlertDialogAddWidgetState
-    extends State<ProductProcessOutAlertDialogAddWidget> {
+class _ProductProcessOutAlertDialogAddWidgetState extends State<ProductProcessOutAlertDialogAddWidget> {
   String? lang;
   GlobalKey<FormState> formKey = GlobalKey();
   Map<String, dynamic> newRowData = {};
@@ -84,8 +83,7 @@ class _ProductProcessOutAlertDialogAddWidgetState
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ...getMyWidgetList(
-                        columnList: widget.listColumn, show: true),
+                    ...getMyWidgetList(columnList: widget.listColumn, show: true),
                   ],
                 ),
               ),
@@ -101,8 +99,7 @@ class _ProductProcessOutAlertDialogAddWidgetState
                     noGradient: true,
                     color: Colors.transparent,
                     noShadow: true,
-                    textStyle:
-                        AppStyles.textStyle16.copyWith(color: Colors.grey),
+                    textStyle: AppStyles.textStyle16.copyWith(color: Colors.grey),
                     onTap: () {
                       Navigator.pop(context);
                     },
@@ -137,9 +134,7 @@ class _ProductProcessOutAlertDialogAddWidgetState
   }) {
     List<Widget> list = [];
     for (var item in columnList) {
-      String title = lang == AppStrings.arLangKey
-          ? item.arColumnLabel!
-          : item.enColumnLabel!;
+      String title = lang == AppStrings.arLangKey ? item.arColumnLabel! : item.enColumnLabel!;
       //text
       if (item.insertType == "text") {
         list.add(
@@ -169,8 +164,7 @@ class _ProductProcessOutAlertDialogAddWidgetState
                   onSaved: (newValue) {
                     if (newValue!.isNotEmpty) {
                       setState(() {
-                        newRowData
-                            .addAll({item.columnName!.toString(): newValue});
+                        newRowData.addAll({item.columnName!.toString(): newValue});
                       });
                     }
                   },
@@ -210,13 +204,9 @@ class _ProductProcessOutAlertDialogAddWidgetState
                     // if (newValue!.isNotEmpty) {
                     setState(() {
                       if (item.columnName == "PQuntity") {
-                        newRowData.addAll({
-                          item.columnName!.toString():
-                              newValue!.isEmpty ? "1" : newValue
-                        });
+                        newRowData.addAll({item.columnName!.toString(): newValue!.isEmpty ? "1" : newValue});
                       } else {
-                        newRowData
-                            .addAll({item.columnName!.toString(): newValue});
+                        newRowData.addAll({item.columnName!.toString(): newValue});
                       }
                     });
                     // }
@@ -229,6 +219,82 @@ class _ProductProcessOutAlertDialogAddWidgetState
       }
       //Date
       if (item.insertType == "date") {
+        String date = '';
+        list.add(
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      title,
+                      style: AppStyles.textStyle14.copyWith(color: Colors.grey),
+                    ),
+                    if (item.isRquired == true)
+                      const Icon(
+                        Icons.star,
+                        color: Colors.red,
+                        size: 10,
+                      )
+                  ],
+                ),
+                StatefulBuilder(
+                  builder: (context, dsetState) {
+                    return InkWell(
+                      onTap: () async {
+                        DateTime? dateTime = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(1980),
+                          lastDate: DateTime(2100),
+                        );
+                        if (dateTime != null) {
+                          dsetState(() {
+                            date = DateFormat("yyyy-MM-dd", 'en').format(dateTime);
+                            newRowData[item.columnName!.toString()] = dateTime.toString();
+                          });
+                        }
+                      },
+                      child: Container(
+                        height: 40,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: AppColors.blueDark),
+                        ),
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              date.isNotEmpty ? date : "",
+                              textAlign: TextAlign.center,
+                              style: AppStyles.textStyle14.copyWith(color: Colors.black),
+                            ),
+                            if (date.isNotEmpty)
+                              GestureDetector(
+                                onTap: () {
+                                  dsetState(() {
+                                    date = '';
+                                    newRowData[item.columnName!.toString()] = null;
+                                  });
+                                },
+                                child: const Icon(Icons.close, color: Colors.blue, size: 18),
+                              ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      }
+      /*if (item.insertType == "date") {
         String date = '';
         list.add(
           Padding(
@@ -293,7 +359,7 @@ class _ProductProcessOutAlertDialogAddWidgetState
             ),
           ),
         );
-      }
+      }*/
 
       //dropdown
       if (item.insertType == "dropdown") {
@@ -312,8 +378,7 @@ class _ProductProcessOutAlertDialogAddWidgetState
           }
         }
         for (var ii in listDrop!) {
-          if (ii.columnName == item.columnName &&
-              ii.nameAr == item.arColumnLabel) {
+          if (ii.columnName == item.columnName && ii.nameAr == item.arColumnLabel) {
             myListDrop = ii.list;
           }
         }
@@ -377,20 +442,14 @@ class _ProductProcessOutAlertDialogAddWidgetState
                 ),
                 CustomDropdown<String>.search(
                   hintText: '',
-                  closedHeaderPadding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                  closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                   decoration: CustomDropdownDecoration(
-                      headerStyle:
-                          AppStyles.textStyle16.copyWith(color: Colors.black),
+                      headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
                       closedFillColor: Colors.transparent,
                       closedBorder: Border.all(color: AppColors.blueDark)),
-                  items: myListDrop!.isEmpty
-                      ? [""]
-                      : List.generate(myListDrop.length,
-                          (index) => myListDrop![index].text ?? ''),
+                  items: myListDrop!.isEmpty ? [""] : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
                   onChanged: (value) {
-                    ItemDrop ii = myListDrop!
-                        .firstWhere((element) => element.text == value);
+                    ItemDrop ii = myListDrop!.firstWhere((element) => element.text == value);
                     newRowData.addAll({item.searchName!.toString(): ii.id});
                   },
                 ),
@@ -413,8 +472,7 @@ class _ProductProcessOutAlertDialogAddWidgetState
                     children: [
                       Text(
                         title,
-                        style:
-                            AppStyles.textStyle14.copyWith(color: Colors.black),
+                        style: AppStyles.textStyle14.copyWith(color: Colors.black),
                       ),
                       if (item.isRquired == true)
                         const Icon(
@@ -429,8 +487,7 @@ class _ProductProcessOutAlertDialogAddWidgetState
                       checkboxValue = !checkboxValue;
                     });
                     csetState(() {
-                      newRowData
-                          .addAll({item.columnName!.toString(): checkboxValue});
+                      newRowData.addAll({item.columnName!.toString(): checkboxValue});
                     });
                   });
             },
@@ -443,11 +500,8 @@ class _ProductProcessOutAlertDialogAddWidgetState
 
   void getColumnListAndAdd(Pages page) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).post(
         endPoint: "home/getGeneralTable",
         data: {
@@ -501,11 +555,8 @@ class _ProductProcessOutAlertDialogAddWidgetState
 
   Future<bool> getPermissions(int? pageId) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPagePermissions?pageId=$pageId",
         headers: {
@@ -522,11 +573,8 @@ class _ProductProcessOutAlertDialogAddWidgetState
 
   void getDropdownList(int pageId) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       List<dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPageDropDown?pageId=$pageId",
         headers: {

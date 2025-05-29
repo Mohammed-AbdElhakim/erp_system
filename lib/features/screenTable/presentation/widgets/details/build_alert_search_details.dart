@@ -39,6 +39,7 @@ class BuildAlertSearchDetails extends StatefulWidget {
     required this.onTapClean,
     required this.pageData,
   });
+
   final List<ColumnList> columnList;
   final ListTaps tap;
   final String mainId;
@@ -49,8 +50,7 @@ class BuildAlertSearchDetails extends StatefulWidget {
   final Pages pageData;
 
   @override
-  State<BuildAlertSearchDetails> createState() =>
-      _BuildAlertSearchDetailsState();
+  State<BuildAlertSearchDetails> createState() => _BuildAlertSearchDetailsState();
 }
 
 class _BuildAlertSearchDetailsState extends State<BuildAlertSearchDetails> {
@@ -58,6 +58,7 @@ class _BuildAlertSearchDetailsState extends State<BuildAlertSearchDetails> {
   late String statment;
   GlobalKey<FormState> formKey = GlobalKey();
   late List<AllDropdownModel> myAllDropdownModelList;
+
   @override
   void didChangeDependencies() {
     lang = Localizations.localeOf(context).toString();
@@ -104,8 +105,7 @@ class _BuildAlertSearchDetailsState extends State<BuildAlertSearchDetails> {
                     noGradient: true,
                     color: Colors.transparent,
                     noShadow: true,
-                    textStyle:
-                        AppStyles.textStyle16.copyWith(color: Colors.grey),
+                    textStyle: AppStyles.textStyle16.copyWith(color: Colors.grey),
                     onTap: () {
                       Navigator.pop(context);
                     },
@@ -118,8 +118,7 @@ class _BuildAlertSearchDetailsState extends State<BuildAlertSearchDetails> {
                       noGradient: true,
                       color: Colors.transparent,
                       noShadow: true,
-                      textStyle:
-                          AppStyles.textStyle16.copyWith(color: Colors.grey),
+                      textStyle: AppStyles.textStyle16.copyWith(color: Colors.grey),
                       onTap: () {
                         TapDetailsWidgetBody.isSearch = false;
                         BuildAlertSearchDetails.statement = '';
@@ -154,15 +153,11 @@ class _BuildAlertSearchDetailsState extends State<BuildAlertSearchDetails> {
   getMyWidgetList(List<ColumnList> columnList) {
     List<Widget> listWidgets = [];
     for (var item in columnList) {
-      String title = lang == AppStrings.arLangKey
-          ? item.arColumnLabel!
-          : item.enColumnLabel!;
+      String title = lang == AppStrings.arLangKey ? item.arColumnLabel! : item.enColumnLabel!;
       //text
       if (item.insertType == "text" && item.insertVisable == true) {
-        String oldValue = getStringText(
-            search: item.searchName!, statement: widget.oldStatement);
-        TextEditingController controller =
-            TextEditingController(text: oldValue);
+        String oldValue = getStringText(search: item.searchName!, statement: widget.oldStatement);
+        TextEditingController controller = TextEditingController(text: oldValue);
         listWidgets.add(Padding(
           padding: const EdgeInsets.symmetric(vertical: 5),
           child: Column(
@@ -179,8 +174,7 @@ class _BuildAlertSearchDetailsState extends State<BuildAlertSearchDetails> {
                 onSaved: (value) {
                   if (value!.isNotEmpty) {
                     setState(() {
-                      statment =
-                          "${statment}and ${item.searchName} like N'%$value%' ";
+                      statment = "${statment}and ${item.searchName} like N'%$value%' ";
                       BuildAlertSearchDetails.statement = statment;
                     });
                   }
@@ -192,22 +186,11 @@ class _BuildAlertSearchDetailsState extends State<BuildAlertSearchDetails> {
       }
       //number
       if (item.insertType == "number" && item.insertVisable == true) {
-        String oldValueFrom = getStringNumber(
-            search: item.searchName!,
-            statement: widget.oldStatement,
-            type: "F");
-        String oldValueTo = getStringNumber(
-            search: item.searchName!,
-            statement: widget.oldStatement,
-            type: "T");
-        String oldValueNon = getStringNumber(
-            search: item.searchName!,
-            statement: widget.oldStatement,
-            type: "N");
-        TextEditingController controllerFrom =
-            TextEditingController(text: oldValueFrom);
-        TextEditingController controllerTo =
-            TextEditingController(text: oldValueTo);
+        String oldValueFrom = getStringNumber(search: item.searchName!, statement: widget.oldStatement, type: "F");
+        String oldValueTo = getStringNumber(search: item.searchName!, statement: widget.oldStatement, type: "T");
+        String oldValueNon = getStringNumber(search: item.searchName!, statement: widget.oldStatement, type: "N");
+        TextEditingController controllerFrom = TextEditingController(text: oldValueFrom);
+        TextEditingController controllerTo = TextEditingController(text: oldValueTo);
         bool checkboxValue = oldValueNon == "0" ? true : false;
         listWidgets.add(Padding(
           padding: const EdgeInsets.symmetric(vertical: 5),
@@ -229,8 +212,7 @@ class _BuildAlertSearchDetailsState extends State<BuildAlertSearchDetails> {
                       onSaved: (value) {
                         if (value!.isNotEmpty) {
                           setState(() {
-                            statment =
-                                "${statment}and ${item.searchName} >= $value ";
+                            statment = "${statment}and ${item.searchName} >= $value ";
                             BuildAlertSearchDetails.statement = statment;
                           });
                         }
@@ -247,8 +229,7 @@ class _BuildAlertSearchDetailsState extends State<BuildAlertSearchDetails> {
                       onSaved: (value) {
                         if (value!.isNotEmpty) {
                           setState(() {
-                            statment =
-                                "${statment}and ${item.searchName} <= $value ";
+                            statment = "${statment}and ${item.searchName} <= $value ";
                             BuildAlertSearchDetails.statement = statment;
                           });
                         }
@@ -259,30 +240,25 @@ class _BuildAlertSearchDetailsState extends State<BuildAlertSearchDetails> {
               ),
               // number =0
               StatefulBuilder(
-                builder: (BuildContext context,
-                    void Function(void Function()) nsetState) {
+                builder: (BuildContext context, void Function(void Function()) nsetState) {
                   return CheckboxListTile(
                       contentPadding: EdgeInsets.zero,
                       value: checkboxValue,
                       controlAffinity: ListTileControlAffinity.leading,
                       title: Text(
                         S.of(context).massage_number_zero,
-                        style:
-                            AppStyles.textStyle14.copyWith(color: Colors.black),
+                        style: AppStyles.textStyle14.copyWith(color: Colors.black),
                       ),
                       onChanged: (newValue) {
                         nsetState(() {
                           checkboxValue = !checkboxValue;
                           if (checkboxValue == true) {
-                            statment =
-                                "${statment}and ${item.searchName} <> 0 and ${item.searchName} is not null ";
+                            statment = "${statment}and ${item.searchName} <> 0 and ${item.searchName} is not null ";
                             BuildAlertSearchDetails.statement = statment;
                           } else {
-                            if (statment.contains(
-                                "and ${item.searchName} <> 0 and ${item.searchName} is not null ")) {
-                              statment = statment.replaceAll(
-                                  "and ${item.searchName} <> 0 and ${item.searchName} is not null ",
-                                  '');
+                            if (statment.contains("and ${item.searchName} <> 0 and ${item.searchName} is not null ")) {
+                              statment =
+                                  statment.replaceAll("and ${item.searchName} <> 0 and ${item.searchName} is not null ", '');
                               BuildAlertSearchDetails.statement = statment;
                             }
                           }
@@ -296,16 +272,9 @@ class _BuildAlertSearchDetailsState extends State<BuildAlertSearchDetails> {
       }
       //Date
       if (item.insertType == "date" && item.insertVisable == true) {
-        String oldValueFrom = getStringDate(
-            search: item.searchName!,
-            statement: widget.oldStatement,
-            type: "F");
-        String oldValueTo = getStringDate(
-            search: item.searchName!,
-            statement: widget.oldStatement,
-            type: "T");
-        String dateFrom =
-            oldValueFrom != '' ? oldValueFrom : S.of(context).from;
+        String oldValueFrom = getStringDate(search: item.searchName!, statement: widget.oldStatement, type: "F");
+        String oldValueTo = getStringDate(search: item.searchName!, statement: widget.oldStatement, type: "T");
+        String dateFrom = oldValueFrom != '' ? oldValueFrom : S.of(context).from;
         String dateTo = oldValueTo != '' ? oldValueTo : S.of(context).to;
         listWidgets.add(
           Padding(
@@ -318,6 +287,145 @@ class _BuildAlertSearchDetailsState extends State<BuildAlertSearchDetails> {
                   style: AppStyles.textStyle14.copyWith(color: Colors.grey),
                 ),
                 Row(
+                  children: [
+                    // Date From with Delete Button
+                    Expanded(
+                      child: StatefulBuilder(
+                        builder: (context, dsetState) {
+                          return Row(
+                            children: [
+                              Expanded(
+                                child: InkWell(
+                                  onTap: () async {
+                                    DateTime? dateTime = await showDatePicker(
+                                      context: context,
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime(1980),
+                                      lastDate: DateTime(2100),
+                                    );
+                                    if (dateTime != null) {
+                                      dsetState(() {
+                                        dateFrom = DateFormat("yyyy-MM-dd", 'en').format(dateTime);
+                                      });
+                                      statment = "$statment and Convert(date, ${item.searchName}) >= Convert(date, '$dateFrom') ";
+                                      BuildAlertSearchDetails.statement = statment;
+                                    }
+                                  },
+                                  child: Container(
+                                    height: 40,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12),
+                                      border: Border.all(color: AppColors.blueDark),
+                                    ),
+                                    alignment: Alignment.center,
+                                    padding: const EdgeInsets.all(8),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          dateFrom,
+                                          textAlign: TextAlign.center,
+                                          style: AppStyles.textStyle14.copyWith(color: Colors.black),
+                                        ),
+                                        if (dateFrom != S.of(context).from)
+                                          GestureDetector(
+                                            onTap: () {
+                                              dsetState(() {
+                                                dateFrom = S.of(context).from;
+                                              });
+                                              // حذف شرط dateFrom فقط من statement
+                                              BuildAlertSearchDetails.statement = BuildAlertSearchDetails.statement.replaceAll(
+                                                  RegExp(
+                                                      r"and\s+Convert\(date,\s*" +
+                                                          item.searchName! +
+                                                          r"\s*\)\s*>=\s*Convert\(date,\s*'[^']*'\s*\)",
+                                                      caseSensitive: false),
+                                                  '');
+                                            },
+                                            child: const Icon(Icons.close, color: Colors.blue, size: 18),
+                                          ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+
+                    // Date To with Delete Button
+                    Expanded(
+                      child: StatefulBuilder(
+                        builder: (context, dsetState) {
+                          return Row(
+                            children: [
+                              Expanded(
+                                child: InkWell(
+                                  onTap: () async {
+                                    DateTime? dateTime = await showDatePicker(
+                                      context: context,
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime(1980),
+                                      lastDate: DateTime(2100),
+                                    );
+                                    if (dateTime != null) {
+                                      dsetState(() {
+                                        dateTo = DateFormat("yyyy-MM-dd", 'en').format(dateTime);
+                                      });
+                                      statment = "$statment and Convert(date, ${item.searchName}) <= Convert(date, '$dateTo') ";
+                                      BuildAlertSearchDetails.statement = statment;
+                                    }
+                                  },
+                                  child: Container(
+                                    height: 40,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12),
+                                      border: Border.all(color: AppColors.blueDark),
+                                    ),
+                                    alignment: Alignment.center,
+                                    padding: const EdgeInsets.all(8),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          dateTo,
+                                          textAlign: TextAlign.center,
+                                          style: AppStyles.textStyle14.copyWith(color: Colors.black),
+                                        ),
+                                        if (dateTo != S.of(context).to)
+                                          GestureDetector(
+                                            onTap: () {
+                                              dsetState(() {
+                                                dateTo = S.of(context).to;
+                                              });
+                                              // حذف شرط dateTo فقط من statement
+                                              BuildAlertSearchDetails.statement = BuildAlertSearchDetails.statement.replaceAll(
+                                                  RegExp(
+                                                      r"and\s+Convert\(date,\s*" +
+                                                          item.searchName! +
+                                                          r"\s*\)\s*<=\s*Convert\(date,\s*'[^']*'\s*\)",
+                                                      caseSensitive: false),
+                                                  '');
+                                            },
+                                            child: const Icon(Icons.close, color: Colors.blue, size: 18),
+                                          ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                )
+
+                /*Row(
                   children: [
                     //Date From
                     StatefulBuilder(
@@ -403,7 +511,7 @@ class _BuildAlertSearchDetailsState extends State<BuildAlertSearchDetails> {
                       },
                     ),
                   ],
-                )
+                )*/
               ],
             ),
           ),
@@ -420,8 +528,7 @@ class _BuildAlertSearchDetailsState extends State<BuildAlertSearchDetails> {
         // List<int> intSelected = [];
         // String stFinial = "";
 
-        String oldValue = getStringDropdown(
-            statement: widget.oldStatement, search: item.searchName!);
+        String oldValue = getStringDropdown(statement: widget.oldStatement, search: item.searchName!);
 
         List<String> selected = [];
         String stFinial = "";
@@ -445,8 +552,7 @@ class _BuildAlertSearchDetailsState extends State<BuildAlertSearchDetails> {
         } else if (oldValue.contains("or")) {
           List<String> sList = oldValue.split(" or ");
           for (var s in sList) {
-            String finalVal =
-                s.substring((item.searchName!.length) + 3, s.length);
+            String finalVal = s.substring((item.searchName!.length) + 3, s.length);
             for (var i in myListDrop!) {
               if (i.id.toString() == finalVal) {
                 dropValue.add(i.text ?? '');
@@ -515,17 +621,12 @@ class _BuildAlertSearchDetailsState extends State<BuildAlertSearchDetails> {
                 CustomDropdown<String>.multiSelectSearch(
                   hintText: '',
                   initialItems: dropValue,
-                  closedHeaderPadding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                  closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                   decoration: CustomDropdownDecoration(
-                      headerStyle:
-                          AppStyles.textStyle16.copyWith(color: Colors.black),
+                      headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
                       closedFillColor: Colors.transparent,
                       closedBorder: Border.all(color: AppColors.blueDark)),
-                  items: myListDrop!.isEmpty
-                      ? ['']
-                      : List.generate(myListDrop.length,
-                          (index) => myListDrop![index].text ?? ''),
+                  items: myListDrop!.isEmpty ? [''] : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
                   onListChanged: (value) {
                     selected.clear();
                     String st = "";
@@ -657,8 +758,7 @@ class _BuildAlertSearchDetailsState extends State<BuildAlertSearchDetails> {
       }
       //checkbox
       if (item.insertType == "checkbox" && item.insertVisable == true) {
-        String oldValue = getStringCheckbox(
-            search: item.searchName!, statement: widget.oldStatement);
+        String oldValue = getStringCheckbox(search: item.searchName!, statement: widget.oldStatement);
         String? valueCheckbox = oldValue.isEmpty ? null : oldValue;
         listWidgets.add(
           Column(
@@ -676,20 +776,15 @@ class _BuildAlertSearchDetailsState extends State<BuildAlertSearchDetails> {
                     isExpanded: true,
                     hint: const Text(""),
                     decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 0, horizontal: 12),
+                      contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
                       errorBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: AppColors.red),
-                          borderRadius: BorderRadius.circular(12)),
+                          borderSide: BorderSide(color: AppColors.red), borderRadius: BorderRadius.circular(12)),
                       focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: AppColors.blueDark),
-                          borderRadius: BorderRadius.circular(12)),
+                          borderSide: BorderSide(color: AppColors.blueDark), borderRadius: BorderRadius.circular(12)),
                       enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: AppColors.blueDark),
-                          borderRadius: BorderRadius.circular(12)),
+                          borderSide: BorderSide(color: AppColors.blueDark), borderRadius: BorderRadius.circular(12)),
                       border: OutlineInputBorder(
-                          borderSide: BorderSide(color: AppColors.blueDark),
-                          borderRadius: BorderRadius.circular(12)),
+                          borderSide: BorderSide(color: AppColors.blueDark), borderRadius: BorderRadius.circular(12)),
                     ),
                     // underline: const SizedBox(),
                     onChanged: (String? newValue) {
@@ -699,27 +794,20 @@ class _BuildAlertSearchDetailsState extends State<BuildAlertSearchDetails> {
                           statment = "${statment}and ${item.searchName} = 1 ";
                           BuildAlertSearchDetails.statement = statment;
                         } else {
-                          if (statment
-                              .contains("and ${item.searchName} = 1 ")) {
-                            statment = statment.replaceAll(
-                                "and ${item.searchName} = 1 ", '');
+                          if (statment.contains("and ${item.searchName} = 1 ")) {
+                            statment = statment.replaceAll("and ${item.searchName} = 1 ", '');
                             BuildAlertSearchDetails.statement = statment;
                           }
-                          if (statment.contains(
-                              "and (${item.searchName} = 0 or ${item.searchName} is null) ")) {
-                            statment = statment.replaceAll(
-                                "and (${item.searchName} = 0 or ${item.searchName} is null) ",
-                                '');
+                          if (statment.contains("and (${item.searchName} = 0 or ${item.searchName} is null) ")) {
+                            statment = statment.replaceAll("and (${item.searchName} = 0 or ${item.searchName} is null) ", '');
                             BuildAlertSearchDetails.statement = statment;
                           }
-                          statment =
-                              "${statment}and (${item.searchName} = 0 or ${item.searchName} is null) ";
+                          statment = "${statment}and (${item.searchName} = 0 or ${item.searchName} is null) ";
                           BuildAlertSearchDetails.statement = statment;
                         }
                       });
                     },
-                    items: ["True", "False", "None"]
-                        .map<DropdownMenuItem<String>>((String value) {
+                    items: ["True", "False", "None"].map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
                         child: Center(child: Text(value.toString())),
@@ -739,11 +827,8 @@ class _BuildAlertSearchDetailsState extends State<BuildAlertSearchDetails> {
 
   void getColumnListAndAdd(Pages page) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).post(
         endPoint: "home/getGeneralTable",
         data: {
@@ -797,11 +882,8 @@ class _BuildAlertSearchDetailsState extends State<BuildAlertSearchDetails> {
 
   Future<bool> getPermissions(int? pageId) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPagePermissions?pageId=$pageId",
         headers: {
@@ -818,11 +900,8 @@ class _BuildAlertSearchDetailsState extends State<BuildAlertSearchDetails> {
 
   void getDropdownList(int pageId) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       List<dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPageDropDown?pageId=$pageId",
         headers: {

@@ -20,6 +20,7 @@ import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_strings.dart';
 import '../../../../../../core/utils/app_styles.dart';
 import '../../../../../../core/widgets/custom_button.dart';
+import '../../../../../../core/widgets/custom_date_picker_field.dart';
 import '../../../../../../core/widgets/custom_text_form_field.dart';
 import '../../../../../../generated/l10n.dart';
 import '../../../../../home/presentation/widgets/home_view_body.dart';
@@ -582,6 +583,87 @@ class _AddSalesState extends State<AddSales> {
                         if (dateTime != null) {
                           dsetState(() {
                             date = DateFormat("yyyy-MM-dd", 'en').format(dateTime);
+                            singleObject[item.columnName!.toString()] = dateTime.toString();
+                          });
+                        }
+                      },
+                      child: Container(
+                        height: 40,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: AppColors.blueDark),
+                        ),
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              date.isNotEmpty ? date : "",
+                              textAlign: TextAlign.center,
+                              style: AppStyles.textStyle14.copyWith(color: Colors.black),
+                            ),
+                            if (date.isNotEmpty)
+                              GestureDetector(
+                                onTap: () {
+                                  dsetState(() {
+                                    date = '';
+                                    singleObject.remove(item.columnName!.toString());
+                                  });
+                                },
+                                child: const Icon(
+                                  Icons.close,
+                                  color: Colors.blue,
+                                  size: 18,
+                                ),
+                              ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      }
+
+      /*if (item.insertType == "date" && item.categoryTitle == categoryName && condition) {
+        String date = '';
+        list.add(
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      title,
+                      style: AppStyles.textStyle14.copyWith(color: Colors.grey),
+                    ),
+                    if (item.isRquired == true)
+                      const Icon(
+                        Icons.star,
+                        color: Colors.red,
+                        size: 10,
+                      )
+                  ],
+                ),
+                StatefulBuilder(
+                  builder: (context, dsetState) {
+                    return InkWell(
+                      onTap: () async {
+                        DateTime? dateTime = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(1980),
+                          lastDate: DateTime(2100),
+                        );
+                        if (dateTime != null) {
+                          dsetState(() {
+                            date = DateFormat("yyyy-MM-dd", 'en').format(dateTime);
                           });
 
                           dsetState(() {
@@ -607,7 +689,7 @@ class _AddSalesState extends State<AddSales> {
             ),
           ),
         );
-      }
+      }*/
 
       //dropdown
       if (item.insertType == "dropdown" && item.categoryTitle == categoryName && condition) {

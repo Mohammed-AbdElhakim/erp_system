@@ -13,6 +13,7 @@ import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_strings.dart';
 import '../../../../../core/utils/app_styles.dart';
 import '../../../../../core/widgets/custom_button.dart';
+import '../../../../../core/widgets/custom_date_picker_field.dart';
 import '../../../../../core/widgets/custom_loading_widget.dart';
 import '../../../../../core/widgets/custom_text_form_field.dart';
 import '../../../../../generated/l10n.dart';
@@ -29,13 +30,13 @@ class BuildAlertAddInDropdown extends StatefulWidget {
     required this.pageData,
     required this.onTapBtn,
   });
+
   final List<ColumnList> columnList;
   final Pages pageData;
   final OnTapBtn<bool> onTapBtn;
 
   @override
-  State<BuildAlertAddInDropdown> createState() =>
-      _BuildAlertAddInDropdownState();
+  State<BuildAlertAddInDropdown> createState() => _BuildAlertAddInDropdownState();
 }
 
 class _BuildAlertAddInDropdownState extends State<BuildAlertAddInDropdown> {
@@ -45,6 +46,7 @@ class _BuildAlertAddInDropdownState extends State<BuildAlertAddInDropdown> {
   bool isShow = false;
   late List<String> myListCategory;
   List<AllDropdownModel> myAllDropdownModelList = [];
+  Map<String, String> selectedDates = {};
 
   @override
   void didChangeDependencies() {
@@ -84,35 +86,24 @@ class _BuildAlertAddInDropdownState extends State<BuildAlertAddInDropdown> {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                if (getMyWidgetList(
-                                        columnList: widget.columnList,
-                                        categoryName: categoryName,
-                                        show: true)
+                                if (getMyWidgetList(columnList: widget.columnList, categoryName: categoryName, show: true)
                                     .isNotEmpty)
                                   Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 12, vertical: 8),
+                                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                                       decoration: BoxDecoration(
                                           // color: AppColors.grey.withOpacity(.4),
                                           color: AppColors.grey.withAlpha(102),
-                                          borderRadius:
-                                              BorderRadius.circular(15)),
+                                          borderRadius: BorderRadius.circular(15)),
                                       child: Text(
                                         categoryName,
-                                        style: AppStyles.textStyle18
-                                            .copyWith(color: Colors.black),
+                                        style: AppStyles.textStyle18.copyWith(color: Colors.black),
                                       )),
-                                ...getMyWidgetList(
-                                    columnList: widget.columnList,
-                                    categoryName: categoryName,
-                                    show: true),
+                                ...getMyWidgetList(columnList: widget.columnList, categoryName: categoryName, show: true),
                                 Visibility(
                                   visible: isShow,
                                   child: Column(
-                                    children: getMyWidgetList(
-                                        columnList: widget.columnList,
-                                        categoryName: categoryName,
-                                        show: false),
+                                    children:
+                                        getMyWidgetList(columnList: widget.columnList, categoryName: categoryName, show: false),
                                   ),
                                 ),
                               ],
@@ -124,9 +115,7 @@ class _BuildAlertAddInDropdownState extends State<BuildAlertAddInDropdown> {
                                 isShow = !isShow;
                               });
                             },
-                            child: Text(!isShow
-                                ? S.of(context).show_more
-                                : S.of(context).show_less),
+                            child: Text(!isShow ? S.of(context).show_more : S.of(context).show_less),
                           ),
                         ],
                       ),
@@ -143,8 +132,7 @@ class _BuildAlertAddInDropdownState extends State<BuildAlertAddInDropdown> {
                           noGradient: true,
                           color: Colors.transparent,
                           noShadow: true,
-                          textStyle: AppStyles.textStyle16
-                              .copyWith(color: Colors.grey),
+                          textStyle: AppStyles.textStyle16.copyWith(color: Colors.grey),
                           onTap: () {
                             Navigator.pop(context);
                           },
@@ -160,10 +148,7 @@ class _BuildAlertAddInDropdownState extends State<BuildAlertAddInDropdown> {
                               Navigator.pop(context);
                             } else if (state is AddEditFailure) {
                               CustomAlertDialog.alertWithButton(
-                                  context: context,
-                                  type: AlertType.error,
-                                  title: S.of(context).error,
-                                  desc: state.errorMassage);
+                                  context: context, type: AlertType.error, title: S.of(context).error, desc: state.errorMassage);
                             }
                           },
                           builder: (context, state) {
@@ -176,10 +161,8 @@ class _BuildAlertAddInDropdownState extends State<BuildAlertAddInDropdown> {
                                 onTap: () {
                                   if (formKey.currentState!.validate()) {
                                     formKey.currentState!.save();
-                                    BlocProvider.of<AddEditCubit>(context).add(
-                                        controllerName:
-                                            widget.pageData.controllerName,
-                                        body: newRowData);
+                                    BlocProvider.of<AddEditCubit>(context)
+                                        .add(controllerName: widget.pageData.controllerName, body: newRowData);
                                   }
                                 },
                               );
@@ -202,9 +185,7 @@ class _BuildAlertAddInDropdownState extends State<BuildAlertAddInDropdown> {
   }) {
     List<Widget> list = [];
     for (var item in columnList) {
-      String title = lang == AppStrings.arLangKey
-          ? item.arColumnLabel!
-          : item.enColumnLabel!;
+      String title = lang == AppStrings.arLangKey ? item.arColumnLabel! : item.enColumnLabel!;
       //text
       if (item.insertType == "text" &&
           item.insertVisable == true &&
@@ -237,8 +218,7 @@ class _BuildAlertAddInDropdownState extends State<BuildAlertAddInDropdown> {
                   onSaved: (newValue) {
                     if (newValue!.isNotEmpty) {
                       setState(() {
-                        newRowData
-                            .addAll({item.columnName!.toString(): newValue});
+                        newRowData.addAll({item.columnName!.toString(): newValue});
                       });
                     }
                   },
@@ -280,8 +260,7 @@ class _BuildAlertAddInDropdownState extends State<BuildAlertAddInDropdown> {
                   onSaved: (newValue) {
                     if (newValue!.isNotEmpty) {
                       setState(() {
-                        newRowData
-                            .addAll({item.columnName!.toString(): newValue});
+                        newRowData.addAll({item.columnName!.toString(): newValue});
                       });
                     }
                   },
@@ -296,9 +275,29 @@ class _BuildAlertAddInDropdownState extends State<BuildAlertAddInDropdown> {
           item.insertVisable == true &&
           item.categoryName == categoryName &&
           item.insertDefult == show) {
-        String date = '';
+        String date = selectedDates[item.columnName] ?? '';
         list.add(
-          Padding(
+          CustomDatePickerField(
+            title: title,
+            isRequired: item.isRquired ?? false,
+            initialDateString: selectedDates[item.columnName],
+            onDateSelected: (selectedDate) {
+              if (selectedDate != null) {
+                setState(() {
+                  selectedDates[item.columnName!] = selectedDate.toIso8601String();
+                  newRowData[item.columnName!] = selectedDate.toString();
+                });
+              }
+            },
+            onClear: () {
+              setState(() {
+                selectedDates.remove(item.columnName);
+                newRowData.remove(item.columnName);
+              });
+            },
+          ),
+
+          /*Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -358,7 +357,7 @@ class _BuildAlertAddInDropdownState extends State<BuildAlertAddInDropdown> {
                 ),
               ],
             ),
-          ),
+          ),*/
         );
       }
 
@@ -402,11 +401,9 @@ class _BuildAlertAddInDropdownState extends State<BuildAlertAddInDropdown> {
                 ),
                 CustomDropdown<String>.search(
                   hintText: '',
-                  closedHeaderPadding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                  closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                   decoration: CustomDropdownDecoration(
-                      headerStyle:
-                          AppStyles.textStyle16.copyWith(color: Colors.black),
+                      headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
                       closedFillColor: Colors.transparent,
                       closedBorder: Border.all(color: AppColors.blueDark)),
                   validator: item.isRquired == true
@@ -418,13 +415,9 @@ class _BuildAlertAddInDropdownState extends State<BuildAlertAddInDropdown> {
                           }
                         }
                       : null,
-                  items: myListDrop!.isEmpty
-                      ? [""]
-                      : List.generate(myListDrop.length,
-                          (index) => myListDrop![index].text ?? ''),
+                  items: myListDrop!.isEmpty ? [""] : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
                   onChanged: (value) {
-                    ItemDrop ii = myListDrop!
-                        .firstWhere((element) => element.text == value);
+                    ItemDrop ii = myListDrop!.firstWhere((element) => element.text == value);
                     newRowData.addAll({item.searchName!.toString(): ii.id});
                   },
                 ),
@@ -499,8 +492,7 @@ class _BuildAlertAddInDropdownState extends State<BuildAlertAddInDropdown> {
                     children: [
                       Text(
                         title,
-                        style:
-                            AppStyles.textStyle14.copyWith(color: Colors.black),
+                        style: AppStyles.textStyle14.copyWith(color: Colors.black),
                       ),
                       if (item.isRquired == true)
                         const Icon(
@@ -515,8 +507,7 @@ class _BuildAlertAddInDropdownState extends State<BuildAlertAddInDropdown> {
                       checkboxValue = !checkboxValue;
                     });
                     csetState(() {
-                      newRowData
-                          .addAll({item.columnName!.toString(): checkboxValue});
+                      newRowData.addAll({item.columnName!.toString(): checkboxValue});
                     });
                   });
             },
@@ -538,11 +529,8 @@ class _BuildAlertAddInDropdownState extends State<BuildAlertAddInDropdown> {
 
   void getDropdownList(int pageId) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       List<dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPageDropDown?pageId=$pageId",
         headers: {

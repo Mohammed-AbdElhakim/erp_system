@@ -45,8 +45,7 @@ class SupplierProcessViewBody extends StatefulWidget {
   final Pages pageData;
 
   @override
-  State<SupplierProcessViewBody> createState() =>
-      _SupplierProcessViewBodyState();
+  State<SupplierProcessViewBody> createState() => _SupplierProcessViewBodyState();
 }
 
 class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
@@ -224,20 +223,18 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
         ? MultiBlocProvider(
             providers: [
               BlocProvider(
-                create: (context) =>
-                    SupplierProcessCubit(getIt.get<SupplierProcessRepoImpl>())
-                      ..getTableSupplierProcess(
-                        selectTab: selectTab,
-                        objectData: myData,
-                        numberOfPage: numberPage,
-                        link: "ProfAccount",
-                        dropdownValueOfLimit: dropdownValue,
-                      ),
+                create: (context) => SupplierProcessCubit(getIt.get<SupplierProcessRepoImpl>())
+                  ..getTableSupplierProcess(
+                    selectTab: selectTab,
+                    objectData: myData,
+                    numberOfPage: numberPage,
+                    link: "ProfAccount",
+                    dropdownValueOfLimit: dropdownValue,
+                  ),
               ),
               BlocProvider(
                 create: (context) =>
-                    GetHeaderTableCubit(getIt.get<SupplierProcessRepoImpl>())
-                      ..getHeaderTable(listName: "ProfAccount"),
+                    GetHeaderTableCubit(getIt.get<SupplierProcessRepoImpl>())..getHeaderTable(listName: "ProfAccount"),
               ),
             ],
             child: BlocBuilder<GetHeaderTableCubit, GetHeaderTableState>(
@@ -251,15 +248,12 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                       headerList.add(item);
                     }
                   }
-                  return BlocBuilder<SupplierProcessCubit,
-                      SupplierProcessState>(
+                  return BlocBuilder<SupplierProcessCubit, SupplierProcessState>(
                     builder: (context, state) {
                       if (state is SupplierProcessSuccess) {
-                        int? numberOfRecords =
-                            state.accountProfModel.numberofrecords;
+                        int? numberOfRecords = state.accountProfModel.numberofrecords;
 
-                        List<dynamic>? listData =
-                            state.accountProfModel.dynamicList;
+                        List<dynamic>? listData = state.accountProfModel.dynamicList;
 
                         numberPage = state.numberPage;
                         selectTab = state.selectTap;
@@ -282,8 +276,7 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                             pageData: widget.pageData,
                             listData: listData!,
                             listColumn: headerList,
-                            allDropdownModelList:
-                                SupplierProcessView.myAllDropdownModelList,
+                            allDropdownModelList: SupplierProcessView.myAllDropdownModelList,
                             paginationWidget: PaginationWidget(
                               allPages: allPages,
                               dropdownValue: dropdownValue,
@@ -294,16 +287,13 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                                 setState(() {
                                   dropdownValue = limit;
                                   numberPage = 1;
-                                  allPages =
-                                      (numberOfRecords % dropdownValue) == 0
-                                          ? (numberOfRecords ~/ dropdownValue)
-                                          : (numberOfRecords ~/ dropdownValue) +
-                                              1;
+                                  allPages = (numberOfRecords % dropdownValue) == 0
+                                      ? (numberOfRecords ~/ dropdownValue)
+                                      : (numberOfRecords ~/ dropdownValue) + 1;
                                   myData['limit'] = limit;
                                 });
                                 // createMyData();
-                                BlocProvider.of<SupplierProcessCubit>(context)
-                                    .getTableSupplierProcess(
+                                BlocProvider.of<SupplierProcessCubit>(context).getTableSupplierProcess(
                                   selectTab: selectTab,
                                   objectData: myData,
                                   link: selectTab == 0
@@ -318,13 +308,10 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                               onTapMin: () {
                                 setState(() {
                                   numberPage--;
-                                  myData['offset'] =
-                                      (numberPage * dropdownValue) -
-                                          dropdownValue;
+                                  myData['offset'] = (numberPage * dropdownValue) - dropdownValue;
                                 });
                                 // createMyData();
-                                BlocProvider.of<SupplierProcessCubit>(context)
-                                    .getTableSupplierProcess(
+                                BlocProvider.of<SupplierProcessCubit>(context).getTableSupplierProcess(
                                   selectTab: selectTab,
                                   objectData: myData,
                                   link: selectTab == 0
@@ -339,13 +326,10 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                               onTapAdd: () {
                                 setState(() {
                                   numberPage++;
-                                  myData['offset'] =
-                                      (numberPage * dropdownValue) -
-                                          dropdownValue;
+                                  myData['offset'] = (numberPage * dropdownValue) - dropdownValue;
                                 });
                                 // createMyData();
-                                BlocProvider.of<SupplierProcessCubit>(context)
-                                    .getTableSupplierProcess(
+                                BlocProvider.of<SupplierProcessCubit>(context).getTableSupplierProcess(
                                   selectTab: selectTab,
                                   objectData: myData,
                                   link: selectTab == 0
@@ -369,8 +353,7 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                                     createMyData(data: {
                                       "employee": false,
                                       "limit": dropdownValue,
-                                      "offset": (numberPage * dropdownValue) -
-                                          dropdownValue,
+                                      "offset": (numberPage * dropdownValue) - dropdownValue,
                                       "statment": "",
                                       "selectcolumns": "",
                                       "IsDepartment": false,
@@ -383,14 +366,9 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                                       "listName": widget.pageData.listName,
                                       "tailcondition": "",
                                     });
-                                    BlocProvider.of<GetHeaderTableCubit>(
-                                            context)
-                                        .getHeaderTable(
-                                            listName:
-                                                widget.pageData.tableName);
-                                    BlocProvider.of<SupplierProcessCubit>(
-                                            context)
-                                        .getTableSupplierProcess(
+                                    BlocProvider.of<GetHeaderTableCubit>(context)
+                                        .getHeaderTable(listName: widget.pageData.tableName);
+                                    BlocProvider.of<SupplierProcessCubit>(context).getTableSupplierProcess(
                                       selectTab: selectTab,
                                       objectData: myData,
                                       link: "ProfAccount",
@@ -399,15 +377,13 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                                     );
                                     break;
                                   case 1:
-                                    String tailCondition =
-                                        getTailConditionInCase1();
+                                    String tailCondition = getTailConditionInCase1();
 
                                     createMyData(data: {
                                       // "pageId": 289,
                                       "employee": false,
                                       "limit": dropdownValue,
-                                      "offset": (numberPage * dropdownValue) -
-                                          dropdownValue,
+                                      "offset": (numberPage * dropdownValue) - dropdownValue,
                                       "statment": "",
                                       "selectcolumns": "",
                                       "IsDepartment": false,
@@ -422,13 +398,9 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                                       "listName": "PurchaseDetailReport",
                                       "tailcondition": tailCondition,
                                     });
-                                    BlocProvider.of<GetHeaderTableCubit>(
-                                            context)
-                                        .getHeaderTable(
-                                            listName: "PurchaseDetailReport");
-                                    BlocProvider.of<SupplierProcessCubit>(
-                                            context)
-                                        .getTableSupplierProcess(
+                                    BlocProvider.of<GetHeaderTableCubit>(context)
+                                        .getHeaderTable(listName: "PurchaseDetailReport");
+                                    BlocProvider.of<SupplierProcessCubit>(context).getTableSupplierProcess(
                                       selectTab: selectTab,
                                       objectData: myData,
                                       link: "Structure",
@@ -437,15 +409,13 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                                     );
                                     break;
                                   case 2:
-                                    String tailCondition =
-                                        getTailConditionInCase2();
+                                    String tailCondition = getTailConditionInCase2();
 
                                     createMyData(data: {
                                       // "pageId": 289,
                                       "employee": false,
                                       "limit": dropdownValue,
-                                      "offset": (numberPage * dropdownValue) -
-                                          dropdownValue,
+                                      "offset": (numberPage * dropdownValue) - dropdownValue,
                                       "statment": "",
                                       "selectcolumns": "",
                                       "IsDepartment": false,
@@ -460,13 +430,9 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                                       "tableName": "[PaymentReciveView]",
                                       "tailcondition": tailCondition,
                                     });
-                                    BlocProvider.of<GetHeaderTableCubit>(
-                                            context)
-                                        .getHeaderTable(
-                                            listName: "SupplierPaymentReport");
-                                    BlocProvider.of<SupplierProcessCubit>(
-                                            context)
-                                        .getTableSupplierProcess(
+                                    BlocProvider.of<GetHeaderTableCubit>(context)
+                                        .getHeaderTable(listName: "SupplierPaymentReport");
+                                    BlocProvider.of<SupplierProcessCubit>(context).getTableSupplierProcess(
                                       selectTab: selectTab,
                                       objectData: myData,
                                       numberOfPage: numberPage,
@@ -475,15 +441,13 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                                     );
                                     break;
                                   case 3:
-                                    String tailCondition =
-                                        getTailConditionInCase3();
+                                    String tailCondition = getTailConditionInCase3();
 
                                     createMyData(data: {
                                       // "pageId": widget.pageData.pageId,
                                       "employee": false,
                                       "limit": dropdownValue,
-                                      "offset": (numberPage * dropdownValue) -
-                                          dropdownValue,
+                                      "offset": (numberPage * dropdownValue) - dropdownValue,
                                       "statment": "",
                                       "selectcolumns": "",
                                       "IsDepartment": false,
@@ -498,14 +462,9 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                                       "tableName": "[ExtractionDetailsReport]",
                                       "tailcondition": tailCondition,
                                     });
-                                    BlocProvider.of<GetHeaderTableCubit>(
-                                            context)
-                                        .getHeaderTable(
-                                            listName:
-                                                "ExtractionDetailsReportList");
-                                    BlocProvider.of<SupplierProcessCubit>(
-                                            context)
-                                        .getTableSupplierProcess(
+                                    BlocProvider.of<GetHeaderTableCubit>(context)
+                                        .getHeaderTable(listName: "ExtractionDetailsReportList");
+                                    BlocProvider.of<SupplierProcessCubit>(context).getTableSupplierProcess(
                                       selectTab: selectTab,
                                       objectData: myData,
                                       numberOfPage: numberPage,
@@ -514,14 +473,12 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                                     );
                                     break;
                                   case 4:
-                                    String tailCondition =
-                                        getTailConditionInCase4();
+                                    String tailCondition = getTailConditionInCase4();
 
                                     createMyData(data: {
                                       "employee": false,
                                       "limit": dropdownValue,
-                                      "offset": (numberPage * dropdownValue) -
-                                          dropdownValue,
+                                      "offset": (numberPage * dropdownValue) - dropdownValue,
                                       "statment": "",
                                       "selectcolumns": "",
                                       "IsDepartment": false,
@@ -536,14 +493,9 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                                       "tableName": "[ExtractionTotalReport]",
                                       "tailcondition": tailCondition,
                                     });
-                                    BlocProvider.of<GetHeaderTableCubit>(
-                                            context)
-                                        .getHeaderTable(
-                                            listName:
-                                                "ExtractionTotalReportList");
-                                    BlocProvider.of<SupplierProcessCubit>(
-                                            context)
-                                        .getTableSupplierProcess(
+                                    BlocProvider.of<GetHeaderTableCubit>(context)
+                                        .getHeaderTable(listName: "ExtractionTotalReportList");
+                                    BlocProvider.of<SupplierProcessCubit>(context).getTableSupplierProcess(
                                       selectTab: selectTab,
                                       objectData: myData,
                                       link: "Structure",
@@ -555,8 +507,7 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                                     createMyData(data: {
                                       "employee": false,
                                       "limit": dropdownValue,
-                                      "offset": (numberPage * dropdownValue) -
-                                          dropdownValue,
+                                      "offset": (numberPage * dropdownValue) - dropdownValue,
                                       "statment": "",
                                       "selectcolumns": "",
                                       "IsDepartment": false,
@@ -571,13 +522,8 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                                       "tableName": "EntryWithPurchaseDetail",
                                       "tailcondition": "",
                                     });
-                                    BlocProvider.of<GetHeaderTableCubit>(
-                                            context)
-                                        .getHeaderTable(
-                                            listName: "ProfAccountDetails");
-                                    BlocProvider.of<SupplierProcessCubit>(
-                                            context)
-                                        .getTableSupplierProcess(
+                                    BlocProvider.of<GetHeaderTableCubit>(context).getHeaderTable(listName: "ProfAccountDetails");
+                                    BlocProvider.of<SupplierProcessCubit>(context).getTableSupplierProcess(
                                       selectTab: selectTab,
                                       objectData: myData,
                                       link: "ProfAccount",
@@ -591,8 +537,7 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                           ),
                         );
                       } else if (state is SupplierProcessFailure) {
-                        return CustomErrorMassage(
-                            errorMassage: state.errorMassage);
+                        return CustomErrorMassage(errorMassage: state.errorMassage);
                       } else {
                         return const CustomLoadingWidget();
                       }
@@ -612,25 +557,19 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
   String getTailConditionInCase1() {
     String till = "POID is not null ";
     for (var i in widgetsData) {
-      if ((i["widget"] as ColumnList).columnName == "supplierID" &&
-          i['value'] != "") {
+      if ((i["widget"] as ColumnList).columnName == "supplierID" && i['value'] != "") {
         till = "${till}AND SupplierID= ${i['value']} ";
       }
-      if ((i["widget"] as ColumnList).columnName == "datefrom" &&
-          i['value'] != "") {
+      if ((i["widget"] as ColumnList).columnName == "datefrom" && i['value'] != "") {
         till = "${till}AND PODate >= CONVERT(DATETIME,'${i['value']}', 102) ";
       }
-      if ((i["widget"] as ColumnList).columnName == "dateto" &&
-          i['value'] != "") {
-        till =
-            "${till}AND PODate <= CONVERT(DATETIME,'${widgetsData[3]['value']}', 102) ";
+      if ((i["widget"] as ColumnList).columnName == "dateto" && i['value'] != "") {
+        till = "${till}AND PODate <= CONVERT(DATETIME,'${widgetsData[3]['value']}', 102) ";
       }
-      if ((i["widget"] as ColumnList).columnName == "ProductID" &&
-          i['value'] != "") {
+      if ((i["widget"] as ColumnList).columnName == "ProductID" && i['value'] != "") {
         till = "${till}AND ProjectID= ${i['value']} ";
       }
-      if ((i["widget"] as ColumnList).columnName == "ConstSupplierMasterId" &&
-          i['value'] != "") {
+      if ((i["widget"] as ColumnList).columnName == "ConstSupplierMasterId" && i['value'] != "") {
         till = "${till}AND ConstSupplierMasterId= ${i['value']} ";
       }
     }
@@ -640,26 +579,19 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
   String getTailConditionInCase2() {
     String till = "PRID is not null ";
     for (var i in widgetsData) {
-      if ((i["widget"] as ColumnList).columnName == "supplierID" &&
-          i['value'] != "") {
+      if ((i["widget"] as ColumnList).columnName == "supplierID" && i['value'] != "") {
         till = "${till}AND SupplierID= ${i['value']} ";
       }
-      if ((i["widget"] as ColumnList).columnName == "datefrom" &&
-          i['value'] != "") {
-        till =
-            "${till}AND ActualPayDate >= CONVERT(DATETIME,'${i['value']}', 102) ";
+      if ((i["widget"] as ColumnList).columnName == "datefrom" && i['value'] != "") {
+        till = "${till}AND ActualPayDate >= CONVERT(DATETIME,'${i['value']}', 102) ";
       }
-      if ((i["widget"] as ColumnList).columnName == "dateto" &&
-          i['value'] != "") {
-        till =
-            "${till}AND ActualPayDate <= CONVERT(DATETIME,'${widgetsData[3]['value']}', 102) ";
+      if ((i["widget"] as ColumnList).columnName == "dateto" && i['value'] != "") {
+        till = "${till}AND ActualPayDate <= CONVERT(DATETIME,'${widgetsData[3]['value']}', 102) ";
       }
-      if ((i["widget"] as ColumnList).columnName == "ProductID" &&
-          i['value'] != "") {
+      if ((i["widget"] as ColumnList).columnName == "ProductID" && i['value'] != "") {
         till = "${till}AND ProjectID= ${i['value']} ";
       }
-      if ((i["widget"] as ColumnList).columnName == "ConstSupplierMasterId" &&
-          i['value'] != "") {
+      if ((i["widget"] as ColumnList).columnName == "ConstSupplierMasterId" && i['value'] != "") {
         till = "${till}AND ConstSupplierMasterId= ${i['value']} ";
       }
     }
@@ -669,26 +601,19 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
   String getTailConditionInCase3() {
     String till = "ExtractionID is not null ";
     for (var i in widgetsData) {
-      if ((i["widget"] as ColumnList).columnName == "supplierID" &&
-          i['value'] != "") {
+      if ((i["widget"] as ColumnList).columnName == "supplierID" && i['value'] != "") {
         till = "${till}AND SupplierID= ${i['value']} ";
       }
-      if ((i["widget"] as ColumnList).columnName == "datefrom" &&
-          i['value'] != "") {
-        till =
-            "${till}AND ExtractionDate >= CONVERT(DATETIME,'${i['value']}', 102) ";
+      if ((i["widget"] as ColumnList).columnName == "datefrom" && i['value'] != "") {
+        till = "${till}AND ExtractionDate >= CONVERT(DATETIME,'${i['value']}', 102) ";
       }
-      if ((i["widget"] as ColumnList).columnName == "dateto" &&
-          i['value'] != "") {
-        till =
-            "${till}AND ExtractionDate <= CONVERT(DATETIME,'${widgetsData[3]['value']}', 102) ";
+      if ((i["widget"] as ColumnList).columnName == "dateto" && i['value'] != "") {
+        till = "${till}AND ExtractionDate <= CONVERT(DATETIME,'${widgetsData[3]['value']}', 102) ";
       }
-      if ((i["widget"] as ColumnList).columnName == "ProductID" &&
-          i['value'] != "") {
+      if ((i["widget"] as ColumnList).columnName == "ProductID" && i['value'] != "") {
         till = "${till}AND ProjectID= ${i['value']} ";
       }
-      if ((i["widget"] as ColumnList).columnName == "ConstSupplierMasterId" &&
-          i['value'] != "") {
+      if ((i["widget"] as ColumnList).columnName == "ConstSupplierMasterId" && i['value'] != "") {
         till = "${till}AND ConstSupplierMasterId= ${i['value']} ";
       }
     }
@@ -698,34 +623,26 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
   String getTailConditionInCase4() {
     String till = "ExtractionMasterID is not null ";
     for (var i in widgetsData) {
-      if ((i["widget"] as ColumnList).columnName == "supplierID" &&
-          i['value'] != "") {
+      if ((i["widget"] as ColumnList).columnName == "supplierID" && i['value'] != "") {
         till = "${till}AND SupplierID= ${i['value']} ";
       }
-      if ((i["widget"] as ColumnList).columnName == "datefrom" &&
-          i['value'] != "") {
-        till =
-            "${till}AND ExtractionDate >= CONVERT(DATETIME,'${i['value']}', 102) ";
+      if ((i["widget"] as ColumnList).columnName == "datefrom" && i['value'] != "") {
+        till = "${till}AND ExtractionDate >= CONVERT(DATETIME,'${i['value']}', 102) ";
       }
-      if ((i["widget"] as ColumnList).columnName == "dateto" &&
-          i['value'] != "") {
-        till =
-            "${till}AND ExtractionDate <= CONVERT(DATETIME,'${widgetsData[3]['value']}', 102) ";
+      if ((i["widget"] as ColumnList).columnName == "dateto" && i['value'] != "") {
+        till = "${till}AND ExtractionDate <= CONVERT(DATETIME,'${widgetsData[3]['value']}', 102) ";
       }
-      if ((i["widget"] as ColumnList).columnName == "ProductID" &&
-          i['value'] != "") {
+      if ((i["widget"] as ColumnList).columnName == "ProductID" && i['value'] != "") {
         till = "${till}AND ProjectID= ${i['value']} ";
       }
-      if ((i["widget"] as ColumnList).columnName == "ConstSupplierMasterId" &&
-          i['value'] != "") {
+      if ((i["widget"] as ColumnList).columnName == "ConstSupplierMasterId" && i['value'] != "") {
         till = "${till}AND ConstSupplierMasterId= ${i['value']} ";
       }
     }
     return till;
   }
 
-  Widget buildCategoryChildren(
-      MapEntry<String, List<Map<String, dynamic>>> entry) {
+  Widget buildCategoryChildren(MapEntry<String, List<Map<String, dynamic>>> entry) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Column(
@@ -736,15 +653,11 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
             (index) {
               final widgetData = entry.value[index];
               ColumnList itemColumnList = widgetData['widget'];
-              String title = lang == AppStrings.arLangKey
-                  ? itemColumnList.arColumnLabel!
-                  : itemColumnList.enColumnLabel!;
+              String title = lang == AppStrings.arLangKey ? itemColumnList.arColumnLabel! : itemColumnList.enColumnLabel!;
               if (itemColumnList.insertType == "text") {
-                return buildTextAndNumberWidget(
-                    title, itemColumnList, widgetData, TextInputType.text);
+                return buildTextAndNumberWidget(title, itemColumnList, widgetData, TextInputType.text);
               } else if (itemColumnList.insertType == "number") {
-                return buildTextAndNumberWidget(
-                    title, itemColumnList, widgetData, TextInputType.number);
+                return buildTextAndNumberWidget(title, itemColumnList, widgetData, TextInputType.number);
               } else if (itemColumnList.insertType == "checkbox") {
                 return buildCheckBoxWidget(widgetData, title, itemColumnList);
               } else if (itemColumnList.insertType == "date") {
@@ -761,8 +674,8 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
     );
   }
 
-  Widget buildTextAndNumberWidget(String title, ColumnList itemColumnList,
-      Map<String, dynamic> widgetData, TextInputType? keyboardType) {
+  Widget buildTextAndNumberWidget(
+      String title, ColumnList itemColumnList, Map<String, dynamic> widgetData, TextInputType? keyboardType) {
     return StatefulBuilder(
       builder: (context, tNSetState) {
         return Padding(
@@ -803,7 +716,88 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
     );
   }
 
-  Widget buildDateWidget(String title, ColumnList itemColumnList,
+  Widget buildDateWidget(String title, ColumnList itemColumnList, Map<String, dynamic> widgetData) {
+    String date = widgetData['value'] != "" ? DateFormat("yyyy-MM-dd", 'en').format(DateTime.parse(widgetData['value'])) : "";
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Text(
+                title,
+                style: AppStyles.textStyle14.copyWith(color: Colors.grey),
+              ),
+              if (itemColumnList.isRquired == true)
+                const Icon(
+                  Icons.star,
+                  color: Colors.red,
+                  size: 10,
+                )
+            ],
+          ),
+          StatefulBuilder(
+            builder: (context, dsetState) {
+              return InkWell(
+                onTap: () async {
+                  DateTime? dateTime = await showDatePicker(
+                    context: context,
+                    initialDate: widgetData['value'] != "" && widgetData['value'] != null
+                        ? DateTime.parse(widgetData['value'])
+                        : DateTime.now(),
+                    firstDate: DateTime(1980),
+                    lastDate: DateTime(2100),
+                  );
+                  if (dateTime != null) {
+                    dsetState(() {
+                      date = DateFormat("yyyy-MM-dd", 'en').format(dateTime);
+                      widgetData['value'] = dateTime.toString();
+                    });
+                  }
+                },
+                child: Container(
+                  height: 40,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: AppColors.blueDark),
+                  ),
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        date.isNotEmpty ? date : '',
+                        style: AppStyles.textStyle14.copyWith(color: Colors.black),
+                      ),
+                      if (date.isNotEmpty)
+                        GestureDetector(
+                          onTap: () {
+                            dsetState(() {
+                              widgetData['value'] = "";
+                              date = "";
+                            });
+                          },
+                          child: const Icon(
+                            Icons.close,
+                            color: Colors.blue,
+                            size: 18,
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  /* Widget buildDateWidget(String title, ColumnList itemColumnList,
       Map<String, dynamic> widgetData) {
     String date = widgetData['value'] != ""
         ? DateFormat("yyyy-MM-dd", 'en')
@@ -865,7 +859,7 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
         ],
       ),
     );
-  }
+  }*/
 
   Widget buildDropdownWidget(
     String title,
@@ -968,22 +962,18 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                     ? CustomDropdown<String>.search(
                         hintText: '',
                         initialItem: dropValue,
-                        closedHeaderPadding: const EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 8),
+                        closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                         decoration: CustomDropdownDecoration(
-                          headerStyle: AppStyles.textStyle16
-                              .copyWith(color: Colors.black),
+                          headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
                           closedFillColor: Colors.transparent,
                           closedBorder: Border.all(color: AppColors.blueDark),
                         ),
                         items: myListDrop!.isEmpty
                             ? [""]
-                            : List.generate(myListDrop.length,
-                                (index) => myListDrop![index].text ?? ''),
+                            : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
                         onChanged: (value) {
                           dropSetState(() {
-                            ItemDrop ii = myListDrop!
-                                .firstWhere((element) => element.text == value);
+                            ItemDrop ii = myListDrop!.firstWhere((element) => element.text == value);
                             widgetData['value'] = "";
                             widgetData['value'] = ii.id;
                           });
@@ -1005,18 +995,15 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                           });
                         },
                         // initialItem: dropValue,
-                        closedHeaderPadding: const EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 8),
+                        closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                         decoration: CustomDropdownDecoration(
-                          headerStyle: AppStyles.textStyle16
-                              .copyWith(color: Colors.black),
+                          headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
                           closedFillColor: Colors.transparent,
                           closedBorder: Border.all(color: AppColors.blueDark),
                         ),
                         items: myListDrop!.isEmpty
                             ? [""]
-                            : List.generate(myListDrop.length,
-                                (index) => myListDrop![index].text ?? ''),
+                            : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
                       ),
               );
             },
@@ -1026,8 +1013,7 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
     );
   }
 
-  StatefulBuilder buildCheckBoxWidget(Map<String, dynamic> widgetData,
-      String title, ColumnList itemColumnList) {
+  StatefulBuilder buildCheckBoxWidget(Map<String, dynamic> widgetData, String title, ColumnList itemColumnList) {
     return StatefulBuilder(
       builder: (context, csetState) {
         return CheckboxListTile(
@@ -1070,11 +1056,8 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
 
   Future<bool> getPermissions(int? pageId) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPagePermissions?pageId=$pageId",
         headers: {
@@ -1091,11 +1074,8 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
 
   void getColumnListAndAdd(Pages page) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).post(
         endPoint: "home/getGeneralTable",
         data: {
@@ -1126,8 +1106,7 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
         isOverlayTapDismiss: false,
         isCloseButton: false,
         content: BlocProvider(
-          create: (context) =>
-              AddEditCubit(getIt.get<SupplierProcessRepoImpl>()),
+          create: (context) => AddEditCubit(getIt.get<SupplierProcessRepoImpl>()),
           child: BuildAlertAddInDropdown(
             columnList: columnList!,
             pageData: page,
@@ -1144,11 +1123,8 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
 
   void getDropdownList(int pageId) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       List<dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPageDropDown?pageId=$pageId",
         headers: {
@@ -1170,8 +1146,7 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
     }
   }
 
-  Container buildCategoryName(
-      MapEntry<String, List<Map<String, dynamic>>> entry) {
+  Container buildCategoryName(MapEntry<String, List<Map<String, dynamic>>> entry) {
     return Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(

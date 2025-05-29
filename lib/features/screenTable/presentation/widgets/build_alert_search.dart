@@ -299,9 +299,151 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
             ],
           ),
         ));
+      } else if (item.insertType == "date" && item.visible == true) {
+        String oldValueFrom = getStringDate(search: item.searchName!, statement: widget.oldStatement, type: "F");
+        String oldValueTo = getStringDate(search: item.searchName!, statement: widget.oldStatement, type: "T");
+        String dateFrom = oldValueFrom != '' ? oldValueFrom : S.of(context).from;
+        String dateTo = oldValueTo != '' ? oldValueTo : S.of(context).to;
+        listWidgets.add(
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: AppStyles.textStyle14.copyWith(color: Colors.grey),
+                ),
+                Row(
+                  children: [
+                    // Date From with Delete Button
+                    Expanded(
+                      child: StatefulBuilder(
+                        builder: (context, dsetState) {
+                          return InkWell(
+                            onTap: () async {
+                              DateTime? dateTime = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(1980),
+                                lastDate: DateTime(2100),
+                              );
+                              if (dateTime != null) {
+                                dsetState(() {
+                                  dateFrom = DateFormat("yyyy-MM-dd", 'en').format(dateTime);
+                                });
+                                statment = "$statment and Convert(date, ${item.searchName}) >= Convert(date, '$dateFrom') ";
+                                BuildAlertSearch.statement = statment;
+                              }
+                            },
+                            child: Container(
+                              height: 40,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(color: AppColors.blueDark),
+                              ),
+                              alignment: Alignment.center,
+                              padding: const EdgeInsets.symmetric(horizontal: 8),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    dateFrom,
+                                    textAlign: TextAlign.center,
+                                    style: AppStyles.textStyle14.copyWith(color: Colors.black),
+                                  ),
+                                  if (dateFrom != S.of(context).from)
+                                    GestureDetector(
+                                      onTap: () {
+                                        dsetState(() {
+                                          dateFrom = S.of(context).from;
+                                        });
+                                        BuildAlertSearch.statement = BuildAlertSearch.statement.replaceAll(
+                                            RegExp(
+                                                r"and\s+Convert\(date,\s*" +
+                                                    item.searchName! +
+                                                    r"\s*\)\s*>=\s*Convert\(date,\s*'[^']*'\s*\)",
+                                                caseSensitive: false),
+                                            '');
+                                      },
+                                      child: const Icon(Icons.close, color: Colors.blue, size: 18),
+                                    ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    // Date To with Delete Button
+                    Expanded(
+                      child: StatefulBuilder(
+                        builder: (context, dsetState) {
+                          return InkWell(
+                            onTap: () async {
+                              DateTime? dateTime = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(1980),
+                                lastDate: DateTime(2100),
+                              );
+                              if (dateTime != null) {
+                                dsetState(() {
+                                  dateTo = DateFormat("yyyy-MM-dd", 'en').format(dateTime);
+                                });
+                                statment = "$statment and Convert(date, ${item.searchName}) <= Convert(date, '$dateTo') ";
+                                BuildAlertSearch.statement = statment;
+                              }
+                            },
+                            child: Container(
+                              height: 40,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(color: AppColors.blueDark),
+                              ),
+                              alignment: Alignment.center,
+                              padding: const EdgeInsets.symmetric(horizontal: 8),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    dateTo,
+                                    textAlign: TextAlign.center,
+                                    style: AppStyles.textStyle14.copyWith(color: Colors.black),
+                                  ),
+                                  if (dateTo != S.of(context).to)
+                                    GestureDetector(
+                                      onTap: () {
+                                        dsetState(() {
+                                          dateTo = S.of(context).to;
+                                        });
+                                        BuildAlertSearch.statement = BuildAlertSearch.statement.replaceAll(
+                                            RegExp(
+                                                r"and\s+Convert\(date,\s*" +
+                                                    item.searchName! +
+                                                    r"\s*\)\s*<=\s*Convert\(date,\s*'[^']*'\s*\)",
+                                                caseSensitive: false),
+                                            '');
+                                      },
+                                      child: const Icon(Icons.close, color: Colors.blue, size: 18),
+                                    ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+        );
       }
 
-      //Date
+      /*//Date
       else if (item.insertType == "date" && item.visible == true) {
         String oldValueFrom = getStringDate(search: item.searchName!, statement: widget.oldStatement, type: "F");
         String oldValueTo = getStringDate(search: item.searchName!, statement: widget.oldStatement, type: "T");
@@ -398,7 +540,7 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
             ),
           ),
         );
-      }
+      }*/
       //dropdown
       else if (item.insertType == "dropdown" && item.visible == true) {
         String oldValue = getStringDropdown(statement: widget.oldStatement, search: item.searchName!);

@@ -155,7 +155,7 @@ class _CashMoneyViewBodyState extends State<CashMoneyViewBody> {
                           listData: moneyAccountList,
                           onChanged: (value) {
                             setState(() {
-                              accountFrom = value?.acID;
+                              accountFrom = value?.acID ?? 0;
                             });
                             bodyRequestToGetDataTable['Params'] = {
                               "Accountids": [accountFrom],

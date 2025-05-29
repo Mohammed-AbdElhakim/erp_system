@@ -15,6 +15,7 @@ import '../../../../../../core/utils/app_strings.dart';
 import '../../../../../../core/utils/app_styles.dart';
 import '../../../../../../core/utils/service_locator.dart';
 import '../../../../../../core/widgets/custom_button.dart';
+import '../../../../../../core/widgets/custom_date_picker_field.dart';
 import '../../../../../../core/widgets/custom_error_massage.dart';
 import '../../../../../../core/widgets/custom_text_form_field.dart';
 import '../../../../../../generated/l10n.dart';
@@ -35,11 +36,12 @@ import '../build_alert_add_in_dropdown.dart';
 import 'widget/production_prosecc_table_add_edit_.dart';
 
 class EditProductionProsecc extends StatefulWidget {
-  const EditProductionProsecc(
-      {super.key, required this.pageData, required this.listKey, this.tapData});
+  const EditProductionProsecc({super.key, required this.pageData, required this.listKey, this.tapData});
+
   final ListTaps? tapData;
   final Pages pageData;
   final List<dynamic> listKey;
+
   // static List<Map<String, dynamic>> tableList = [];
 
   @override
@@ -83,93 +85,85 @@ class _EditProductionProseccState extends State<EditProductionProsecc> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => GetExpensesMasterCubit(getIt.get<ScreenRepoImpl>())
-        ..getExpensesMaster(
-            id: id, controllerName: widget.pageData.controllerName),
+        ..getExpensesMaster(id: id, controllerName: widget.pageData.controllerName),
       child: BlocBuilder<GetExpensesMasterCubit, GetExpensesMasterState>(
         builder: (context, state) {
           if (state is GetExpensesMasterSuccess) {
             // Map<String, dynamic> dataMaster = state.data;
 
             return BlocProvider(
-              create: (context) =>
-                  GetExpensesDetailsCubit(getIt.get<ScreenRepoImpl>())
-                    ..getExpensesDetails(
-                        tapModel: ListTaps(
-                            pageID: widget.tapData!.pageID,
-                            pageDisplay: widget.tapData!.pageDisplay,
-                            masterName: widget.tapData!.masterName,
-                            modulName: widget.tapData!.modulName,
-                            masterID: widget.tapData!.masterID,
-                            modulID: widget.tapData!.modulID,
-                            detailId: widget.tapData!.detailId,
-                            listName: widget.tapData!.listName,
-                            tableName: widget.tapData!.tableName,
-                            primary: widget.tapData!.primary,
-                            controllerName: widget.tapData!.controllerName,
-                            tableSrc: widget.tapData!.tableSrc,
-                            editSrc: widget.tapData!.editSrc,
-                            isCompany: widget.tapData!.isCompany,
-                            companyName: widget.tapData!.companyName,
-                            showPrint: widget.tapData!.showPrint,
-                            showExport: widget.tapData!.showExport,
-                            showSearch: widget.tapData!.showSearch,
-                            showEdit: widget.tapData!.showEdit,
-                            showDelete: widget.tapData!.showDelete,
-                            showRowPrint: widget.tapData!.showRowPrint,
-                            showNew: widget.tapData!.showNew,
-                            searchFirst: widget.tapData!.searchFirst,
-                            showSetting: widget.tapData!.showSetting,
-                            showMasterButton: widget.tapData!.showMasterButton,
-                            canDrag: widget.tapData!.canDrag,
-                            canGroup: widget.tapData!.canGroup,
-                            showSum: widget.tapData!.showSum,
-                            showColumnSetting:
-                                widget.tapData!.showColumnSetting,
-                            showRefersh: widget.tapData!.showRefersh,
-                            canSort: widget.tapData!.canSort,
-                            showPaging: widget.tapData!.showPaging,
-                            showGroup: widget.tapData!.showGroup,
-                            dataSourceApi: widget.tapData!.dataSourceApi,
-                            limit: widget.tapData!.limit,
-                            orderBy: widget.tapData!.orderBy,
-                            tailCondition: "${widget.tapData!.foreignKey}=$id",
-                            master: widget.tapData!.master,
-                            foreignKey: widget.tapData!.foreignKey,
-                            foreignKeyValue: widget.tapData!.foreignKeyValue,
-                            groupLayout: widget.tapData!.groupLayout,
-                            groupColumn: widget.tapData!.groupColumn,
-                            outSiderGroupColumn:
-                                widget.tapData!.outSiderGroupColumn,
-                            editOnly: widget.tapData!.editOnly,
-                            listMaster: widget.tapData!.listMaster,
-                            excel: widget.tapData!.excel,
-                            excelNew: widget.tapData!.excelNew,
-                            showInPopUp: widget.tapData!.showInPopUp,
-                            pageAttributeId: widget.tapData!.pageAttributeId,
-                            displayArabic: widget.tapData!.displayArabic,
-                            displayEnglish: widget.tapData!.displayEnglish,
-                            displayChinese: widget.tapData!.displayChinese,
-                            columnColor: widget.tapData!.columnColor,
-                            enName: widget.tapData!.enName,
-                            isDesc: widget.tapData!.isDesc,
-                            unaryColumn: widget.tapData!.unaryColumn,
-                            numberOfEmptyRow: widget.tapData!.numberOfEmptyRow,
-                            offset: 0,
-                            statment: widget.tapData!.statment)),
-              child:
-                  BlocBuilder<GetExpensesDetailsCubit, GetExpensesDetailsState>(
+              create: (context) => GetExpensesDetailsCubit(getIt.get<ScreenRepoImpl>())
+                ..getExpensesDetails(
+                    tapModel: ListTaps(
+                        pageID: widget.tapData!.pageID,
+                        pageDisplay: widget.tapData!.pageDisplay,
+                        masterName: widget.tapData!.masterName,
+                        modulName: widget.tapData!.modulName,
+                        masterID: widget.tapData!.masterID,
+                        modulID: widget.tapData!.modulID,
+                        detailId: widget.tapData!.detailId,
+                        listName: widget.tapData!.listName,
+                        tableName: widget.tapData!.tableName,
+                        primary: widget.tapData!.primary,
+                        controllerName: widget.tapData!.controllerName,
+                        tableSrc: widget.tapData!.tableSrc,
+                        editSrc: widget.tapData!.editSrc,
+                        isCompany: widget.tapData!.isCompany,
+                        companyName: widget.tapData!.companyName,
+                        showPrint: widget.tapData!.showPrint,
+                        showExport: widget.tapData!.showExport,
+                        showSearch: widget.tapData!.showSearch,
+                        showEdit: widget.tapData!.showEdit,
+                        showDelete: widget.tapData!.showDelete,
+                        showRowPrint: widget.tapData!.showRowPrint,
+                        showNew: widget.tapData!.showNew,
+                        searchFirst: widget.tapData!.searchFirst,
+                        showSetting: widget.tapData!.showSetting,
+                        showMasterButton: widget.tapData!.showMasterButton,
+                        canDrag: widget.tapData!.canDrag,
+                        canGroup: widget.tapData!.canGroup,
+                        showSum: widget.tapData!.showSum,
+                        showColumnSetting: widget.tapData!.showColumnSetting,
+                        showRefersh: widget.tapData!.showRefersh,
+                        canSort: widget.tapData!.canSort,
+                        showPaging: widget.tapData!.showPaging,
+                        showGroup: widget.tapData!.showGroup,
+                        dataSourceApi: widget.tapData!.dataSourceApi,
+                        limit: widget.tapData!.limit,
+                        orderBy: widget.tapData!.orderBy,
+                        tailCondition: "${widget.tapData!.foreignKey}=$id",
+                        master: widget.tapData!.master,
+                        foreignKey: widget.tapData!.foreignKey,
+                        foreignKeyValue: widget.tapData!.foreignKeyValue,
+                        groupLayout: widget.tapData!.groupLayout,
+                        groupColumn: widget.tapData!.groupColumn,
+                        outSiderGroupColumn: widget.tapData!.outSiderGroupColumn,
+                        editOnly: widget.tapData!.editOnly,
+                        listMaster: widget.tapData!.listMaster,
+                        excel: widget.tapData!.excel,
+                        excelNew: widget.tapData!.excelNew,
+                        showInPopUp: widget.tapData!.showInPopUp,
+                        pageAttributeId: widget.tapData!.pageAttributeId,
+                        displayArabic: widget.tapData!.displayArabic,
+                        displayEnglish: widget.tapData!.displayEnglish,
+                        displayChinese: widget.tapData!.displayChinese,
+                        columnColor: widget.tapData!.columnColor,
+                        enName: widget.tapData!.enName,
+                        isDesc: widget.tapData!.isDesc,
+                        unaryColumn: widget.tapData!.unaryColumn,
+                        numberOfEmptyRow: widget.tapData!.numberOfEmptyRow,
+                        offset: 0,
+                        statment: widget.tapData!.statment)),
+              child: BlocBuilder<GetExpensesDetailsCubit, GetExpensesDetailsState>(
                 builder: (context, state) {
                   if (state is GetExpensesDetailsSuccess) {
-                    Map<String, dynamic> dataMaster =
-                        state.expensesDetailsModel.dynamicList![0];
-                    List<Map<String, dynamic>> listDataInTable =
-                        state.expensesDetailsModel.dynamicList!;
+                    Map<String, dynamic> dataMaster = state.expensesDetailsModel.dynamicList![0];
+                    List<Map<String, dynamic>> listDataInTable = state.expensesDetailsModel.dynamicList!;
 
                     return BlocBuilder<GetListSetupsCubit, GetListSetupsState>(
                       builder: (context, state) {
                         if (state is GetListSetupsSuccess) {
-                          List<ItemListSetupModel> listSetup =
-                              state.listSetupModel;
+                          List<ItemListSetupModel> listSetup = state.listSetupModel;
                           List<ItemListSetupModel> listColumn = [];
                           List<dynamic> listKey = [];
                           List<String> category = [];
@@ -182,9 +176,7 @@ class _EditProductionProseccState extends State<EditProductionProsecc> {
                                 item.isGeneral != true) {
                               listColumn.add(item);
                               listKey.add(item.columnName);
-                              listHeader.add(lang == AppStrings.enLangKey
-                                  ? item.enColumnLabel!
-                                  : item.arColumnLabel!);
+                              listHeader.add(lang == AppStrings.enLangKey ? item.enColumnLabel! : item.arColumnLabel!);
                             }
                           }
                           List<String> categoryList = category.toSet().toList();
@@ -200,53 +192,27 @@ class _EditProductionProseccState extends State<EditProductionProsecc> {
                                     padding: const EdgeInsets.only(bottom: 60),
                                     child: SingleChildScrollView(
                                       child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          ...List.generate(categoryList.length,
-                                              (index) {
-                                            String categoryName =
-                                                categoryList[index];
-                                            List<Widget> widgetList =
-                                                getMyWidgetList(
-                                                    listData: listSetup,
-                                                    categoryName: categoryName,
-                                                    dataMaster: dataMaster);
+                                          ...List.generate(categoryList.length, (index) {
+                                            String categoryName = categoryList[index];
+                                            List<Widget> widgetList = getMyWidgetList(
+                                                listData: listSetup, categoryName: categoryName, dataMaster: dataMaster);
                                             return widgetList.isNotEmpty
                                                 ? Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            bottom: 16),
+                                                    padding: const EdgeInsets.only(bottom: 16),
                                                     child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
                                                       children: [
                                                         Container(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .symmetric(
-                                                                  horizontal:
-                                                                      12,
-                                                                  vertical: 8),
-                                                          decoration:
-                                                              BoxDecoration(
-                                                                  // color: AppColors.grey.withOpacity(.4),
-                                                                  color: AppColors
-                                                                      .grey
-                                                                      .withAlpha(
-                                                                          102),
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              15)),
+                                                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                                          decoration: BoxDecoration(
+                                                              // color: AppColors.grey.withOpacity(.4),
+                                                              color: AppColors.grey.withAlpha(102),
+                                                              borderRadius: BorderRadius.circular(15)),
                                                           child: Text(
                                                             categoryName,
-                                                            style: AppStyles
-                                                                .textStyle18
-                                                                .copyWith(
-                                                                    color: Colors
-                                                                        .black),
+                                                            style: AppStyles.textStyle18.copyWith(color: Colors.black),
                                                           ),
                                                         ),
                                                         ...widgetList,
@@ -256,36 +222,22 @@ class _EditProductionProseccState extends State<EditProductionProsecc> {
                                                 : const SizedBox();
                                           }),
                                           Container(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 12,
-                                                      vertical: 8),
-                                              margin:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 8),
+                                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                              margin: const EdgeInsets.symmetric(vertical: 8),
                                               decoration: BoxDecoration(
                                                   // color: AppColors.grey.withOpacity(.4),
-                                                  color: AppColors.grey
-                                                      .withAlpha(102),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          15)),
+                                                  color: AppColors.grey.withAlpha(102),
+                                                  borderRadius: BorderRadius.circular(15)),
                                               child: Text(
                                                 "المواد المصنعة",
-                                                style: AppStyles.textStyle18
-                                                    .copyWith(
-                                                        color: Colors.black),
+                                                style: AppStyles.textStyle18.copyWith(color: Colors.black),
                                               )),
                                           Padding(
-                                            padding: const EdgeInsets.only(
-                                                bottom: 16),
-                                            child:
-                                                ProductionProseccTableAddEdit(
+                                            padding: const EdgeInsets.only(bottom: 16),
+                                            child: ProductionProseccTableAddEdit(
                                               oldTableList: listDataInTable
                                                   .where(
-                                                    (element) =>
-                                                        element['InOROut'] ==
-                                                        true,
+                                                    (element) => element['InOROut'] == true,
                                                   )
                                                   .toList(),
                                               tapData: widget.tapData,
@@ -293,8 +245,7 @@ class _EditProductionProseccState extends State<EditProductionProsecc> {
                                               listKey: listKey,
                                               listHeader: listHeader,
                                               listColumn: listColumn,
-                                              allDropdownModelList: ScreenTable
-                                                  .myAllDropdownModelList,
+                                              allDropdownModelList: ScreenTable.myAllDropdownModelList,
                                               onTapAction: (data) {
                                                 tableList1 = data;
                                               },
@@ -302,36 +253,22 @@ class _EditProductionProseccState extends State<EditProductionProsecc> {
                                             ),
                                           ),
                                           Container(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 12,
-                                                      vertical: 8),
-                                              margin:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 8),
+                                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                              margin: const EdgeInsets.symmetric(vertical: 8),
                                               decoration: BoxDecoration(
                                                   // color: AppColors.grey.withOpacity(.4),
-                                                  color: AppColors.grey
-                                                      .withAlpha(102),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          15)),
+                                                  color: AppColors.grey.withAlpha(102),
+                                                  borderRadius: BorderRadius.circular(15)),
                                               child: Text(
                                                 "المواد الخام",
-                                                style: AppStyles.textStyle18
-                                                    .copyWith(
-                                                        color: Colors.black),
+                                                style: AppStyles.textStyle18.copyWith(color: Colors.black),
                                               )),
                                           Padding(
-                                            padding: const EdgeInsets.only(
-                                                bottom: 16),
-                                            child:
-                                                ProductionProseccTableAddEdit(
+                                            padding: const EdgeInsets.only(bottom: 16),
+                                            child: ProductionProseccTableAddEdit(
                                               oldTableList: listDataInTable
                                                   .where(
-                                                    (element) =>
-                                                        element['InOROut'] ==
-                                                        false,
+                                                    (element) => element['InOROut'] == false,
                                                   )
                                                   .toList(),
                                               tapData: widget.tapData,
@@ -339,8 +276,7 @@ class _EditProductionProseccState extends State<EditProductionProsecc> {
                                               listKey: listKey,
                                               listHeader: listHeader,
                                               listColumn: listColumn,
-                                              allDropdownModelList: ScreenTable
-                                                  .myAllDropdownModelList,
+                                              allDropdownModelList: ScreenTable.myAllDropdownModelList,
                                               onTapAction: (data) {
                                                 tableList2 = data;
                                               },
@@ -354,8 +290,7 @@ class _EditProductionProseccState extends State<EditProductionProsecc> {
                                   Positioned(
                                     bottom: 0,
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
+                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                                       children: [
                                         CustomButton(
                                           text: S.of(context).cancel,
@@ -363,8 +298,7 @@ class _EditProductionProseccState extends State<EditProductionProsecc> {
                                           noGradient: true,
                                           color: Colors.transparent,
                                           noShadow: true,
-                                          textStyle: AppStyles.textStyle16
-                                              .copyWith(color: Colors.grey),
+                                          textStyle: AppStyles.textStyle16.copyWith(color: Colors.grey),
                                           onTap: () {
                                             Navigator.pop(context);
                                           },
@@ -372,44 +306,26 @@ class _EditProductionProseccState extends State<EditProductionProsecc> {
                                         const SizedBox(
                                           width: 50,
                                         ),
-                                        BlocConsumer<AddEditExpensesCubit,
-                                            AddEditExpensesState>(
+                                        BlocConsumer<AddEditExpensesCubit, AddEditExpensesState>(
                                           listener: (context, state) {
-                                            if (state
-                                                is AddEditExpensesSuccess) {
-                                              BlocProvider.of<
-                                                      GetTableCubit>(context)
-                                                  .getTable(
-                                                      pageId: widget
-                                                          .pageData.pageId,
-                                                      employee: false,
-                                                      isdesc:
-                                                          widget
-                                                              .pageData.isDesc,
-                                                      limit: 10,
-                                                      offset: 0,
-                                                      orderby:
-                                                          widget
-                                                              .pageData.orderBy,
-                                                      statment: '',
-                                                      selectcolumns: '',
-                                                      departmentName:
-                                                          widget.pageData
-                                                              .departmentName,
-                                                      isDepartment:
-                                                          widget.pageData
-                                                              .isDepartment,
-                                                      authorizationID:
-                                                          widget.pageData
-                                                              .authorizationID,
-                                                      viewEmployeeColumn: widget
-                                                          .pageData
-                                                          .viewEmployeeColumn,
-                                                      numberOfPage: 1,
-                                                      dropdownValueOfLimit: 10);
+                                            if (state is AddEditExpensesSuccess) {
+                                              BlocProvider.of<GetTableCubit>(context).getTable(
+                                                  pageId: widget.pageData.pageId,
+                                                  employee: false,
+                                                  isdesc: widget.pageData.isDesc,
+                                                  limit: 10,
+                                                  offset: 0,
+                                                  orderby: widget.pageData.orderBy,
+                                                  statment: '',
+                                                  selectcolumns: '',
+                                                  departmentName: widget.pageData.departmentName,
+                                                  isDepartment: widget.pageData.isDepartment,
+                                                  authorizationID: widget.pageData.authorizationID,
+                                                  viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
+                                                  numberOfPage: 1,
+                                                  dropdownValueOfLimit: 10);
                                               Navigator.pop(context);
-                                            } else if (state
-                                                is AddEditExpensesFailure) {
+                                            } else if (state is AddEditExpensesFailure) {
                                               CustomAlertDialog.alertWithButton(
                                                   context: context,
                                                   type: AlertType.error,
@@ -418,50 +334,35 @@ class _EditProductionProseccState extends State<EditProductionProsecc> {
                                             }
                                           },
                                           builder: (context, state) {
-                                            if (state
-                                                is AddEditExpensesLoading) {
+                                            if (state is AddEditExpensesLoading) {
                                               return const CustomLoadingWidget();
                                             } else {
                                               return CustomButton(
                                                 text: S.of(context).btn_edit,
                                                 width: 80,
                                                 onTap: () {
-                                                  if (formKey.currentState!
-                                                      .validate()) {
-                                                    formKey.currentState!
-                                                        .save();
+                                                  if (formKey.currentState!.validate()) {
+                                                    formKey.currentState!.save();
 
-                                                    BlocProvider.of<
-                                                                AddEditExpensesCubit>(
-                                                            context)
-                                                        .edit(
-                                                      singleObject:
-                                                          singleObject,
+                                                    BlocProvider.of<AddEditExpensesCubit>(context).edit(
+                                                      singleObject: singleObject,
                                                       tableList: [
                                                         ...tableList1.isEmpty
                                                             ? listDataInTable
                                                                 .where(
-                                                                  (element) =>
-                                                                      element[
-                                                                          'InOROut'] ==
-                                                                      true,
+                                                                  (element) => element['InOROut'] == true,
                                                                 )
                                                                 .toList()
                                                             : tableList1,
                                                         ...tableList2.isEmpty
                                                             ? listDataInTable
                                                                 .where(
-                                                                  (element) =>
-                                                                      element[
-                                                                          'InOROut'] ==
-                                                                      false,
+                                                                  (element) => element['InOROut'] == false,
                                                                 )
                                                                 .toList()
                                                             : tableList2
                                                       ],
-                                                      controllerName: widget
-                                                          .tapData!
-                                                          .controllerName,
+                                                      controllerName: widget.tapData!.controllerName,
                                                     );
                                                   }
                                                 },
@@ -477,8 +378,7 @@ class _EditProductionProseccState extends State<EditProductionProsecc> {
                             ),
                           );
                         } else if (state is GetListSetupsFailure) {
-                          return CustomErrorMassage(
-                              errorMassage: state.errorMassage);
+                          return CustomErrorMassage(errorMassage: state.errorMassage);
                         } else {
                           return const CustomLoadingWidget();
                         }
@@ -510,21 +410,12 @@ class _EditProductionProseccState extends State<EditProductionProsecc> {
     List<Widget> list = [];
 
     for (var item in listData) {
-      String title = lang == AppStrings.arLangKey
-          ? item.arColumnLabel!
-          : item.enColumnLabel!;
-      bool condition = item.insertVisable == true &&
-          item.cvisable == false &&
-          item.visible == false &&
-          item.isGeneral == true;
+      String title = lang == AppStrings.arLangKey ? item.arColumnLabel! : item.enColumnLabel!;
+      bool condition = item.insertVisable == true && item.cvisable == false && item.visible == false && item.isGeneral == true;
       //text
-      if (item.insertType == "text" &&
-          item.categoryTitle == categoryName &&
-          condition) {
-        TextEditingController controller = TextEditingController(
-            text: dataMaster[item.columnName].toString() == "null"
-                ? ''
-                : dataMaster[item.columnName]);
+      if (item.insertType == "text" && item.categoryTitle == categoryName && condition) {
+        TextEditingController controller =
+            TextEditingController(text: dataMaster[item.columnName].toString() == "null" ? '' : dataMaster[item.columnName]);
         list.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -553,10 +444,8 @@ class _EditProductionProseccState extends State<EditProductionProsecc> {
                   onSaved: (newValue) {
                     if (newValue!.isNotEmpty) {
                       setState(() {
-                        dataMaster.updateAll((key, value) =>
-                            key == item.columnName!.toString()
-                                ? value = controller.text
-                                : value);
+                        dataMaster
+                            .updateAll((key, value) => key == item.columnName!.toString() ? value = controller.text : value);
                         singleObject = dataMaster;
                       });
                     }
@@ -568,13 +457,9 @@ class _EditProductionProseccState extends State<EditProductionProsecc> {
         );
       }
       //number
-      if (item.insertType == "number" &&
-          item.categoryTitle == categoryName &&
-          condition) {
+      if (item.insertType == "number" && item.categoryTitle == categoryName && condition) {
         TextEditingController controller = TextEditingController(
-            text: dataMaster[item.columnName].toString() == "null"
-                ? ''
-                : dataMaster[item.columnName].toString());
+            text: dataMaster[item.columnName].toString() == "null" ? '' : dataMaster[item.columnName].toString());
         list.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -603,10 +488,8 @@ class _EditProductionProseccState extends State<EditProductionProsecc> {
                   onSaved: (newValue) {
                     if (newValue!.isNotEmpty) {
                       setState(() {
-                        dataMaster.updateAll((key, value) =>
-                            key == item.columnName!.toString()
-                                ? value = controller.text
-                                : value);
+                        dataMaster
+                            .updateAll((key, value) => key == item.columnName!.toString() ? value = controller.text : value);
                         singleObject = dataMaster;
                       });
                     }
@@ -618,19 +501,36 @@ class _EditProductionProseccState extends State<EditProductionProsecc> {
         );
       }
       //Date
-      if (item.insertType == "date" &&
-          item.categoryTitle == categoryName &&
-          condition) {
+      if (item.insertType == "date" && item.categoryTitle == categoryName && condition) {
         String date;
         if (dataMaster[item.columnName] != null) {
-          date = DateFormat("yyyy-MM-dd", 'en').format(
-              DateTime.parse(dataMaster[item.columnName].toString()).toLocal());
+          date = DateFormat("yyyy-MM-dd", 'en').format(DateTime.parse(dataMaster[item.columnName].toString()).toLocal());
         } else {
           // date = DateFormat("yyyy-MM-dd", 'en').format(DateTime.now());
           date = '';
         }
         list.add(
-          Padding(
+          CustomDatePickerField(
+            title: title,
+            isRequired: item.isRquired ?? false,
+            initialDateString: dataMaster[item.columnName]?.toString(),
+            onDateSelected: (selectedDate) {
+              if (selectedDate != null) {
+                setState(() {
+                  dataMaster[item.columnName!] = selectedDate.toIso8601String();
+                  singleObject = dataMaster;
+                });
+              }
+            },
+            onClear: () {
+              setState(() {
+                dataMaster.remove(item.columnName);
+                singleObject = dataMaster;
+              });
+            },
+          ),
+
+          /*Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -691,14 +591,12 @@ class _EditProductionProseccState extends State<EditProductionProsecc> {
                 ),
               ],
             ),
-          ),
+          ),*/
         );
       }
 
       //dropdown
-      if (item.insertType == "dropdown" &&
-          item.categoryTitle == categoryName &&
-          condition) {
+      if (item.insertType == "dropdown" && item.categoryTitle == categoryName && condition) {
         List<ListDrop>? listDrop = [];
         List<ItemDrop>? myListDrop = [];
 
@@ -794,11 +692,9 @@ class _EditProductionProseccState extends State<EditProductionProsecc> {
                 CustomDropdown<String>.search(
                   hintText: '',
                   initialItem: dropValue,
-                  closedHeaderPadding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                  closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                   decoration: CustomDropdownDecoration(
-                      headerStyle:
-                          AppStyles.textStyle16.copyWith(color: Colors.black),
+                      headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
                       closedFillColor: Colors.transparent,
                       closedBorder: Border.all(color: AppColors.blueDark)),
                   // validator: (value) {
@@ -808,13 +704,9 @@ class _EditProductionProseccState extends State<EditProductionProsecc> {
                   //     return null;
                   //   }
                   // },
-                  items: myListDrop.isEmpty
-                      ? [""]
-                      : List.generate(myListDrop.length,
-                          (index) => myListDrop![index].text ?? ''),
+                  items: myListDrop.isEmpty ? [""] : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
                   onChanged: (value) {
-                    ItemDrop ii = myListDrop!
-                        .firstWhere((element) => element.text == value);
+                    ItemDrop ii = myListDrop!.firstWhere((element) => element.text == value);
                     singleObject.addAll({item.searchName!.toString(): ii.id});
                   },
                 ),
@@ -824,9 +716,7 @@ class _EditProductionProseccState extends State<EditProductionProsecc> {
         );
       }
       //checkbox
-      if (item.insertType == "checkbox" &&
-          item.categoryTitle == categoryName &&
-          condition) {
+      if (item.insertType == "checkbox" && item.categoryTitle == categoryName && condition) {
         bool checkboxValue = dataMaster[item.columnName] ?? false;
         list.add(
           StatefulBuilder(
@@ -844,10 +734,7 @@ class _EditProductionProseccState extends State<EditProductionProsecc> {
                       checkboxValue = !checkboxValue;
                     });
                     csetState(() {
-                      dataMaster.updateAll((key, value) =>
-                          key == item.columnName!.toString()
-                              ? value = checkboxValue
-                              : value);
+                      dataMaster.updateAll((key, value) => key == item.columnName!.toString() ? value = checkboxValue : value);
                       singleObject = dataMaster;
                     });
                   });
@@ -861,11 +748,8 @@ class _EditProductionProseccState extends State<EditProductionProsecc> {
 
   void getColumnListAndAdd(Pages page) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).post(
         endPoint: "home/getGeneralTable",
         data: {
@@ -919,11 +803,8 @@ class _EditProductionProseccState extends State<EditProductionProsecc> {
 
   Future<bool> getPermissions(int? pageId) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPagePermissions?pageId=$pageId",
         headers: {
@@ -940,11 +821,8 @@ class _EditProductionProseccState extends State<EditProductionProsecc> {
 
   void getDropdownList(int pageId) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       List<dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPageDropDown?pageId=$pageId",
         headers: {

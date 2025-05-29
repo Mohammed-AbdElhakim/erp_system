@@ -13,6 +13,7 @@ import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_strings.dart';
 import '../../../../../core/utils/app_styles.dart';
 import '../../../../../core/widgets/custom_button.dart';
+import '../../../../../core/widgets/custom_date_picker_field.dart';
 import '../../../../../core/widgets/custom_loading_widget.dart';
 import '../../../../../core/widgets/custom_text_form_field.dart';
 import '../../../../../generated/l10n.dart';
@@ -35,6 +36,7 @@ class BuildAlertAddDetails extends StatefulWidget {
       required this.tap,
       required this.mainId,
       required this.onTapAdd});
+
   final List<ColumnList> columnList;
   final Pages pageData;
   final ListTaps tap;
@@ -53,6 +55,7 @@ class _BuildAlertAddDetailsState extends State<BuildAlertAddDetails> {
   bool isShow = false;
   late List<String> myListCategory;
   late List<AllDropdownModel> myAllDropdownModelList;
+  Map<String, String> selectedDates = {};
 
   @override
   void didChangeDependencies() {
@@ -89,34 +92,22 @@ class _BuildAlertAddDetailsState extends State<BuildAlertAddDetails> {
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          if (getMyWidgetList(
-                                  columnList: widget.columnList,
-                                  categoryName: categoryName,
-                                  show: true)
-                              .isNotEmpty)
+                          if (getMyWidgetList(columnList: widget.columnList, categoryName: categoryName, show: true).isNotEmpty)
                             Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 12, vertical: 8),
+                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                                 decoration: BoxDecoration(
                                     // color: AppColors.grey.withOpacity(.4),
                                     color: AppColors.grey.withAlpha(102),
                                     borderRadius: BorderRadius.circular(15)),
                                 child: Text(
                                   categoryName,
-                                  style: AppStyles.textStyle18
-                                      .copyWith(color: Colors.black),
+                                  style: AppStyles.textStyle18.copyWith(color: Colors.black),
                                 )),
-                          ...getMyWidgetList(
-                              columnList: widget.columnList,
-                              categoryName: categoryName,
-                              show: true),
+                          ...getMyWidgetList(columnList: widget.columnList, categoryName: categoryName, show: true),
                           Visibility(
                             visible: isShow,
                             child: Column(
-                              children: getMyWidgetList(
-                                  columnList: widget.columnList,
-                                  categoryName: categoryName,
-                                  show: false),
+                              children: getMyWidgetList(columnList: widget.columnList, categoryName: categoryName, show: false),
                             ),
                           ),
                         ],
@@ -128,9 +119,7 @@ class _BuildAlertAddDetailsState extends State<BuildAlertAddDetails> {
                           isShow = !isShow;
                         });
                       },
-                      child: Text(!isShow
-                          ? S.of(context).show_more
-                          : S.of(context).show_less),
+                      child: Text(!isShow ? S.of(context).show_more : S.of(context).show_less),
                     ),
                   ],
                 ),
@@ -147,8 +136,7 @@ class _BuildAlertAddDetailsState extends State<BuildAlertAddDetails> {
                     noGradient: true,
                     color: Colors.transparent,
                     noShadow: true,
-                    textStyle:
-                        AppStyles.textStyle16.copyWith(color: Colors.grey),
+                    textStyle: AppStyles.textStyle16.copyWith(color: Colors.grey),
                     onTap: () {
                       Navigator.pop(context);
                     },
@@ -231,10 +219,7 @@ class _BuildAlertAddDetailsState extends State<BuildAlertAddDetails> {
                         Navigator.pop(context);
                       } else if (state is AddEditFailure) {
                         CustomAlertDialog.alertWithButton(
-                            context: context,
-                            type: AlertType.error,
-                            title: S.of(context).error,
-                            desc: state.errorMassage);
+                            context: context, type: AlertType.error, title: S.of(context).error, desc: state.errorMassage);
                       }
                     },
                     builder: (context, state) {
@@ -270,9 +255,7 @@ class _BuildAlertAddDetailsState extends State<BuildAlertAddDetails> {
   }) {
     List<Widget> list = [];
     for (var item in columnList) {
-      String title = lang == AppStrings.arLangKey
-          ? item.arColumnLabel!
-          : item.enColumnLabel!;
+      String title = lang == AppStrings.arLangKey ? item.arColumnLabel! : item.enColumnLabel!;
       //text
       if (item.insertType == "text" &&
           item.insertVisable == true &&
@@ -305,8 +288,7 @@ class _BuildAlertAddDetailsState extends State<BuildAlertAddDetails> {
                   onSaved: (newValue) {
                     if (newValue!.isNotEmpty) {
                       setState(() {
-                        newRowData
-                            .addAll({item.columnName!.toString(): newValue});
+                        newRowData.addAll({item.columnName!.toString(): newValue});
                       });
                     }
                   },
@@ -348,8 +330,7 @@ class _BuildAlertAddDetailsState extends State<BuildAlertAddDetails> {
                   onSaved: (newValue) {
                     if (newValue!.isNotEmpty) {
                       setState(() {
-                        newRowData
-                            .addAll({item.columnName!.toString(): newValue});
+                        newRowData.addAll({item.columnName!.toString(): newValue});
                       });
                     }
                   },
@@ -364,9 +345,29 @@ class _BuildAlertAddDetailsState extends State<BuildAlertAddDetails> {
           item.insertVisable == true &&
           item.categoryName == categoryName &&
           item.insertDefult == show) {
-        String date = '';
+        String date = selectedDates[item.columnName] ?? '';
         list.add(
-          Padding(
+          CustomDatePickerField(
+            title: title,
+            isRequired: item.isRquired ?? false,
+            initialDateString: date,
+            onDateSelected: (dateTime) {
+              if (dateTime != null) {
+                String formattedDate = DateFormat("yyyy-MM-dd", 'en').format(dateTime);
+                setState(() {
+                  selectedDates[item.columnName!] = formattedDate;
+                  newRowData[item.columnName!.toString()] = dateTime.toString();
+                });
+              }
+            },
+            onClear: () {
+              setState(() {
+                selectedDates.remove(item.columnName);
+                newRowData.remove(item.columnName);
+              });
+            },
+          ),
+          /* Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -426,7 +427,7 @@ class _BuildAlertAddDetailsState extends State<BuildAlertAddDetails> {
                 ),
               ],
             ),
-          ),
+          ),*/
         );
       }
 
@@ -508,11 +509,9 @@ class _BuildAlertAddDetailsState extends State<BuildAlertAddDetails> {
                 ),
                 CustomDropdown<String>.search(
                   hintText: '',
-                  closedHeaderPadding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                  closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                   decoration: CustomDropdownDecoration(
-                      headerStyle:
-                          AppStyles.textStyle16.copyWith(color: Colors.black),
+                      headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
                       closedFillColor: Colors.transparent,
                       closedBorder: Border.all(color: AppColors.blueDark)),
                   // validator: (value) {
@@ -522,13 +521,9 @@ class _BuildAlertAddDetailsState extends State<BuildAlertAddDetails> {
                   //     return null;
                   //   }
                   // },
-                  items: myListDrop!.isEmpty
-                      ? [""]
-                      : List.generate(myListDrop.length,
-                          (index) => myListDrop![index].text ?? ''),
+                  items: myListDrop!.isEmpty ? [""] : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
                   onChanged: (value) {
-                    ItemDrop ii = myListDrop!
-                        .firstWhere((element) => element.text == value);
+                    ItemDrop ii = myListDrop!.firstWhere((element) => element.text == value);
                     newRowData.addAll({item.searchName!.toString(): ii.id});
                   },
                 ),
@@ -554,8 +549,7 @@ class _BuildAlertAddDetailsState extends State<BuildAlertAddDetails> {
                     children: [
                       Text(
                         title,
-                        style:
-                            AppStyles.textStyle14.copyWith(color: Colors.black),
+                        style: AppStyles.textStyle14.copyWith(color: Colors.black),
                       ),
                       if (item.isRquired == true)
                         const Icon(
@@ -570,8 +564,7 @@ class _BuildAlertAddDetailsState extends State<BuildAlertAddDetails> {
                       checkboxValue = !checkboxValue;
                     });
                     csetState(() {
-                      newRowData
-                          .addAll({item.columnName!.toString(): checkboxValue});
+                      newRowData.addAll({item.columnName!.toString(): checkboxValue});
                     });
                   });
             },
@@ -584,11 +577,8 @@ class _BuildAlertAddDetailsState extends State<BuildAlertAddDetails> {
 
   void getColumnListAndAdd(Pages page) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).post(
         endPoint: "home/getGeneralTable",
         data: {
@@ -642,11 +632,8 @@ class _BuildAlertAddDetailsState extends State<BuildAlertAddDetails> {
 
   Future<bool> getPermissions(int? pageId) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPagePermissions?pageId=$pageId",
         headers: {
@@ -663,11 +650,8 @@ class _BuildAlertAddDetailsState extends State<BuildAlertAddDetails> {
 
   void getDropdownList(int pageId) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       List<dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPageDropDown?pageId=$pageId",
         headers: {

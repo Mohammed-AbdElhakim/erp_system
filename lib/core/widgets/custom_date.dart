@@ -6,6 +6,7 @@ import '../utils/app_styles.dart';
 
 class CustomDate extends StatefulWidget {
   const CustomDate({super.key, required this.onSelect});
+
   final void Function(String date) onSelect;
 
   @override
@@ -14,6 +15,7 @@ class CustomDate extends StatefulWidget {
 
 class _CustomDateState extends State<CustomDate> {
   String date = '';
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -33,15 +35,32 @@ class _CustomDateState extends State<CustomDate> {
       },
       child: Container(
           height: 40,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: AppColors.blueDark)),
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(12), border: Border.all(color: AppColors.blueDark)),
           alignment: Alignment.center,
           padding: const EdgeInsets.all(8),
-          child: Text(
-            date,
-            textAlign: TextAlign.center,
-            style: AppStyles.textStyle14.copyWith(color: Colors.black),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                date.isNotEmpty ? date : "",
+                textAlign: TextAlign.center,
+                style: AppStyles.textStyle14.copyWith(color: Colors.black),
+              ),
+              if (date.isNotEmpty)
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      date = '';
+                      widget.onSelect('');
+                    });
+                  },
+                  child: const Icon(
+                    Icons.close,
+                    color: Colors.blue,
+                    size: 18,
+                  ),
+                ),
+            ],
           )),
     );
   }

@@ -14,6 +14,7 @@ import '../../../../../core/utils/app_strings.dart';
 import '../../../../../core/utils/app_styles.dart';
 import '../../../../../core/utils/service_locator.dart';
 import '../../../../../core/widgets/custom_button.dart';
+import '../../../../../core/widgets/custom_date_picker_field.dart';
 import '../../../../../core/widgets/custom_error_massage.dart';
 import '../../../../../core/widgets/custom_loading_widget.dart';
 import '../../../../../core/widgets/custom_text_form_field.dart';
@@ -43,6 +44,7 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
   String? lang;
   GlobalKey<FormState> formKey = GlobalKey();
   Map<String, dynamic> newRowData = {};
+  Map<String, SingleSelectController<String>> _controllers = {};
   bool isShow = false;
   late List<String> myListCategory;
   late List<AllDropdownModel> myAllDropdownModelList;
@@ -65,6 +67,15 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
     //     : ScreenTable.rowData[0][widget.pageData.primary].toString();
     id = ScreenTable.rowData[0].toString();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    for (var controller in _controllers.values) {
+      controller.dispose();
+    }
+    _controllers.clear();
+    super.dispose();
   }
 
   @override
@@ -417,6 +428,120 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
           item.insertVisable == true &&
           item.categoryName == categoryName &&
           item.insertDefult == show) {
+        String date = '';
+        if (rowData[item.columnName] != null) {
+          try {
+            date = DateFormat("yyyy-MM-dd", 'en').format(DateTime.parse(rowData[item.columnName].toString()).toLocal());
+          } catch (_) {
+            date = '';
+          }
+        }
+
+        list.add(
+          CustomDatePickerField(
+            title: title,
+            isRequired: item.isRquired ?? false,
+            initialDateString: rowData[item.columnName]?.toString(),
+            onDateSelected: (selectedDate) {
+              if (selectedDate != null) {
+                setState(() {
+                  rowData[item.columnName!] = selectedDate.toIso8601String();
+                  newRowData = rowData;
+                });
+              }
+            },
+            onClear: () {
+              setState(() {
+                rowData.remove(item.columnName);
+                newRowData = rowData;
+              });
+            },
+          ),
+
+          /*Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      title,
+                      style: AppStyles.textStyle14.copyWith(color: Colors.grey),
+                    ),
+                    if (item.isRquired == true)
+                      const Icon(
+                        Icons.star,
+                        color: Colors.red,
+                        size: 10,
+                      )
+                  ],
+                ),
+                InkWell(
+                  onTap: () async {
+                    DateTime? dateTime = await showDatePicker(
+                      context: context,
+                      initialDate:
+                          rowData[item.columnName] != null ? DateTime.parse(rowData[item.columnName].toString()) : DateTime.now(),
+                      firstDate: DateTime(1980),
+                      lastDate: DateTime(2100),
+                    );
+
+                    if (dateTime != null) {
+                      String formattedDate = DateFormat("yyyy-MM-dd", 'en').format(dateTime);
+                      setState(() {
+                        rowData[item.columnName!] = dateTime.toIso8601String();
+                        newRowData = rowData;
+                      });
+                    }
+                  },
+                  child: Container(
+                    height: 40,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: AppColors.blueDark),
+                    ),
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          date.isNotEmpty ? date : "",
+                          textAlign: TextAlign.center,
+                          style: AppStyles.textStyle14.copyWith(
+                            color: date.isNotEmpty ? Colors.black : Colors.grey,
+                          ),
+                        ),
+                        if (date.isNotEmpty)
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                rowData.remove(item.columnName);
+                                newRowData = rowData;
+                              });
+                            },
+                            child: const Icon(
+                              Icons.close,
+                              color: Colors.blue,
+                              size: 18,
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),*/
+        );
+      }
+
+      /*//Date
+      if (item.insertType == "date" &&
+          item.insertVisable == true &&
+          item.categoryName == categoryName &&
+          item.insertDefult == show) {
         String date;
         if (rowData[item.columnName] != null) {
           date = DateFormat("yyyy-MM-dd", 'en').format(DateTime.parse(rowData[item.columnName].toString()).toLocal());
@@ -487,7 +612,7 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
             ],
           ),
         ));
-      }
+      }*/
 
       //dropdown
       if (item.insertType == "dropdown" &&
@@ -523,6 +648,15 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
           }
         }
         Pages? dropPage = getDropPage(item.pageId);
+        if (!_controllers.containsKey(item.columnName)) {
+          _controllers[item.columnName!] = SingleSelectController<String>(dropValue);
+        }
+        final controller = _controllers[item.columnName]!;
+
+        final dropdownItems = myListDrop!.isEmpty ? [""] : myListDrop.map((e) => e.text ?? '').toList();
+        if (controller.value != null && !dropdownItems.contains(controller.value)) {
+          controller.clear();
+        }
         list.add(Padding(
           padding: const EdgeInsets.symmetric(vertical: 5),
           child: Column(
@@ -579,40 +713,68 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                   ),
                 ],
               ),
-              CustomDropdown<String>.search(
-                hintText: '',
-                initialItem: dropValue,
-                closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                decoration: CustomDropdownDecoration(
-                    headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
-                    closedFillColor: Colors.transparent,
-                    closedBorder: Border.all(color: AppColors.blueDark)),
-                validator: item.isRquired == true
-                    ? (value) {
-                        if (value?.isEmpty ?? true) {
-                          return S.of(context).field_is_required;
-                        } else {
-                          return null;
+              StatefulBuilder(
+                builder: (context, dsetState) => CustomDropdown<String>.search(
+                  hintText: '',
+                  // initialItem: dropValue,
+                  closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                  decoration: CustomDropdownDecoration(
+                      headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
+                      closedFillColor: Colors.transparent,
+                      closedBorder: Border.all(color: AppColors.blueDark)),
+                  validator: item.isRquired == true
+                      ? (value) {
+                          if (value?.isEmpty ?? true) {
+                            return S.of(context).field_is_required;
+                          } else {
+                            return null;
+                          }
                         }
-                      }
-                    : null,
-                items: myListDrop.isEmpty ? [''] : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
-                // onChanged: (value) {
-                //   // newRowData.addAll({item.searchName!.toString(): value});
-                //   // newRowData[item.searchName!.toString()] = value;
-                //   // final selectedItem = myListDrop.firstWhere(
-                //   //   (element) => element.text == value,
-                //   //   orElse: () => ItemDrop(id: "0", text: ''),
-                //   // );
-                //   // newRowData[item.searchName!.toString()] = int.parse(selectedItem.id!);
-                //   ItemDrop ii = myListDrop!.firstWhere((element) => element.text == value);
-                //   newRowData.addAll({item.searchName!.toString(): ii.id});
-                // },
-                onChanged: (value) {
-                  ItemDrop selected = myListDrop.firstWhere((element) => element.text == value);
-                  rowData[item.searchName!] = selected.id;
-                  newRowData = rowData;
-                },
+                      : null,
+                  controller: controller,
+                  headerBuilder: (context, selectedItem, enabled) {
+                    return Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            selectedItem.toString(),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        InkWell(
+                            onTap: () {
+                              dsetState(() {
+                                controller.clear(); // هنا بتمنع الخطأ
+                                newRowData.remove(item.searchName!.toString());
+                              });
+                            },
+                            child: Icon(
+                              Icons.clear,
+                              size: 20,
+                              color: AppColors.blueLight,
+                            ))
+                      ],
+                    );
+                  },
+                  items: dropdownItems,
+                  // items: myListDrop.isEmpty ? [''] : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
+                  // onChanged: (value) {
+                  //   // newRowData.addAll({item.searchName!.toString(): value});
+                  //   // newRowData[item.searchName!.toString()] = value;
+                  //   // final selectedItem = myListDrop.firstWhere(
+                  //   //   (element) => element.text == value,
+                  //   //   orElse: () => ItemDrop(id: "0", text: ''),
+                  //   // );
+                  //   // newRowData[item.searchName!.toString()] = int.parse(selectedItem.id!);
+                  //   ItemDrop ii = myListDrop!.firstWhere((element) => element.text == value);
+                  //   newRowData.addAll({item.searchName!.toString(): ii.id});
+                  // },
+                  onChanged: (value) {
+                    ItemDrop selected = myListDrop.firstWhere((element) => element.text == value);
+                    rowData[item.searchName!] = selected.id;
+                    newRowData = rowData;
+                  },
+                ),
               ),
             ],
           ),

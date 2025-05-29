@@ -21,6 +21,7 @@ import '../../../../../../../core/utils/app_strings.dart';
 import '../../../../../../../core/utils/app_styles.dart';
 import '../../../../../../../core/utils/service_locator.dart';
 import '../../../../../../../core/widgets/custom_button.dart';
+import '../../../../../../../core/widgets/custom_date_picker_field.dart';
 import '../../../../../../../core/widgets/custom_text_form_field.dart';
 import '../../../../../../../core/widgets/custom_text_form_field_search.dart';
 import '../../../../../../../generated/l10n.dart';
@@ -599,7 +600,27 @@ class _EditShipmentOrderState extends State<EditShipmentOrder> {
           date = '';
         }
         list.add(
-          Padding(
+          CustomDatePickerField(
+            title: title,
+            isRequired: item.isRquired ?? false,
+            initialDateString: dataMaster[item.columnName]?.toString(),
+            onDateSelected: (selectedDate) {
+              if (selectedDate != null) {
+                setState(() {
+                  dataMaster[item.columnName!] = selectedDate.toIso8601String();
+                  singleObject = dataMaster;
+                });
+              }
+            },
+            onClear: () {
+              setState(() {
+                dataMaster.remove(item.columnName);
+                singleObject = dataMaster;
+              });
+            },
+          ),
+
+          /*Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -658,7 +679,7 @@ class _EditShipmentOrderState extends State<EditShipmentOrder> {
                 ),
               ],
             ),
-          ),
+          ),*/
         );
       }
 

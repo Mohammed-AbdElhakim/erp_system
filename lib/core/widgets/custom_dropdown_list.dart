@@ -43,12 +43,22 @@ class _CustomDropdownListState<T> extends State<CustomDropdownList<T>> {
 
   @override
   void initState() {
-    _controller = SingleSelectController<T>(widget.initialDropValue);
+    // _controller = SingleSelectController<T>(widget.initialDropValue);
+    // لو القيمة المبدئية مش موجودة في الليست، بنلغيها
+    if (widget.initialDropValue != null && !widget.listData.contains(widget.initialDropValue)) {
+      _controller = SingleSelectController<T>(null); // نعيّنها null عشان نتفادى الكسر
+    } else {
+      _controller = SingleSelectController<T>(widget.initialDropValue);
+    }
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    // تحقق إن قيمة الكنترولر لسه موجودة في الليست
+    if (_controller?.value != null && !widget.listData.contains(_controller!.value)) {
+      _controller?.clear();
+    }
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5),
       child: Column(

@@ -15,6 +15,7 @@ import '../../../../../../core/utils/app_strings.dart';
 import '../../../../../../core/utils/app_styles.dart';
 import '../../../../../../core/utils/service_locator.dart';
 import '../../../../../../core/widgets/custom_button.dart';
+import '../../../../../../core/widgets/custom_date_picker_field.dart';
 import '../../../../../../core/widgets/custom_error_massage.dart';
 import '../../../../../../core/widgets/custom_text_form_field.dart';
 import '../../../../../../generated/l10n.dart';
@@ -35,11 +36,12 @@ import '../build_alert_add_in_dropdown.dart';
 import 'product_process_out_table_add_edit_.dart';
 
 class EditProductProcessOut extends StatefulWidget {
-  const EditProductProcessOut(
-      {super.key, required this.pageData, required this.listKey, this.tapData});
+  const EditProductProcessOut({super.key, required this.pageData, required this.listKey, this.tapData});
+
   final ListTaps? tapData;
   final Pages pageData;
   final List<dynamic> listKey;
+
   // static List<Map<String, dynamic>> tableList = [];
 
   @override
@@ -154,10 +156,8 @@ class _EditProductProcessOutState extends State<EditProductProcessOut> {
               child: BlocBuilder<GetExpensesDetailsCubit, GetExpensesDetailsState>(
                 builder: (context, state) {
                   if (state is GetExpensesDetailsSuccess) {
-                    Map<String, dynamic> dataMaster =
-                        state.expensesDetailsModel.dynamicList![0];
-                    List<Map<String, dynamic>> listDataInTable =
-                        state.expensesDetailsModel.dynamicList!;
+                    Map<String, dynamic> dataMaster = state.expensesDetailsModel.dynamicList![0];
+                    List<Map<String, dynamic>> listDataInTable = state.expensesDetailsModel.dynamicList!;
                     singleObject = dataMaster;
 
                     return BlocBuilder<GetListSetupsCubit, GetListSetupsState>(
@@ -176,9 +176,7 @@ class _EditProductProcessOutState extends State<EditProductProcessOut> {
                                 item.isGeneral != true) {
                               listColumn.add(item);
                               listKey.add(item.columnName);
-                              listHeader.add(lang == AppStrings.enLangKey
-                                  ? item.enColumnLabel!
-                                  : item.arColumnLabel!);
+                              listHeader.add(lang == AppStrings.enLangKey ? item.enColumnLabel! : item.arColumnLabel!);
                             }
                           }
                           List<String> categoryList = category.toSet().toList();
@@ -199,34 +197,22 @@ class _EditProductProcessOutState extends State<EditProductProcessOut> {
                                           ...List.generate(categoryList.length, (index) {
                                             String categoryName = categoryList[index];
                                             List<Widget> widgetList = getMyWidgetList(
-                                                listData: listSetup,
-                                                categoryName: categoryName,
-                                                dataMaster: dataMaster);
+                                                listData: listSetup, categoryName: categoryName, dataMaster: dataMaster);
                                             return widgetList.isNotEmpty
                                                 ? Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(bottom: 16),
+                                                    padding: const EdgeInsets.only(bottom: 16),
                                                     child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment.start,
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
                                                       children: [
                                                         Container(
-                                                          padding:
-                                                              const EdgeInsets.symmetric(
-                                                                  horizontal: 12,
-                                                                  vertical: 8),
+                                                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                                                           decoration: BoxDecoration(
                                                               // color: AppColors.grey.withOpacity(.4),
-                                                              color: AppColors.grey
-                                                                  .withAlpha(102),
-                                                              borderRadius:
-                                                                  BorderRadius.circular(
-                                                                      15)),
+                                                              color: AppColors.grey.withAlpha(102),
+                                                              borderRadius: BorderRadius.circular(15)),
                                                           child: Text(
                                                             categoryName,
-                                                            style: AppStyles.textStyle18
-                                                                .copyWith(
-                                                                    color: Colors.black),
+                                                            style: AppStyles.textStyle18.copyWith(color: Colors.black),
                                                           ),
                                                         ),
                                                         ...widgetList,
@@ -244,8 +230,7 @@ class _EditProductProcessOutState extends State<EditProductProcessOut> {
                                               listKey: listKey,
                                               listHeader: listHeader,
                                               listColumn: listColumn,
-                                              allDropdownModelList:
-                                                  ScreenTable.myAllDropdownModelList,
+                                              allDropdownModelList: ScreenTable.myAllDropdownModelList,
                                               onTapAction: (data) {
                                                 tableList = data;
                                               },
@@ -267,8 +252,7 @@ class _EditProductProcessOutState extends State<EditProductProcessOut> {
                                           noGradient: true,
                                           color: Colors.transparent,
                                           noShadow: true,
-                                          textStyle: AppStyles.textStyle16
-                                              .copyWith(color: Colors.grey),
+                                          textStyle: AppStyles.textStyle16.copyWith(color: Colors.grey),
                                           onTap: () {
                                             Navigator.pop(context);
                                           },
@@ -276,30 +260,24 @@ class _EditProductProcessOutState extends State<EditProductProcessOut> {
                                         const SizedBox(
                                           width: 50,
                                         ),
-                                        BlocConsumer<AddEditExpensesCubit,
-                                            AddEditExpensesState>(
+                                        BlocConsumer<AddEditExpensesCubit, AddEditExpensesState>(
                                           listener: (context, state) {
                                             if (state is AddEditExpensesSuccess) {
-                                              BlocProvider.of<GetTableCubit>(context)
-                                                  .getTable(
-                                                      pageId: widget.pageData.pageId,
-                                                      employee: false,
-                                                      isdesc: widget.pageData.isDesc,
-                                                      limit: 10,
-                                                      offset: 0,
-                                                      orderby: widget.pageData.orderBy,
-                                                      statment: '',
-                                                      selectcolumns: '',
-                                                      departmentName:
-                                                          widget.pageData.departmentName,
-                                                      isDepartment:
-                                                          widget.pageData.isDepartment,
-                                                      authorizationID:
-                                                          widget.pageData.authorizationID,
-                                                      viewEmployeeColumn: widget
-                                                          .pageData.viewEmployeeColumn,
-                                                      numberOfPage: 1,
-                                                      dropdownValueOfLimit: 10);
+                                              BlocProvider.of<GetTableCubit>(context).getTable(
+                                                  pageId: widget.pageData.pageId,
+                                                  employee: false,
+                                                  isdesc: widget.pageData.isDesc,
+                                                  limit: 10,
+                                                  offset: 0,
+                                                  orderby: widget.pageData.orderBy,
+                                                  statment: '',
+                                                  selectcolumns: '',
+                                                  departmentName: widget.pageData.departmentName,
+                                                  isDepartment: widget.pageData.isDepartment,
+                                                  authorizationID: widget.pageData.authorizationID,
+                                                  viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
+                                                  numberOfPage: 1,
+                                                  dropdownValueOfLimit: 10);
                                               Navigator.pop(context);
                                             } else if (state is AddEditExpensesFailure) {
                                               CustomAlertDialog.alertWithButton(
@@ -320,15 +298,10 @@ class _EditProductProcessOutState extends State<EditProductProcessOut> {
                                                   if (formKey.currentState!.validate()) {
                                                     formKey.currentState!.save();
 
-                                                    BlocProvider.of<AddEditExpensesCubit>(
-                                                            context)
-                                                        .edit(
+                                                    BlocProvider.of<AddEditExpensesCubit>(context).edit(
                                                       singleObject: singleObject,
-                                                      tableList: tableList.isEmpty
-                                                          ? listDataInTable
-                                                          : tableList,
-                                                      controllerName:
-                                                          widget.tapData!.controllerName,
+                                                      tableList: tableList.isEmpty ? listDataInTable : tableList,
+                                                      controllerName: widget.tapData!.controllerName,
                                                     );
                                                   }
                                                 },
@@ -376,18 +349,12 @@ class _EditProductProcessOutState extends State<EditProductProcessOut> {
     List<Widget> list = [];
 
     for (var item in listData) {
-      String title =
-          lang == AppStrings.arLangKey ? item.arColumnLabel! : item.enColumnLabel!;
-      bool condition = item.insertVisable == true &&
-          item.cvisable == false &&
-          item.visible == false &&
-          item.isGeneral == true;
+      String title = lang == AppStrings.arLangKey ? item.arColumnLabel! : item.enColumnLabel!;
+      bool condition = item.insertVisable == true && item.cvisable == false && item.visible == false && item.isGeneral == true;
       //text
       if (item.insertType == "text" && item.categoryTitle == categoryName && condition) {
-        TextEditingController controller = TextEditingController(
-            text: dataMaster[item.columnName].toString() == "null"
-                ? ''
-                : dataMaster[item.columnName]);
+        TextEditingController controller =
+            TextEditingController(text: dataMaster[item.columnName].toString() == "null" ? '' : dataMaster[item.columnName]);
         list.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -416,10 +383,8 @@ class _EditProductProcessOutState extends State<EditProductProcessOut> {
                   onSaved: (newValue) {
                     if (newValue!.isNotEmpty) {
                       setState(() {
-                        dataMaster.updateAll((key, value) =>
-                            key == item.columnName!.toString()
-                                ? value = controller.text
-                                : value);
+                        dataMaster
+                            .updateAll((key, value) => key == item.columnName!.toString() ? value = controller.text : value);
                         singleObject = dataMaster;
                       });
                     }
@@ -431,13 +396,9 @@ class _EditProductProcessOutState extends State<EditProductProcessOut> {
         );
       }
       //number
-      if (item.insertType == "number" &&
-          item.categoryTitle == categoryName &&
-          condition) {
+      if (item.insertType == "number" && item.categoryTitle == categoryName && condition) {
         TextEditingController controller = TextEditingController(
-            text: dataMaster[item.columnName].toString() == "null"
-                ? ''
-                : dataMaster[item.columnName].toString());
+            text: dataMaster[item.columnName].toString() == "null" ? '' : dataMaster[item.columnName].toString());
         list.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -466,10 +427,8 @@ class _EditProductProcessOutState extends State<EditProductProcessOut> {
                   onSaved: (newValue) {
                     if (newValue!.isNotEmpty) {
                       setState(() {
-                        dataMaster.updateAll((key, value) =>
-                            key == item.columnName!.toString()
-                                ? value = controller.text
-                                : value);
+                        dataMaster
+                            .updateAll((key, value) => key == item.columnName!.toString() ? value = controller.text : value);
                         singleObject = dataMaster;
                       });
                     }
@@ -484,14 +443,33 @@ class _EditProductProcessOutState extends State<EditProductProcessOut> {
       if (item.insertType == "date" && item.categoryTitle == categoryName && condition) {
         String date;
         if (dataMaster[item.columnName] != null) {
-          date = DateFormat("yyyy-MM-dd", 'en')
-              .format(DateTime.parse(dataMaster[item.columnName].toString()).toLocal());
+          date = DateFormat("yyyy-MM-dd", 'en').format(DateTime.parse(dataMaster[item.columnName].toString()).toLocal());
         } else {
           // date = DateFormat("yyyy-MM-dd", 'en').format(DateTime.now());
           date = '';
         }
         list.add(
-          Padding(
+          CustomDatePickerField(
+            title: title,
+            isRequired: item.isRquired ?? false,
+            initialDateString: dataMaster[item.columnName]?.toString(),
+            onDateSelected: (selectedDate) {
+              if (selectedDate != null) {
+                setState(() {
+                  dataMaster[item.columnName!] = selectedDate.toIso8601String();
+                  singleObject = dataMaster;
+                });
+              }
+            },
+            onClear: () {
+              setState(() {
+                dataMaster.remove(item.columnName);
+                singleObject = dataMaster;
+              });
+            },
+          ),
+
+          /* Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -550,14 +528,12 @@ class _EditProductProcessOutState extends State<EditProductProcessOut> {
                 ),
               ],
             ),
-          ),
+          ),*/
         );
       }
 
       //dropdown
-      if (item.insertType == "dropdown" &&
-          item.categoryTitle == categoryName &&
-          condition) {
+      if (item.insertType == "dropdown" && item.categoryTitle == categoryName && condition) {
         List<ListDrop>? listDrop = [];
         List<ItemDrop>? myListDrop = [];
 
@@ -653,8 +629,7 @@ class _EditProductProcessOutState extends State<EditProductProcessOut> {
                 CustomDropdown<String>.search(
                   hintText: '',
                   initialItem: dropValue,
-                  closedHeaderPadding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                  closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                   decoration: CustomDropdownDecoration(
                       headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
                       closedFillColor: Colors.transparent,
@@ -666,13 +641,9 @@ class _EditProductProcessOutState extends State<EditProductProcessOut> {
                   //     return null;
                   //   }
                   // },
-                  items: myListDrop.isEmpty
-                      ? [""]
-                      : List.generate(
-                          myListDrop.length, (index) => myListDrop![index].text ?? ''),
+                  items: myListDrop.isEmpty ? [""] : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
                   onChanged: (value) {
-                    ItemDrop ii =
-                        myListDrop!.firstWhere((element) => element.text == value);
+                    ItemDrop ii = myListDrop!.firstWhere((element) => element.text == value);
                     singleObject.addAll({item.searchName!.toString(): ii.id});
                   },
                 ),
@@ -682,9 +653,7 @@ class _EditProductProcessOutState extends State<EditProductProcessOut> {
         );
       }
       //checkbox
-      if (item.insertType == "checkbox" &&
-          item.categoryTitle == categoryName &&
-          condition) {
+      if (item.insertType == "checkbox" && item.categoryTitle == categoryName && condition) {
         bool checkboxValue = dataMaster[item.columnName] ?? false;
         list.add(
           StatefulBuilder(
@@ -702,10 +671,7 @@ class _EditProductProcessOutState extends State<EditProductProcessOut> {
                       checkboxValue = !checkboxValue;
                     });
                     csetState(() {
-                      dataMaster.updateAll((key, value) =>
-                          key == item.columnName!.toString()
-                              ? value = checkboxValue
-                              : value);
+                      dataMaster.updateAll((key, value) => key == item.columnName!.toString() ? value = checkboxValue : value);
                       singleObject = dataMaster;
                     });
                   });
@@ -719,8 +685,7 @@ class _EditProductProcessOutState extends State<EditProductProcessOut> {
 
   void getColumnListAndAdd(Pages page) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).post(
         endPoint: "home/getGeneralTable",
@@ -775,8 +740,7 @@ class _EditProductProcessOutState extends State<EditProductProcessOut> {
 
   Future<bool> getPermissions(int? pageId) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPagePermissions?pageId=$pageId",
@@ -794,8 +758,7 @@ class _EditProductProcessOutState extends State<EditProductProcessOut> {
 
   void getDropdownList(int pageId) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       List<dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPageDropDown?pageId=$pageId",

@@ -13,8 +13,10 @@ import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_strings.dart';
 import '../../../../../core/utils/app_styles.dart';
 import '../../../../../core/widgets/custom_button.dart';
+import '../../../../../core/widgets/custom_date_picker_field.dart';
 import '../../../../../core/widgets/custom_loading_widget.dart';
 import '../../../../../core/widgets/custom_text_form_field.dart';
+import '../../../../../core/widgets/custom_time_picker_field.dart';
 import '../../../../../generated/l10n.dart';
 import '../../../../home/presentation/widgets/home_view_body.dart';
 import '../../../data/models/dropdown_model/all_dropdown_model.dart';
@@ -26,8 +28,8 @@ import '../../views/screen_table.dart';
 import 'build_alert_add_in_dropdown.dart';
 
 class BuildAlertAdd extends StatefulWidget {
-  const BuildAlertAdd(
-      {super.key, required this.columnList, required this.pageData});
+  const BuildAlertAdd({super.key, required this.columnList, required this.pageData});
+
   final List<ColumnList> columnList;
   final Pages pageData;
 
@@ -42,6 +44,8 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
   bool isShow = false;
   late List<String> myListCategory;
   late List<AllDropdownModel> myAllDropdownModelList;
+  Map<String, String> selectedDates = {};
+  Map<String, SingleSelectController<String>> _controllers = {};
 
   @override
   void didChangeDependencies() {
@@ -54,6 +58,15 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
     myListCategory = ScreenTable.listCategory;
     myAllDropdownModelList = ScreenTable.myAllDropdownModelList;
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    for (var controller in _controllers.values) {
+      controller.dispose();
+    }
+    _controllers.clear();
+    super.dispose();
   }
 
   @override
@@ -77,34 +90,22 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          if (getMyWidgetList(
-                                  columnList: widget.columnList,
-                                  categoryName: categoryName,
-                                  show: true)
-                              .isNotEmpty)
+                          if (getMyWidgetList(columnList: widget.columnList, categoryName: categoryName, show: true).isNotEmpty)
                             Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 12, vertical: 8),
+                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                                 decoration: BoxDecoration(
                                     // color: AppColors.grey.withOpacity(.4),
                                     color: AppColors.grey.withAlpha(102),
                                     borderRadius: BorderRadius.circular(15)),
                                 child: Text(
                                   categoryName,
-                                  style: AppStyles.textStyle18
-                                      .copyWith(color: Colors.black),
+                                  style: AppStyles.textStyle18.copyWith(color: Colors.black),
                                 )),
-                          ...getMyWidgetList(
-                              columnList: widget.columnList,
-                              categoryName: categoryName,
-                              show: true),
+                          ...getMyWidgetList(columnList: widget.columnList, categoryName: categoryName, show: true),
                           Visibility(
                             visible: isShow,
                             child: Column(
-                              children: getMyWidgetList(
-                                  columnList: widget.columnList,
-                                  categoryName: categoryName,
-                                  show: false),
+                              children: getMyWidgetList(columnList: widget.columnList, categoryName: categoryName, show: false),
                             ),
                           ),
                         ],
@@ -116,9 +117,7 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                           isShow = !isShow;
                         });
                       },
-                      child: Text(!isShow
-                          ? S.of(context).show_more
-                          : S.of(context).show_less),
+                      child: Text(!isShow ? S.of(context).show_more : S.of(context).show_less),
                     ),
                   ],
                 ),
@@ -135,8 +134,7 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                     noGradient: true,
                     color: Colors.transparent,
                     noShadow: true,
-                    textStyle:
-                        AppStyles.textStyle16.copyWith(color: Colors.grey),
+                    textStyle: AppStyles.textStyle16.copyWith(color: Colors.grey),
                     onTap: () {
                       Navigator.pop(context);
                     },
@@ -159,18 +157,14 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                             departmentName: widget.pageData.departmentName,
                             isDepartment: widget.pageData.isDepartment,
                             authorizationID: widget.pageData.authorizationID,
-                            viewEmployeeColumn:
-                                widget.pageData.viewEmployeeColumn,
+                            viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
                             numberOfPage: 1,
                             dropdownValueOfLimit: 10);
                         widget.columnList.clear();
                         Navigator.pop(context);
                       } else if (state is AddEditFailure) {
                         CustomAlertDialog.alertWithButton(
-                            context: context,
-                            type: AlertType.error,
-                            title: S.of(context).error,
-                            desc: state.errorMassage);
+                            context: context, type: AlertType.error, title: S.of(context).error, desc: state.errorMassage);
                       }
                     },
                     builder: (context, state) {
@@ -183,10 +177,8 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                           onTap: () {
                             if (formKey.currentState!.validate()) {
                               formKey.currentState!.save();
-                              BlocProvider.of<AddEditCubit>(context).add(
-                                  controllerName:
-                                      widget.pageData.controllerName,
-                                  body: newRowData);
+                              BlocProvider.of<AddEditCubit>(context)
+                                  .add(controllerName: widget.pageData.controllerName, body: newRowData);
                             }
                           },
                         );
@@ -209,9 +201,7 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
   }) {
     List<Widget> list = [];
     for (var item in columnList) {
-      String title = lang == AppStrings.arLangKey
-          ? item.arColumnLabel!
-          : item.enColumnLabel!;
+      String title = lang == AppStrings.arLangKey ? item.arColumnLabel! : item.enColumnLabel!;
       //text
       if (item.insertType == "text" &&
           item.insertVisable == true &&
@@ -244,8 +234,7 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                   onSaved: (newValue) {
                     if (newValue!.isNotEmpty) {
                       setState(() {
-                        newRowData
-                            .addAll({item.columnName!.toString(): newValue});
+                        newRowData.addAll({item.columnName!.toString(): newValue});
                       });
                     }
                   },
@@ -287,8 +276,7 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                   onSaved: (newValue) {
                     if (newValue!.isNotEmpty) {
                       setState(() {
-                        newRowData
-                            .addAll({item.columnName!.toString(): newValue});
+                        newRowData.addAll({item.columnName!.toString(): newValue});
                       });
                     }
                   },
@@ -299,11 +287,11 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
         );
       }
       //Date
-      if (item.insertType == "date" &&
+      /* if (item.insertType == "date" &&
           item.insertVisable == true &&
           item.categoryName == categoryName &&
           item.insertDefult == show) {
-        String date = '';
+        String date = selectedDates[item.columnName] ?? '';
         list.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -326,6 +314,7 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                 ),
                 StatefulBuilder(
                   builder: (context, dsetState) {
+                    // String date = '';
                     return InkWell(
                       onTap: () async {
                         DateTime? dateTime = await showDatePicker(
@@ -334,31 +323,59 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                           firstDate: DateTime(1980),
                           lastDate: DateTime(2100),
                         );
-                        if (dateTime != null) {
-                          dsetState(() {
-                            date =
-                                DateFormat("yyyy-MM-dd", 'en').format(dateTime);
-                          });
 
-                          dsetState(() {
-                            newRowData.addAll({
-                              item.columnName!.toString(): dateTime.toString()
-                            });
+                        if (dateTime != null) {
+                          String formattedDate = DateFormat("yyyy-MM-dd", 'en').format(dateTime);
+                          setState(() {
+                            selectedDates[item.columnName!] = formattedDate;
+                            newRowData[item.columnName!.toString()] = dateTime.toString();
                           });
                         }
+
+                        // if (dateTime != null) {
+                        //   dsetState(() {
+                        //     date = DateFormat("yyyy-MM-dd", 'en').format(dateTime);
+                        //   });
+                        //
+                        //   dsetState(() {
+                        //     newRowData.addAll({item.columnName!.toString(): dateTime.toString()});
+                        //   });
+                        // }
                       },
                       child: Container(
                           height: 40,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(color: AppColors.blueDark)),
+                              borderRadius: BorderRadius.circular(12), border: Border.all(color: AppColors.blueDark)),
                           alignment: Alignment.center,
                           padding: const EdgeInsets.all(8),
-                          child: Text(
-                            date,
-                            textAlign: TextAlign.center,
-                            style: AppStyles.textStyle14
-                                .copyWith(color: Colors.black),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                date,
+                                textAlign: TextAlign.center,
+                                style: AppStyles.textStyle14.copyWith(color: Colors.black),
+                              ),
+                              if (date.isNotEmpty)
+                                GestureDetector(
+                                  onTap: () {
+                                    print("================");
+                                    dsetState(() {
+                                      selectedDates.remove(item.columnName);
+                                      newRowData.remove(item.columnName);
+                                    });
+                                    // dsetState(() {
+                                    //   date = '';
+                                    //   newRowData.remove(item.columnName!.toString());
+                                    // });
+                                  },
+                                  child: const Icon(
+                                    Icons.close,
+                                    color: Colors.blue,
+                                    size: 18,
+                                  ),
+                                ),
+                            ],
                           )),
                     );
                   },
@@ -366,6 +383,113 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
               ],
             ),
           ),
+        );
+      }*/
+
+      //Date
+      if (item.insertType == "date" &&
+          item.insertVisable == true &&
+          item.categoryName == categoryName &&
+          item.insertDefult == show) {
+        String date = selectedDates[item.columnName] ?? '';
+
+        list.add(
+          CustomDatePickerField(
+            title: title,
+            isRequired: item.isRquired ?? false,
+            initialDateString: date,
+            onDateSelected: (dateTime) {
+              if (dateTime != null) {
+                String formattedDate = DateFormat("yyyy-MM-dd", 'en').format(dateTime);
+                setState(() {
+                  selectedDates[item.columnName!] = formattedDate;
+                  newRowData[item.columnName!.toString()] = dateTime.toString();
+                });
+              }
+            },
+            onClear: () {
+              setState(() {
+                selectedDates.remove(item.columnName);
+                newRowData.remove(item.columnName);
+              });
+            },
+          ),
+
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(vertical: 5),
+          //   child: Column(
+          //     crossAxisAlignment: CrossAxisAlignment.start,
+          //     children: [
+          //       Row(
+          //         children: [
+          //           Text(
+          //             title,
+          //             style: AppStyles.textStyle14.copyWith(color: Colors.grey),
+          //           ),
+          //           if (item.isRquired == true)
+          //             const Icon(
+          //               Icons.star,
+          //               color: Colors.red,
+          //               size: 10,
+          //             )
+          //         ],
+          //       ),
+          //       InkWell(
+          //         onTap: () async {
+          //           DateTime? dateTime = await showDatePicker(
+          //             context: context,
+          //             initialDate: DateTime.now(),
+          //             firstDate: DateTime(1980),
+          //             lastDate: DateTime(2100),
+          //           );
+          //
+          //           if (dateTime != null) {
+          //             String formattedDate = DateFormat("yyyy-MM-dd", 'en').format(dateTime);
+          //             setState(() {
+          //               selectedDates[item.columnName!] = formattedDate;
+          //               newRowData[item.columnName!.toString()] = dateTime.toString();
+          //             });
+          //           }
+          //         },
+          //         child: Container(
+          //           height: 40,
+          //           decoration: BoxDecoration(
+          //             borderRadius: BorderRadius.circular(12),
+          //             border: Border.all(color: AppColors.blueDark),
+          //           ),
+          //           alignment: Alignment.center,
+          //           padding: const EdgeInsets.all(8),
+          //           child: Row(
+          //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //             children: [
+          //               Text(
+          //                 date.isNotEmpty ? date : "",
+          //                 textAlign: TextAlign.center,
+          //                 style: AppStyles.textStyle14.copyWith(
+          //                   color: date.isNotEmpty ? Colors.black : Colors.grey,
+          //                 ),
+          //               ),
+          //               if (date.isNotEmpty)
+          //                 GestureDetector(
+          //                   onTap: () {
+          //                     setState(() {
+          //                       selectedDates.remove(item.columnName);
+          //                       newRowData.remove(item.columnName);
+          //                     });
+          //                   },
+          //                   child: const Icon(
+          //                     Icons.close,
+          //                     color: Colors.blue,
+          //                     size: 18,
+          //                   ),
+          //                 ),
+          //             ],
+          //           ),
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
         );
       }
 
@@ -388,6 +512,17 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
           }
         }
         Pages? dropPage = getDropPage(item.pageId);
+        if (!_controllers.containsKey(item.columnName)) {
+          _controllers[item.columnName!] = SingleSelectController<String>("");
+        }
+        final controller = _controllers[item.columnName]!;
+
+        final dropdownItems = myListDrop!.isEmpty ? [""] : myListDrop.map((e) => e.text ?? '').toList();
+// إذا القيمة الحالية للكنترولر مش موجودة في الليستة، امسحها قبل إنشاء الودجت
+        if (controller.value != null && !dropdownItems.contains(controller.value)) {
+          controller.clear();
+        }
+
         list.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -445,34 +580,56 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                     ),
                   ],
                 ),
-                CustomDropdown<String>.search(
-                  hintText: '',
-                  closedHeaderPadding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                  decoration: CustomDropdownDecoration(
-                      headerStyle:
-                          AppStyles.textStyle16.copyWith(color: Colors.black),
-                      closedFillColor: Colors.transparent,
-                      closedBorder: Border.all(color: AppColors.blueDark)),
-                  validator: item.isRquired == true
-                      ? (value) {
-                          if (value?.isEmpty ?? true) {
-                            return S.of(context).field_is_required;
-                          } else {
-                            return null;
+                StatefulBuilder(
+                  builder: (context, dsetState) => CustomDropdown<String>.search(
+                    hintText: '',
+                    controller: controller,
+                    closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                    decoration: CustomDropdownDecoration(
+                        headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
+                        closedFillColor: Colors.transparent,
+                        closedBorder: Border.all(color: AppColors.blueDark)),
+                    validator: item.isRquired == true
+                        ? (value) {
+                            if (value?.isEmpty ?? true) {
+                              return S.of(context).field_is_required;
+                            } else {
+                              return null;
+                            }
                           }
-                        }
-                      : null,
-                  items: myListDrop!.isEmpty
-                      ? [""]
-                      : List.generate(myListDrop.length,
-                          (index) => myListDrop![index].text ?? ''),
-                  onChanged: (value) {
-                    ItemDrop ii = myListDrop!
-                        .firstWhere((element) => element.text == value);
-                    newRowData.addAll({item.searchName!.toString(): ii.id});
-                  },
-                ),
+                        : null,
+                    headerBuilder: (context, selectedItem, enabled) {
+                      return Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              selectedItem.toString(),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          InkWell(
+                              onTap: () {
+                                dsetState(() {
+                                  controller.clear(); // هنا بتمنع الخطأ
+                                  newRowData.remove(item.searchName!.toString());
+                                });
+                              },
+                              child: Icon(
+                                Icons.clear,
+                                size: 20,
+                                color: AppColors.blueLight,
+                              ))
+                        ],
+                      );
+                    },
+                    items: dropdownItems,
+                    // items: myListDrop!.isEmpty ? [""] : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
+                    onChanged: (value) {
+                      ItemDrop ii = myListDrop!.firstWhere((element) => element.text == value);
+                      newRowData.addAll({item.searchName!.toString(): ii.id});
+                    },
+                  ),
+                )
                 /*SizedBox(
                   // height: 40,
                   child: BlocProvider(
@@ -544,8 +701,7 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                     children: [
                       Text(
                         title,
-                        style:
-                            AppStyles.textStyle14.copyWith(color: Colors.black),
+                        style: AppStyles.textStyle14.copyWith(color: Colors.black),
                       ),
                       if (item.isRquired == true)
                         const Icon(
@@ -560,13 +716,22 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                       checkboxValue = !checkboxValue;
                     });
                     csetState(() {
-                      newRowData
-                          .addAll({item.columnName!.toString(): checkboxValue});
+                      newRowData.addAll({item.columnName!.toString(): checkboxValue});
                     });
                   });
             },
           ),
         );
+      }
+
+      if (item.insertType == "time" &&
+          item.insertVisable == true &&
+          item.categoryName == categoryName &&
+          item.insertDefult == show) {
+        list.add(CustomTimePickerField(
+          title: title,
+          itemIsRequired: item.isRquired!,
+        ));
       }
     }
     return list;
@@ -574,11 +739,8 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
 
   void getColumnListAndAdd(Pages page) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).post(
         endPoint: "home/getGeneralTable",
         data: {
@@ -632,11 +794,8 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
 
   Future<bool> getPermissions(int? pageId) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPagePermissions?pageId=$pageId",
         headers: {
@@ -653,11 +812,8 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
 
   void getDropdownList(int pageId) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       List<dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPageDropDown?pageId=$pageId",
         headers: {

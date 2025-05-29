@@ -226,6 +226,87 @@ class _ProductCardViewBodyState extends State<ProductCardViewBody> {
 
   Widget buildDateWidget(String title, ColumnList itemColumnList, Map<String, dynamic> widgetData) {
     String date = widgetData['value'] != "" ? DateFormat("yyyy-MM-dd", 'en').format(DateTime.parse(widgetData['value'])) : "";
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Text(
+                title,
+                style: AppStyles.textStyle14.copyWith(color: Colors.grey),
+              ),
+              if (itemColumnList.isRquired == true)
+                const Icon(
+                  Icons.star,
+                  color: Colors.red,
+                  size: 10,
+                )
+            ],
+          ),
+          StatefulBuilder(
+            builder: (context, dsetState) {
+              return InkWell(
+                onTap: () async {
+                  DateTime? dateTime = await showDatePicker(
+                    context: context,
+                    initialDate: widgetData['value'] != "" && widgetData['value'] != null
+                        ? DateTime.parse(widgetData['value'])
+                        : DateTime.now(),
+                    firstDate: DateTime(1980),
+                    lastDate: DateTime(2100),
+                  );
+                  if (dateTime != null) {
+                    dsetState(() {
+                      date = DateFormat("yyyy-MM-dd", 'en').format(dateTime);
+                      widgetData['value'] = dateTime.toString();
+                    });
+                  }
+                },
+                child: Container(
+                  height: 40,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: AppColors.blueDark),
+                  ),
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        date.isNotEmpty ? date : '',
+                        style: AppStyles.textStyle14.copyWith(color: Colors.black),
+                      ),
+                      if (date.isNotEmpty)
+                        GestureDetector(
+                          onTap: () {
+                            dsetState(() {
+                              widgetData['value'] = "";
+                              date = "";
+                            });
+                          },
+                          child: const Icon(
+                            Icons.close,
+                            color: Colors.blue,
+                            size: 18,
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  /* Widget buildDateWidget(String title, ColumnList itemColumnList, Map<String, dynamic> widgetData) {
+    String date = widgetData['value'] != "" ? DateFormat("yyyy-MM-dd", 'en').format(DateTime.parse(widgetData['value'])) : "";
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5),
       child: Column(
@@ -281,7 +362,7 @@ class _ProductCardViewBodyState extends State<ProductCardViewBody> {
       ),
     );
   }
-
+*/
   Widget buildDropdownWidget(
     String title,
     ColumnList itemColumnList,

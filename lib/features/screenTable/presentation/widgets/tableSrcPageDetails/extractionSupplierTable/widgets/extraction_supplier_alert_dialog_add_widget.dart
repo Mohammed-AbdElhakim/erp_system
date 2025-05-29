@@ -28,6 +28,7 @@ class ExtractionSupplierAlertDialogAddWidget extends StatefulWidget {
     required this.onTapAdd,
     required this.typeView,
   });
+
   final ListTaps? tapData;
   final List<String> listHeader;
   final List<dynamic> listKey;
@@ -38,12 +39,10 @@ class ExtractionSupplierAlertDialogAddWidget extends StatefulWidget {
   final String typeView;
 
   @override
-  State<ExtractionSupplierAlertDialogAddWidget> createState() =>
-      _ExtractionSupplierAlertDialogAddWidgetState();
+  State<ExtractionSupplierAlertDialogAddWidget> createState() => _ExtractionSupplierAlertDialogAddWidgetState();
 }
 
-class _ExtractionSupplierAlertDialogAddWidgetState
-    extends State<ExtractionSupplierAlertDialogAddWidget> {
+class _ExtractionSupplierAlertDialogAddWidgetState extends State<ExtractionSupplierAlertDialogAddWidget> {
   String? lang;
   GlobalKey<FormState> formKey = GlobalKey();
   Map<String, dynamic> newRowData = {};
@@ -91,24 +90,18 @@ class _ExtractionSupplierAlertDialogAddWidgetState
                       (index) {
                         final widgetData = widgetsData[index];
                         ItemListSetupModel itemColumnList = widgetData.widget;
-                        String title = lang == AppStrings.arLangKey
-                            ? itemColumnList.arColumnLabel!
-                            : itemColumnList.enColumnLabel!;
+                        String title =
+                            lang == AppStrings.arLangKey ? itemColumnList.arColumnLabel! : itemColumnList.enColumnLabel!;
                         if (itemColumnList.insertType == "text") {
-                          return buildTextAndNumberWidget(title, itemColumnList,
-                              widgetData, TextInputType.text);
+                          return buildTextAndNumberWidget(title, itemColumnList, widgetData, TextInputType.text);
                         } else if (itemColumnList.insertType == "number") {
-                          return buildTextAndNumberWidget(title, itemColumnList,
-                              widgetData, TextInputType.number);
+                          return buildTextAndNumberWidget(title, itemColumnList, widgetData, TextInputType.number);
                         } else if (itemColumnList.insertType == "checkbox") {
-                          return buildCheckBoxWidget(
-                              widgetData, title, itemColumnList);
+                          return buildCheckBoxWidget(widgetData, title, itemColumnList);
                         } else if (itemColumnList.insertType == "date") {
-                          return buildDateWidget(
-                              title, itemColumnList, widgetData);
+                          return buildDateWidget(title, itemColumnList, widgetData);
                         } else if (itemColumnList.insertType == "dropdown") {
-                          return buildDropdownWidget(
-                              title, itemColumnList, widgetData);
+                          return buildDropdownWidget(title, itemColumnList, widgetData);
                         } else {
                           return Text("${itemColumnList.insertType}");
                         }
@@ -129,8 +122,7 @@ class _ExtractionSupplierAlertDialogAddWidgetState
                     noGradient: true,
                     color: Colors.transparent,
                     noShadow: true,
-                    textStyle:
-                        AppStyles.textStyle16.copyWith(color: Colors.grey),
+                    textStyle: AppStyles.textStyle16.copyWith(color: Colors.grey),
                     onTap: () {
                       Navigator.pop(context);
                     },
@@ -145,8 +137,7 @@ class _ExtractionSupplierAlertDialogAddWidgetState
                       if (formKey.currentState!.validate()) {
                         formKey.currentState!.save();
                         for (var i in widgetsData) {
-                          newRowData[(i.widget as ItemListSetupModel)
-                              .columnName!] = i.value;
+                          newRowData[(i.widget as ItemListSetupModel).columnName!] = i.value;
                         }
                         widget.onTapAdd(newRowData);
                         // AddViewBody.tableList.add(newRowData);
@@ -164,10 +155,7 @@ class _ExtractionSupplierAlertDialogAddWidgetState
   }
 
   Widget buildTextAndNumberWidget(
-      String title,
-      ItemListSetupModel itemColumnList,
-      WidgetsData widgetData,
-      TextInputType? keyboardType) {
+      String title, ItemListSetupModel itemColumnList, WidgetsData widgetData, TextInputType? keyboardType) {
     return StatefulBuilder(
       builder: (context, tNSetState) {
         return Padding(
@@ -208,7 +196,83 @@ class _ExtractionSupplierAlertDialogAddWidgetState
     );
   }
 
-  Widget buildDateWidget(
+  Widget buildDateWidget(String title, ItemListSetupModel itemColumnList, WidgetsData widgetData) {
+    String date = widgetData.value != "" ? DateFormat("yyyy-MM-dd", 'en').format(DateTime.parse(widgetData.value).toLocal()) : "";
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Text(
+                title,
+                style: AppStyles.textStyle14.copyWith(color: Colors.grey),
+              ),
+              if (itemColumnList.isRquired == true)
+                const Icon(
+                  Icons.star,
+                  color: Colors.red,
+                  size: 10,
+                ),
+            ],
+          ),
+          StatefulBuilder(
+            builder: (context, dsetState) {
+              return InkWell(
+                onTap: () async {
+                  DateTime? dateTime = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(1980),
+                    lastDate: DateTime(2100),
+                  );
+                  if (dateTime != null) {
+                    dsetState(() {
+                      date = DateFormat("yyyy-MM-dd", 'en').format(dateTime);
+                      widgetData.value = dateTime.toString();
+                    });
+                  }
+                },
+                child: Container(
+                  height: 40,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: AppColors.blueDark),
+                  ),
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        date.isNotEmpty ? date : "",
+                        textAlign: TextAlign.center,
+                        style: AppStyles.textStyle14.copyWith(color: Colors.black),
+                      ),
+                      if (date.isNotEmpty)
+                        GestureDetector(
+                          onTap: () {
+                            dsetState(() {
+                              date = '';
+                              widgetData.value = '';
+                            });
+                          },
+                          child: const Icon(Icons.close, color: Colors.blue, size: 18),
+                        ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  /* Widget buildDateWidget(
       String title, ItemListSetupModel itemColumnList, WidgetsData widgetData) {
     String date = widgetData.value != ""
         ? DateFormat("yyyy-MM-dd", 'en')
@@ -270,7 +334,7 @@ class _ExtractionSupplierAlertDialogAddWidgetState
         ],
       ),
     );
-  }
+  }*/
 
   Widget buildDropdownWidget(
     String title,
@@ -324,22 +388,17 @@ class _ExtractionSupplierAlertDialogAddWidgetState
                   child: CustomDropdown<String>.search(
                     hintText: '',
                     initialItem: dropValue,
-                    closedHeaderPadding:
-                        const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                    closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                     decoration: CustomDropdownDecoration(
-                      headerStyle:
-                          AppStyles.textStyle16.copyWith(color: Colors.black),
+                      headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
                       closedFillColor: Colors.transparent,
                       closedBorder: Border.all(color: AppColors.blueDark),
                     ),
-                    items: myListDrop!.isEmpty
-                        ? [""]
-                        : List.generate(myListDrop.length,
-                            (index) => myListDrop![index].text ?? ''),
+                    items:
+                        myListDrop!.isEmpty ? [""] : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
                     onChanged: (value) {
                       dropSetState(() {
-                        ItemDrop ii = myListDrop!
-                            .firstWhere((element) => element.text == value);
+                        ItemDrop ii = myListDrop!.firstWhere((element) => element.text == value);
                         widgetData.value = "";
                         widgetData.value = ii.id;
                       });
@@ -352,8 +411,7 @@ class _ExtractionSupplierAlertDialogAddWidgetState
     );
   }
 
-  StatefulBuilder buildCheckBoxWidget(
-      WidgetsData widgetData, String title, ItemListSetupModel itemColumnList) {
+  StatefulBuilder buildCheckBoxWidget(WidgetsData widgetData, String title, ItemListSetupModel itemColumnList) {
     return StatefulBuilder(
       builder: (context, csetState) {
         return CheckboxListTile(

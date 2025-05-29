@@ -104,24 +104,24 @@ class _AddMachineWorkState extends State<AddMachineWork> {
                             );
                             return widgetList.isNotEmpty
                                 ? Padding(
-                              padding: const EdgeInsets.only(bottom: 16),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                                      decoration: BoxDecoration(
-                                        // color: AppColors.grey.withOpacity(.4),
-                                          color: AppColors.grey.withAlpha(102),
-                                          borderRadius: BorderRadius.circular(15)),
-                                      child: Text(
-                                        categoryName,
-                                        style: AppStyles.textStyle18.copyWith(color: Colors.black),
-                                      )),
-                                  ...widgetList,
-                                ],
-                              ),
-                            )
+                                    padding: const EdgeInsets.only(bottom: 16),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                            decoration: BoxDecoration(
+                                                // color: AppColors.grey.withOpacity(.4),
+                                                color: AppColors.grey.withAlpha(102),
+                                                borderRadius: BorderRadius.circular(15)),
+                                            child: Text(
+                                              categoryName,
+                                              style: AppStyles.textStyle18.copyWith(color: Colors.black),
+                                            )),
+                                        ...widgetList,
+                                      ],
+                                    ),
+                                  )
                                 : const SizedBox();
                           }),
                           StatefulBuilder(
@@ -156,9 +156,7 @@ class _AddMachineWorkState extends State<AddMachineWork> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         CustomButton(
-                          text: S
-                              .of(context)
-                              .cancel,
+                          text: S.of(context).cancel,
                           width: 80,
                           noGradient: true,
                           color: Colors.transparent,
@@ -192,9 +190,7 @@ class _AddMachineWorkState extends State<AddMachineWork> {
                               Navigator.pop(context);
                             } else if (state is AddEditExpensesFailure) {
                               CustomAlertDialog.alertWithButton(
-                                  context: context, type: AlertType.error, title: S
-                                  .of(context)
-                                  .error, desc: state.errorMassage);
+                                  context: context, type: AlertType.error, title: S.of(context).error, desc: state.errorMassage);
                             }
                           },
                           builder: (context, state) {
@@ -202,9 +198,7 @@ class _AddMachineWorkState extends State<AddMachineWork> {
                               return const CustomLoadingWidget();
                             } else {
                               return CustomButton(
-                                text: S
-                                    .of(context)
-                                    .btn_add,
+                                text: S.of(context).btn_add,
                                 width: 80,
                                 onTap: () {
                                   if (formKey.currentState!.validate()) {
@@ -361,6 +355,83 @@ class _AddMachineWorkState extends State<AddMachineWork> {
                         if (dateTime != null) {
                           dsetState(() {
                             date = DateFormat("yyyy-MM-dd", 'en').format(dateTime);
+                            singleObject[item.columnName!.toString()] = dateTime.toString();
+                          });
+                        }
+                      },
+                      child: Container(
+                        height: 40,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: AppColors.blueDark),
+                        ),
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              date.isNotEmpty ? date : "",
+                              textAlign: TextAlign.center,
+                              style: AppStyles.textStyle14.copyWith(color: Colors.black),
+                            ),
+                            if (date.isNotEmpty)
+                              GestureDetector(
+                                onTap: () {
+                                  dsetState(() {
+                                    date = '';
+                                    singleObject.remove(item.columnName!.toString());
+                                  });
+                                },
+                                child: const Icon(Icons.close, color: Colors.blue, size: 18),
+                              ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      }
+
+      /* else if (item.insertType == "date" && item.categoryTitle == categoryName && condition) {
+        String date = '';
+        list.add(
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      title,
+                      style: AppStyles.textStyle14.copyWith(color: Colors.grey),
+                    ),
+                    if (item.isRquired == true)
+                      const Icon(
+                        Icons.star,
+                        color: Colors.red,
+                        size: 10,
+                      )
+                  ],
+                ),
+                StatefulBuilder(
+                  builder: (context, dsetState) {
+                    return InkWell(
+                      onTap: () async {
+                        DateTime? dateTime = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(1980),
+                          lastDate: DateTime(2100),
+                        );
+                        if (dateTime != null) {
+                          dsetState(() {
+                            date = DateFormat("yyyy-MM-dd", 'en').format(dateTime);
                             singleObject.addAll({item.columnName!.toString(): dateTime.toString()});
                           });
                         }
@@ -384,7 +455,7 @@ class _AddMachineWorkState extends State<AddMachineWork> {
           ),
         );
       }
-
+*/
       //dropdown
       else if (item.insertType == "dropdown" && item.categoryTitle == categoryName && condition) {
         List<ListDrop>? listDrop = [];
@@ -438,12 +509,8 @@ class _AddMachineWorkState extends State<AddMachineWork> {
                             CustomAlertDialog.alertWithButton(
                                 context: context,
                                 type: AlertType.error,
-                                title: S
-                                    .of(context)
-                                    .error,
-                                desc: S
-                                    .of(context)
-                                    .massage_no_permission);
+                                title: S.of(context).error,
+                                desc: S.of(context).massage_no_permission);
                           }
                         },
                         child: const Icon(
@@ -563,9 +630,7 @@ class _AddMachineWorkState extends State<AddMachineWork> {
       List<ColumnList>? columnList = screenModel.columnList;
       CustomAlertDialog.alertWithCustomContent(
         context: context,
-        title: S
-            .of(context)
-            .btn_add,
+        title: S.of(context).btn_add,
         isOverlayTapDismiss: false,
         isCloseButton: false,
         content: BuildAlertAddInDropdown(

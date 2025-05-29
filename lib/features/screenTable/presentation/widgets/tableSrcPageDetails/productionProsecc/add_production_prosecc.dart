@@ -31,8 +31,8 @@ import '../build_alert_add_in_dropdown.dart';
 import 'widget/production_prosecc_table_add_edit_.dart';
 
 class AddProductionProsecc extends StatefulWidget {
-  const AddProductionProsecc(
-      {super.key, this.tapData, required this.pageData, required this.listKey});
+  const AddProductionProsecc({super.key, this.tapData, required this.pageData, required this.listKey});
+
   final ListTaps? tapData;
   final Pages pageData;
   final List<dynamic> listKey;
@@ -74,15 +74,10 @@ class _AddProductionProseccState extends State<AddProductionProsecc> {
           List<String> listHeader = [];
           for (var item in state.listSetupModel) {
             category.add(item.categoryTitle ?? "");
-            if (item.insertVisable == true &&
-                item.cvisable == true &&
-                item.visible == true &&
-                item.isGeneral != true) {
+            if (item.insertVisable == true && item.cvisable == true && item.visible == true && item.isGeneral != true) {
               listColumn.add(item);
               listKey.add(item.columnName);
-              listHeader.add(lang == AppStrings.enLangKey
-                  ? item.enColumnLabel!
-                  : item.arColumnLabel!);
+              listHeader.add(lang == AppStrings.enLangKey ? item.enColumnLabel! : item.arColumnLabel!);
             }
           }
           List<String> categoryList = category.toSet().toList();
@@ -110,23 +105,17 @@ class _AddProductionProseccState extends State<AddProductionProsecc> {
                                 ? Padding(
                                     padding: const EdgeInsets.only(bottom: 16),
                                     child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Container(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 12, vertical: 8),
+                                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                                             decoration: BoxDecoration(
                                                 // color: AppColors.grey.withOpacity(.4),
-                                                color: AppColors.grey
-                                                    .withAlpha(102),
-                                                borderRadius:
-                                                    BorderRadius.circular(15)),
+                                                color: AppColors.grey.withAlpha(102),
+                                                borderRadius: BorderRadius.circular(15)),
                                             child: Text(
                                               categoryName,
-                                              style: AppStyles.textStyle18
-                                                  .copyWith(
-                                                      color: Colors.black),
+                                              style: AppStyles.textStyle18.copyWith(color: Colors.black),
                                             )),
                                         ...widgetList,
                                       ],
@@ -135,8 +124,7 @@ class _AddProductionProseccState extends State<AddProductionProsecc> {
                                 : const SizedBox();
                           }),
                           Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 12, vertical: 8),
+                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                               margin: const EdgeInsets.symmetric(vertical: 8),
                               decoration: BoxDecoration(
                                   // color: AppColors.grey.withOpacity(.4),
@@ -144,8 +132,7 @@ class _AddProductionProseccState extends State<AddProductionProsecc> {
                                   borderRadius: BorderRadius.circular(15)),
                               child: Text(
                                 "المواد المصنعة",
-                                style: AppStyles.textStyle18
-                                    .copyWith(color: Colors.black),
+                                style: AppStyles.textStyle18.copyWith(color: Colors.black),
                               )),
                           StatefulBuilder(
                             builder: (context, ssetState) {
@@ -166,16 +153,14 @@ class _AddProductionProseccState extends State<AddProductionProsecc> {
                                   listKey: listKey,
                                   listHeader: listHeader,
                                   listColumn: listColumn,
-                                  allDropdownModelList:
-                                      ScreenTable.myAllDropdownModelList,
+                                  allDropdownModelList: ScreenTable.myAllDropdownModelList,
                                   typeView: "Add",
                                 ),
                               );
                             },
                           ),
                           Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 12, vertical: 8),
+                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                               margin: const EdgeInsets.symmetric(vertical: 8),
                               decoration: BoxDecoration(
                                   // color: AppColors.grey.withOpacity(.4),
@@ -183,8 +168,7 @@ class _AddProductionProseccState extends State<AddProductionProsecc> {
                                   borderRadius: BorderRadius.circular(15)),
                               child: Text(
                                 "المواد الخام",
-                                style: AppStyles.textStyle18
-                                    .copyWith(color: Colors.black),
+                                style: AppStyles.textStyle18.copyWith(color: Colors.black),
                               )),
                           StatefulBuilder(
                             builder: (context, ssetState) {
@@ -205,8 +189,7 @@ class _AddProductionProseccState extends State<AddProductionProsecc> {
                                   listKey: listKey,
                                   listHeader: listHeader,
                                   listColumn: listColumn,
-                                  allDropdownModelList:
-                                      ScreenTable.myAllDropdownModelList,
+                                  allDropdownModelList: ScreenTable.myAllDropdownModelList,
                                   typeView: "Add",
                                 ),
                               );
@@ -227,8 +210,7 @@ class _AddProductionProseccState extends State<AddProductionProsecc> {
                           noGradient: true,
                           color: Colors.transparent,
                           noShadow: true,
-                          textStyle: AppStyles.textStyle16
-                              .copyWith(color: Colors.grey),
+                          textStyle: AppStyles.textStyle16.copyWith(color: Colors.grey),
                           onTap: () {
                             Navigator.pop(context);
                           },
@@ -236,8 +218,7 @@ class _AddProductionProseccState extends State<AddProductionProsecc> {
                         const SizedBox(
                           width: 50,
                         ),
-                        BlocConsumer<AddEditExpensesCubit,
-                            AddEditExpensesState>(
+                        BlocConsumer<AddEditExpensesCubit, AddEditExpensesState>(
                           listener: (context, state) {
                             if (state is AddEditExpensesSuccess) {
                               BlocProvider.of<GetTableCubit>(context).getTable(
@@ -249,22 +230,16 @@ class _AddProductionProseccState extends State<AddProductionProsecc> {
                                   orderby: widget.pageData.orderBy,
                                   statment: '',
                                   selectcolumns: '',
-                                  departmentName:
-                                      widget.pageData.departmentName,
+                                  departmentName: widget.pageData.departmentName,
                                   isDepartment: widget.pageData.isDepartment,
-                                  authorizationID:
-                                      widget.pageData.authorizationID,
-                                  viewEmployeeColumn:
-                                      widget.pageData.viewEmployeeColumn,
+                                  authorizationID: widget.pageData.authorizationID,
+                                  viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
                                   numberOfPage: 1,
                                   dropdownValueOfLimit: 10);
                               Navigator.pop(context);
                             } else if (state is AddEditExpensesFailure) {
                               CustomAlertDialog.alertWithButton(
-                                  context: context,
-                                  type: AlertType.error,
-                                  title: S.of(context).error,
-                                  desc: state.errorMassage);
+                                  context: context, type: AlertType.error, title: S.of(context).error, desc: state.errorMassage);
                             }
                           },
                           builder: (context, state) {
@@ -278,13 +253,10 @@ class _AddProductionProseccState extends State<AddProductionProsecc> {
                                   if (formKey.currentState!.validate()) {
                                     formKey.currentState!.save();
 
-                                    BlocProvider.of<AddEditExpensesCubit>(
-                                            context)
-                                        .add(
+                                    BlocProvider.of<AddEditExpensesCubit>(context).add(
                                       singleObject: singleObject,
                                       tableList: [...tableList1, ...tableList2],
-                                      controllerName:
-                                          widget.tapData!.controllerName,
+                                      controllerName: widget.tapData!.controllerName,
                                     );
                                   }
                                 },
@@ -316,17 +288,10 @@ class _AddProductionProseccState extends State<AddProductionProsecc> {
     List<Widget> list = [];
 
     for (var item in listData) {
-      String title = lang == AppStrings.arLangKey
-          ? item.arColumnLabel!
-          : item.enColumnLabel!;
-      bool condition = item.insertVisable == true &&
-          item.cvisable == false &&
-          item.visible == false &&
-          item.isGeneral == true;
+      String title = lang == AppStrings.arLangKey ? item.arColumnLabel! : item.enColumnLabel!;
+      bool condition = item.insertVisable == true && item.cvisable == false && item.visible == false && item.isGeneral == true;
       //text
-      if (item.insertType == "text" &&
-          item.categoryTitle == categoryName &&
-          condition) {
+      if (item.insertType == "text" && item.categoryTitle == categoryName && condition) {
         list.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -354,8 +319,7 @@ class _AddProductionProseccState extends State<AddProductionProsecc> {
                   onSaved: (newValue) {
                     if (newValue!.isNotEmpty) {
                       setState(() {
-                        singleObject
-                            .addAll({item.columnName!.toString(): newValue});
+                        singleObject.addAll({item.columnName!.toString(): newValue});
                       });
                     }
                   },
@@ -366,9 +330,7 @@ class _AddProductionProseccState extends State<AddProductionProsecc> {
         );
       }
       //number
-      if (item.insertType == "number" &&
-          item.categoryTitle == categoryName &&
-          condition) {
+      if (item.insertType == "number" && item.categoryTitle == categoryName && condition) {
         list.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -396,8 +358,7 @@ class _AddProductionProseccState extends State<AddProductionProsecc> {
                   onSaved: (newValue) {
                     if (newValue!.isNotEmpty) {
                       setState(() {
-                        singleObject
-                            .addAll({item.columnName!.toString(): newValue});
+                        singleObject.addAll({item.columnName!.toString(): newValue});
                       });
                     }
                   },
@@ -408,7 +369,84 @@ class _AddProductionProseccState extends State<AddProductionProsecc> {
         );
       }
       //Date
-      if (item.insertType == "date" &&
+      if (item.insertType == "date" && item.categoryTitle == categoryName && condition) {
+        String date = '';
+        list.add(
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      title,
+                      style: AppStyles.textStyle14.copyWith(color: Colors.grey),
+                    ),
+                    if (item.isRquired == true)
+                      const Icon(
+                        Icons.star,
+                        color: Colors.red,
+                        size: 10,
+                      )
+                  ],
+                ),
+                StatefulBuilder(
+                  builder: (context, dsetState) {
+                    return InkWell(
+                      onTap: () async {
+                        DateTime? dateTime = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(1980),
+                          lastDate: DateTime(2100),
+                        );
+                        if (dateTime != null) {
+                          dsetState(() {
+                            date = DateFormat("yyyy-MM-dd", 'en').format(dateTime);
+                            singleObject[item.columnName!.toString()] = dateTime.toString();
+                          });
+                        }
+                      },
+                      child: Container(
+                        height: 40,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: AppColors.blueDark),
+                        ),
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              date.isNotEmpty ? date : "",
+                              textAlign: TextAlign.center,
+                              style: AppStyles.textStyle14.copyWith(color: Colors.black),
+                            ),
+                            if (date.isNotEmpty)
+                              GestureDetector(
+                                onTap: () {
+                                  dsetState(() {
+                                    date = '';
+                                    singleObject.remove(item.columnName!.toString());
+                                  });
+                                },
+                                child: const Icon(Icons.close, color: Colors.blue, size: 18),
+                              ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      }
+
+      /*if (item.insertType == "date" &&
           item.categoryTitle == categoryName &&
           condition) {
         String date = '';
@@ -475,12 +513,10 @@ class _AddProductionProseccState extends State<AddProductionProsecc> {
             ),
           ),
         );
-      }
+      }*/
 
       //dropdown
-      if (item.insertType == "dropdown" &&
-          item.categoryTitle == categoryName &&
-          condition) {
+      if (item.insertType == "dropdown" && item.categoryTitle == categoryName && condition) {
         List<ListDrop>? listDrop = [];
         List<ItemDrop>? myListDrop = [];
 
@@ -560,11 +596,9 @@ class _AddProductionProseccState extends State<AddProductionProsecc> {
                 ),
                 CustomDropdown<String>.search(
                   hintText: '',
-                  closedHeaderPadding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                  closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                   decoration: CustomDropdownDecoration(
-                      headerStyle:
-                          AppStyles.textStyle16.copyWith(color: Colors.black),
+                      headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
                       closedFillColor: Colors.transparent,
                       closedBorder: Border.all(color: AppColors.blueDark)),
                   // validator: (value) {
@@ -574,13 +608,9 @@ class _AddProductionProseccState extends State<AddProductionProsecc> {
                   //     return null;
                   //   }
                   // },
-                  items: myListDrop!.isEmpty
-                      ? [""]
-                      : List.generate(myListDrop.length,
-                          (index) => myListDrop![index].text ?? ''),
+                  items: myListDrop!.isEmpty ? [""] : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
                   onChanged: (value) {
-                    ItemDrop ii = myListDrop!
-                        .firstWhere((element) => element.text == value);
+                    ItemDrop ii = myListDrop!.firstWhere((element) => element.text == value);
                     singleObject.addAll({item.searchName!.toString(): ii.id});
                   },
                 ),
@@ -590,9 +620,7 @@ class _AddProductionProseccState extends State<AddProductionProsecc> {
         );
       }
       //checkbox
-      if (item.insertType == "checkbox" &&
-          item.categoryTitle == categoryName &&
-          condition) {
+      if (item.insertType == "checkbox" && item.categoryTitle == categoryName && condition) {
         bool checkboxValue = false;
         list.add(
           StatefulBuilder(
@@ -605,8 +633,7 @@ class _AddProductionProseccState extends State<AddProductionProsecc> {
                     children: [
                       Text(
                         title,
-                        style:
-                            AppStyles.textStyle14.copyWith(color: Colors.black),
+                        style: AppStyles.textStyle14.copyWith(color: Colors.black),
                       ),
                       if (item.isRquired == true)
                         const Icon(
@@ -621,8 +648,7 @@ class _AddProductionProseccState extends State<AddProductionProsecc> {
                       checkboxValue = !checkboxValue;
                     });
                     csetState(() {
-                      singleObject
-                          .addAll({item.columnName!.toString(): checkboxValue});
+                      singleObject.addAll({item.columnName!.toString(): checkboxValue});
                     });
                   });
             },
@@ -644,11 +670,8 @@ class _AddProductionProseccState extends State<AddProductionProsecc> {
 
   Future<bool> getPermissions(int? pageId) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPagePermissions?pageId=$pageId",
         headers: {
@@ -665,11 +688,8 @@ class _AddProductionProseccState extends State<AddProductionProsecc> {
 
   void getColumnListAndAdd(Pages page) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).post(
         endPoint: "home/getGeneralTable",
         data: {
@@ -714,11 +734,8 @@ class _AddProductionProseccState extends State<AddProductionProsecc> {
 
   void getDropdownList(int pageId) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       List<dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPageDropDown?pageId=$pageId",
         headers: {

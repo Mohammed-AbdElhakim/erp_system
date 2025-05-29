@@ -12,6 +12,7 @@ import '../../../../../../../core/utils/app_colors.dart';
 import '../../../../../../../core/utils/app_strings.dart';
 import '../../../../../../../core/utils/app_styles.dart';
 import '../../../../../../../core/widgets/custom_button.dart';
+import '../../../../../../../core/widgets/custom_date_picker_field.dart';
 import '../../../../../../../core/widgets/custom_text_form_field.dart';
 import '../../../../../../../generated/l10n.dart';
 import '../../../../../../home/presentation/widgets/home_view_body.dart';
@@ -35,6 +36,7 @@ class ProductionProseccAlertDialogAddWidget extends StatefulWidget {
     this.tapData,
     required this.onTapAdd,
   });
+
   final ListTaps? tapData;
   final List<String> listHeader;
   final List<dynamic> listKey;
@@ -44,16 +46,15 @@ class ProductionProseccAlertDialogAddWidget extends StatefulWidget {
   final OnTapAdd<Map<String, dynamic>> onTapAdd;
 
   @override
-  State<ProductionProseccAlertDialogAddWidget> createState() =>
-      _ProductionProseccAlertDialogAddWidgetState();
+  State<ProductionProseccAlertDialogAddWidget> createState() => _ProductionProseccAlertDialogAddWidgetState();
 }
 
-class _ProductionProseccAlertDialogAddWidgetState
-    extends State<ProductionProseccAlertDialogAddWidget> {
+class _ProductionProseccAlertDialogAddWidgetState extends State<ProductionProseccAlertDialogAddWidget> {
   String? lang;
   GlobalKey<FormState> formKey = GlobalKey();
   Map<String, dynamic> newRowData = {};
   late List<AllDropdownModel> myAllDropdownModelList;
+  Map<String, String> selectedDates = {};
 
   @override
   void didChangeDependencies() {
@@ -84,8 +85,7 @@ class _ProductionProseccAlertDialogAddWidgetState
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ...getMyWidgetList(
-                        columnList: widget.listColumn, show: true),
+                    ...getMyWidgetList(columnList: widget.listColumn, show: true),
                   ],
                 ),
               ),
@@ -101,8 +101,7 @@ class _ProductionProseccAlertDialogAddWidgetState
                     noGradient: true,
                     color: Colors.transparent,
                     noShadow: true,
-                    textStyle:
-                        AppStyles.textStyle16.copyWith(color: Colors.grey),
+                    textStyle: AppStyles.textStyle16.copyWith(color: Colors.grey),
                     onTap: () {
                       Navigator.pop(context);
                     },
@@ -137,9 +136,7 @@ class _ProductionProseccAlertDialogAddWidgetState
   }) {
     List<Widget> list = [];
     for (var item in columnList) {
-      String title = lang == AppStrings.arLangKey
-          ? item.arColumnLabel!
-          : item.enColumnLabel!;
+      String title = lang == AppStrings.arLangKey ? item.arColumnLabel! : item.enColumnLabel!;
       //text
       if (item.insertType == "text") {
         list.add(
@@ -169,8 +166,7 @@ class _ProductionProseccAlertDialogAddWidgetState
                   onSaved: (newValue) {
                     if (newValue!.isNotEmpty) {
                       setState(() {
-                        newRowData
-                            .addAll({item.columnName!.toString(): newValue});
+                        newRowData.addAll({item.columnName!.toString(): newValue});
                       });
                     }
                   },
@@ -210,13 +206,9 @@ class _ProductionProseccAlertDialogAddWidgetState
                     // if (newValue!.isNotEmpty) {
                     setState(() {
                       if (item.columnName == "PQuntity") {
-                        newRowData.addAll({
-                          item.columnName!.toString():
-                              newValue!.isEmpty ? "1" : newValue
-                        });
+                        newRowData.addAll({item.columnName!.toString(): newValue!.isEmpty ? "1" : newValue});
                       } else {
-                        newRowData
-                            .addAll({item.columnName!.toString(): newValue});
+                        newRowData.addAll({item.columnName!.toString(): newValue});
                       }
                     });
                     // }
@@ -229,9 +221,29 @@ class _ProductionProseccAlertDialogAddWidgetState
       }
       //Date
       if (item.insertType == "date") {
-        String date = '';
+        String date = selectedDates[item.columnName] ?? '';
         list.add(
-          Padding(
+          CustomDatePickerField(
+            title: title,
+            isRequired: item.isRquired ?? false,
+            initialDateString: selectedDates[item.columnName],
+            onDateSelected: (selectedDate) {
+              if (selectedDate != null) {
+                setState(() {
+                  selectedDates[item.columnName!] = selectedDate.toIso8601String();
+                  newRowData[item.columnName!] = selectedDate.toString();
+                });
+              }
+            },
+            onClear: () {
+              setState(() {
+                selectedDates.remove(item.columnName);
+                newRowData.remove(item.columnName);
+              });
+            },
+          ),
+
+          /*Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -291,7 +303,7 @@ class _ProductionProseccAlertDialogAddWidgetState
                 ),
               ],
             ),
-          ),
+          ),*/
         );
       }
 
@@ -376,20 +388,14 @@ class _ProductionProseccAlertDialogAddWidgetState
                 ),
                 CustomDropdown<String>.search(
                   hintText: '',
-                  closedHeaderPadding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                  closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                   decoration: CustomDropdownDecoration(
-                      headerStyle:
-                          AppStyles.textStyle16.copyWith(color: Colors.black),
+                      headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
                       closedFillColor: Colors.transparent,
                       closedBorder: Border.all(color: AppColors.blueDark)),
-                  items: myListDrop!.isEmpty
-                      ? [""]
-                      : List.generate(myListDrop.length,
-                          (index) => myListDrop![index].text ?? ''),
+                  items: myListDrop!.isEmpty ? [""] : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
                   onChanged: (value) {
-                    ItemDrop ii = myListDrop!
-                        .firstWhere((element) => element.text == value);
+                    ItemDrop ii = myListDrop!.firstWhere((element) => element.text == value);
                     newRowData.addAll({item.searchName!.toString(): ii.id});
                   },
                 ),
@@ -412,8 +418,7 @@ class _ProductionProseccAlertDialogAddWidgetState
                     children: [
                       Text(
                         title,
-                        style:
-                            AppStyles.textStyle14.copyWith(color: Colors.black),
+                        style: AppStyles.textStyle14.copyWith(color: Colors.black),
                       ),
                       if (item.isRquired == true)
                         const Icon(
@@ -428,8 +433,7 @@ class _ProductionProseccAlertDialogAddWidgetState
                       checkboxValue = !checkboxValue;
                     });
                     csetState(() {
-                      newRowData
-                          .addAll({item.columnName!.toString(): checkboxValue});
+                      newRowData.addAll({item.columnName!.toString(): checkboxValue});
                     });
                   });
             },
@@ -442,11 +446,8 @@ class _ProductionProseccAlertDialogAddWidgetState
 
   void getColumnListAndAdd(Pages page) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).post(
         endPoint: "home/getGeneralTable",
         data: {
@@ -500,11 +501,8 @@ class _ProductionProseccAlertDialogAddWidgetState
 
   Future<bool> getPermissions(int? pageId) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPagePermissions?pageId=$pageId",
         headers: {
@@ -521,11 +519,8 @@ class _ProductionProseccAlertDialogAddWidgetState
 
   void getDropdownList(int pageId) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       List<dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPageDropDown?pageId=$pageId",
         headers: {

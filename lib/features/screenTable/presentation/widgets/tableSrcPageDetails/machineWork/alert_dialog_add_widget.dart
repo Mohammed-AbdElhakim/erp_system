@@ -289,6 +289,89 @@ class _AlertDialogAddWidgetState extends State<AlertDialogAddWidget> {
                           border: Border.all(color: AppColors.blueDark),
                         ),
                         alignment: Alignment.center,
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              fieldValues[item.columnName] != null && fieldValues[item.columnName]!.isNotEmpty
+                                  ? fieldValues[item.columnName]!
+                                  : "",
+                              textAlign: TextAlign.center,
+                              style: AppStyles.textStyle14.copyWith(color: Colors.black),
+                            ),
+                            if (fieldValues[item.columnName] != null && fieldValues[item.columnName]!.isNotEmpty)
+                              GestureDetector(
+                                onTap: () {
+                                  dsetState(() {
+                                    fieldValues[item.columnName!] = '';
+                                  });
+                                  setState(() {
+                                    newRowData.remove(item.columnName!);
+                                  });
+                                },
+                                child: const Icon(Icons.close, color: Colors.blue, size: 18),
+                              ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      }
+
+      /*else if (item.insertType == "date") {
+        list.add(
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      title,
+                      style: AppStyles.textStyle14.copyWith(color: Colors.grey),
+                    ),
+                    if (item.isRquired == true)
+                      const Icon(
+                        Icons.star,
+                        color: Colors.red,
+                        size: 10,
+                      )
+                  ],
+                ),
+                StatefulBuilder(
+                  builder: (context, dsetState) {
+                    return InkWell(
+                      onTap: () async {
+                        DateTime? dateTime = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(1980),
+                          lastDate: DateTime(2100),
+                        );
+                        if (dateTime != null) {
+                          String formattedDate = DateFormat("yyyy-MM-dd", 'en').format(dateTime);
+                          dsetState(() {
+                            fieldValues[item.columnName!] = formattedDate;
+                          });
+                          setState(() {
+                            newRowData[item.columnName!] = dateTime.toString();
+                          });
+                        }
+                      },
+                      child: Container(
+                        height: 40,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: AppColors.blueDark),
+                        ),
+                        alignment: Alignment.center,
                         padding: const EdgeInsets.all(8),
                         child: Text(
                           fieldValues[item.columnName] ?? '',
@@ -303,7 +386,7 @@ class _AlertDialogAddWidgetState extends State<AlertDialogAddWidget> {
             ),
           ),
         );
-      }
+      }*/
 
       // Dropdown Field
       else if (item.insertType == "dropdown") {

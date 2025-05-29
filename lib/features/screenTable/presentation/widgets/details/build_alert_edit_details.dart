@@ -14,6 +14,7 @@ import '../../../../../core/utils/app_strings.dart';
 import '../../../../../core/utils/app_styles.dart';
 import '../../../../../core/utils/service_locator.dart';
 import '../../../../../core/widgets/custom_button.dart';
+import '../../../../../core/widgets/custom_date_picker_field.dart';
 import '../../../../../core/widgets/custom_error_massage.dart';
 import '../../../../../core/widgets/custom_loading_widget.dart';
 import '../../../../../core/widgets/custom_text_form_field.dart';
@@ -40,6 +41,7 @@ class BuildAlertEditDetails extends StatefulWidget {
       required this.tap,
       required this.mainId,
       required this.onTapEdit});
+
   final List<ColumnList> columnList;
   final Pages pageData;
   final ListTaps tap;
@@ -80,8 +82,7 @@ class _BuildAlertEditDetailsState extends State<BuildAlertEditDetails> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => GetByIdCubit(getIt.get<ScreenRepoImpl>())
-        ..getById(id: id, controllerName: widget.tap.controllerName),
+      create: (context) => GetByIdCubit(getIt.get<ScreenRepoImpl>())..getById(id: id, controllerName: widget.tap.controllerName),
       child: BlocBuilder<GetByIdCubit, GetByIdState>(
         builder: (context, state) {
           if (state is GetByIdSuccess) {
@@ -111,18 +112,14 @@ class _BuildAlertEditDetailsState extends State<BuildAlertEditDetails> {
                                           rowData: state.valueGetById)
                                       .isNotEmpty)
                                     Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 12, vertical: 8),
+                                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                                         decoration: BoxDecoration(
                                             // color: AppColors.grey.withOpacity(.4),
-                                            color:
-                                                AppColors.grey.withAlpha(102),
-                                            borderRadius:
-                                                BorderRadius.circular(15)),
+                                            color: AppColors.grey.withAlpha(102),
+                                            borderRadius: BorderRadius.circular(15)),
                                         child: Text(
                                           categoryName,
-                                          style: AppStyles.textStyle18
-                                              .copyWith(color: Colors.black),
+                                          style: AppStyles.textStyle18.copyWith(color: Colors.black),
                                         )),
                                   ...getMyWidgetList(
                                       columnList: widget.columnList,
@@ -144,9 +141,7 @@ class _BuildAlertEditDetailsState extends State<BuildAlertEditDetails> {
                                   isShow = !isShow;
                                 });
                               },
-                              child: Text(!isShow
-                                  ? S.of(context).show_more
-                                  : S.of(context).show_less),
+                              child: Text(!isShow ? S.of(context).show_more : S.of(context).show_less),
                             ),
                           ],
                         ),
@@ -164,8 +159,7 @@ class _BuildAlertEditDetailsState extends State<BuildAlertEditDetails> {
                             noGradient: true,
                             color: Colors.transparent,
                             noShadow: true,
-                            textStyle: AppStyles.textStyle16
-                                .copyWith(color: Colors.grey),
+                            textStyle: AppStyles.textStyle16.copyWith(color: Colors.grey),
                             onTap: () {
                               TapDetailsWidgetBody.rowData = [];
                               Navigator.pop(context);
@@ -231,18 +225,14 @@ class _BuildAlertEditDetailsState extends State<BuildAlertEditDetails> {
     // List<Widget> listWidgets = [];
     List<Widget> list = [];
     for (var item in columnList) {
-      String title = lang == AppStrings.arLangKey
-          ? item.arColumnLabel!
-          : item.enColumnLabel!;
+      String title = lang == AppStrings.arLangKey ? item.arColumnLabel! : item.enColumnLabel!;
       //text
       if (item.insertType == "text" &&
           item.insertVisable == true &&
           item.categoryName == categoryName &&
           item.insertDefult == show) {
-        TextEditingController controller = TextEditingController(
-            text: rowData[item.columnName].toString() == "null"
-                ? ''
-                : rowData[item.columnName]);
+        TextEditingController controller =
+            TextEditingController(text: rowData[item.columnName].toString() == "null" ? '' : rowData[item.columnName]);
         list.add(Padding(
           padding: const EdgeInsets.symmetric(vertical: 5),
           child: Column(
@@ -270,10 +260,7 @@ class _BuildAlertEditDetailsState extends State<BuildAlertEditDetails> {
                 onSaved: (newValue) {
                   if (newValue!.isNotEmpty) {
                     setState(() {
-                      rowData.updateAll((key, value) =>
-                          key == item.columnName!.toString()
-                              ? value = controller.text
-                              : value);
+                      rowData.updateAll((key, value) => key == item.columnName!.toString() ? value = controller.text : value);
                       newRowData = rowData;
                     });
                   }
@@ -288,10 +275,8 @@ class _BuildAlertEditDetailsState extends State<BuildAlertEditDetails> {
           item.insertVisable == true &&
           item.categoryName == categoryName &&
           item.insertDefult == show) {
-        TextEditingController controller = TextEditingController(
-            text: rowData[item.columnName].toString() == "null"
-                ? ''
-                : rowData[item.columnName].toString());
+        TextEditingController controller =
+            TextEditingController(text: rowData[item.columnName].toString() == "null" ? '' : rowData[item.columnName].toString());
 
         list.add(Padding(
           padding: const EdgeInsets.symmetric(vertical: 5),
@@ -320,10 +305,7 @@ class _BuildAlertEditDetailsState extends State<BuildAlertEditDetails> {
                 onSaved: (newValue) {
                   if (newValue!.isNotEmpty) {
                     setState(() {
-                      rowData.updateAll((key, value) =>
-                          key == item.columnName!.toString()
-                              ? value = controller.text
-                              : value);
+                      rowData.updateAll((key, value) => key == item.columnName!.toString() ? value = controller.text : value);
                       newRowData = rowData;
                     });
                   }
@@ -340,14 +322,34 @@ class _BuildAlertEditDetailsState extends State<BuildAlertEditDetails> {
           item.insertDefult == show) {
         String date;
         if (rowData[item.columnName] != null) {
-          date = DateFormat("yyyy-MM-dd", 'en').format(
-              DateTime.parse(rowData[item.columnName].toString()).toLocal());
+          date = DateFormat("yyyy-MM-dd", 'en').format(DateTime.parse(rowData[item.columnName].toString()).toLocal());
         } else {
           // date = DateFormat("yyyy-MM-dd", 'en').format(DateTime.now());
           date = '';
         }
 
-        list.add(Padding(
+        list.add(
+          CustomDatePickerField(
+            title: title,
+            isRequired: item.isRquired ?? false,
+            initialDateString: rowData[item.columnName]?.toString(),
+            onDateSelected: (selectedDate) {
+              if (selectedDate != null) {
+                setState(() {
+                  rowData[item.columnName!] = selectedDate.toIso8601String();
+                  newRowData = rowData;
+                });
+              }
+            },
+            onClear: () {
+              setState(() {
+                rowData.remove(item.columnName);
+                newRowData = rowData;
+              });
+            },
+          ),
+
+          /*Padding(
           padding: const EdgeInsets.symmetric(vertical: 5),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -410,7 +412,8 @@ class _BuildAlertEditDetailsState extends State<BuildAlertEditDetails> {
               )
             ],
           ),
-        ));
+        )*/
+        );
       }
       //dropdown
       if (item.insertType == "dropdown" &&
@@ -501,11 +504,9 @@ class _BuildAlertEditDetailsState extends State<BuildAlertEditDetails> {
               CustomDropdown<String>.search(
                 hintText: '',
                 initialItem: dropValue,
-                closedHeaderPadding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                 decoration: CustomDropdownDecoration(
-                    headerStyle:
-                        AppStyles.textStyle16.copyWith(color: Colors.black),
+                    headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
                     closedFillColor: Colors.transparent,
                     closedBorder: Border.all(color: AppColors.blueDark)),
                 // validator: (value) {
@@ -515,10 +516,7 @@ class _BuildAlertEditDetailsState extends State<BuildAlertEditDetails> {
                 //     return null;
                 //   }
                 // },
-                items: myListDrop.isEmpty
-                    ? ['']
-                    : List.generate(myListDrop.length,
-                        (index) => myListDrop![index].text ?? ''),
+                items: myListDrop.isEmpty ? [''] : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
                 onChanged: (value) {
                   newRowData.addAll({item.searchName!.toString(): value});
                 },
@@ -618,10 +616,7 @@ class _BuildAlertEditDetailsState extends State<BuildAlertEditDetails> {
                     checkboxValue = !checkboxValue;
                   });
                   csetState(() {
-                    rowData.updateAll((key, value) =>
-                        key == item.columnName!.toString()
-                            ? value = checkboxValue
-                            : value);
+                    rowData.updateAll((key, value) => key == item.columnName!.toString() ? value = checkboxValue : value);
                     newRowData = rowData;
                   });
                 });
@@ -635,11 +630,8 @@ class _BuildAlertEditDetailsState extends State<BuildAlertEditDetails> {
 
   void getColumnListAndAdd(Pages page) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).post(
         endPoint: "home/getGeneralTable",
         data: {
@@ -693,11 +685,8 @@ class _BuildAlertEditDetailsState extends State<BuildAlertEditDetails> {
 
   Future<bool> getPermissions(int? pageId) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPagePermissions?pageId=$pageId",
         headers: {
@@ -714,11 +703,8 @@ class _BuildAlertEditDetailsState extends State<BuildAlertEditDetails> {
 
   void getDropdownList(int pageId) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       List<dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPageDropDown?pageId=$pageId",
         headers: {

@@ -45,12 +45,10 @@ class SupplierCustomerProcessViewBody extends StatefulWidget {
   final Pages pageData;
 
   @override
-  State<SupplierCustomerProcessViewBody> createState() =>
-      _SupplierCustomerProcessViewBodyState();
+  State<SupplierCustomerProcessViewBody> createState() => _SupplierCustomerProcessViewBodyState();
 }
 
-class _SupplierCustomerProcessViewBodyState
-    extends State<SupplierCustomerProcessViewBody> {
+class _SupplierCustomerProcessViewBodyState extends State<SupplierCustomerProcessViewBody> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
   final List<Map<String, dynamic>> widgetsData = [];
@@ -223,8 +221,7 @@ class _SupplierCustomerProcessViewBodyState
         ? MultiBlocProvider(
             providers: [
               BlocProvider(
-                create: (context) => SupplierCustomerProcessCubit(
-                    getIt.get<SupplierCustomerProcessRepoImpl>())
+                create: (context) => SupplierCustomerProcessCubit(getIt.get<SupplierCustomerProcessRepoImpl>())
                   ..getTableSupplierCustomerProcess(
                     selectTab: selectTab,
                     objectData: myData,
@@ -234,9 +231,8 @@ class _SupplierCustomerProcessViewBodyState
                   ),
               ),
               BlocProvider(
-                create: (context) => GetHeaderTableCubit(
-                    getIt.get<SupplierCustomerProcessRepoImpl>())
-                  ..getHeaderTable(listName: "ProfAccount"),
+                create: (context) =>
+                    GetHeaderTableCubit(getIt.get<SupplierCustomerProcessRepoImpl>())..getHeaderTable(listName: "ProfAccount"),
               ),
             ],
             child: BlocBuilder<GetHeaderTableCubit, GetHeaderTableState>(
@@ -250,8 +246,7 @@ class _SupplierCustomerProcessViewBodyState
                       headerList.add(item);
                     }
                   }
-                  return BlocBuilder<SupplierCustomerProcessCubit,
-                      SupplierCustomerProcessState>(
+                  return BlocBuilder<SupplierCustomerProcessCubit, SupplierCustomerProcessState>(
                     builder: (context, state) {
                       if (state is SupplierCustomerProcessSuccess) {
                         int? numberOfRecords = state.dataModel.numberofrecords;
@@ -277,8 +272,7 @@ class _SupplierCustomerProcessViewBodyState
                             pageData: widget.pageData,
                             listData: listData!,
                             listColumn: headerList,
-                            allDropdownModelList: SupplierCustomerProcessView
-                                .myAllDropdownModelList,
+                            allDropdownModelList: SupplierCustomerProcessView.myAllDropdownModelList,
                             paginationWidget: PaginationWidget(
                               allPages: allPages,
                               dropdownValue: dropdownValue,
@@ -289,17 +283,13 @@ class _SupplierCustomerProcessViewBodyState
                                 setState(() {
                                   dropdownValue = limit;
                                   numberPage = 1;
-                                  allPages =
-                                      (numberOfRecords % dropdownValue) == 0
-                                          ? (numberOfRecords ~/ dropdownValue)
-                                          : (numberOfRecords ~/ dropdownValue) +
-                                              1;
+                                  allPages = (numberOfRecords % dropdownValue) == 0
+                                      ? (numberOfRecords ~/ dropdownValue)
+                                      : (numberOfRecords ~/ dropdownValue) + 1;
                                   myData['limit'] = limit;
                                 });
                                 // createMyData();
-                                BlocProvider.of<SupplierCustomerProcessCubit>(
-                                        context)
-                                    .getTableSupplierCustomerProcess(
+                                BlocProvider.of<SupplierCustomerProcessCubit>(context).getTableSupplierCustomerProcess(
                                   selectTab: selectTab,
                                   link: selectTab == 0
                                       ? "ProfAccount"
@@ -314,14 +304,10 @@ class _SupplierCustomerProcessViewBodyState
                               onTapMin: () {
                                 setState(() {
                                   numberPage--;
-                                  myData['offset'] =
-                                      (numberPage * dropdownValue) -
-                                          dropdownValue;
+                                  myData['offset'] = (numberPage * dropdownValue) - dropdownValue;
                                 });
                                 // createMyData();
-                                BlocProvider.of<SupplierCustomerProcessCubit>(
-                                        context)
-                                    .getTableSupplierCustomerProcess(
+                                BlocProvider.of<SupplierCustomerProcessCubit>(context).getTableSupplierCustomerProcess(
                                   selectTab: selectTab,
                                   objectData: myData,
                                   link: selectTab == 0
@@ -336,14 +322,10 @@ class _SupplierCustomerProcessViewBodyState
                               onTapAdd: () {
                                 setState(() {
                                   numberPage++;
-                                  myData['offset'] =
-                                      (numberPage * dropdownValue) -
-                                          dropdownValue;
+                                  myData['offset'] = (numberPage * dropdownValue) - dropdownValue;
                                 });
                                 // createMyData();
-                                BlocProvider.of<SupplierCustomerProcessCubit>(
-                                        context)
-                                    .getTableSupplierCustomerProcess(
+                                BlocProvider.of<SupplierCustomerProcessCubit>(context).getTableSupplierCustomerProcess(
                                   selectTab: selectTab,
                                   objectData: myData,
                                   link: selectTab == 0
@@ -367,8 +349,7 @@ class _SupplierCustomerProcessViewBodyState
                                     createMyData(data: {
                                       "employee": false,
                                       "limit": dropdownValue,
-                                      "offset": (numberPage * dropdownValue) -
-                                          dropdownValue,
+                                      "offset": (numberPage * dropdownValue) - dropdownValue,
                                       "statment": "",
                                       "selectcolumns": "",
                                       "IsDepartment": false,
@@ -379,14 +360,8 @@ class _SupplierCustomerProcessViewBodyState
                                       "tableName": "[ProfAccount]",
                                       "listName": "ProfAccount",
                                     });
-                                    BlocProvider.of<GetHeaderTableCubit>(
-                                            context)
-                                        .getHeaderTable(
-                                            listName: "ProfAccount");
-                                    BlocProvider.of<
-                                                SupplierCustomerProcessCubit>(
-                                            context)
-                                        .getTableSupplierCustomerProcess(
+                                    BlocProvider.of<GetHeaderTableCubit>(context).getHeaderTable(listName: "ProfAccount");
+                                    BlocProvider.of<SupplierCustomerProcessCubit>(context).getTableSupplierCustomerProcess(
                                       selectTab: selectTab,
                                       objectData: myData,
                                       link: "ProfAccount",
@@ -395,14 +370,12 @@ class _SupplierCustomerProcessViewBodyState
                                     );
                                     break;
                                   case 1:
-                                    String tailCondition =
-                                        getTailConditionInCase1();
+                                    String tailCondition = getTailConditionInCase1();
 
                                     createMyData(data: {
                                       "employee": false,
                                       "limit": dropdownValue,
-                                      "offset": (numberPage * dropdownValue) -
-                                          dropdownValue,
+                                      "offset": (numberPage * dropdownValue) - dropdownValue,
                                       "statment": "",
                                       "selectcolumns": "",
                                       "IsDepartment": false,
@@ -413,14 +386,8 @@ class _SupplierCustomerProcessViewBodyState
                                       "listName": "SalesDetailReport",
                                       "tailcondition": tailCondition,
                                     });
-                                    BlocProvider.of<GetHeaderTableCubit>(
-                                            context)
-                                        .getHeaderTable(
-                                            listName: "SalesDetailReport");
-                                    BlocProvider.of<
-                                                SupplierCustomerProcessCubit>(
-                                            context)
-                                        .getTableSupplierCustomerProcess(
+                                    BlocProvider.of<GetHeaderTableCubit>(context).getHeaderTable(listName: "SalesDetailReport");
+                                    BlocProvider.of<SupplierCustomerProcessCubit>(context).getTableSupplierCustomerProcess(
                                       selectTab: selectTab,
                                       objectData: myData,
                                       link: "Structure",
@@ -429,14 +396,12 @@ class _SupplierCustomerProcessViewBodyState
                                     );
                                     break;
                                   case 2:
-                                    String tailCondition =
-                                        getTailConditionInCase2();
+                                    String tailCondition = getTailConditionInCase2();
                                     createMyData(data: {
                                       // "pageId": 289,
                                       "employee": false,
                                       "limit": dropdownValue,
-                                      "offset": (numberPage * dropdownValue) -
-                                          dropdownValue,
+                                      "offset": (numberPage * dropdownValue) - dropdownValue,
                                       "statment": "",
                                       "selectcolumns": "",
                                       "IsDepartment": false,
@@ -449,15 +414,9 @@ class _SupplierCustomerProcessViewBodyState
                                       "tableName": "[PaymentReciveView]",
                                       "tailcondition": tailCondition,
                                     });
-                                    BlocProvider.of<GetHeaderTableCubit>(
-                                            context)
-                                        .getHeaderTable(
-                                            listName:
-                                                "SupplierCustomerPayment");
-                                    BlocProvider.of<
-                                                SupplierCustomerProcessCubit>(
-                                            context)
-                                        .getTableSupplierCustomerProcess(
+                                    BlocProvider.of<GetHeaderTableCubit>(context)
+                                        .getHeaderTable(listName: "SupplierCustomerPayment");
+                                    BlocProvider.of<SupplierCustomerProcessCubit>(context).getTableSupplierCustomerProcess(
                                       selectTab: selectTab,
                                       objectData: myData,
                                       numberOfPage: numberPage,
@@ -466,14 +425,12 @@ class _SupplierCustomerProcessViewBodyState
                                     );
                                     break;
                                   case 3:
-                                    String tailCondition =
-                                        getTailConditionInCase3();
+                                    String tailCondition = getTailConditionInCase3();
                                     createMyData(data: {
                                       // "pageId": widget.pageData.pageId,
                                       "employee": false,
                                       "limit": dropdownValue,
-                                      "offset": (numberPage * dropdownValue) -
-                                          dropdownValue,
+                                      "offset": (numberPage * dropdownValue) - dropdownValue,
                                       "statment": "",
                                       "selectcolumns": "",
                                       "IsDepartment": false,
@@ -487,14 +444,9 @@ class _SupplierCustomerProcessViewBodyState
                                       "tableName": "[PurchaseDetialView]",
                                       "tailcondition": tailCondition,
                                     });
-                                    BlocProvider.of<GetHeaderTableCubit>(
-                                            context)
-                                        .getHeaderTable(
-                                            listName: "PurchaseDetailReport");
-                                    BlocProvider.of<
-                                                SupplierCustomerProcessCubit>(
-                                            context)
-                                        .getTableSupplierCustomerProcess(
+                                    BlocProvider.of<GetHeaderTableCubit>(context)
+                                        .getHeaderTable(listName: "PurchaseDetailReport");
+                                    BlocProvider.of<SupplierCustomerProcessCubit>(context).getTableSupplierCustomerProcess(
                                       selectTab: selectTab,
                                       objectData: myData,
                                       numberOfPage: numberPage,
@@ -506,8 +458,7 @@ class _SupplierCustomerProcessViewBodyState
                                     createMyData(data: {
                                       "employee": false,
                                       "limit": dropdownValue,
-                                      "offset": (numberPage * dropdownValue) -
-                                          dropdownValue,
+                                      "offset": (numberPage * dropdownValue) - dropdownValue,
                                       "statment": "",
                                       "selectcolumns": "",
                                       "IsDepartment": false,
@@ -518,17 +469,10 @@ class _SupplierCustomerProcessViewBodyState
                                       "companyname": "ComID",
                                       "IsDesc": true,
                                       "listName": "ProfAccountDetails",
-                                      "tableName":
-                                          "[EntryWithPurchaseSalesDetail]",
+                                      "tableName": "[EntryWithPurchaseSalesDetail]",
                                     });
-                                    BlocProvider.of<GetHeaderTableCubit>(
-                                            context)
-                                        .getHeaderTable(
-                                            listName: "ProfAccountDetails");
-                                    BlocProvider.of<
-                                                SupplierCustomerProcessCubit>(
-                                            context)
-                                        .getTableSupplierCustomerProcess(
+                                    BlocProvider.of<GetHeaderTableCubit>(context).getHeaderTable(listName: "ProfAccountDetails");
+                                    BlocProvider.of<SupplierCustomerProcessCubit>(context).getTableSupplierCustomerProcess(
                                       selectTab: selectTab,
                                       objectData: myData,
                                       link: "CustomerDetailsReport",
@@ -542,8 +486,7 @@ class _SupplierCustomerProcessViewBodyState
                           ),
                         );
                       } else if (state is SupplierCustomerProcessFailure) {
-                        return CustomErrorMassage(
-                            errorMassage: state.errorMassage);
+                        return CustomErrorMassage(errorMassage: state.errorMassage);
                       } else {
                         return const CustomLoadingWidget();
                       }
@@ -560,8 +503,7 @@ class _SupplierCustomerProcessViewBodyState
         : const SizedBox();
   }
 
-  Widget buildCategoryChildren(
-      MapEntry<String, List<Map<String, dynamic>>> entry) {
+  Widget buildCategoryChildren(MapEntry<String, List<Map<String, dynamic>>> entry) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Column(
@@ -572,15 +514,11 @@ class _SupplierCustomerProcessViewBodyState
             (index) {
               final widgetData = entry.value[index];
               ColumnList itemColumnList = widgetData['widget'];
-              String title = lang == AppStrings.arLangKey
-                  ? itemColumnList.arColumnLabel!
-                  : itemColumnList.enColumnLabel!;
+              String title = lang == AppStrings.arLangKey ? itemColumnList.arColumnLabel! : itemColumnList.enColumnLabel!;
               if (itemColumnList.insertType == "text") {
-                return buildTextAndNumberWidget(
-                    title, itemColumnList, widgetData, TextInputType.text);
+                return buildTextAndNumberWidget(title, itemColumnList, widgetData, TextInputType.text);
               } else if (itemColumnList.insertType == "number") {
-                return buildTextAndNumberWidget(
-                    title, itemColumnList, widgetData, TextInputType.number);
+                return buildTextAndNumberWidget(title, itemColumnList, widgetData, TextInputType.number);
               } else if (itemColumnList.insertType == "checkbox") {
                 return buildCheckBoxWidget(widgetData, title, itemColumnList);
               } else if (itemColumnList.insertType == "date") {
@@ -597,8 +535,8 @@ class _SupplierCustomerProcessViewBodyState
     );
   }
 
-  Widget buildTextAndNumberWidget(String title, ColumnList itemColumnList,
-      Map<String, dynamic> widgetData, TextInputType? keyboardType) {
+  Widget buildTextAndNumberWidget(
+      String title, ColumnList itemColumnList, Map<String, dynamic> widgetData, TextInputType? keyboardType) {
     return StatefulBuilder(
       builder: (context, tNSetState) {
         return Padding(
@@ -639,7 +577,88 @@ class _SupplierCustomerProcessViewBodyState
     );
   }
 
-  Widget buildDateWidget(String title, ColumnList itemColumnList,
+  Widget buildDateWidget(String title, ColumnList itemColumnList, Map<String, dynamic> widgetData) {
+    String date = widgetData['value'] != "" ? DateFormat("yyyy-MM-dd", 'en').format(DateTime.parse(widgetData['value'])) : "";
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Text(
+                title,
+                style: AppStyles.textStyle14.copyWith(color: Colors.grey),
+              ),
+              if (itemColumnList.isRquired == true)
+                const Icon(
+                  Icons.star,
+                  color: Colors.red,
+                  size: 10,
+                )
+            ],
+          ),
+          StatefulBuilder(
+            builder: (context, dsetState) {
+              return InkWell(
+                onTap: () async {
+                  DateTime? dateTime = await showDatePicker(
+                    context: context,
+                    initialDate: widgetData['value'] != "" && widgetData['value'] != null
+                        ? DateTime.parse(widgetData['value'])
+                        : DateTime.now(),
+                    firstDate: DateTime(1980),
+                    lastDate: DateTime(2100),
+                  );
+                  if (dateTime != null) {
+                    dsetState(() {
+                      date = DateFormat("yyyy-MM-dd", 'en').format(dateTime);
+                      widgetData['value'] = dateTime.toString();
+                    });
+                  }
+                },
+                child: Container(
+                  height: 40,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: AppColors.blueDark),
+                  ),
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        date.isNotEmpty ? date : '',
+                        style: AppStyles.textStyle14.copyWith(color: Colors.black),
+                      ),
+                      if (date.isNotEmpty)
+                        GestureDetector(
+                          onTap: () {
+                            dsetState(() {
+                              widgetData['value'] = "";
+                              date = "";
+                            });
+                          },
+                          child: const Icon(
+                            Icons.close,
+                            color: Colors.blue,
+                            size: 18,
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  /* Widget buildDateWidget(String title, ColumnList itemColumnList,
       Map<String, dynamic> widgetData) {
     String date = widgetData['value'] != ""
         ? DateFormat("yyyy-MM-dd", 'en')
@@ -701,7 +720,7 @@ class _SupplierCustomerProcessViewBodyState
         ],
       ),
     );
-  }
+  }*/
 
   Widget buildDropdownWidget(
     String title,
@@ -804,22 +823,18 @@ class _SupplierCustomerProcessViewBodyState
                     ? CustomDropdown<String>.search(
                         hintText: '',
                         initialItem: dropValue,
-                        closedHeaderPadding: const EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 8),
+                        closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                         decoration: CustomDropdownDecoration(
-                          headerStyle: AppStyles.textStyle16
-                              .copyWith(color: Colors.black),
+                          headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
                           closedFillColor: Colors.transparent,
                           closedBorder: Border.all(color: AppColors.blueDark),
                         ),
                         items: myListDrop!.isEmpty
                             ? [""]
-                            : List.generate(myListDrop.length,
-                                (index) => myListDrop![index].text ?? ''),
+                            : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
                         onChanged: (value) {
                           dropSetState(() {
-                            ItemDrop ii = myListDrop!
-                                .firstWhere((element) => element.text == value);
+                            ItemDrop ii = myListDrop!.firstWhere((element) => element.text == value);
                             widgetData['value'] = "";
                             widgetData['value'] = ii.id;
                           });
@@ -841,18 +856,15 @@ class _SupplierCustomerProcessViewBodyState
                           });
                         },
                         // initialItem: dropValue,
-                        closedHeaderPadding: const EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 8),
+                        closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                         decoration: CustomDropdownDecoration(
-                          headerStyle: AppStyles.textStyle16
-                              .copyWith(color: Colors.black),
+                          headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
                           closedFillColor: Colors.transparent,
                           closedBorder: Border.all(color: AppColors.blueDark),
                         ),
                         items: myListDrop!.isEmpty
                             ? [""]
-                            : List.generate(myListDrop.length,
-                                (index) => myListDrop![index].text ?? ''),
+                            : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
                       ),
               );
             },
@@ -862,8 +874,7 @@ class _SupplierCustomerProcessViewBodyState
     );
   }
 
-  StatefulBuilder buildCheckBoxWidget(Map<String, dynamic> widgetData,
-      String title, ColumnList itemColumnList) {
+  StatefulBuilder buildCheckBoxWidget(Map<String, dynamic> widgetData, String title, ColumnList itemColumnList) {
     return StatefulBuilder(
       builder: (context, csetState) {
         return CheckboxListTile(
@@ -906,11 +917,8 @@ class _SupplierCustomerProcessViewBodyState
 
   Future<bool> getPermissions(int? pageId) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPagePermissions?pageId=$pageId",
         headers: {
@@ -927,11 +935,8 @@ class _SupplierCustomerProcessViewBodyState
 
   void getColumnListAndAdd(Pages page) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).post(
         endPoint: "home/getGeneralTable",
         data: {
@@ -962,8 +967,7 @@ class _SupplierCustomerProcessViewBodyState
         isOverlayTapDismiss: false,
         isCloseButton: false,
         content: BlocProvider(
-          create: (context) =>
-              AddEditCubit(getIt.get<SupplierCustomerProcessRepoImpl>()),
+          create: (context) => AddEditCubit(getIt.get<SupplierCustomerProcessRepoImpl>()),
           child: BuildAlertAddInDropdown(
             columnList: columnList!,
             pageData: page,
@@ -980,11 +984,8 @@ class _SupplierCustomerProcessViewBodyState
 
   void getDropdownList(int pageId) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       List<dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPageDropDown?pageId=$pageId",
         headers: {
@@ -1006,8 +1007,7 @@ class _SupplierCustomerProcessViewBodyState
     }
   }
 
-  Container buildCategoryName(
-      MapEntry<String, List<Map<String, dynamic>>> entry) {
+  Container buildCategoryName(MapEntry<String, List<Map<String, dynamic>>> entry) {
     return Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
@@ -1048,23 +1048,17 @@ class _SupplierCustomerProcessViewBodyState
   String getTailConditionInCase1() {
     String till = "";
     for (var i in widgetsData) {
-      if (((i["widget"] as ColumnList).columnName == "CustomerID" ||
-              (i["widget"] as ColumnList).columnName == "CusSupId") &&
+      if (((i["widget"] as ColumnList).columnName == "CustomerID" || (i["widget"] as ColumnList).columnName == "CusSupId") &&
           i['value'] != "") {
         till = "${till}CustomerID= ${i['value']} ";
       }
-      if ((i["widget"] as ColumnList).columnName == "datefrom" &&
-          i['value'] != "") {
-        till =
-            "${till}AND ContractDate >= CONVERT(DATETIME,'${i['value']}', 102) ";
+      if ((i["widget"] as ColumnList).columnName == "datefrom" && i['value'] != "") {
+        till = "${till}AND ContractDate >= CONVERT(DATETIME,'${i['value']}', 102) ";
       }
-      if ((i["widget"] as ColumnList).columnName == "dateto" &&
-          i['value'] != "") {
-        till =
-            "${till}AND ContractDate <= CONVERT(DATETIME,'${i['value']}', 102) ";
+      if ((i["widget"] as ColumnList).columnName == "dateto" && i['value'] != "") {
+        till = "${till}AND ContractDate <= CONVERT(DATETIME,'${i['value']}', 102) ";
       }
-      if ((i["widget"] as ColumnList).columnName == "CurrancyID" &&
-          i['value'] != "") {
+      if ((i["widget"] as ColumnList).columnName == "CurrancyID" && i['value'] != "") {
         till = "${till}AND CurrancyID= ${i['value']} ";
       }
     }
@@ -1074,23 +1068,18 @@ class _SupplierCustomerProcessViewBodyState
   String getTailConditionInCase2() {
     String till = "PaymentID is not null ";
     for (var i in widgetsData) {
-      if (((i["widget"] as ColumnList).columnName == "CustomerID" ||
-              (i["widget"] as ColumnList).columnName == "CusSupId") &&
+      if (((i["widget"] as ColumnList).columnName == "CustomerID" || (i["widget"] as ColumnList).columnName == "CusSupId") &&
           i['value'] != "") {
         // till = "${till}AND CustomerID= ${i['value']} ";
-        till =
-            "${till}and (CustomerID= ${i['value']}or SupplierID=${i['value']})";
+        till = "${till}and (CustomerID= ${i['value']}or SupplierID=${i['value']})";
       }
-      if ((i["widget"] as ColumnList).columnName == "datefrom" &&
-          i['value'] != "") {
+      if ((i["widget"] as ColumnList).columnName == "datefrom" && i['value'] != "") {
         till = "${till}AND EDate >= CONVERT(DATETIME,'${i['value']}', 102) ";
       }
-      if ((i["widget"] as ColumnList).columnName == "dateto" &&
-          i['value'] != "") {
+      if ((i["widget"] as ColumnList).columnName == "dateto" && i['value'] != "") {
         till = "${till}AND EDate <= CONVERT(DATETIME,'${i['value']}', 102) ";
       }
-      if ((i["widget"] as ColumnList).columnName == "CurrancyID" &&
-          i['value'] != "") {
+      if ((i["widget"] as ColumnList).columnName == "CurrancyID" && i['value'] != "") {
         till = "${till}AND CurrancyID= ${i['value']} ";
       }
     }
@@ -1100,21 +1089,17 @@ class _SupplierCustomerProcessViewBodyState
   String getTailConditionInCase3() {
     String till = "POID is not null ";
     for (var i in widgetsData) {
-      if (((i["widget"] as ColumnList).columnName == "CustomerID" ||
-              (i["widget"] as ColumnList).columnName == "CusSupId") &&
+      if (((i["widget"] as ColumnList).columnName == "CustomerID" || (i["widget"] as ColumnList).columnName == "CusSupId") &&
           i['value'] != "") {
         till = "${till}AND SupplierID= ${i['value']} ";
       }
-      if ((i["widget"] as ColumnList).columnName == "datefrom" &&
-          i['value'] != "") {
+      if ((i["widget"] as ColumnList).columnName == "datefrom" && i['value'] != "") {
         till = "${till}AND PODate >= CONVERT(DATETIME,'${i['value']}', 102) ";
       }
-      if ((i["widget"] as ColumnList).columnName == "dateto" &&
-          i['value'] != "") {
+      if ((i["widget"] as ColumnList).columnName == "dateto" && i['value'] != "") {
         till = "${till}AND PODate <= CONVERT(DATETIME,'${i['value']}', 102) ";
       }
-      if ((i["widget"] as ColumnList).columnName == "CurrancyID" &&
-          i['value'] != "") {
+      if ((i["widget"] as ColumnList).columnName == "CurrancyID" && i['value'] != "") {
         till = "${till}AND CurrancyID= ${i['value']} ";
       }
     }

@@ -126,6 +126,13 @@ class MoneyAccountList {
     return acName!;
   }
 
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) || other is MoneyAccountList && runtimeType == other.runtimeType && acID == other.acID;
+
+  @override
+  int get hashCode => acID.hashCode;
+
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['AcID'] = acID;

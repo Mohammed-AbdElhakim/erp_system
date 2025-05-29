@@ -32,11 +32,7 @@ import 'build_alert_add_in_dropdown.dart';
 import 'custom_table_store_show.dart';
 
 class StoreShowViewBody extends StatefulWidget {
-  const StoreShowViewBody(
-      {super.key,
-      required this.listColumn,
-      required this.pageData,
-      required this.listColumnInTable});
+  const StoreShowViewBody({super.key, required this.listColumn, required this.pageData, required this.listColumnInTable});
 
   final List<ColumnList> listColumn;
   final List<ColumnList> listColumnInTable;
@@ -64,6 +60,7 @@ class _StoreShowViewBodyState extends State<StoreShowViewBody> {
   List<int> listNumberItemInList = [10, 25, 50, 100];
   late int numberPage;
   late int dropdownValue;
+
   @override
   void didChangeDependencies() {
     lang = Localizations.localeOf(context).toString();
@@ -153,8 +150,7 @@ class _StoreShowViewBodyState extends State<StoreShowViewBody> {
     dropdownValue = listNumberItemInList[0];
   }
 
-  Widget buildCategoryChildren(
-      MapEntry<String, List<Map<String, dynamic>>> entry) {
+  Widget buildCategoryChildren(MapEntry<String, List<Map<String, dynamic>>> entry) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Column(
@@ -165,15 +161,11 @@ class _StoreShowViewBodyState extends State<StoreShowViewBody> {
             (index) {
               final widgetData = entry.value[index];
               ColumnList itemColumnList = widgetData['widget'];
-              String title = lang == AppStrings.arLangKey
-                  ? itemColumnList.arColumnLabel!
-                  : itemColumnList.enColumnLabel!;
+              String title = lang == AppStrings.arLangKey ? itemColumnList.arColumnLabel! : itemColumnList.enColumnLabel!;
               if (itemColumnList.insertType == "text") {
-                return buildTextAndNumberWidget(
-                    title, itemColumnList, widgetData, TextInputType.text);
+                return buildTextAndNumberWidget(title, itemColumnList, widgetData, TextInputType.text);
               } else if (itemColumnList.insertType == "number") {
-                return buildTextAndNumberWidget(
-                    title, itemColumnList, widgetData, TextInputType.number);
+                return buildTextAndNumberWidget(title, itemColumnList, widgetData, TextInputType.number);
               } else if (itemColumnList.insertType == "checkbox") {
                 return buildCheckBoxWidget(widgetData, title, itemColumnList);
               } else if (itemColumnList.insertType == "date") {
@@ -190,8 +182,8 @@ class _StoreShowViewBodyState extends State<StoreShowViewBody> {
     );
   }
 
-  Widget buildTextAndNumberWidget(String title, ColumnList itemColumnList,
-      Map<String, dynamic> widgetData, TextInputType? keyboardType) {
+  Widget buildTextAndNumberWidget(
+      String title, ColumnList itemColumnList, Map<String, dynamic> widgetData, TextInputType? keyboardType) {
     return StatefulBuilder(
       builder: (context, tNSetState) {
         return Padding(
@@ -232,7 +224,88 @@ class _StoreShowViewBodyState extends State<StoreShowViewBody> {
     );
   }
 
-  Widget buildDateWidget(String title, ColumnList itemColumnList,
+  Widget buildDateWidget(String title, ColumnList itemColumnList, Map<String, dynamic> widgetData) {
+    String date = widgetData['value'] != "" ? DateFormat("yyyy-MM-dd", 'en').format(DateTime.parse(widgetData['value'])) : "";
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Text(
+                title,
+                style: AppStyles.textStyle14.copyWith(color: Colors.grey),
+              ),
+              if (itemColumnList.isRquired == true)
+                const Icon(
+                  Icons.star,
+                  color: Colors.red,
+                  size: 10,
+                )
+            ],
+          ),
+          StatefulBuilder(
+            builder: (context, dsetState) {
+              return InkWell(
+                onTap: () async {
+                  DateTime? dateTime = await showDatePicker(
+                    context: context,
+                    initialDate: widgetData['value'] != "" && widgetData['value'] != null
+                        ? DateTime.parse(widgetData['value'])
+                        : DateTime.now(),
+                    firstDate: DateTime(1980),
+                    lastDate: DateTime(2100),
+                  );
+                  if (dateTime != null) {
+                    dsetState(() {
+                      date = DateFormat("yyyy-MM-dd", 'en').format(dateTime);
+                      widgetData['value'] = dateTime.toString();
+                    });
+                  }
+                },
+                child: Container(
+                  height: 40,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: AppColors.blueDark),
+                  ),
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        date.isNotEmpty ? date : '',
+                        style: AppStyles.textStyle14.copyWith(color: Colors.black),
+                      ),
+                      if (date.isNotEmpty)
+                        GestureDetector(
+                          onTap: () {
+                            dsetState(() {
+                              widgetData['value'] = "";
+                              date = "";
+                            });
+                          },
+                          child: const Icon(
+                            Icons.close,
+                            color: Colors.blue,
+                            size: 18,
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  /*Widget buildDateWidget(String title, ColumnList itemColumnList,
       Map<String, dynamic> widgetData) {
     String date = widgetData['value'] != ""
         ? DateFormat("yyyy-MM-dd", 'en')
@@ -294,7 +367,7 @@ class _StoreShowViewBodyState extends State<StoreShowViewBody> {
         ],
       ),
     );
-  }
+  }*/
 
   Widget buildDropdownWidget(
     String title,
@@ -406,22 +479,18 @@ class _StoreShowViewBodyState extends State<StoreShowViewBody> {
                                 }
                               }
                             : null,
-                        closedHeaderPadding: const EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 8),
+                        closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                         decoration: CustomDropdownDecoration(
-                          headerStyle: AppStyles.textStyle16
-                              .copyWith(color: Colors.black),
+                          headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
                           closedFillColor: Colors.transparent,
                           closedBorder: Border.all(color: AppColors.blueDark),
                         ),
                         items: myListDrop!.isEmpty
                             ? [""]
-                            : List.generate(myListDrop.length,
-                                (index) => myListDrop![index].text ?? ''),
+                            : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
                         onChanged: (value) {
                           dropSetState(() {
-                            ItemDrop ii = myListDrop!
-                                .firstWhere((element) => element.text == value);
+                            ItemDrop ii = myListDrop!.firstWhere((element) => element.text == value);
                             widgetData['value'] = "";
                             widgetData['value'] = ii.id;
                           });
@@ -452,18 +521,15 @@ class _StoreShowViewBodyState extends State<StoreShowViewBody> {
                           });
                         },
                         // initialItem: dropValue,
-                        closedHeaderPadding: const EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 8),
+                        closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                         decoration: CustomDropdownDecoration(
-                          headerStyle: AppStyles.textStyle16
-                              .copyWith(color: Colors.black),
+                          headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
                           closedFillColor: Colors.transparent,
                           closedBorder: Border.all(color: AppColors.blueDark),
                         ),
                         items: myListDrop!.isEmpty
                             ? [""]
-                            : List.generate(myListDrop.length,
-                                (index) => myListDrop![index].text ?? ''),
+                            : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
                       ),
               );
             },
@@ -473,8 +539,7 @@ class _StoreShowViewBodyState extends State<StoreShowViewBody> {
     );
   }
 
-  StatefulBuilder buildCheckBoxWidget(Map<String, dynamic> widgetData,
-      String title, ColumnList itemColumnList) {
+  StatefulBuilder buildCheckBoxWidget(Map<String, dynamic> widgetData, String title, ColumnList itemColumnList) {
     return StatefulBuilder(
       builder: (context, csetState) {
         return CheckboxListTile(
@@ -517,11 +582,8 @@ class _StoreShowViewBodyState extends State<StoreShowViewBody> {
 
   Future<bool> getPermissions(int? pageId) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPagePermissions?pageId=$pageId",
         headers: {
@@ -538,11 +600,8 @@ class _StoreShowViewBodyState extends State<StoreShowViewBody> {
 
   void getColumnListAndAdd(Pages page) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).post(
         endPoint: "home/getGeneralTable",
         data: {
@@ -590,11 +649,8 @@ class _StoreShowViewBodyState extends State<StoreShowViewBody> {
 
   void getDropdownList(int pageId) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       List<dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPageDropDown?pageId=$pageId",
         headers: {
@@ -616,8 +672,7 @@ class _StoreShowViewBodyState extends State<StoreShowViewBody> {
     }
   }
 
-  Container buildCategoryName(
-      MapEntry<String, List<Map<String, dynamic>>> entry) {
+  Container buildCategoryName(MapEntry<String, List<Map<String, dynamic>>> entry) {
     return Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
@@ -693,8 +748,7 @@ class _StoreShowViewBodyState extends State<StoreShowViewBody> {
               builder: (context, state) {
                 if (state is StoreShowSuccess) {
                   int? numberOfRecords = state.storeShowModel.numberofrecords;
-                  List<StoreShowItem>? listData =
-                      state.storeShowModel.dynamicList;
+                  List<StoreShowItem>? listData = state.storeShowModel.dynamicList;
 
                   numberPage = state.numberPage;
                   dropdownValue = state.dropdownValue;
@@ -721,8 +775,7 @@ class _StoreShowViewBodyState extends State<StoreShowViewBody> {
                               : (numberOfRecords ~/ dropdownValue) + 1;
                         });
                         createMyData();
-                        BlocProvider.of<StoreShowCubit>(context)
-                            .getTableStoreShow(
+                        BlocProvider.of<StoreShowCubit>(context).getTableStoreShow(
                           objectData: myData,
                           numberOfPage: numberPage,
                           dropdownValueOfLimit: dropdownValue,
@@ -733,8 +786,7 @@ class _StoreShowViewBodyState extends State<StoreShowViewBody> {
                           numberPage--;
                         });
                         createMyData();
-                        BlocProvider.of<StoreShowCubit>(context)
-                            .getTableStoreShow(
+                        BlocProvider.of<StoreShowCubit>(context).getTableStoreShow(
                           objectData: myData,
                           numberOfPage: numberPage,
                           dropdownValueOfLimit: dropdownValue,
@@ -745,8 +797,7 @@ class _StoreShowViewBodyState extends State<StoreShowViewBody> {
                           numberPage++;
                         });
                         createMyData();
-                        BlocProvider.of<StoreShowCubit>(context)
-                            .getTableStoreShow(
+                        BlocProvider.of<StoreShowCubit>(context).getTableStoreShow(
                           objectData: myData,
                           numberOfPage: numberPage,
                           dropdownValueOfLimit: dropdownValue,
@@ -785,11 +836,9 @@ class _StoreShowViewBodyState extends State<StoreShowViewBody> {
       "selectFromCash": true,
       "statment": "",
       //التاريخ متكرر مرتين فهنا انا عمله على انه يجب اخر واحد
-      "tableName":
-          "GetCurrentInventoryDateTo('${DateFormat("MM-d-yyyy", 'en').format(DateTime.parse(widgetsData.where(
-                (element) =>
-                    (element['widget'] as ColumnList).columnName == "dateto",
-              ).last['value']))}')",
+      "tableName": "GetCurrentInventoryDateTo('${DateFormat("MM-d-yyyy", 'en').format(DateTime.parse(widgetsData.where(
+            (element) => (element['widget'] as ColumnList).columnName == "dateto",
+          ).last['value']))}')",
       "ViewEmployeeColumn": widget.pageData.viewEmployeeColumn,
       "DepartmentName": widget.pageData.departmentName,
     });

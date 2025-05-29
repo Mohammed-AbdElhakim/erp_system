@@ -221,20 +221,18 @@ class _ProjectProcessViewBodyState extends State<ProjectProcessViewBody> {
         ? MultiBlocProvider(
             providers: [
               BlocProvider(
-                create: (context) =>
-                    ProjectProcessCubit(getIt.get<ProjectProcessRepoImpl>())
-                      ..getTableProjectProcess(
-                        selectTab: selectTab,
-                        objectData: myData,
-                        link: "ProfAccount",
-                        numberOfPage: numberPage,
-                        dropdownValueOfLimit: dropdownValue,
-                      ),
+                create: (context) => ProjectProcessCubit(getIt.get<ProjectProcessRepoImpl>())
+                  ..getTableProjectProcess(
+                    selectTab: selectTab,
+                    objectData: myData,
+                    link: "ProfAccount",
+                    numberOfPage: numberPage,
+                    dropdownValueOfLimit: dropdownValue,
+                  ),
               ),
               BlocProvider(
                 create: (context) =>
-                    GetHeaderTableCubit(getIt.get<ProjectProcessRepoImpl>())
-                      ..getHeaderTable(listName: "ProfAccountProject"),
+                    GetHeaderTableCubit(getIt.get<ProjectProcessRepoImpl>())..getHeaderTable(listName: "ProfAccountProject"),
               ),
             ],
             child: BlocBuilder<GetHeaderTableCubit, GetHeaderTableState>(
@@ -251,10 +249,8 @@ class _ProjectProcessViewBodyState extends State<ProjectProcessViewBody> {
                   return BlocBuilder<ProjectProcessCubit, ProjectProcessState>(
                     builder: (context, state) {
                       if (state is ProjectProcessSuccess) {
-                        int? numberOfRecords =
-                            state.projectProcessModel.numberofrecords;
-                        List<dynamic>? listData =
-                            state.projectProcessModel.dynamicList;
+                        int? numberOfRecords = state.projectProcessModel.numberofrecords;
+                        List<dynamic>? listData = state.projectProcessModel.dynamicList;
 
                         numberPage = state.numberPage;
                         dropdownValue = state.dropdownValue;
@@ -272,8 +268,7 @@ class _ProjectProcessViewBodyState extends State<ProjectProcessViewBody> {
                             pageData: widget.pageData,
                             listData: listData!,
                             listColumn: headerList,
-                            allDropdownModelList:
-                                ProjectProcessView.myAllDropdownModelList,
+                            allDropdownModelList: ProjectProcessView.myAllDropdownModelList,
                             paginationWidget: PaginationWidget(
                               allPages: allPages,
                               dropdownValue: dropdownValue,
@@ -284,20 +279,15 @@ class _ProjectProcessViewBodyState extends State<ProjectProcessViewBody> {
                                 setState(() {
                                   dropdownValue = limit;
                                   numberPage = 1;
-                                  allPages =
-                                      (numberOfRecords % dropdownValue) == 0
-                                          ? (numberOfRecords ~/ dropdownValue)
-                                          : (numberOfRecords ~/ dropdownValue) +
-                                              1;
+                                  allPages = (numberOfRecords % dropdownValue) == 0
+                                      ? (numberOfRecords ~/ dropdownValue)
+                                      : (numberOfRecords ~/ dropdownValue) + 1;
                                   myData['limit'] = limit;
                                 });
                                 // createMyData();
-                                BlocProvider.of<ProjectProcessCubit>(context)
-                                    .getTableProjectProcess(
+                                BlocProvider.of<ProjectProcessCubit>(context).getTableProjectProcess(
                                   selectTab: selectTab,
-                                  link: selectTab == 0
-                                      ? "ProfAccount"
-                                      : "Structure",
+                                  link: selectTab == 0 ? "ProfAccount" : "Structure",
                                   objectData: myData,
                                   numberOfPage: numberPage,
                                   dropdownValueOfLimit: dropdownValue,
@@ -306,18 +296,13 @@ class _ProjectProcessViewBodyState extends State<ProjectProcessViewBody> {
                               onTapMin: () {
                                 setState(() {
                                   numberPage--;
-                                  myData['offset'] =
-                                      (numberPage * dropdownValue) -
-                                          dropdownValue;
+                                  myData['offset'] = (numberPage * dropdownValue) - dropdownValue;
                                 });
                                 // createMyData();
-                                BlocProvider.of<ProjectProcessCubit>(context)
-                                    .getTableProjectProcess(
+                                BlocProvider.of<ProjectProcessCubit>(context).getTableProjectProcess(
                                   selectTab: selectTab,
                                   objectData: myData,
-                                  link: selectTab == 0
-                                      ? "ProfAccount"
-                                      : "Structure",
+                                  link: selectTab == 0 ? "ProfAccount" : "Structure",
                                   numberOfPage: numberPage,
                                   dropdownValueOfLimit: dropdownValue,
                                 );
@@ -325,18 +310,13 @@ class _ProjectProcessViewBodyState extends State<ProjectProcessViewBody> {
                               onTapAdd: () {
                                 setState(() {
                                   numberPage++;
-                                  myData['offset'] =
-                                      (numberPage * dropdownValue) -
-                                          dropdownValue;
+                                  myData['offset'] = (numberPage * dropdownValue) - dropdownValue;
                                 });
                                 // createMyData();
-                                BlocProvider.of<ProjectProcessCubit>(context)
-                                    .getTableProjectProcess(
+                                BlocProvider.of<ProjectProcessCubit>(context).getTableProjectProcess(
                                   selectTab: selectTab,
                                   objectData: myData,
-                                  link: selectTab == 0
-                                      ? "ProfAccount"
-                                      : "Structure",
+                                  link: selectTab == 0 ? "ProfAccount" : "Structure",
                                   numberOfPage: numberPage,
                                   dropdownValueOfLimit: dropdownValue,
                                 );
@@ -353,8 +333,7 @@ class _ProjectProcessViewBodyState extends State<ProjectProcessViewBody> {
                                     createMyData(data: {
                                       "employee": false,
                                       "limit": dropdownValue,
-                                      "offset": (numberPage * dropdownValue) -
-                                          dropdownValue,
+                                      "offset": (numberPage * dropdownValue) - dropdownValue,
                                       "statment": "",
                                       "selectcolumns": "",
                                       "IsDepartment": false,
@@ -365,13 +344,8 @@ class _ProjectProcessViewBodyState extends State<ProjectProcessViewBody> {
                                       "tableName": "ProfAccount",
                                       "listName": "ProfAccountProject",
                                     });
-                                    BlocProvider.of<GetHeaderTableCubit>(
-                                            context)
-                                        .getHeaderTable(
-                                            listName: "ProfAccountProject");
-                                    BlocProvider.of<ProjectProcessCubit>(
-                                            context)
-                                        .getTableProjectProcess(
+                                    BlocProvider.of<GetHeaderTableCubit>(context).getHeaderTable(listName: "ProfAccountProject");
+                                    BlocProvider.of<ProjectProcessCubit>(context).getTableProjectProcess(
                                       selectTab: selectTab,
                                       objectData: myData,
                                       link: "ProfAccount",
@@ -381,17 +355,13 @@ class _ProjectProcessViewBodyState extends State<ProjectProcessViewBody> {
                                     break;
                                   case 1:
                                     String projectID = widgetsData.firstWhere(
-                                      (element) =>
-                                          (element['widget'] as ColumnList)
-                                              .columnName ==
-                                          "ProductID",
+                                      (element) => (element['widget'] as ColumnList).columnName == "ProductID",
                                     )['value'];
 
                                     createMyData(data: {
                                       "employee": false,
                                       "limit": dropdownValue,
-                                      "offset": (numberPage * dropdownValue) -
-                                          dropdownValue,
+                                      "offset": (numberPage * dropdownValue) - dropdownValue,
                                       "statment": "",
                                       "selectcolumns": "",
                                       "IsDepartment": false,
@@ -401,17 +371,11 @@ class _ProjectProcessViewBodyState extends State<ProjectProcessViewBody> {
                                       "IsDesc": true,
                                       "tableName": "[ExtractionDetailsReport]",
                                       "listName": "ExtractionDetailsReportList",
-                                      "tailcondition":
-                                          "ExtractionID is not null AND ProjectID= $projectID",
+                                      "tailcondition": "ExtractionID is not null AND ProjectID= $projectID",
                                     });
-                                    BlocProvider.of<GetHeaderTableCubit>(
-                                            context)
-                                        .getHeaderTable(
-                                            listName:
-                                                "ExtractionDetailsReportList");
-                                    BlocProvider.of<ProjectProcessCubit>(
-                                            context)
-                                        .getTableProjectProcess(
+                                    BlocProvider.of<GetHeaderTableCubit>(context)
+                                        .getHeaderTable(listName: "ExtractionDetailsReportList");
+                                    BlocProvider.of<ProjectProcessCubit>(context).getTableProjectProcess(
                                       selectTab: selectTab,
                                       objectData: myData,
                                       link: "Structure",
@@ -421,17 +385,13 @@ class _ProjectProcessViewBodyState extends State<ProjectProcessViewBody> {
                                     break;
                                   case 2:
                                     String projectID = widgetsData.firstWhere(
-                                      (element) =>
-                                          (element['widget'] as ColumnList)
-                                              .columnName ==
-                                          "ProductID",
+                                      (element) => (element['widget'] as ColumnList).columnName == "ProductID",
                                     )['value'];
                                     createMyData(data: {
                                       // "pageId": 289,
                                       "employee": false,
                                       "limit": dropdownValue,
-                                      "offset": (numberPage * dropdownValue) -
-                                          dropdownValue,
+                                      "offset": (numberPage * dropdownValue) - dropdownValue,
                                       "statment": "",
                                       "selectcolumns": "",
                                       "IsDepartment": false,
@@ -443,17 +403,11 @@ class _ProjectProcessViewBodyState extends State<ProjectProcessViewBody> {
                                       "IsDesc": true,
                                       "listName": "ExtractionTotalReportList",
                                       "tableName": "[ExtractionTotalReport]",
-                                      "tailcondition":
-                                          "ExtractionMasterID is not null AND ProjectID=$projectID",
+                                      "tailcondition": "ExtractionMasterID is not null AND ProjectID=$projectID",
                                     });
-                                    BlocProvider.of<GetHeaderTableCubit>(
-                                            context)
-                                        .getHeaderTable(
-                                            listName:
-                                                "ExtractionTotalReportList");
-                                    BlocProvider.of<ProjectProcessCubit>(
-                                            context)
-                                        .getTableProjectProcess(
+                                    BlocProvider.of<GetHeaderTableCubit>(context)
+                                        .getHeaderTable(listName: "ExtractionTotalReportList");
+                                    BlocProvider.of<ProjectProcessCubit>(context).getTableProjectProcess(
                                       selectTab: selectTab,
                                       objectData: myData,
                                       numberOfPage: numberPage,
@@ -463,17 +417,13 @@ class _ProjectProcessViewBodyState extends State<ProjectProcessViewBody> {
                                     break;
                                   case 3:
                                     String productID = widgetsData.firstWhere(
-                                      (element) =>
-                                          (element['widget'] as ColumnList)
-                                              .columnName ==
-                                          "ProductID",
+                                      (element) => (element['widget'] as ColumnList).columnName == "ProductID",
                                     )['value'];
                                     createMyData(data: {
                                       // "pageId": widget.pageData.pageId,
                                       "employee": false,
                                       "limit": dropdownValue,
-                                      "offset": (numberPage * dropdownValue) -
-                                          dropdownValue,
+                                      "offset": (numberPage * dropdownValue) - dropdownValue,
                                       "statment": "",
                                       "selectcolumns": "",
                                       "IsDepartment": false,
@@ -487,13 +437,9 @@ class _ProjectProcessViewBodyState extends State<ProjectProcessViewBody> {
                                       "tableName": "[PaymentReciveView]",
                                       "tailcondition": "ProductID=$productID",
                                     });
-                                    BlocProvider.of<GetHeaderTableCubit>(
-                                            context)
-                                        .getHeaderTable(
-                                            listName: "SupplierPaymentReport");
-                                    BlocProvider.of<ProjectProcessCubit>(
-                                            context)
-                                        .getTableProjectProcess(
+                                    BlocProvider.of<GetHeaderTableCubit>(context)
+                                        .getHeaderTable(listName: "SupplierPaymentReport");
+                                    BlocProvider.of<ProjectProcessCubit>(context).getTableProjectProcess(
                                       selectTab: selectTab,
                                       objectData: myData,
                                       numberOfPage: numberPage,
@@ -507,8 +453,7 @@ class _ProjectProcessViewBodyState extends State<ProjectProcessViewBody> {
                           ),
                         );
                       } else if (state is ProjectProcessFailure) {
-                        return CustomErrorMassage(
-                            errorMassage: state.errorMassage);
+                        return CustomErrorMassage(errorMassage: state.errorMassage);
                       } else {
                         return const CustomLoadingWidget();
                       }
@@ -525,8 +470,7 @@ class _ProjectProcessViewBodyState extends State<ProjectProcessViewBody> {
         : const SizedBox();
   }
 
-  Widget buildCategoryChildren(
-      MapEntry<String, List<Map<String, dynamic>>> entry) {
+  Widget buildCategoryChildren(MapEntry<String, List<Map<String, dynamic>>> entry) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Column(
@@ -537,15 +481,11 @@ class _ProjectProcessViewBodyState extends State<ProjectProcessViewBody> {
             (index) {
               final widgetData = entry.value[index];
               ColumnList itemColumnList = widgetData['widget'];
-              String title = lang == AppStrings.arLangKey
-                  ? itemColumnList.arColumnLabel!
-                  : itemColumnList.enColumnLabel!;
+              String title = lang == AppStrings.arLangKey ? itemColumnList.arColumnLabel! : itemColumnList.enColumnLabel!;
               if (itemColumnList.insertType == "text") {
-                return buildTextAndNumberWidget(
-                    title, itemColumnList, widgetData, TextInputType.text);
+                return buildTextAndNumberWidget(title, itemColumnList, widgetData, TextInputType.text);
               } else if (itemColumnList.insertType == "number") {
-                return buildTextAndNumberWidget(
-                    title, itemColumnList, widgetData, TextInputType.number);
+                return buildTextAndNumberWidget(title, itemColumnList, widgetData, TextInputType.number);
               } else if (itemColumnList.insertType == "checkbox") {
                 return buildCheckBoxWidget(widgetData, title, itemColumnList);
               } else if (itemColumnList.insertType == "date") {
@@ -562,8 +502,8 @@ class _ProjectProcessViewBodyState extends State<ProjectProcessViewBody> {
     );
   }
 
-  Widget buildTextAndNumberWidget(String title, ColumnList itemColumnList,
-      Map<String, dynamic> widgetData, TextInputType? keyboardType) {
+  Widget buildTextAndNumberWidget(
+      String title, ColumnList itemColumnList, Map<String, dynamic> widgetData, TextInputType? keyboardType) {
     return StatefulBuilder(
       builder: (context, tNSetState) {
         return Padding(
@@ -604,7 +544,88 @@ class _ProjectProcessViewBodyState extends State<ProjectProcessViewBody> {
     );
   }
 
-  Widget buildDateWidget(String title, ColumnList itemColumnList,
+  Widget buildDateWidget(String title, ColumnList itemColumnList, Map<String, dynamic> widgetData) {
+    String date = widgetData['value'] != "" ? DateFormat("yyyy-MM-dd", 'en').format(DateTime.parse(widgetData['value'])) : "";
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Text(
+                title,
+                style: AppStyles.textStyle14.copyWith(color: Colors.grey),
+              ),
+              if (itemColumnList.isRquired == true)
+                const Icon(
+                  Icons.star,
+                  color: Colors.red,
+                  size: 10,
+                )
+            ],
+          ),
+          StatefulBuilder(
+            builder: (context, dsetState) {
+              return InkWell(
+                onTap: () async {
+                  DateTime? dateTime = await showDatePicker(
+                    context: context,
+                    initialDate: widgetData['value'] != "" && widgetData['value'] != null
+                        ? DateTime.parse(widgetData['value'])
+                        : DateTime.now(),
+                    firstDate: DateTime(1980),
+                    lastDate: DateTime(2100),
+                  );
+                  if (dateTime != null) {
+                    dsetState(() {
+                      date = DateFormat("yyyy-MM-dd", 'en').format(dateTime);
+                      widgetData['value'] = dateTime.toString();
+                    });
+                  }
+                },
+                child: Container(
+                  height: 40,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: AppColors.blueDark),
+                  ),
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        date.isNotEmpty ? date : '',
+                        style: AppStyles.textStyle14.copyWith(color: Colors.black),
+                      ),
+                      if (date.isNotEmpty)
+                        GestureDetector(
+                          onTap: () {
+                            dsetState(() {
+                              widgetData['value'] = "";
+                              date = "";
+                            });
+                          },
+                          child: const Icon(
+                            Icons.close,
+                            color: Colors.blue,
+                            size: 18,
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  /*Widget buildDateWidget(String title, ColumnList itemColumnList,
       Map<String, dynamic> widgetData) {
     String date = widgetData['value'] != ""
         ? DateFormat("yyyy-MM-dd", 'en')
@@ -666,7 +687,7 @@ class _ProjectProcessViewBodyState extends State<ProjectProcessViewBody> {
         ],
       ),
     );
-  }
+  }*/
 
   Widget buildDropdownWidget(
     String title,
@@ -769,22 +790,18 @@ class _ProjectProcessViewBodyState extends State<ProjectProcessViewBody> {
                     ? CustomDropdown<String>.search(
                         hintText: '',
                         initialItem: dropValue,
-                        closedHeaderPadding: const EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 8),
+                        closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                         decoration: CustomDropdownDecoration(
-                          headerStyle: AppStyles.textStyle16
-                              .copyWith(color: Colors.black),
+                          headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
                           closedFillColor: Colors.transparent,
                           closedBorder: Border.all(color: AppColors.blueDark),
                         ),
                         items: myListDrop!.isEmpty
                             ? [""]
-                            : List.generate(myListDrop.length,
-                                (index) => myListDrop![index].text ?? ''),
+                            : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
                         onChanged: (value) {
                           dropSetState(() {
-                            ItemDrop ii = myListDrop!
-                                .firstWhere((element) => element.text == value);
+                            ItemDrop ii = myListDrop!.firstWhere((element) => element.text == value);
                             widgetData['value'] = "";
                             widgetData['value'] = ii.id;
                           });
@@ -806,18 +823,15 @@ class _ProjectProcessViewBodyState extends State<ProjectProcessViewBody> {
                           });
                         },
                         // initialItem: dropValue,
-                        closedHeaderPadding: const EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 8),
+                        closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                         decoration: CustomDropdownDecoration(
-                          headerStyle: AppStyles.textStyle16
-                              .copyWith(color: Colors.black),
+                          headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
                           closedFillColor: Colors.transparent,
                           closedBorder: Border.all(color: AppColors.blueDark),
                         ),
                         items: myListDrop!.isEmpty
                             ? [""]
-                            : List.generate(myListDrop.length,
-                                (index) => myListDrop![index].text ?? ''),
+                            : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
                       ),
               );
             },
@@ -827,8 +841,7 @@ class _ProjectProcessViewBodyState extends State<ProjectProcessViewBody> {
     );
   }
 
-  StatefulBuilder buildCheckBoxWidget(Map<String, dynamic> widgetData,
-      String title, ColumnList itemColumnList) {
+  StatefulBuilder buildCheckBoxWidget(Map<String, dynamic> widgetData, String title, ColumnList itemColumnList) {
     return StatefulBuilder(
       builder: (context, csetState) {
         return CheckboxListTile(
@@ -871,11 +884,8 @@ class _ProjectProcessViewBodyState extends State<ProjectProcessViewBody> {
 
   Future<bool> getPermissions(int? pageId) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPagePermissions?pageId=$pageId",
         headers: {
@@ -892,11 +902,8 @@ class _ProjectProcessViewBodyState extends State<ProjectProcessViewBody> {
 
   void getColumnListAndAdd(Pages page) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).post(
         endPoint: "home/getGeneralTable",
         data: {
@@ -927,8 +934,7 @@ class _ProjectProcessViewBodyState extends State<ProjectProcessViewBody> {
         isOverlayTapDismiss: false,
         isCloseButton: false,
         content: BlocProvider(
-          create: (context) =>
-              AddEditCubit(getIt.get<ProjectProcessRepoImpl>()),
+          create: (context) => AddEditCubit(getIt.get<ProjectProcessRepoImpl>()),
           child: BuildAlertAddInDropdown(
             columnList: columnList!,
             pageData: page,
@@ -945,11 +951,8 @@ class _ProjectProcessViewBodyState extends State<ProjectProcessViewBody> {
 
   void getDropdownList(int pageId) async {
     try {
-      String companyKey =
-          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ??
-              "";
-      String token =
-          await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       List<dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPageDropDown?pageId=$pageId",
         headers: {
@@ -971,8 +974,7 @@ class _ProjectProcessViewBodyState extends State<ProjectProcessViewBody> {
     }
   }
 
-  Container buildCategoryName(
-      MapEntry<String, List<Map<String, dynamic>>> entry) {
+  Container buildCategoryName(MapEntry<String, List<Map<String, dynamic>>> entry) {
     return Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
