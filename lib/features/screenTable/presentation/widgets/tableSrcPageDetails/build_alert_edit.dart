@@ -18,6 +18,7 @@ import '../../../../../core/widgets/custom_date_picker_field.dart';
 import '../../../../../core/widgets/custom_error_massage.dart';
 import '../../../../../core/widgets/custom_loading_widget.dart';
 import '../../../../../core/widgets/custom_text_form_field.dart';
+import '../../../../../core/widgets/custom_time_picker_field.dart';
 import '../../../../../generated/l10n.dart';
 import '../../../../home/presentation/widgets/home_view_body.dart';
 import '../../../data/models/dropdown_model/all_dropdown_model.dart';
@@ -45,6 +46,8 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
   GlobalKey<FormState> formKey = GlobalKey();
   Map<String, dynamic> newRowData = {};
   Map<String, SingleSelectController<String>> _controllers = {};
+
+  Map<String, String> selectedTimes = {};
   bool isShow = false;
   late List<String> myListCategory;
   late List<AllDropdownModel> myAllDropdownModelList;
@@ -87,6 +90,7 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
         builder: (context, state) {
           if (state is GetByIdSuccess) {
             Map<String, dynamic> id = state.valueGetById;
+            newRowData = id;
             return SizedBox(
               height: MediaQuery.of(context).size.height * .75,
               child: Form(
@@ -808,6 +812,43 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                 });
           },
         ));
+      }
+
+      //time
+      if (item.insertType == "time" &&
+          item.insertVisable == true &&
+          item.categoryName == categoryName &&
+          item.insertDefult == show) {
+        String timeText = '';
+        if (rowData[item.columnName] != null) {
+          try {
+            timeText = rowData[item.columnName];
+          } catch (_) {
+            timeText = '';
+          }
+        }
+
+        list.add(
+          CustomTimePickerField(
+            title: title,
+            itemIsRequired: item.isRquired ?? false,
+            initialTimeString: timeText,
+            onTimeSelected: (timeSelect) {
+              if (timeSelect != null) {
+                setState(() {
+                  rowData[item.columnName!] = timeSelect;
+                  newRowData[item.columnName!.toString()] = timeSelect;
+                });
+              }
+            },
+            onClear: () {
+              setState(() {
+                rowData.remove(item.columnName);
+                newRowData.remove(item.columnName);
+              });
+            },
+          ),
+        );
       }
     }
 

@@ -45,6 +45,7 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
   late List<String> myListCategory;
   late List<AllDropdownModel> myAllDropdownModelList;
   Map<String, String> selectedDates = {};
+  Map<String, String> selectedTimes = {};
   Map<String, SingleSelectController<String>> _controllers = {};
 
   @override
@@ -724,13 +725,30 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
         );
       }
 
+      //time
       if (item.insertType == "time" &&
           item.insertVisable == true &&
           item.categoryName == categoryName &&
           item.insertDefult == show) {
+        String time = selectedTimes[item.columnName] ?? '';
         list.add(CustomTimePickerField(
           title: title,
-          itemIsRequired: item.isRquired!,
+          itemIsRequired: item.isRquired ?? false,
+          initialTimeString: time,
+          onTimeSelected: (timeSelect) {
+            if (timeSelect != null) {
+              setState(() {
+                selectedDates[item.columnName!] = timeSelect;
+                newRowData[item.columnName!.toString()] = timeSelect;
+              });
+            }
+          },
+          onClear: () {
+            setState(() {
+              selectedTimes.remove(item.columnName);
+              newRowData.remove(item.columnName);
+            });
+          },
         ));
       }
     }
