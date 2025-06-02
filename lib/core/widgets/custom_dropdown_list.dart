@@ -57,7 +57,7 @@ class _CustomDropdownListState<T> extends State<CustomDropdownList<T>> {
   Widget build(BuildContext context) {
     // تحقق إن قيمة الكنترولر لسه موجودة في الليست
     if (_controller?.value != null && !widget.listData.contains(_controller!.value)) {
-      _controller?.clear();
+      _controller.clear();
     }
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5),

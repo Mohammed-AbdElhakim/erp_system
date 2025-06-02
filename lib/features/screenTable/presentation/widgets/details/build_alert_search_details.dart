@@ -519,6 +519,166 @@ class _BuildAlertSearchDetailsState extends State<BuildAlertSearchDetails> {
       }
       //dropdown
       if (item.insertType == "dropdown" && item.insertVisable == true) {
+        String oldValue = getStringDropdown(statement: widget.oldStatement, search: item.searchName!);
+
+        List<String> selected = [];
+        String stFinial = "";
+
+        List<ListDrop>? listDrop = [];
+        List<ItemDrop>? myListDrop = [];
+
+        for (var ii in myAllDropdownModelList) {
+          if (ii.listName == widget.tap.listName) {
+            listDrop = ii.list;
+          }
+        }
+        for (var ii in listDrop!) {
+          if (ii.columnName == item.columnName) {
+            myListDrop = ii.list;
+          }
+        }
+
+        List<String> dropValue = [];
+        if (oldValue.isNotEmpty) {
+          if (oldValue.contains("or")) {
+            List<String> sList = oldValue.split(" or ");
+            for (var s in sList) {
+              String finalVal = s.substring((item.searchName!.length) + 3, s.length);
+              for (var i in myListDrop!) {
+                if (i.id.toString() == finalVal) {
+                  dropValue.add(i.text ?? '');
+                }
+              }
+            }
+          } else {
+            for (var i in myListDrop!) {
+              if (i.id.toString() == oldValue) {
+                dropValue.add(i.text ?? '');
+              }
+            }
+          }
+        }
+
+        Pages? dropPage = getDropPage(item.pageId);
+
+        listWidgets.add(
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      title,
+                      style: AppStyles.textStyle14.copyWith(color: Colors.grey),
+                    ),
+                    const SizedBox(width: 12),
+                    if (dropPage != null)
+                      InkWell(
+                        onTap: () async {
+                          bool canAdd = await getPermissions(item.pageId);
+                          if (canAdd) {
+                            getColumnListAndAdd(dropPage);
+                          } else {
+                            CustomAlertDialog.alertWithButton(
+                              context: context,
+                              type: AlertType.error,
+                              title: S.of(context).error,
+                              desc: S.of(context).massage_no_permission,
+                            );
+                          }
+                        },
+                        child: const Icon(Icons.add, color: Colors.blue, size: 24),
+                      ),
+                    const SizedBox(width: 5),
+                    InkWell(
+                      onTap: () async {
+                        getDropdownList(widget.pageData.pageId);
+                      },
+                      child: const Icon(Icons.refresh, color: Colors.green, size: 24),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: CustomDropdown<String>.multiSelectSearch(
+                        hintText: '',
+                        initialItems: dropValue,
+                        closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                        decoration: CustomDropdownDecoration(
+                          headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
+                          closedFillColor: Colors.transparent,
+                          closedBorder: Border.all(color: AppColors.blueDark),
+                        ),
+                        items: myListDrop!.isEmpty
+                            ? ['']
+                            : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
+                        onListChanged: (value) {
+                          selected.clear();
+                          String st = "";
+
+                          for (var s in value) {
+                            for (var d in myListDrop!) {
+                              if (s == d.text) {
+                                selected.add(d.id!);
+                              }
+                            }
+                          }
+
+                          if (statment.contains(stFinial)) {
+                            statment = statment.replaceAll(stFinial, '');
+                            BuildAlertSearch.statement = statment;
+                          }
+
+                          if (selected.isNotEmpty) {
+                            st += "and( ";
+                            for (var element in selected) {
+                              st += "${item.searchName} = $element";
+                              if (element != selected.last) {
+                                st += " or ";
+                              }
+                            }
+                            st += " ) ";
+                          }
+
+                          stFinial = st;
+                          statment = "$statment $stFinial";
+                          BuildAlertSearch.statement = statment;
+                        },
+                      ),
+                    ),
+
+                    // زر حذف الاختيارات
+                    if (dropValue.isNotEmpty)
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            dropValue.clear();
+                            selected.clear();
+
+                            if (statment.contains(stFinial)) {
+                              statment = statment.replaceAll(stFinial, '');
+                            }
+                            stFinial = "";
+                            BuildAlertSearch.statement = statment;
+                          });
+                        },
+                        child: const Padding(
+                          padding: EdgeInsetsDirectional.only(start: 8),
+                          child: Icon(Icons.close, color: Colors.red, size: 18),
+                        ),
+                      ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      }
+
+      /*if (item.insertType == "dropdown" && item.insertVisable == true) {
         // String oldValue = getStringDropdown(
         //     statement: widget.oldStatement, search: item.searchName!);
         // List<ListDropdownModel> dropList = [
@@ -755,7 +915,7 @@ class _BuildAlertSearchDetailsState extends State<BuildAlertSearchDetails> {
             ),
           ),
         );
-      }
+      }*/
       //checkbox
       if (item.insertType == "checkbox" && item.insertVisable == true) {
         String oldValue = getStringCheckbox(search: item.searchName!, statement: widget.oldStatement);

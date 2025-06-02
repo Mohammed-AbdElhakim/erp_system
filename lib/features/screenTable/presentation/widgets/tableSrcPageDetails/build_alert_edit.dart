@@ -2,7 +2,6 @@ import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 import '../../../../../core/helper/AlertDialog/custom_alert_dialog.dart';
@@ -45,7 +44,7 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
   String? lang;
   GlobalKey<FormState> formKey = GlobalKey();
   Map<String, dynamic> newRowData = {};
-  Map<String, SingleSelectController<String>> _controllers = {};
+  Map<String, String?> selectedDropdownValues = {};
 
   Map<String, String> selectedTimes = {};
   bool isShow = false;
@@ -72,14 +71,14 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
     super.initState();
   }
 
-  @override
-  void dispose() {
-    for (var controller in _controllers.values) {
-      controller.dispose();
-    }
-    _controllers.clear();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   for (var controller in _controllers.values) {
+  //     controller.dispose();
+  //   }
+  //   _controllers.clear();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -432,14 +431,14 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
           item.insertVisable == true &&
           item.categoryName == categoryName &&
           item.insertDefult == show) {
-        String date = '';
-        if (rowData[item.columnName] != null) {
-          try {
-            date = DateFormat("yyyy-MM-dd", 'en').format(DateTime.parse(rowData[item.columnName].toString()).toLocal());
-          } catch (_) {
-            date = '';
-          }
-        }
+        // String date = '';
+        // if (rowData[item.columnName] != null) {
+        //   try {
+        //     date = DateFormat("yyyy-MM-dd", 'en').format(DateTime.parse(rowData[item.columnName].toString()).toLocal());
+        //   } catch (_) {
+        //     date = '';
+        //   }
+        // }
 
         list.add(
           CustomDatePickerField(
@@ -618,7 +617,7 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
         ));
       }*/
 
-      //dropdown
+      /*  //dropdown
       if (item.insertType == "dropdown" &&
           item.insertVisable == true &&
           item.categoryName == categoryName &&
@@ -652,15 +651,15 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
           }
         }
         Pages? dropPage = getDropPage(item.pageId);
-        if (!_controllers.containsKey(item.columnName)) {
-          _controllers[item.columnName!] = SingleSelectController<String>(dropValue);
-        }
-        final controller = _controllers[item.columnName]!;
+        // if (!_controllers.containsKey(item.columnName)) {
+        //   _controllers[item.columnName!] = SingleSelectController<String>(dropValue);
+        // }
+        // final controller = _controllers[item.columnName]!;
 
         final dropdownItems = myListDrop!.isEmpty ? [""] : myListDrop.map((e) => e.text ?? '').toList();
-        if (controller.value != null && !dropdownItems.contains(controller.value)) {
-          controller.clear();
-        }
+        // if (controller.value != null && !dropdownItems.contains(controller.value)) {
+        //   controller.clear();
+        // }
         list.add(Padding(
           padding: const EdgeInsets.symmetric(vertical: 5),
           child: Column(
@@ -735,7 +734,7 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                           }
                         }
                       : null,
-                  controller: controller,
+                  // controller: controller,
                   headerBuilder: (context, selectedItem, enabled) {
                     return Row(
                       children: [
@@ -783,7 +782,148 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
             ],
           ),
         ));
+      }*/
+
+      if (item.insertType == "dropdown" &&
+          item.insertVisable == true &&
+          item.categoryName == categoryName &&
+          item.insertDefult == show) {
+        List<ListDrop>? listDrop = [];
+        List<ItemDrop> myListDrop = [];
+
+        for (var ii in myAllDropdownModelList) {
+          if (ii.listName == widget.pageData.listName) {
+            listDrop = ii.list;
+          }
+        }
+        for (var ii in listDrop!) {
+          if (ii.columnName == item.columnName) {
+            myListDrop = ii.list ?? [];
+          }
+        }
+
+        // جلب القيمة المختارة حاليا
+        String? selectedDropdownValue;
+        for (var i in myListDrop) {
+          if (i.id.toString() == rowData[item.searchName].toString() || i.id.toString() == rowData[item.columnName].toString()) {
+            selectedDropdownValue = i.text ?? '';
+          }
+        }
+
+        Pages? dropPage = getDropPage(item.pageId);
+
+        final dropdownItems = myListDrop.isEmpty ? [""] : myListDrop.map((e) => e.text ?? '').toList();
+
+        list.add(Padding(
+          padding: const EdgeInsets.symmetric(vertical: 5),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    title,
+                    style: AppStyles.textStyle14.copyWith(color: Colors.grey),
+                  ),
+                  if (item.isRquired == true)
+                    const Icon(
+                      Icons.star,
+                      color: Colors.red,
+                      size: 10,
+                    ),
+                  const SizedBox(width: 12),
+                  if (dropPage != null)
+                    InkWell(
+                      onTap: () async {
+                        bool canAdd = await getPermissions(item.pageId);
+                        if (canAdd) {
+                          getColumnListAndAdd(dropPage);
+                        } else {
+                          CustomAlertDialog.alertWithButton(
+                            context: context,
+                            type: AlertType.error,
+                            title: S.of(context).error,
+                            desc: S.of(context).massage_no_permission,
+                          );
+                        }
+                      },
+                      child: const Icon(
+                        Icons.add,
+                        color: Colors.blue,
+                        size: 24,
+                      ),
+                    ),
+                  const SizedBox(width: 5),
+                  InkWell(
+                    onTap: () {
+                      getDropdownList(widget.pageData.pageId);
+                    },
+                    child: const Icon(
+                      Icons.refresh,
+                      color: Colors.green,
+                      size: 24,
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: CustomDropdown<String>.search(
+                      hintText: '',
+                      closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                      decoration: CustomDropdownDecoration(
+                        headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
+                        closedFillColor: Colors.transparent,
+                        closedBorder: Border.all(color: AppColors.blueDark),
+                      ),
+                      validator: item.isRquired == true
+                          ? (value) {
+                              if (value?.isEmpty ?? true) {
+                                return S.of(context).field_is_required;
+                              } else {
+                                return null;
+                              }
+                            }
+                          : null,
+                      items: dropdownItems,
+                      initialItem: selectedDropdownValue,
+                      onChanged: (value) {
+                        if (value != null && value.isNotEmpty) {
+                          setState(() {
+                            ItemDrop selectedItem = myListDrop.firstWhere((element) => element.text == value);
+                            rowData[item.searchName!] = selectedItem.id;
+                            newRowData = rowData;
+                          });
+                        }
+                      },
+                    ),
+                  ),
+                  if (selectedDropdownValue != null && selectedDropdownValue.isNotEmpty)
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          selectedDropdownValue = null;
+                          rowData.remove(item.searchName);
+                          newRowData = rowData;
+                        });
+                      },
+                      child: Padding(
+                        padding: const EdgeInsetsDirectional.only(start: 8),
+                        child: Icon(
+                          Icons.clear,
+                          size: 20,
+                          color: AppColors.blueLight,
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            ],
+          ),
+        ));
       }
+
       //checkbox
       if (item.insertType == "checkbox" &&
           item.insertVisable == true &&

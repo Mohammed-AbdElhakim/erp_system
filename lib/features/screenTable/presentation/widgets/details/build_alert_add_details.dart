@@ -16,6 +16,7 @@ import '../../../../../core/widgets/custom_button.dart';
 import '../../../../../core/widgets/custom_date_picker_field.dart';
 import '../../../../../core/widgets/custom_loading_widget.dart';
 import '../../../../../core/widgets/custom_text_form_field.dart';
+import '../../../../../core/widgets/custom_time_picker_field.dart';
 import '../../../../../generated/l10n.dart';
 import '../../../../home/presentation/widgets/home_view_body.dart';
 import '../../../data/models/dropdown_model/all_dropdown_model.dart';
@@ -56,6 +57,8 @@ class _BuildAlertAddDetailsState extends State<BuildAlertAddDetails> {
   late List<String> myListCategory;
   late List<AllDropdownModel> myAllDropdownModelList;
   Map<String, String> selectedDates = {};
+  Map<String, String> selectedTimes = {};
+  Map<String, String?> selectedDropdownValues = {};
 
   @override
   void didChangeDependencies() {
@@ -431,7 +434,7 @@ class _BuildAlertAddDetailsState extends State<BuildAlertAddDetails> {
         );
       }
 
-      //dropdown
+      /*//dropdown
       if (item.insertType == "dropdown" &&
           item.insertVisable == true &&
           item.categoryName == categoryName &&
@@ -531,6 +534,203 @@ class _BuildAlertAddDetailsState extends State<BuildAlertAddDetails> {
             ),
           ),
         );
+      }*/
+      //dropdown
+      if (item.insertType == "dropdown" &&
+          item.insertVisable == true &&
+          item.categoryName == categoryName &&
+          item.insertDefult == show) {
+        String? selectedDropdownValue = selectedDropdownValues[item.columnName];
+
+        List<ListDrop>? listDrop = [];
+        List<ItemDrop>? myListDrop = [];
+
+        for (var ii in myAllDropdownModelList) {
+          if (ii.listName == widget.pageData.listName) {
+            listDrop = ii.list;
+          }
+        }
+        for (var ii in listDrop!) {
+          if (ii.columnName == item.columnName) {
+            myListDrop = ii.list;
+          }
+        }
+        list.add(
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      title,
+                      style: AppStyles.textStyle14.copyWith(color: Colors.grey),
+                    ),
+                    if (item.isRquired == true)
+                      const Icon(
+                        Icons.star,
+                        color: Colors.red,
+                        size: 10,
+                      )
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: CustomDropdown<String>.search(
+                        hintText: '',
+                        closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                        decoration: CustomDropdownDecoration(
+                          headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
+                          closedFillColor: Colors.transparent,
+                          closedBorder: Border.all(color: AppColors.blueDark),
+                        ),
+                        validator: item.isRquired == true
+                            ? (value) {
+                                if (value?.isEmpty ?? true) {
+                                  return S.of(context).field_is_required;
+                                } else {
+                                  return null;
+                                }
+                              }
+                            : null,
+                        items: myListDrop!.isEmpty
+                            ? [""]
+                            : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
+                        initialItem: selectedDropdownValue,
+                        onChanged: (value) {
+                          if (value != null && value.isNotEmpty) {
+                            setState(() {
+                              selectedDropdownValues[item.columnName!] = value;
+                              ItemDrop ii = myListDrop!.firstWhere((element) => element.text == value);
+                              newRowData[item.searchName!.toString()] = ii.id;
+                            });
+                          }
+                        },
+                      ),
+                    ),
+                    if (selectedDropdownValue != null && selectedDropdownValue.isNotEmpty)
+                      InkWell(
+                        child: const Padding(
+                          padding: EdgeInsetsDirectional.only(start: 8),
+                          child: Icon(
+                            Icons.close,
+                            color: Colors.red,
+                            size: 18,
+                          ),
+                        ),
+                        onTap: () {
+                          setState(() {
+                            selectedDropdownValues[item.columnName!] = null;
+                            newRowData.remove(item.searchName!.toString());
+                          });
+                        },
+                      )
+                  ],
+                )
+
+                /* CustomDropdown<String>.search(
+                  hintText: '',
+                  closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                  decoration: CustomDropdownDecoration(
+                      headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
+                      closedFillColor: Colors.transparent,
+                      closedBorder: Border.all(color: AppColors.blueDark)),
+                  validator: item.isRquired == true
+                      ? (value) {
+                          if (value?.isEmpty ?? true) {
+                            return S.of(context).field_is_required;
+                          } else {
+                            return null;
+                          }
+                        }
+                      : null,
+                  items: myListDrop!.isEmpty ? [""] : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
+                  onChanged: (value) {
+                    ItemDrop ii = myListDrop!.firstWhere((element) => element.text == value);
+                    newRowData.addAll({item.searchName!.toString(): ii.id});
+                  },
+                ),*/
+                /*SizedBox(
+                  // height: 40,
+                  child: BlocProvider(
+                    create: (context) =>
+                        GetDropdownListCubit(getIt.get<ScreenRepoImpl>())
+                          ..getDropdownList(
+                            droModel: item.droModel ?? "",
+                            droValue: item.droValue ?? "",
+                            droText: item.droText ?? "",
+                            droCondition: item.droCondition ?? "",
+                            droCompany: item.droCompany ?? "",
+                          ),
+                    child:
+                        BlocBuilder<GetDropdownListCubit, GetDropdownListState>(
+                      builder: (context, state) {
+                        if (state is GetDropdownListSuccess) {
+                          List<ListDropdownModel> dropListData = [];
+                          dropListData.addAll(state.dropdownModel.list!);
+                          return CustomDropdown<String>.search(
+                            hintText: '',
+                            decoration: CustomDropdownDecoration(
+                                headerStyle: AppStyles.textStyle16
+                                    .copyWith(color: Colors.black),
+                                closedFillColor: Colors.transparent,
+                                closedBorder:
+                                    Border.all(color: AppColors.blueDark)),
+                            validator: (value) {
+                              if (value?.isEmpty ?? true) {
+                                return S.of(context).field_is_required;
+                              } else {
+                                return null;
+                              }
+                            },
+                            items: dropListData.isEmpty
+                                ? [""]
+                                : List.generate(dropListData.length,
+                                    (index) => dropListData[index].text ?? ''),
+                            onChanged: (value) {
+                              newRowData
+                                  .addAll({item.searchName!.toString(): value});
+                            },
+                          );
+                        } else {
+                          return const InitDropdown();
+                        }
+                      },
+                    ),
+                  ),
+                ),*/
+              ],
+            ),
+          ),
+        );
+      }
+      //time
+      if (item.insertType == "time" &&
+          item.insertVisable == true &&
+          item.categoryName == categoryName &&
+          item.insertDefult == show) {
+        String time = selectedTimes[item.columnName] ?? '';
+        list.add(CustomTimePickerField(
+          title: title,
+          itemIsRequired: item.isRquired ?? false,
+          initialTimeString: time,
+          onTimeSelected: (timeSelect) {
+            if (timeSelect != null) {
+              setState(() {
+                selectedTimes[item.columnName!] = timeSelect;
+                newRowData[item.columnName!.toString()] = timeSelect;
+              });
+            }
+          },
+          onClear: () {
+            setState(() {
+              selectedTimes.remove(item.columnName);
+              newRowData.remove(item.columnName);
+            });
+          },
+        ));
       }
       //checkbox
       if (item.insertType == "checkbox" &&

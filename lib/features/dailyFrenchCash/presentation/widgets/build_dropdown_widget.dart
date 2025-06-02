@@ -7,8 +7,8 @@ import '../../../../generated/l10n.dart';
 import '../../data/models/accounts_model.dart';
 
 class BuildDropdownWidget extends StatefulWidget {
-  const BuildDropdownWidget(
-      {super.key, required this.accountsList, required this.selectedList});
+  const BuildDropdownWidget({super.key, required this.accountsList, required this.selectedList});
+
   final List<AccountsList> accountsList;
   final void Function(List<int> idList) selectedList;
 
@@ -18,6 +18,8 @@ class BuildDropdownWidget extends StatefulWidget {
 
 class _BuildDropdownWidgetState extends State<BuildDropdownWidget> {
   List<int> accountIdList = [];
+  List<AccountsList> initList = [];
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -46,29 +48,52 @@ class _BuildDropdownWidgetState extends State<BuildDropdownWidget> {
               // ),
             ],
           ),
-          SizedBox(
-            height: 40,
-            child: CustomDropdown<AccountsList>.multiSelectSearch(
-              hintText: '',
-              onListChanged: (valueList) {
-                accountIdList.clear();
-                for (var element in valueList) {
-                  accountIdList.add(element.acID!);
-                }
-                setState(() {
-                  widget.selectedList(accountIdList);
-                });
-              },
-              // initialItem: dropValue,
-              closedHeaderPadding:
-                  const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-              decoration: CustomDropdownDecoration(
-                headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
-                closedFillColor: Colors.transparent,
-                closedBorder: Border.all(color: AppColors.blueDark),
+          Row(
+            children: [
+              Expanded(
+                child: SizedBox(
+                  height: 40,
+                  child: CustomDropdown<AccountsList>.multiSelectSearch(
+                    hintText: '',
+                    onListChanged: (valueList) {
+                      accountIdList.clear();
+                      for (var element in valueList) {
+                        accountIdList.add(element.acID!);
+                      }
+                      setState(() {
+                        initList = valueList;
+                        widget.selectedList(accountIdList);
+                      });
+                    },
+                    initialItems: initList,
+                    closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                    decoration: CustomDropdownDecoration(
+                      headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
+                      closedFillColor: Colors.transparent,
+                      closedBorder: Border.all(color: AppColors.blueDark),
+                    ),
+                    items: widget.accountsList,
+                  ),
+                ),
               ),
-              items: widget.accountsList,
-            ),
+              if (accountIdList.isNotEmpty)
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      initList.clear();
+                      accountIdList.clear();
+                    });
+                  },
+                  child: const Padding(
+                    padding: EdgeInsetsDirectional.only(start: 8.0),
+                    child: Icon(
+                      Icons.clear,
+                      color: Colors.red,
+                      size: 18,
+                    ),
+                  ),
+                )
+            ],
           )
         ],
       ),

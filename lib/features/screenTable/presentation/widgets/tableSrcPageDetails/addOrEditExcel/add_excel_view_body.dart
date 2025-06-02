@@ -19,6 +19,7 @@ import '../../../../../../core/utils/app_strings.dart';
 import '../../../../../../core/utils/app_styles.dart';
 import '../../../../../../core/widgets/custom_button.dart';
 import '../../../../../../core/widgets/custom_text_form_field.dart';
+import '../../../../../../core/widgets/custom_time_picker_field.dart';
 import '../../../../../../generated/l10n.dart';
 import '../../../../../home/presentation/widgets/home_view_body.dart';
 import '../../../../data/models/dropdown_model/all_dropdown_model.dart';
@@ -52,6 +53,8 @@ class _AddExcelViewBodyState extends State<AddExcelViewBody> {
   bool isShow = false;
   List<Map<String, dynamic>> tableList = [];
   late List<AllDropdownModel> myAllDropdownModelList;
+  Map<String, String> selectedTimes = {};
+  Map<String, String?> selectedDropdownValues = {};
 
   @override
   void didChangeDependencies() {
@@ -469,7 +472,7 @@ class _AddExcelViewBodyState extends State<AddExcelViewBody> {
         );
       }*/
 
-      //dropdown
+      /*//dropdown
       if (item.insertType == "dropdown" && item.categoryTitle == categoryName && condition) {
         List<ListDrop>? listDrop = [];
         List<ItemDrop>? myListDrop = [];
@@ -572,6 +575,151 @@ class _AddExcelViewBodyState extends State<AddExcelViewBody> {
             ),
           ),
         );
+      }*/
+      //dropdown
+      if (item.insertType == "dropdown" && item.categoryTitle == categoryName && condition) {
+        List<ListDrop>? listDrop = [];
+        List<ItemDrop>? myListDrop = [];
+
+        for (var ii in myAllDropdownModelList) {
+          if (widget.tapData == null) {
+            if (ii.listName == widget.pageData.listName) {
+              listDrop = ii.list;
+            }
+          } else {
+            if (ii.listName == widget.tapData!.listName) {
+              listDrop = ii.list;
+            }
+          }
+        }
+        for (var ii in listDrop!) {
+          if (ii.columnName == item.columnName && ii.nameAr == item.arColumnLabel) {
+            myListDrop = ii.list;
+          }
+        }
+        Pages? dropPage = getDropPage(item.pageId);
+
+        String? selectedValue = singleObject[item.searchName!.toString()] != null
+            ? myListDrop!
+                .firstWhere(
+                  (e) => e.id.toString() == singleObject[item.searchName!.toString()].toString(),
+                  orElse: () => ItemDrop(id: '', text: ''),
+                )
+                .text
+            : null;
+
+        list.add(
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      title,
+                      style: AppStyles.textStyle14.copyWith(color: Colors.grey),
+                    ),
+                    if (item.isRquired == true)
+                      const Icon(
+                        Icons.star,
+                        color: Colors.red,
+                        size: 10,
+                      ),
+                    const SizedBox(width: 12),
+                    if (dropPage != null)
+                      InkWell(
+                        onTap: () async {
+                          bool canAdd = await getPermissions(item.pageId);
+                          if (canAdd) {
+                            getColumnListAndAdd(dropPage);
+                          } else {
+                            CustomAlertDialog.alertWithButton(
+                              context: context,
+                              type: AlertType.error,
+                              title: S.of(context).error,
+                              desc: S.of(context).massage_no_permission,
+                            );
+                          }
+                        },
+                        child: const Icon(Icons.add, color: Colors.blue, size: 24),
+                      ),
+                    const SizedBox(width: 5),
+                    InkWell(
+                      onTap: () async {
+                        getDropdownList(widget.pageData.pageId);
+                      },
+                      child: const Icon(Icons.refresh, color: Colors.green, size: 24),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: CustomDropdown<String>.search(
+                        hintText: '',
+                        closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                        decoration: CustomDropdownDecoration(
+                          headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
+                          closedFillColor: Colors.transparent,
+                          closedBorder: Border.all(color: AppColors.blueDark),
+                        ),
+                        initialItem: selectedValue,
+                        items: myListDrop!.isEmpty
+                            ? [""]
+                            : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
+                        onChanged: (value) {
+                          if (value != null && value.isNotEmpty) {
+                            ItemDrop ii = myListDrop!.firstWhere((element) => element.text == value);
+                            setState(() {
+                              singleObject[item.searchName!.toString()] = ii.id;
+                            });
+                          }
+                        },
+                      ),
+                    ),
+                    if (selectedValue != null && selectedValue.isNotEmpty)
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            singleObject.remove(item.searchName!.toString());
+                          });
+                        },
+                        child: const Padding(
+                          padding: EdgeInsetsDirectional.only(start: 8),
+                          child: Icon(Icons.close, color: Colors.red, size: 18),
+                        ),
+                      )
+                  ],
+                )
+              ],
+            ),
+          ),
+        );
+      }
+
+      //time
+      if (item.insertType == "time" && item.insertVisable == true && item.categoryTitle == categoryName && condition) {
+        String time = selectedTimes[item.columnName] ?? '';
+        list.add(CustomTimePickerField(
+          title: title,
+          itemIsRequired: item.isRquired ?? false,
+          initialTimeString: time,
+          onTimeSelected: (timeSelect) {
+            if (timeSelect != null) {
+              setState(() {
+                selectedTimes[item.columnName!] = timeSelect;
+                singleObject[item.columnName!.toString()] = timeSelect;
+              });
+            }
+          },
+          onClear: () {
+            setState(() {
+              selectedTimes.remove(item.columnName);
+              singleObject.remove(item.columnName);
+            });
+          },
+        ));
       }
       //checkbox
       if (item.insertType == "checkbox" && item.categoryTitle == categoryName && condition) {

@@ -336,7 +336,7 @@ class _ExtractionSupplierAlertDialogEditWidgetState extends State<ExtractionSupp
     );
   }*/
 
-  Widget buildDropdownWidget(
+  /* Widget buildDropdownWidget(
     String title,
     ItemListSetupModel itemColumnList,
     WidgetsData widgetData,
@@ -406,6 +406,97 @@ class _ExtractionSupplierAlertDialogEditWidgetState extends State<ExtractionSupp
                   ));
             },
           )
+        ],
+      ),
+    );
+  }*/
+  Widget buildDropdownWidget(
+    String title,
+    ItemListSetupModel itemColumnList,
+    WidgetsData widgetData,
+  ) {
+    List<ListDrop>? listDrop = [];
+    List<ItemDrop>? myListDrop = [];
+
+    for (var ii in myAllDropdownModelList) {
+      if (ii.listName == widget.tapData!.listName) {
+        listDrop = ii.list;
+      }
+    }
+
+    for (var ii in listDrop!) {
+      if (ii.columnName == itemColumnList.columnName) {
+        myListDrop = ii.list;
+      }
+    }
+
+    String? dropValue;
+    for (var i in myListDrop!) {
+      if (i.id.toString() == widgetData.value.toString()) {
+        dropValue = i.text ?? '';
+      }
+    }
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Text(
+                title,
+                style: AppStyles.textStyle14.copyWith(color: Colors.grey),
+              ),
+              if (itemColumnList.isRquired == true) const Icon(Icons.star, color: Colors.red, size: 10),
+            ],
+          ),
+          StatefulBuilder(
+            builder: (context, dropSetState) {
+              return Row(
+                children: [
+                  Expanded(
+                    child: SizedBox(
+                      height: 40,
+                      child: CustomDropdown<String>.search(
+                        hintText: '',
+                        initialItem: dropValue,
+                        closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                        decoration: CustomDropdownDecoration(
+                          headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
+                          closedFillColor: Colors.transparent,
+                          closedBorder: Border.all(color: AppColors.blueDark),
+                        ),
+                        items: myListDrop!.isEmpty
+                            ? [""]
+                            : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
+                        onChanged: (value) {
+                          dropSetState(() {
+                            ItemDrop ii = myListDrop!.firstWhere((element) => element.text == value);
+                            widgetData.value = ii.id;
+                            dropValue = value;
+                          });
+                        },
+                      ),
+                    ),
+                  ),
+                  if (dropValue != null && dropValue!.isNotEmpty)
+                    InkWell(
+                      onTap: () {
+                        dropSetState(() {
+                          dropValue = null;
+                          widgetData.value = "";
+                        });
+                      },
+                      child: const Padding(
+                        padding: EdgeInsetsDirectional.only(start: 8),
+                        child: Icon(Icons.close, color: Colors.red, size: 18),
+                      ),
+                    ),
+                ],
+              );
+            },
+          ),
         ],
       ),
     );

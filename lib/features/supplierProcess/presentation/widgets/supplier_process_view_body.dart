@@ -17,6 +17,7 @@ import '../../../../core/utils/service_locator.dart';
 import '../../../../core/widgets/custom_error_massage.dart';
 import '../../../../core/widgets/custom_loading_widget.dart';
 import '../../../../core/widgets/custom_text_form_field.dart';
+import '../../../../core/widgets/custom_time_picker_field.dart';
 import '../../../../generated/l10n.dart';
 import '../../../home/presentation/widgets/home_view_body.dart';
 import '../../data/models/all_dropdown_model.dart';
@@ -664,6 +665,8 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
                 return buildDateWidget(title, itemColumnList, widgetData);
               } else if (itemColumnList.insertType == "dropdown") {
                 return buildDropdownWidget(title, itemColumnList, widgetData);
+              } else if (itemColumnList.insertType == "time") {
+                return buildTimeWidget(title, itemColumnList, widgetData);
               } else {
                 return Text("${itemColumnList.insertType}");
               }
@@ -861,7 +864,7 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
     );
   }*/
 
-  Widget buildDropdownWidget(
+  /*Widget buildDropdownWidget(
     String title,
     ColumnList itemColumnList,
     Map<String, dynamic> widgetData,
@@ -1010,6 +1013,206 @@ class _SupplierProcessViewBodyState extends State<SupplierProcessViewBody> {
           )
         ],
       ),
+    );
+  }*/
+  Widget buildDropdownWidget(
+    String title,
+    ColumnList itemColumnList,
+    Map<String, dynamic> widgetData,
+  ) {
+    List<ListDrop>? listDrop = [];
+    List<ItemDrop>? myListDrop = [];
+
+    for (var ii in myAllDropdownModelList) {
+      if (ii.listName == widget.pageData.listName) {
+        listDrop = ii.list;
+      }
+    }
+
+    for (var ii in listDrop!) {
+      if (ii.columnName == itemColumnList.columnName) {
+        myListDrop = ii.list;
+      }
+    }
+
+    String? dropValue;
+    List<String> dropValueList = [];
+    if (itemColumnList.isMulti == true) {
+      for (var st in widgetData['value']) {
+        for (var i in myListDrop!) {
+          if (i.id.toString() == st) {
+            dropValueList.add(i.text ?? '');
+          }
+        }
+      }
+    } else {
+      for (var i in myListDrop!) {
+        if (i.id.toString() == widgetData['value'].toString()) {
+          dropValue = i.text ?? '';
+        }
+      }
+    }
+
+    Pages? dropPage = getDropPage(itemColumnList.pageId);
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Text(
+                title,
+                style: AppStyles.textStyle14.copyWith(color: Colors.grey),
+              ),
+              if (itemColumnList.isRquired == true) const Icon(Icons.star, color: Colors.red, size: 10),
+              const SizedBox(width: 12),
+              if (dropPage != null)
+                InkWell(
+                  onTap: () async {
+                    bool canAdd = await getPermissions(itemColumnList.pageId);
+                    if (canAdd) {
+                      getColumnListAndAdd(dropPage);
+                    } else {
+                      CustomAlertDialog.alertWithButton(
+                        context: context,
+                        type: AlertType.error,
+                        title: S.of(context).error,
+                        desc: S.of(context).massage_no_permission,
+                      );
+                    }
+                  },
+                  child: const Icon(Icons.add, color: Colors.blue, size: 24),
+                ),
+              const SizedBox(width: 5),
+              InkWell(
+                onTap: () async {
+                  getDropdownList(widget.pageData.pageId);
+                },
+                child: const Icon(Icons.refresh, color: Colors.green, size: 24),
+              ),
+            ],
+          ),
+          StatefulBuilder(
+            builder: (context, dropSetState) {
+              return Row(
+                children: [
+                  Expanded(
+                    child: SizedBox(
+                      height: 40,
+                      child: itemColumnList.isMulti == false
+                          ? CustomDropdown<String>.search(
+                              hintText: '',
+                              initialItem: dropValue,
+                              closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                              decoration: CustomDropdownDecoration(
+                                headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
+                                closedFillColor: Colors.transparent,
+                                closedBorder: Border.all(color: AppColors.blueDark),
+                              ),
+                              items: myListDrop!.isEmpty ? [""] : myListDrop.map((e) => e.text ?? '').toList(),
+                              onChanged: (value) {
+                                dropSetState(() {
+                                  final ii = myListDrop!.firstWhere(
+                                    (element) => element.text == value,
+                                    orElse: () => ItemDrop(id: null, text: null),
+                                  );
+                                  if (ii.id != null) {
+                                    widgetData['value'] = ii.id;
+                                    dropValue = ii.text;
+                                  } else {
+                                    widgetData['value'] = null;
+                                    dropValue = null;
+                                  }
+                                });
+                              },
+                            )
+                          : CustomDropdown<String>.multiSelectSearch(
+                              hintText: '',
+                              initialItems: dropValueList,
+                              onListChanged: (valueList) {
+                                dropSetState(() {
+                                  widgetData['value'] = [];
+                                  dropValueList = [];
+                                  for (String i in valueList) {
+                                    final ii = myListDrop!.firstWhere(
+                                      (element) => element.text == i,
+                                      orElse: () => ItemDrop(id: null, text: null),
+                                    );
+                                    if (ii.id != null) {
+                                      widgetData['value'].add(ii.id);
+                                      dropValueList.add(ii.text ?? '');
+                                    }
+                                  }
+                                });
+                              },
+                              closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                              decoration: CustomDropdownDecoration(
+                                headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
+                                closedFillColor: Colors.transparent,
+                                closedBorder: Border.all(color: AppColors.blueDark),
+                              ),
+                              items: myListDrop!.isEmpty ? [""] : myListDrop.map((e) => e.text ?? '').toList(),
+                            ),
+                    ),
+                  ),
+                  if ((itemColumnList.isMulti == true && dropValueList.isNotEmpty) ||
+                      (itemColumnList.isMulti == false && dropValue != null))
+                    InkWell(
+                      onTap: () {
+                        dropSetState(() {
+                          if (itemColumnList.isMulti == true) {
+                            widgetData['value'] = [];
+                            dropValueList.clear(); // تحديث الواجهة
+                          } else {
+                            widgetData['value'] = null;
+                            dropValue = null; // تحديث الواجهة
+                          }
+                        });
+                      },
+                      child: const Padding(
+                        padding: EdgeInsets.only(left: 8.0),
+                        child: Icon(
+                          Icons.clear,
+                          color: Colors.red,
+                          size: 18,
+                        ),
+                      ),
+                    ),
+                ],
+              );
+            },
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget buildTimeWidget(
+    String title,
+    ColumnList itemColumnList,
+    Map<String, dynamic> widgetData,
+  ) {
+    String time = widgetData['value'] != "" ? widgetData['value'] : "";
+    return CustomTimePickerField(
+      title: title,
+      itemIsRequired: itemColumnList.isRquired ?? false,
+      initialTimeString: time,
+      onTimeSelected: (timeSelect) {
+        if (timeSelect != null) {
+          setState(() {
+            time = timeSelect;
+            widgetData['value'] = timeSelect;
+          });
+        }
+      },
+      onClear: () {
+        setState(() {
+          widgetData['value'] = "";
+          time = "";
+        });
+      },
     );
   }
 

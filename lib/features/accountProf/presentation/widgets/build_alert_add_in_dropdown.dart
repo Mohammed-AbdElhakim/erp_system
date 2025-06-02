@@ -2,7 +2,6 @@ import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 import '../../../../../core/helper/AlertDialog/custom_alert_dialog.dart';
@@ -17,6 +16,7 @@ import '../../../../../core/widgets/custom_loading_widget.dart';
 import '../../../../../core/widgets/custom_text_form_field.dart';
 import '../../../../../generated/l10n.dart';
 import '../../../../core/widgets/custom_date_picker_field.dart';
+import '../../../../core/widgets/custom_time_picker_field.dart';
 import '../../data/models/all_dropdown_model.dart';
 import '../../data/models/screen_model.dart';
 import '../manager/addEdit/add_edit_cubit.dart';
@@ -47,6 +47,8 @@ class _BuildAlertAddInDropdownState extends State<BuildAlertAddInDropdown> {
   late List<String> myListCategory;
   List<AllDropdownModel> myAllDropdownModelList = [];
   Map<String, String> selectedDates = {};
+  Map<String, String> selectedTimes = {};
+  Map<String, String?> selectedDropdownValues = {};
 
   @override
   void didChangeDependencies() {
@@ -275,7 +277,7 @@ class _BuildAlertAddInDropdownState extends State<BuildAlertAddInDropdown> {
           item.insertVisable == true &&
           item.categoryName == categoryName &&
           item.insertDefult == show) {
-        String date = selectedDates[item.columnName] ?? '';
+        // String date = selectedDates[item.columnName] ?? '';
         list.add(
           CustomDatePickerField(
             title: title,
@@ -366,6 +368,8 @@ class _BuildAlertAddInDropdownState extends State<BuildAlertAddInDropdown> {
           item.insertVisable == true &&
           item.categoryName == categoryName &&
           item.insertDefult == show) {
+        String? selectedDropdownValue = selectedDropdownValues[item.columnName];
+
         List<ListDrop>? listDrop = [];
         List<ItemDrop>? myListDrop = [];
 
@@ -399,7 +403,62 @@ class _BuildAlertAddInDropdownState extends State<BuildAlertAddInDropdown> {
                       )
                   ],
                 ),
-                CustomDropdown<String>.search(
+                Row(
+                  children: [
+                    Expanded(
+                      child: CustomDropdown<String>.search(
+                        hintText: '',
+                        closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                        decoration: CustomDropdownDecoration(
+                          headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
+                          closedFillColor: Colors.transparent,
+                          closedBorder: Border.all(color: AppColors.blueDark),
+                        ),
+                        validator: item.isRquired == true
+                            ? (value) {
+                                if (value?.isEmpty ?? true) {
+                                  return S.of(context).field_is_required;
+                                } else {
+                                  return null;
+                                }
+                              }
+                            : null,
+                        items: myListDrop!.isEmpty
+                            ? [""]
+                            : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
+                        initialItem: selectedDropdownValue,
+                        onChanged: (value) {
+                          if (value != null && value.isNotEmpty) {
+                            setState(() {
+                              selectedDropdownValues[item.columnName!] = value;
+                              ItemDrop ii = myListDrop!.firstWhere((element) => element.text == value);
+                              newRowData[item.searchName!.toString()] = ii.id;
+                            });
+                          }
+                        },
+                      ),
+                    ),
+                    if (selectedDropdownValue != null && selectedDropdownValue.isNotEmpty)
+                      InkWell(
+                        child: const Padding(
+                          padding: EdgeInsetsDirectional.only(start: 8),
+                          child: Icon(
+                            Icons.close,
+                            color: Colors.red,
+                            size: 18,
+                          ),
+                        ),
+                        onTap: () {
+                          setState(() {
+                            selectedDropdownValues[item.columnName!] = null;
+                            newRowData.remove(item.searchName!.toString());
+                          });
+                        },
+                      )
+                  ],
+                )
+
+                /* CustomDropdown<String>.search(
                   hintText: '',
                   closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                   decoration: CustomDropdownDecoration(
@@ -420,7 +479,7 @@ class _BuildAlertAddInDropdownState extends State<BuildAlertAddInDropdown> {
                     ItemDrop ii = myListDrop!.firstWhere((element) => element.text == value);
                     newRowData.addAll({item.searchName!.toString(): ii.id});
                   },
-                ),
+                ),*/
                 /*SizedBox(
                   // height: 40,
                   child: BlocProvider(
@@ -514,6 +573,32 @@ class _BuildAlertAddInDropdownState extends State<BuildAlertAddInDropdown> {
           ),
         );
       }
+      //time
+      if (item.insertType == "time" &&
+          item.insertVisable == true &&
+          item.categoryName == categoryName &&
+          item.insertDefult == show) {
+        String time = selectedTimes[item.columnName] ?? '';
+        list.add(CustomTimePickerField(
+          title: title,
+          itemIsRequired: item.isRquired ?? false,
+          initialTimeString: time,
+          onTimeSelected: (timeSelect) {
+            if (timeSelect != null) {
+              setState(() {
+                selectedTimes[item.columnName!] = timeSelect;
+                newRowData[item.columnName!.toString()] = timeSelect;
+              });
+            }
+          },
+          onClear: () {
+            setState(() {
+              selectedTimes.remove(item.columnName);
+              newRowData.remove(item.columnName);
+            });
+          },
+        ));
+      }
     }
     return list;
   }
@@ -521,7 +606,7 @@ class _BuildAlertAddInDropdownState extends State<BuildAlertAddInDropdown> {
   List<String> getCategory(List<ColumnList> columnList) {
     List<String> category = [];
     for (var item in columnList) {
-      category.add(item.categoryName!);
+      category.add(item.categoryName ?? "");
     }
     List<String> categoryList = category.toSet().toList();
     return categoryList;

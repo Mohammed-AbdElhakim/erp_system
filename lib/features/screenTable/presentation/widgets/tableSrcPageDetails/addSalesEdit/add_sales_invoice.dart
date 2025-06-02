@@ -612,13 +612,13 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
       }
       //Date
       if (item.insertType == "date" && condition) {
-        String date;
-        if (dataMaster[item.columnName] != null) {
-          date = DateFormat("yyyy-MM-dd", 'en').format(DateTime.parse(dataMaster[item.columnName].toString()).toLocal());
-        } else {
-          // date = DateFormat("yyyy-MM-dd", 'en').format(DateTime.now());
-          date = '';
-        }
+        // String date;
+        // if (dataMaster[item.columnName] != null) {
+        //   date = DateFormat("yyyy-MM-dd", 'en').format(DateTime.parse(dataMaster[item.columnName].toString()).toLocal());
+        // } else {
+        //   // date = DateFormat("yyyy-MM-dd", 'en').format(DateTime.now());
+        //   date = '';
+        // }
         list.add(
           CustomDatePickerField(
             title: title,
@@ -701,6 +701,144 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
 
       //dropdown
       if (item.insertType == "dropdown" && condition) {
+        List<ListDrop>? listDrop = [];
+        List<ItemDrop>? myListDrop = [];
+
+        for (var ii in myAllDropdownModelList) {
+          if (widget.tapData == null) {
+            if (ii.listName == widget.pageData.listName) {
+              listDrop = ii.list;
+            }
+          } else {
+            if (ii.listName == widget.tapData!.listName) {
+              listDrop = ii.list;
+            }
+          }
+        }
+
+        for (var ii in listDrop!) {
+          if (ii.columnName == item.columnName) {
+            myListDrop = ii.list;
+          }
+        }
+
+        String? dropValue;
+        for (var i in myListDrop!) {
+          if (i.id.toString() == dataMaster[item.searchName].toString() ||
+              i.id.toString() == dataMaster[item.columnName].toString() ||
+              i.id.toString() == dataMaster[item.droValue].toString()) {
+            dropValue = i.text ?? '';
+
+            if (item.columnName == "CustomerID") {
+              AddSalesInvoice.userId = int.parse(i.id ?? "-1");
+            }
+          }
+        }
+
+        Pages? dropPage = getDropPage(item.pageId);
+
+        list.add(
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      title,
+                      style: AppStyles.textStyle14.copyWith(color: Colors.grey),
+                    ),
+                    if (item.isRquired == true) const Icon(Icons.star, color: Colors.red, size: 10),
+                    const SizedBox(width: 12),
+                    if (dropPage != null)
+                      InkWell(
+                        onTap: () async {
+                          bool canAdd = await getPermissions(item.pageId);
+                          if (canAdd) {
+                            getColumnListAndAdd(dropPage);
+                          } else {
+                            CustomAlertDialog.alertWithButton(
+                              context: context,
+                              type: AlertType.error,
+                              title: S.of(context).error,
+                              desc: S.of(context).massage_no_permission,
+                            );
+                          }
+                        },
+                        child: const Icon(Icons.add, color: Colors.blue, size: 24),
+                      ),
+                    const SizedBox(width: 5),
+                    InkWell(
+                      onTap: () async {
+                        getDropdownList(widget.pageData.pageId);
+                      },
+                      child: const Icon(Icons.refresh, color: Colors.green, size: 24),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: CustomDropdown<String>.search(
+                        hintText: '',
+                        initialItem: dropValue,
+                        closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                        decoration: CustomDropdownDecoration(
+                          headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
+                          closedFillColor: Colors.transparent,
+                          closedBorder: Border.all(color: AppColors.blueDark),
+                        ),
+                        items: myListDrop.isEmpty
+                            ? [""]
+                            : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
+                        onChanged: (value) {
+                          ItemDrop ii = myListDrop!.firstWhere((element) => element.text == value);
+                          setState(() {
+                            dataMaster.updateAll((key, value) => key == item.columnName!.toString() ? value = ii.id : value);
+                            singleObject = dataMaster;
+
+                            if (item.columnName == "CustomerID") {
+                              AddSalesInvoice.userId = int.parse(ii.id ?? "-1");
+                            }
+                            if (item.columnName == "SalesInvoiceID") {
+                              BlocProvider.of<GetSalesInvoiceDetailsCubit>(context).getSalesInvoiceDetails(
+                                invoiceID: ii.id!,
+                              );
+                            }
+                          });
+                        },
+                      ),
+                    ),
+                    if (dropValue != null && dropValue.isNotEmpty)
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            dataMaster.remove(item.columnName);
+                            singleObject.remove(item.columnName);
+
+                            if (item.columnName == "CustomerID") {
+                              AddSalesInvoice.userId = -1;
+                            }
+                            if (item.columnName == "SalesInvoiceID") {
+                              // ممكن تضيف كود لإعادة تعيين بيانات الفاتورة إن حبيت
+                            }
+                          });
+                        },
+                        child: const Padding(
+                          padding: EdgeInsetsDirectional.only(start: 8),
+                          child: Icon(Icons.close, color: Colors.red, size: 18),
+                        ),
+                      ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      }
+
+      /*if (item.insertType == "dropdown" && condition) {
         List<ListDrop>? listDrop = [];
         List<ItemDrop>? myListDrop = [];
 
@@ -826,7 +964,7 @@ class _AddSalesInvoiceState extends State<AddSalesInvoice> {
             ),
           ),
         );
-      }
+      }*/
       //checkbox
       if (item.insertType == "checkbox" && condition) {
         bool checkboxValue = dataMaster[item.columnName] ?? false;
