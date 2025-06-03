@@ -550,7 +550,7 @@ class _ProductCardViewBodyState extends State<ProductCardViewBody> {
     }
 
     for (var ii in listDrop!) {
-      if (ii.columnName == itemColumnList.columnName) {
+      if (ii.columnName == itemColumnList.columnName && ii.nameAr == itemColumnList.arColumnLabel) {
         myListDrop = ii.list;
       }
     }
