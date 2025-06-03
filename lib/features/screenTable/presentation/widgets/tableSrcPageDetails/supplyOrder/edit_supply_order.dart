@@ -1192,7 +1192,7 @@ class _EditSupplyOrderState extends State<EditSupplyOrder> {
 
         String initialItem = initialItemID != null
             ? myListDrop!.contains(initialItemID)
-                ? myListDrop!
+                ? myListDrop
                     .firstWhere(
                       (element) => element.id! == initialItemID.toString(),
                     )
@@ -1210,7 +1210,7 @@ class _EditSupplyOrderState extends State<EditSupplyOrder> {
               headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
               closedFillColor: Colors.transparent,
               closedBorder: Border.all(color: AppColors.blueDark)),
-          items: myListDrop!.isEmpty ? [""] : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
+          items: myListDrop.isEmpty ? [""] : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
           onChanged: (value) {
             purchaseTypeId = int.parse(myListDrop!
                 .firstWhere(

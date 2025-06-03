@@ -666,7 +666,7 @@ class _AddSupplyOrderState extends State<AddSupplyOrder> {
                         ),
                         // initialItem: selectedValue,
                         initialItem: myListDrop!.contains(selectedValue) ? selectedValue : null,
-                        items: myListDrop!.isEmpty
+                        items: myListDrop.isEmpty
                             ? [""]
                             : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
                         onChanged: (value) {
