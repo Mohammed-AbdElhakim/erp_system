@@ -97,6 +97,7 @@ class _EditSupplyOrderState extends State<EditSupplyOrder> {
         builder: (context, state) {
           if (state is GetExpensesMasterSuccess) {
             Map<String, dynamic> dataMaster = state.data;
+            // singleObject = dataMaster;
             if (isFirst == true) {
               total = dataMaster['TotalOrder'] ?? 0.0;
               totalAfterTax = dataMaster['totalDetails'] ?? 0.0;
@@ -569,12 +570,21 @@ class _EditSupplyOrderState extends State<EditSupplyOrder> {
                   onSaved: (newValue) {
                     if (newValue!.isNotEmpty) {
                       setState(() {
-                        dataMaster
-                            .updateAll((key, value) => key == item.columnName!.toString() ? value = controller.text : value);
+                        dataMaster[item.columnName!] = controller.text;
                         singleObject = dataMaster;
                       });
                     }
                   },
+
+                  // onSaved: (newValue) {
+                  //   if (newValue!.isNotEmpty) {
+                  //     setState(() {
+                  //       dataMaster
+                  //           .updateAll((key, value) => key == item.columnName!.toString() ? value = controller.text : value);
+                  //       singleObject = dataMaster;
+                  //     });
+                  //   }
+                  // },
                 ),
               ],
             ),
@@ -613,12 +623,21 @@ class _EditSupplyOrderState extends State<EditSupplyOrder> {
                   onSaved: (newValue) {
                     if (newValue!.isNotEmpty) {
                       setState(() {
-                        dataMaster
-                            .updateAll((key, value) => key == item.columnName!.toString() ? value = controller.text : value);
+                        dataMaster[item.columnName!] = controller.text;
                         singleObject = dataMaster;
                       });
                     }
                   },
+
+                  // onSaved: (newValue) {
+                  //   if (newValue!.isNotEmpty) {
+                  //     setState(() {
+                  //       dataMaster
+                  //           .updateAll((key, value) => key == item.columnName!.toString() ? value = controller.text : value);
+                  //       singleObject = dataMaster;
+                  //     });
+                  //   }
+                  // },
                 ),
               ],
             ),
@@ -1172,16 +1191,20 @@ class _EditSupplyOrderState extends State<EditSupplyOrder> {
         }
 
         String initialItem = initialItemID != null
-            ? myListDrop!
-                .firstWhere(
-                  (element) => element.id! == initialItemID.toString(),
-                )
-                .text!
+            ? myListDrop!.contains(initialItemID)
+                ? myListDrop!
+                    .firstWhere(
+                      (element) => element.id! == initialItemID.toString(),
+                    )
+                    .text!
+                : ""
             : "";
 
         return CustomDropdown<String>.search(
           hintText: '',
-          initialItem: initialItem == "" ? null : initialItem,
+          initialItem: myListDrop!.contains(initialItem) ? initialItem : null,
+
+          // initialItem: initialItem == "" ? null : initialItem,
           closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
           decoration: CustomDropdownDecoration(
               headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),

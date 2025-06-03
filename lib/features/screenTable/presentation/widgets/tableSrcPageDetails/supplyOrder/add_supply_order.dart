@@ -664,7 +664,8 @@ class _AddSupplyOrderState extends State<AddSupplyOrder> {
                           closedFillColor: Colors.transparent,
                           closedBorder: Border.all(color: AppColors.blueDark),
                         ),
-                        initialItem: selectedValue,
+                        // initialItem: selectedValue,
+                        initialItem: myListDrop!.contains(selectedValue) ? selectedValue : null,
                         items: myListDrop!.isEmpty
                             ? [""]
                             : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
