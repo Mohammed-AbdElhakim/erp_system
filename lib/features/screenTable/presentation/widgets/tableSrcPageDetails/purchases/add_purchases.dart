@@ -473,6 +473,7 @@ class _AddPurchasesState extends State<AddPurchases> {
       //Date
       if (item.insertType == "date" && item.categoryTitle == categoryName && condition) {
         String date = DateFormat("yyyy-MM-dd", 'en').format(DateTime.now());
+        singleObject[item.columnName!.toString()] = DateTime.now().toString();
         list.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
