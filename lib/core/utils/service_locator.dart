@@ -31,6 +31,7 @@ import '../../features/supplierProcess/data/repositories/supplier_process_repo_i
 import '../../features/tasks/data/repositories/task_repo_impl.dart';
 import '../../features/taxDeclaration/data/repositories/tax_declaration_repo_impl.dart';
 import '../../features/trialBalance/data/repositories/trial_balance_repo_impl.dart';
+import '../../features/trialCost/data/repositories/trial_cost_repo_impl.dart';
 import '../repositories/general/general_repo_impl.dart';
 import '../repositories/menu/menu_repo_impl.dart';
 import 'api_service.dart';
@@ -221,6 +222,12 @@ void setupServiceLocator() {
 
   getIt.registerSingleton<AccountTreeRepoImpl>(
     AccountTreeRepoImpl(
+      getIt.get<ApiService>(),
+    ),
+  );
+
+  getIt.registerSingleton<TrialCostRepoImpl>(
+    TrialCostRepoImpl(
       getIt.get<ApiService>(),
     ),
   );

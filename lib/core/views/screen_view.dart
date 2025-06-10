@@ -26,6 +26,7 @@ import '../../features/supplierProcess/presentation/views/supplier_process_view.
 import '../../features/tasks/presentation/views/tasks_view.dart';
 import '../../features/taxDeclaration/presentation/views/tax_declaration_view.dart';
 import '../../features/trialBalance/presentation/views/trial_balance.dart';
+import '../../features/trialCost/presentation/views/trial_cost_view.dart';
 import '../models/menu_model/pages.dart';
 
 class ScreenView extends StatelessWidget {
@@ -95,6 +96,8 @@ class ScreenView extends StatelessWidget {
             return CostBalanceView(pageData: pageData);
           case "accountingTree":
             return AccountingTreeView(pageData: pageData);
+          case "trialCost":
+            return TrialCostView(pageData: pageData);
           default:
             return ScreenTable(pageData: pageData);
         }
