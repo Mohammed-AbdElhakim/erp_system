@@ -173,8 +173,7 @@ class TableDataSource extends DataGridSource {
           listColumn.length,
           (index) => DataGridCell(
               columnName: lang == AppStrings.enLangKey ? listColumn[index].enColumnLabel! : listColumn[index].arColumnLabel!,
-              value: getValue(listColumn, listColumn[index].columnName, "${e.toJson()[listColumn[index].columnName] ?? ""}",
-                  "${e.toJson()[listColumn[index].droText] ?? ""}")),
+              value: getValue(listColumn, listColumn[index].columnName, "${e.toJson()[listColumn[index].columnName] ?? ""}")),
           // columnName: listHeader[index], value: "${e[keys[index]] ?? ""}"),
         )
       ]);
@@ -243,39 +242,39 @@ class TableDataSource extends DataGridSource {
             color: Colors.red,
           );
         }
-      // case "dropdown":
-      //   String val = '';
-      //   if (columnList.columnName == columnList.searchName) {
-      //     List<ListDrop>? listDrop = [];
-      //     List<ItemDrop>? myListDrop = [];
-      //     for (var item in allDropdownModelList) {
-      //       if (item.listName == pageData.listName) {
-      //         listDrop = item.list;
-      //       }
-      //     }
-      //
-      //     for (var item in listDrop!) {
-      //       if (item.columnName == columnList.columnName) {
-      //         myListDrop = item.list;
-      //       }
-      //     }
-      //     for (var item in myListDrop!) {
-      //       if (item.id.toString() == value) {
-      //         val = item.text ?? "";
-      //       }
-      //     }
-      //   } else {
-      //     val = value;
-      //   }
-      //   return Text(
-      //     textAlign: TextAlign.center,
-      //     maxLines: 1,
-      //     overflow: TextOverflow.ellipsis,
-      //     val,
-      //     // style: TextStyle(
-      //     //     color:
-      //     //         selectedRows[indexRow] == true ? Colors.white : Colors.black),
-      //   );
+      case "dropdown":
+        String val = '';
+        if (columnList.columnName == columnList.searchName) {
+          List<ListDrop>? listDrop = [];
+          List<ItemDrop>? myListDrop = [];
+          for (var item in allDropdownModelList) {
+            if (item.listName == pageData.listName) {
+              listDrop = item.list;
+            }
+          }
+
+          for (var item in listDrop!) {
+            if (item.columnName == columnList.columnName) {
+              myListDrop = item.list;
+            }
+          }
+          for (var item in myListDrop!) {
+            if (item.id.toString() == value) {
+              val = item.text ?? "";
+            }
+          }
+        } else {
+          val = value;
+        }
+        return Text(
+          textAlign: TextAlign.center,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          val,
+          // style: TextStyle(
+          //     color:
+          //         selectedRows[indexRow] == true ? Colors.white : Colors.black),
+        );
       default:
         return Text(
           textAlign: TextAlign.center,
@@ -289,7 +288,7 @@ class TableDataSource extends DataGridSource {
     }
   }
 
-  getValue(List<HeaderModel> listColumn, key, String value, String droText) {
+  getValue(List<HeaderModel> listColumn, key, String value) {
     HeaderModel columnList = listColumn.firstWhere((element) => (element.columnName == key));
     if (columnList.insertType == "date") {
       try {
@@ -312,8 +311,6 @@ class TableDataSource extends DataGridSource {
       } else {
         return value;
       }
-    } else if (columnList.insertType == "dropdown") {
-      return droText;
     } else {
       return value;
     }
