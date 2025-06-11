@@ -11,6 +11,7 @@ import '../../features/cashier/data/repositories/cashier_repo_impl.dart';
 import '../../features/chart/data/repositories/chart_repo_impl.dart';
 import '../../features/confirmAttendance/data/repositories/confirm_attendance_repo_impl.dart';
 import '../../features/costBalance/data/repositories/cost_balance_repo_impl.dart';
+import '../../features/costItemAccountReport/data/repositories/cost_item_account_report_repo_impl.dart';
 import '../../features/customerAccount/data/repositories/customer_account_repo_impl.dart';
 import '../../features/customerCrm/data/repositories/customer_crm_repo_impl.dart';
 import '../../features/dailyFrenchCash/data/repositories/daily_french_cash_repo_impl.dart';
@@ -228,6 +229,11 @@ void setupServiceLocator() {
 
   getIt.registerSingleton<TrialCostRepoImpl>(
     TrialCostRepoImpl(
+      getIt.get<ApiService>(),
+    ),
+  );
+  getIt.registerSingleton<CostItemAccountReportRepoImpl>(
+    CostItemAccountReportRepoImpl(
       getIt.get<ApiService>(),
     ),
   );

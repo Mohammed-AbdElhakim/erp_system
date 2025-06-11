@@ -9,6 +9,7 @@ import '../../features/cashier/presentation/views/cashier_view.dart';
 import '../../features/chart/presentation/views/chart_view.dart';
 import '../../features/confirmAttendance/presentation/views/confirm_attendance_view.dart';
 import '../../features/costBalance/presentation/views/cost_balance_view.dart';
+import '../../features/costItemAccountReport/presentation/views/cost_item_account_report_view.dart';
 import '../../features/customerAccount/presentation/views/customer_account_view.dart';
 import '../../features/customerCrm/presentation/views/customer_crm_view.dart';
 import '../../features/dailyFrenchCash/presentation/views/daily_french_cash_view.dart';
@@ -98,6 +99,8 @@ class ScreenView extends StatelessWidget {
             return AccountingTreeView(pageData: pageData);
           case "trialCost":
             return TrialCostView(pageData: pageData);
+          case "costItemAccountReport":
+            return CostItemAccountReportView(pageData: pageData);
           default:
             return ScreenTable(pageData: pageData);
         }
