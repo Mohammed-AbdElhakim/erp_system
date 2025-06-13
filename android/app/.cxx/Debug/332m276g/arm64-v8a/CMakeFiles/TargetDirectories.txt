@@ -1,0 +1,2 @@
+D:/egy_dynamic/erp_system/android/app/.cxx/Debug/332m276g/arm64-v8a/CMakeFiles/edit_cache.dir
+D:/egy_dynamic/erp_system/android/app/.cxx/Debug/332m276g/arm64-v8a/CMakeFiles/rebuild_cache.dir
