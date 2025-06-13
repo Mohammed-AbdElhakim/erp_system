@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
-import '../../../../core/utils/api_service.dart';
 
 import '../../../../core/errors/failures.dart';
 import '../../../../core/helper/SharedPreferences/pref.dart';
+import '../../../../core/utils/api_service.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../models/account_view_model.dart';
 import '../models/add_edit_model.dart';
@@ -19,7 +19,8 @@ class AccountTreeRepoImpl implements AccountTreeRepo {
   @override
   Future<Either<Failure, List<AccountTreeModel>>> getAllAccountTree() async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       List<dynamic> data = await apiService.get(
         endPoint: "web/AccountView/getAllData",
@@ -51,7 +52,8 @@ class AccountTreeRepoImpl implements AccountTreeRepo {
   @override
   Future<Either<Failure, String>> delete({required int id}) async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       await apiService.delete(
         endPoint: "web/AccountView?AcID=$id",
@@ -78,9 +80,11 @@ class AccountTreeRepoImpl implements AccountTreeRepo {
   }
 
   @override
-  Future<Either<Failure, AccountTreeModel>> add({required Map<String, dynamic> data}) async {
+  Future<Either<Failure, AccountTreeModel>> add(
+      {required Map<String, dynamic> data}) async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> dataObj = await apiService.post(
         endPoint: "web/AccountView",
@@ -107,9 +111,11 @@ class AccountTreeRepoImpl implements AccountTreeRepo {
   }
 
   @override
-  Future<Either<Failure, AccountTreeModel>> edit({required Map<String, dynamic> data}) async {
+  Future<Either<Failure, AccountTreeModel>> edit(
+      {required Map<String, dynamic> data}) async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> dataObj = await apiService.put(
         endPoint: "web/AccountView",

@@ -3,10 +3,16 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 
+import '../helper/SharedPreferences/pref.dart';
+import '../utils/app_router.dart';
+import '../utils/app_strings.dart';
+
 abstract class Failure extends Equatable {
   final String errorMassage;
 
-  const Failure(this.errorMassage);
+  const Failure(
+    this.errorMassage,
+  );
   @override
   List<Object> get props => [];
 }
@@ -27,12 +33,13 @@ class ServerFailure extends Failure {
         return const ServerFailure("bad Certificate with api server");
       case DioExceptionType.badResponse:
         return ServerFailure.fromResponse(
-            dioException.response!.statusCode!, dioException.response!.data);
+          dioException.response!.statusCode!,
+          dioException.response!.data,
+        );
       case DioExceptionType.cancel:
         return const ServerFailure("Request to api server was canceled");
       case DioExceptionType.connectionError:
-        return const ServerFailure(
-            "Request to api server was Connection Error");
+        return const ServerFailure("Request to api server was Connection Error");
       case DioExceptionType.unknown:
         if (dioException.message!.contains("SocketException")) {
           return const ServerFailure("No Internet Connection");
@@ -46,13 +53,15 @@ class ServerFailure extends Failure {
 
   factory ServerFailure.fromResponse(int statusCode, dynamic response) {
     if (statusCode == 400) {
-      if(response is String ){
+      if (response is String) {
         return ServerFailure(response);
-      }else{
+      } else {
         return ServerFailure(utf8.decode(response));
       }
-
     } else if (statusCode == 401 || statusCode == 403) {
+      Pref.saveBoolToPref(key: AppStrings.isLoginKey, value: false);
+
+      AppRouter.pushReplacement(AppRouter.kLoginView);
       return const ServerFailure("The problem is related to authentication!");
     } else if (statusCode == 404) {
       return const ServerFailure("Your request not found, Please try later!");

@@ -1,4 +1,5 @@
 import 'package:erp_system/features/screenTable/presentation/views/edit_view.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../features/Reports/data/models/pass_data_table_report_view.dart';
@@ -19,6 +20,7 @@ import '../views/screen_view.dart';
 
 abstract class AppRouter {
   // GoRouter configuration
+  static final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   static const String kSplashView = "/";
   static const String kHostView = "/hostView";
   static const String kLoginView = "/loginView";
@@ -31,6 +33,7 @@ abstract class AppRouter {
   static const String kEditView = "/editView";
   static const String kTableReportsView = "/tableReportsView";
   static final router = GoRouter(
+    navigatorKey: navigatorKey,
     routes: [
       GoRoute(
         path: kSplashView,
@@ -114,4 +117,12 @@ abstract class AppRouter {
       ),
     ],
   );
+
+  // ✅ Helper method عشان تستخدمه من أى مكان
+  static void pushReplacement(String route, {Object? extra}) {
+    final context = navigatorKey.currentContext;
+    if (context != null) {
+      GoRouter.of(context).pushReplacement(route, extra: extra);
+    }
+  }
 }
