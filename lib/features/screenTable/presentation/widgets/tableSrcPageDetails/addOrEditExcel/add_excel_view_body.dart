@@ -88,7 +88,12 @@ class _AddExcelViewBodyState extends State<AddExcelViewBody> {
           List<String> listHeader = [];
           for (var item in state.listSetupModel) {
             category.add(item.categoryTitle ?? "");
-            if (item.insertVisable == true && item.cvisable == true && item.visible == true && item.isGeneral != true) {
+            //تحت
+            if (
+                // item.insertVisable == true &&
+                item.cvisable == true && item.visible == true
+                // && item.isGeneral != true
+                ) {
               listColumn.add(item);
               listKey.add(item.columnName);
               listHeader.add(lang == AppStrings.enLangKey ? item.enColumnLabel! : item.arColumnLabel!);
@@ -253,7 +258,10 @@ class _AddExcelViewBodyState extends State<AddExcelViewBody> {
 
     for (var item in listData) {
       String title = lang == AppStrings.arLangKey ? item.arColumnLabel! : item.enColumnLabel!;
-      bool condition = item.insertVisable == true && item.cvisable == false && item.visible == false && item.isGeneral == true;
+      //فوق
+      //بشمهندس محمد
+      // bool condition = item.insertVisable == true && item.cvisable == false && item.visible == false && item.isGeneral == true;
+      bool condition = item.insertVisable == true && item.cvisable == false && item.isGeneral == true;
       //text
       if (item.insertType == "text" && item.categoryTitle == categoryName && condition) {
         list.add(

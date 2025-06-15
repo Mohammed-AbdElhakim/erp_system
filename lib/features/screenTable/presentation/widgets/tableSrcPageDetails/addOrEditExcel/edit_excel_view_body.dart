@@ -177,6 +177,7 @@ class _EditExcelViewBodyState extends State<EditExcelViewBody> {
                           List<String> listHeader = [];
                           for (var item in state.listSetupModel) {
                             category.add(item.categoryTitle ?? "");
+                            //تحت
                             if (
                                 // item.insertVisable == true &&
                                 item.cvisable == true && item.visible == true
@@ -358,7 +359,11 @@ class _EditExcelViewBodyState extends State<EditExcelViewBody> {
 
     for (var item in listData) {
       String title = lang == AppStrings.arLangKey ? item.arColumnLabel! : item.enColumnLabel!;
-      bool condition = item.insertVisable == true && item.cvisable == false && item.visible == false && item.isGeneral == true;
+      //فوق
+      //بشمهندس محمد
+      // bool condition = item.insertVisable == true && item.cvisable == false && item.visible == false && item.isGeneral == true;
+      bool condition = item.insertVisable == true && item.cvisable == false && item.isGeneral == true;
+
       //text
       if (item.insertType == "text" && item.categoryTitle == categoryName && condition) {
         TextEditingController controller =
