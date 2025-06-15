@@ -510,7 +510,7 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
           }
         }
         for (var ii in listDrop!) {
-          if (ii.columnName == item.columnName) {
+          if (ii.columnName == item.columnName && ii.nameAr == item.arColumnLabel) {
             myListDrop = ii.list;
           }
         }
@@ -558,6 +558,8 @@ class _BuildAlertAddState extends State<BuildAlertAdd> {
                             ? [""]
                             : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
                         initialItem: selectedDropdownValue,
+                        // initialItem: myListDrop.any((e) => e.text == selectedDropdownValue) ? selectedDropdownValue : null,
+
                         onChanged: (value) {
                           if (value != null && value.isNotEmpty) {
                             setState(() {
