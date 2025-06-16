@@ -1169,7 +1169,11 @@ class _EditSupplyOrderState extends State<EditSupplyOrder> {
 
       case "طريقة الشراء":
         int? initialItemID = oldDataMaster['purchaseTypeId'];
-        ItemListSetupModel item = listSetup.firstWhere((element) => element.columnName == "purchaseTypeId");
+        // ItemListSetupModel item = listSetup.firstWhere((element) => element.columnName == "purchaseTypeId");
+        ItemListSetupModel? item = listSetup.firstWhere(
+          (element) => element.columnName == "purchaseTypeId",
+          orElse: () => ItemListSetupModel(), // محتاج تعدل النوع ليقبل null
+        );
         List<ListDrop>? listDrop = [];
         List<ItemDrop>? myListDrop = [];
 
