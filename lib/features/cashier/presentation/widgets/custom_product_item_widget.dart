@@ -4,21 +4,20 @@ import 'package:flutter/material.dart';
 
 import '../../data/models/item_list_setup_model.dart';
 import '../../data/models/product_model.dart';
+import '../../data/models/tap_model.dart';
 import 'sales_fast_alert_dialog_add_widget.dart';
 
 class CustomProductItemWidget extends StatefulWidget {
   const CustomProductItemWidget(
-      {super.key,
-      required this.productItem,
-      required this.listColumn,
-      required this.onTapAdd});
+      {super.key, required this.productItem, required this.listColumn, required this.onTapAdd, required this.tapData});
+
   final ProductItem productItem;
   final List<ItemListSetupModel> listColumn;
   final void Function(Map<String, dynamic>) onTapAdd;
+  final ListTaps tapData;
 
   @override
-  State<CustomProductItemWidget> createState() =>
-      _CustomProductItemWidgetState();
+  State<CustomProductItemWidget> createState() => _CustomProductItemWidgetState();
 }
 
 class _CustomProductItemWidgetState extends State<CustomProductItemWidget> {
@@ -28,16 +27,12 @@ class _CustomProductItemWidgetState extends State<CustomProductItemWidget> {
       child: Container(
         width: 100,
         height: 100,
-        decoration: BoxDecoration(
-            color: AppColors.blueGreyLight,
-            borderRadius: BorderRadius.circular(12)),
+        decoration: BoxDecoration(color: AppColors.blueGreyLight, borderRadius: BorderRadius.circular(12)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              widget.productItem.proPrice == null
-                  ? "0.0 E.G"
-                  : "${widget.productItem.proPrice} E.G",
+              widget.productItem.proPrice == null ? "0.0 E.G" : "${widget.productItem.proPrice} E.G",
               style: AppStyles.textStyle12.copyWith(color: AppColors.blueLight),
             ),
             Image.asset(
@@ -50,8 +45,7 @@ class _CustomProductItemWidgetState extends State<CustomProductItemWidget> {
                 widget.productItem.proName!,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: AppStyles.textStyle12
-                    .copyWith(color: AppColors.blueGreyDark),
+                style: AppStyles.textStyle12.copyWith(color: AppColors.blueGreyDark),
               ),
             ),
           ],
@@ -64,8 +58,9 @@ class _CustomProductItemWidgetState extends State<CustomProductItemWidget> {
             return AlertDialog(
               content: SalesFastAlertDialogAddWidget(
                 listColumn: widget.listColumn,
-                proName: widget.productItem.proName,
-                proId: widget.productItem.proID,
+                // proName: widget.productItem.proName,
+                proId: widget.productItem.proID!,
+                tapData: widget.tapData,
                 onTapAdd: (data) {
                   // tableListInAddView.add(data);
                   widget.onTapAdd(data);

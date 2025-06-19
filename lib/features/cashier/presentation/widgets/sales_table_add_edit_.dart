@@ -6,9 +6,12 @@ import 'package:linked_scroll_controller/linked_scroll_controller.dart';
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/methods.dart';
+import '../../../cashier/data/models/all_dropdown_model.dart';
 import '../../data/models/item_list_setup_model.dart';
 import '../../data/models/product_model.dart';
-import 'sales_alert_dialog_edit_widget.dart';
+import '../../data/models/tap_model.dart';
+import '../views/cashier_view.dart';
+import 'sales_fast_alert_dialog_add_widget.dart';
 
 typedef OnTapAction<T> = void Function(T data);
 
@@ -20,12 +23,15 @@ class SalesTableAddEdit extends StatefulWidget {
     required this.onTapAction,
     required this.onTapRow,
     required this.allProductList,
+    required this.tapData,
   });
+
   final List<String> listHeader;
   final List<ItemListSetupModel> listColumn;
   final OnTapAction<List<Map<String, dynamic>>> onTapAction;
   final void Function(int selectRow) onTapRow;
   final List<ProductItem> allProductList;
+  final ListTaps tapData;
 
   static String barcode = '';
 
@@ -38,6 +44,7 @@ class _SalesTableAddEditState extends State<SalesTableAddEdit> {
   ScrollController? headerScrollController;
   ScrollController? dataScrollController;
   Map<String, dynamic> myObject = {};
+
   // late List<Map<String, dynamic>> tableListInAddView;
   late int customerCategoryID;
   late int productId;
@@ -146,19 +153,25 @@ class _SalesTableAddEditState extends State<SalesTableAddEdit> {
             IconButton(
               onPressed: () {
                 if (indexSelect != -1) {
+                  final dataToEdit = CashierViewBody.tableList[indexSelect];
                   showDialog(
                     context: context,
                     builder: (context) {
                       return AlertDialog(
-                        content: SalesAlertDialogEditWidget(
+                        content: SalesFastAlertDialogAddWidget(
                           listColumn: widget.listColumn,
                           onTapAdd: (data) {
-                            CashierViewBody.tableList.removeAt(indexSelect);
-                            CashierViewBody.tableList.insert(indexSelect, data);
+                            // CashierViewBody.tableList.removeAt(indexSelect);
+                            // CashierViewBody.tableList.insert(indexSelect, data);
+                            // indexSelect = -1;
+                            // widget.onTapAction(CashierViewBody.tableList);
+
+                            CashierViewBody.tableList[indexSelect] = data;
                             indexSelect = -1;
                             widget.onTapAction(CashierViewBody.tableList);
                           },
-                          dataOld: CashierViewBody.tableList[indexSelect],
+                          dataOld: dataToEdit,
+                          tapData: widget.tapData,
                         ),
                       );
                     },
@@ -275,28 +288,19 @@ class _SalesTableAddEditState extends State<SalesTableAddEdit> {
                             SizedBox(
                               width: 130,
                               child: InkWell(
-                                onTap: widget.listColumn[i].insertType! !=
-                                        "date"
+                                onTap: widget.listColumn[i].insertType! != "date"
                                     ? () {
                                         buildShowDialogText(
                                           context,
-                                          text: CashierViewBody.tableList[index]
-                                              [widget.listColumn[i].columnName],
+                                          text: CashierViewBody.tableList[index][widget.listColumn[i].columnName],
                                         );
                                       }
                                     : null,
                                 child: Container(
-                                  color: indexSelect == index
-                                      ? AppColors.blueGreyDark
-                                      : Colors.transparent,
-                                  width:
-                                      widget.listColumn[i].toString().length >
-                                              12
-                                          ? 100
-                                          : null,
+                                  color: indexSelect == index ? AppColors.blueGreyDark : Colors.transparent,
+                                  width: widget.listColumn[i].toString().length > 12 ? 100 : null,
                                   alignment: Alignment.center,
-                                  child: buildMyWidget(
-                                      widget.listColumn[i], index),
+                                  child: buildMyWidget(widget.listColumn[i], index),
                                 ),
                               ),
                             ),
@@ -371,17 +375,13 @@ class _SalesTableAddEditState extends State<SalesTableAddEdit> {
 
     switch (columnList.insertType) {
       case "date":
-        String date = data.isNotEmpty
-            ? DateFormat("yyyy-MM-dd", "en")
-                .format(DateTime.parse(data).toLocal())
-            : '';
+        String date = data.isNotEmpty ? DateFormat("yyyy-MM-dd", "en").format(DateTime.parse(data).toLocal()) : '';
         return Text(
           textAlign: TextAlign.center,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           date == "0001-12-31" || date == "0000-12-31" ? '' : date,
-          style: TextStyle(
-              color: indexSelect == indexRow ? Colors.white : Colors.black),
+          style: TextStyle(color: indexSelect == indexRow ? Colors.white : Colors.black),
         );
       case "checkbox":
         if (data == "true") {
@@ -400,9 +400,28 @@ class _SalesTableAddEditState extends State<SalesTableAddEdit> {
 
       case "dropdown":
         String val = '';
-        for (var element in widget.allProductList) {
-          if (element.proID.toString() == data) {
-            val = element.proName ?? "";
+        // for (var element in widget.allProductList) {
+        //   if (element.proID.toString() == data) {
+        //     val = element.proName ?? "";
+        //   }
+        // }
+        List<ListDrop> listDrop = [];
+        List<ItemDrop> myListDrop = [];
+
+        for (var ii in CashierView.myAllDropdownModelList) {
+          if (ii.listName == widget.tapData.listName) {
+            listDrop = ii.list ?? [];
+          }
+        }
+
+        for (var ii in listDrop) {
+          if (ii.columnName == columnList.columnName && ii.nameAr == columnList.arColumnLabel) {
+            myListDrop = ii.list!;
+          }
+        }
+        for (var ii in myListDrop) {
+          if (ii.id.toString() == data) {
+            val = ii.text ?? "";
           }
         }
 
@@ -411,8 +430,7 @@ class _SalesTableAddEditState extends State<SalesTableAddEdit> {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           val,
-          style: TextStyle(
-              color: indexSelect == indexRow ? Colors.white : Colors.black),
+          style: TextStyle(color: indexSelect == indexRow ? Colors.white : Colors.black),
         );
       default:
         return Text(
@@ -420,8 +438,7 @@ class _SalesTableAddEditState extends State<SalesTableAddEdit> {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           data,
-          style: TextStyle(
-              color: indexSelect == indexRow ? Colors.white : Colors.black),
+          style: TextStyle(color: indexSelect == indexRow ? Colors.white : Colors.black),
         );
     }
   }
@@ -432,15 +449,11 @@ class _SalesTableAddEditState extends State<SalesTableAddEdit> {
       orElse: () => {"ProductId": -1},
     )['ProductId'];
 
-    customerCategoryID = CashierViewBody.listCustomerAccount.firstWhere(
-        (element) =>
-            element['CustomerAccountID'] ==
-            CashierViewBody.userId)['CategoryID'];
+    customerCategoryID = CashierViewBody.listCustomerAccount
+        .firstWhere((element) => element['CustomerAccountID'] == CashierViewBody.userId)['CategoryID'];
 
     double productPrice = CashierViewBody.listProductPrices.firstWhere(
-          (element) =>
-              element['ProductID'] == productId &&
-              element['CustomerCategoryID'] == customerCategoryID,
+          (element) => element['ProductID'] == productId && element['CustomerCategoryID'] == customerCategoryID,
           orElse: () => {},
         )['Price'] ??
         0.0;

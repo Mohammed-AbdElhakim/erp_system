@@ -10,18 +10,19 @@ part 'add_edit_product_state.dart';
 class AddEditProductCubit extends Cubit<AddEditProductState> {
   AddEditProductCubit(this.cashierRepo) : super(AddEditProductInitial());
   final CashierRepo cashierRepo;
-  Future<void> add(
-      {required List<Map<String, dynamic>> tableList,
-      required Map<String, dynamic> singleObject,
-      required String controllerName}) async {
+
+  Future<void> add({
+    required List<Map<String, dynamic>> tableList,
+    required Map<String, dynamic> singleObject,
+    required String controllerName,
+  }) async {
     emit(AddEditProductLoading());
-    Either<Failure, String> result = await cashierRepo.addProduct(
-        body: {"array": tableList, "singleObject": singleObject},
-        controllerName: controllerName);
+    Either<Failure, int> result =
+        await cashierRepo.addProduct(body: {"array": tableList, "singleObject": singleObject}, controllerName: controllerName);
     result.fold((failure) {
       emit(AddEditProductFailure(failure.errorMassage));
-    }, (send) {
-      emit(AddEditProductSuccess());
+    }, (productId) async {
+      emit(AddEditProductSuccess(productId));
     });
   }
 }

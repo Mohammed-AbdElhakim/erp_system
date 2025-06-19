@@ -245,6 +245,11 @@ class S {
     return Intl.message('Add', name: 'btn_add', desc: '', args: []);
   }
 
+  /// `Save`
+  String get btn_save {
+    return Intl.message('Save', name: 'btn_save', desc: '', args: []);
+  }
+
   /// `Edit`
   String get btn_edit {
     return Intl.message('Edit', name: 'btn_edit', desc: '', args: []);

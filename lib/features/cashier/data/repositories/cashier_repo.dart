@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/errors/failures.dart';
@@ -10,7 +12,9 @@ import '../models/tap_model.dart';
 
 abstract class CashierRepo {
   Future<Either<Failure, ProCompanyModel>> getProCompany();
+
   Future<Either<Failure, ModalityModel>> getModality();
+
   Future<Either<Failure, ProductModel>> getProduct();
 
   Future<Either<Failure, List<AllDropdownModel>>> getAllDropdownList({
@@ -25,11 +29,15 @@ abstract class CashierRepo {
     required String pageListName,
   });
 
-  Future<Either<Failure, String>> addProduct(
-      {required Map<String, dynamic> body, required String controllerName});
+  Future<Either<Failure, int>> addProduct({required Map<String, dynamic> body, required String controllerName});
 
   Future<Either<Failure, String>> add({
     required String controllerName,
     required Map<String, dynamic> body,
+  });
+
+  Future<Either<Failure, Uint8List>> getFileWordPrint({
+    required String pageId,
+    required int id,
   });
 }

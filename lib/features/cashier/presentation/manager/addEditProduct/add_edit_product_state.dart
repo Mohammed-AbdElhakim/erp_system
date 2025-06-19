@@ -2,6 +2,7 @@ part of 'add_edit_product_cubit.dart';
 
 sealed class AddEditProductState extends Equatable {
   const AddEditProductState();
+
   @override
   List<Object> get props => [];
 }
@@ -16,4 +17,8 @@ final class AddEditProductFailure extends AddEditProductState {
   const AddEditProductFailure(this.errorMassage);
 }
 
-final class AddEditProductSuccess extends AddEditProductState {}
+final class AddEditProductSuccess extends AddEditProductState {
+  final int productId;
+
+  const AddEditProductSuccess(this.productId);
+}

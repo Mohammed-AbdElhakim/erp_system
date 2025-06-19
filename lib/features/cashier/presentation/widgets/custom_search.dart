@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../data/models/item_list_setup_model.dart';
 import '../../data/models/product_model.dart';
+import '../../data/models/tap_model.dart';
 import 'cashier_view_body.dart';
 import 'custom_product_item_widget.dart';
 
@@ -11,11 +12,14 @@ class CustomSearch extends SearchDelegate {
   final List<ProductItem> productList;
   final List<ItemListSetupModel> listColumn;
   final void Function(Map<String, dynamic>) onTapAdd;
+  final ListTaps tapData;
 
-  CustomSearch(
-      {required this.productList,
-      required this.listColumn,
-      required this.onTapAdd});
+  CustomSearch({
+    required this.productList,
+    required this.listColumn,
+    required this.onTapAdd,
+    required this.tapData,
+  });
 
   @override
   List<Widget>? buildActions(BuildContext context) {
@@ -57,6 +61,7 @@ class CustomSearch extends SearchDelegate {
             children: machQuery
                 .map(
                   (e) => CustomProductItemWidget(
+                    tapData: tapData,
                     productItem: e,
                     listColumn: listColumn,
                     onTapAdd: (data) {
@@ -91,6 +96,7 @@ class CustomSearch extends SearchDelegate {
             children: machQuery
                 .map(
                   (e) => CustomProductItemWidget(
+                    tapData: tapData,
                     productItem: e,
                     listColumn: listColumn,
                     onTapAdd: (data) {
@@ -120,10 +126,9 @@ class CustomSearch extends SearchDelegate {
           minHeight: 40.0, // ارتفاع الـ TextField الأدنى
           maxHeight: 40.0, // ارتفاع الـ TextField الأقصى
         ),
-        filled: true, // لون النص الافتراضي (Hint)
-        border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide.none),
+        filled: true,
+        // لون النص الافتراضي (Hint)
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
         focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide(

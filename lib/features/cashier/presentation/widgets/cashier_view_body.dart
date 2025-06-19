@@ -19,6 +19,7 @@ import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/service_locator.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_text_form_field.dart';
+import '../../../../core/widgets/custom_time_picker_field.dart';
 import '../../../../generated/l10n.dart';
 import '../../../home/presentation/widgets/home_view_body.dart';
 import '../../data/models/all_dropdown_model.dart';
@@ -36,6 +37,7 @@ import '../views/cashier_view.dart';
 import 'build_alert_add_in_dropdown.dart';
 import 'custom_product_item_widget.dart';
 import 'custom_search.dart';
+import 'print_invoice.dart';
 import 'sales_table_add_edit_.dart';
 
 class CashierViewBody extends StatefulWidget {
@@ -233,6 +235,8 @@ class _CashierViewBodyState extends State<CashierViewBody> {
                 return buildDateWidget(title, itemListSetupModel, widgetData);
               } else if (itemListSetupModel.insertType == "dropdown") {
                 return buildDropdownWidget(title, itemListSetupModel, widgetData);
+              } else if (itemListSetupModel.insertType == "time") {
+                return buildTimeWidget(title, itemListSetupModel, widgetData);
               } else {
                 return Text("${itemListSetupModel.insertType}");
               }
@@ -257,7 +261,13 @@ class _CashierViewBodyState extends State<CashierViewBody> {
   }
 
   Widget buildTextAndNumberWidget(
-      String title, ItemListSetupModel itemListSetupModel, Map<String, dynamic> widgetData, TextInputType? keyboardType) {
+    String title,
+    ItemListSetupModel itemListSetupModel,
+    Map<String, dynamic> widgetData,
+    TextInputType? keyboardType,
+  ) {
+    final TextEditingController controller = TextEditingController(text: widgetData['value']);
+
     return StatefulBuilder(
       builder: (context, tNSetState) {
         return Padding(
@@ -283,11 +293,9 @@ class _CashierViewBodyState extends State<CashierViewBody> {
                 hintText: '',
                 isValidator: itemListSetupModel.isRquired!,
                 keyboardType: keyboardType,
-                controller: TextEditingController(text: widgetData['value']),
+                controller: controller,
                 onChanged: (value) {
-                  tNSetState(() {
-                    widgetData['value'] = value;
-                  });
+                  widgetData['value'] = value;
                 },
               ),
             ],
@@ -341,10 +349,28 @@ class _CashierViewBodyState extends State<CashierViewBody> {
                         BoxDecoration(borderRadius: BorderRadius.circular(12), border: Border.all(color: AppColors.blueDark)),
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(8),
-                    child: Text(
-                      date,
-                      textAlign: TextAlign.center,
-                      style: AppStyles.textStyle14.copyWith(color: Colors.black),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          date.isNotEmpty ? date : '',
+                          style: AppStyles.textStyle14.copyWith(color: Colors.black),
+                        ),
+                        if (date.isNotEmpty)
+                          GestureDetector(
+                            onTap: () {
+                              dsetState(() {
+                                widgetData['value'] = "";
+                                date = "";
+                              });
+                            },
+                            child: const Icon(
+                              Icons.close,
+                              color: Colors.blue,
+                              size: 18,
+                            ),
+                          ),
+                      ],
                     )),
               );
             },
@@ -448,33 +474,89 @@ class _CashierViewBodyState extends State<CashierViewBody> {
           ),
           StatefulBuilder(
             builder: (context, dropSetState) {
-              return SizedBox(
-                height: 40,
-                child: CustomDropdown<String>.search(
-                  hintText: '',
-                  initialItem: dropValue,
-                  closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                  decoration: CustomDropdownDecoration(
-                    headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
-                    closedFillColor: Colors.transparent,
-                    closedBorder: Border.all(color: AppColors.blueDark),
+              return Row(
+                children: [
+                  Expanded(
+                    child: SizedBox(
+                      height: 40,
+                      child: CustomDropdown<String>.search(
+                        hintText: '',
+                        initialItem: dropValue,
+                        closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                        decoration: CustomDropdownDecoration(
+                          headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
+                          closedFillColor: Colors.transparent,
+                          closedBorder: Border.all(color: AppColors.blueDark),
+                        ),
+                        items: myListDrop!.isEmpty
+                            ? [""]
+                            : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
+                        onChanged: (value) {
+                          dropSetState(() {
+                            ItemDrop ii = myListDrop!.firstWhere(
+                              (element) => element.text == value,
+                              orElse: () => ItemDrop(id: null, text: null),
+                            );
+                            widgetData['value'] = ii.id;
+                            dropValue = ii.text;
+                            if (itemListSetupModel.columnName == "CustomerID") {
+                              CashierViewBody.userId = int.parse(ii.id ?? "-1");
+                            }
+                          });
+                        },
+                      ),
+                    ),
                   ),
-                  items: myListDrop!.isEmpty ? [""] : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
-                  onChanged: (value) {
-                    dropSetState(() {
-                      ItemDrop ii = myListDrop!.firstWhere((element) => element.text == value);
-                      widgetData['value'] = ii.id;
-                      if (itemListSetupModel.columnName == "CustomerID") {
-                        CashierViewBody.userId = int.parse(ii.id ?? "-1");
-                      }
-                    });
-                  },
-                ),
+                  if (dropValue != null)
+                    InkWell(
+                      onTap: () {
+                        dropSetState(() {
+                          widgetData['value'] = null;
+                          dropValue = null; // تحديث الواجهة
+                        });
+                      },
+                      child: const Padding(
+                        padding: EdgeInsetsDirectional.only(start: 8.0),
+                        child: Icon(
+                          Icons.clear,
+                          color: Colors.red,
+                          size: 18,
+                        ),
+                      ),
+                    ),
+                ],
               );
             },
           )
         ],
       ),
+    );
+  }
+
+  Widget buildTimeWidget(
+    String title,
+    ItemListSetupModel itemListSetupModel,
+    Map<String, dynamic> widgetData,
+  ) {
+    String time = widgetData['value'] != "" ? widgetData['value'] : "";
+    return CustomTimePickerField(
+      title: title,
+      itemIsRequired: itemListSetupModel.isRquired ?? false,
+      initialTimeString: time,
+      onTimeSelected: (timeSelect) {
+        if (timeSelect != null) {
+          setState(() {
+            time = timeSelect;
+            widgetData['value'] = timeSelect;
+          });
+        }
+      },
+      onClear: () {
+        setState(() {
+          widgetData['value'] = "";
+          time = "";
+        });
+      },
     );
   }
 
@@ -732,6 +814,7 @@ class _CashierViewBodyState extends State<CashierViewBody> {
                                 showSearch(
                                   context: context,
                                   delegate: CustomSearch(
+                                    tapData: widget.tapData!,
                                     productList: widget.allProductList,
                                     listColumn: widget.listColumn,
                                     onTapAdd: (data) {
@@ -739,18 +822,25 @@ class _CashierViewBodyState extends State<CashierViewBody> {
                                       if (CashierViewBody.tableList.isEmpty) {
                                         CashierViewBody.tableList.add(data);
                                       } else {
-                                        Map<String, dynamic> itemSearch = CashierViewBody.tableList.firstWhere(
+                                        int index = CashierViewBody.tableList.indexWhere(
                                           (element) => element['ProductID'] == data['ProductID'],
-                                          orElse: () => {},
                                         );
-                                        if (itemSearch.isEmpty) {
+                                        if (index == -1) {
                                           tSetState(() {
                                             CashierViewBody.tableList.add(data);
                                           });
                                         } else {
-                                          itemSearch['Qty'] = (int.parse(data['Qty']) + 1).toString();
+                                          Map<String, dynamic> existingItem = CashierViewBody.tableList[index];
+                                          existingItem['Qty'] =
+                                              (int.parse(existingItem['Qty']) + int.parse(data['Qty'])).toString();
+                                          existingItem = {...data, ...existingItem};
+
+                                          CashierViewBody.tableList[index] = existingItem;
+
+                                          tSetState(() {});
                                         }
                                       }
+
                                       calculateNumbers(tSetState);
                                     },
                                   ),
@@ -772,6 +862,7 @@ class _CashierViewBodyState extends State<CashierViewBody> {
                                 children: productList
                                     .map(
                                       (productItem) => CustomProductItemWidget(
+                                        tapData: widget.tapData!,
                                         productItem: productItem,
                                         listColumn: widget.listColumn,
                                         onTapAdd: (data) {
@@ -779,16 +870,21 @@ class _CashierViewBodyState extends State<CashierViewBody> {
                                           if (CashierViewBody.tableList.isEmpty) {
                                             CashierViewBody.tableList.add(data);
                                           } else {
-                                            Map<String, dynamic> itemSearch = CashierViewBody.tableList.firstWhere(
+                                            int index = CashierViewBody.tableList.indexWhere(
                                               (element) => element['ProductID'] == data['ProductID'],
-                                              orElse: () => {},
                                             );
-                                            if (itemSearch.isEmpty) {
+                                            if (index == -1) {
                                               tSetState(() {
                                                 CashierViewBody.tableList.add(data);
                                               });
                                             } else {
-                                              itemSearch['Qty'] = (int.parse(itemSearch['Qty']) + 1).toString();
+                                              Map<String, dynamic> existingItem = CashierViewBody.tableList[index];
+                                              existingItem['Qty'] =
+                                                  (int.parse(existingItem['Qty']) + int.parse(data['Qty'])).toString();
+                                              existingItem = {...data, ...existingItem};
+
+                                              CashierViewBody.tableList[index] = existingItem;
+
                                               tSetState(() {});
                                             }
                                           }
@@ -889,6 +985,7 @@ class _CashierViewBodyState extends State<CashierViewBody> {
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 16),
                             child: SalesTableAddEdit(
+                              tapData: widget.tapData!,
                               onTapRow: (selectRow) {
                                 setState(() {
                                   indexSelect = selectRow;
@@ -993,11 +1090,31 @@ class _CashierViewBodyState extends State<CashierViewBody> {
             BlocConsumer<AddEditProductCubit, AddEditProductState>(
               listener: (context, state) {
                 if (state is AddEditProductSuccess) {
-                  _pageController.jumpToPage(0);
-                  CashierViewBody.tableList = [];
-                  CashierViewBody.userId = -1;
-                  total = 0.0;
-                  setState(() {});
+                  showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (context) => AlertDialog(
+                      content: PrintInvoice(
+                        pageData: widget.pageData,
+                        lang: lang!,
+                        id: state.productId,
+                      ),
+                    ),
+                  ).then(
+                    (value) {
+                      _pageController.jumpToPage(0);
+                      CashierViewBody.tableList = [];
+                      CashierViewBody.userId = -1;
+                      total = 0.0;
+                      singleObject.clear();
+                      widgetsData.clear();
+                      modalityList.clear();
+                      productList.clear();
+                      initStatePage1();
+                      initStatePage2();
+                      setState(() {});
+                    },
+                  );
                 } else if (state is AddEditProductFailure) {
                   CustomAlertDialog.alertWithButton(
                       context: context, type: AlertType.error, title: S.of(context).error, desc: state.errorMassage);
@@ -1009,7 +1126,7 @@ class _CashierViewBodyState extends State<CashierViewBody> {
                 } else {
                   if (isGetLocationAndListLocation == false) {
                     return CustomButton(
-                      text: S.of(context).btn_add,
+                      text: S.of(context).btn_save,
                       width: 80,
                       onTap: () async {
                         for (var widgetData in widgetsData) {
@@ -1040,9 +1157,10 @@ class _CashierViewBodyState extends State<CashierViewBody> {
                           checkLocation();
                         } else {
                           BlocProvider.of<AddEditProductCubit>(context).add(
-                              singleObject: singleObject,
-                              tableList: CashierViewBody.tableList,
-                              controllerName: widget.tapData!.controllerName);
+                            singleObject: singleObject,
+                            tableList: CashierViewBody.tableList,
+                            controllerName: widget.tapData!.controllerName,
+                          );
                         }
                       },
                     );
@@ -1822,7 +1940,10 @@ class _CashierViewBodyState extends State<CashierViewBody> {
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> dataProduct = await ApiService(Dio()).post(
         endPoint: "web/Structure/getDataGlobal",
-        data: {"TableName": "Product"},
+        data: {
+          "TableName": "productinvintorydrop",
+          "companyname": "ComID",
+        },
         headers: {
           "Authorization": "Bearer $token",
           "CompanyKey": companyKey,
@@ -1925,7 +2046,10 @@ class _CashierViewBodyState extends State<CashierViewBody> {
       // radius.add(distance);
       if (distance == location['Radius'] || distance < location['Radius'] || distance == 0.0) {
         BlocProvider.of<AddEditProductCubit>(context).add(
-            singleObject: singleObject, tableList: CashierViewBody.tableList, controllerName: widget.tapData!.controllerName);
+          singleObject: singleObject,
+          tableList: CashierViewBody.tableList,
+          controllerName: widget.tapData!.controllerName,
+        );
       } else {
         CustomAlertDialog.alertWithButton(
             context: context,

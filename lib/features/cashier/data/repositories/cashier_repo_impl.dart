@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:erp_system/core/errors/failures.dart';
@@ -86,7 +88,10 @@ class CashierRepoImpl implements CashierRepo {
       // var rrr = jsonEncode(tapModel.toJson());
       Map<String, dynamic> data = await apiService.post(
         endPoint: "web/Structure/getDataGlobal",
-        data: {"TableName": "Product"},
+        data: {
+          "TableName": "productinvintorydrop",
+          "companyname": "ComID",
+        },
         headers: {
           "Authorization": "Bearer $token",
           "CompanyKey": companyKey,
@@ -205,12 +210,12 @@ class CashierRepoImpl implements CashierRepo {
   }
 
   @override
-  Future<Either<Failure, String>> addProduct({required Map<String, dynamic> body, required String controllerName}) async {
+  Future<Either<Failure, int>> addProduct({required Map<String, dynamic> body, required String controllerName}) async {
     try {
       String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
-
-      var data = await apiService.post(
+      // var rrr = jsonEncode(body);
+      int data = await apiService.post(
         endPoint: "web/$controllerName",
         data: body,
         headers: {
@@ -218,7 +223,8 @@ class CashierRepoImpl implements CashierRepo {
           "CompanyKey": companyKey,
         },
       );
-      return right(data.toString());
+
+      return right(data);
     } catch (e) {
       if (e is DioException) {
         return left(
@@ -251,6 +257,39 @@ class CashierRepoImpl implements CashierRepo {
         },
       );
       return right(data.toString());
+    } catch (e) {
+      if (e is DioException) {
+        return left(
+          ServerFailure.fromDioException(e),
+        );
+      }
+      return left(
+        ServerFailure(
+          e.toString(),
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<Failure, Uint8List>> getFileWordPrint({required String pageId, required int id}) async {
+    try {
+      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
+
+      final response = await apiService.postToPrint(
+        endPoint: "web/Structure/pdf/$pageId/0",
+        data: [id],
+        headers: {
+          'Accept': 'application/pdf',
+          "Authorization": "Bearer $token",
+          "CompanyKey": companyKey,
+          "content-type": "application/octet-stream",
+        },
+      );
+
+      Uint8List wordBytes = Uint8List.fromList(response);
+      return right(wordBytes);
     } catch (e) {
       if (e is DioException) {
         return left(

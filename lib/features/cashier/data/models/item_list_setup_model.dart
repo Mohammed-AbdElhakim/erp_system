@@ -30,39 +30,42 @@ class ItemListSetupModel {
   String? orderby;
   int? comID;
   bool? masterInsertVisible;
+  bool? isMulti;
 
-  ItemListSetupModel(
-      {this.id,
-      this.listName,
-      this.columnName,
-      this.enColumnLabel,
-      this.arColumnLabel,
-      this.insertVisable,
-      this.insertType,
-      this.userID,
-      this.listID,
-      this.sort,
-      this.visible,
-      this.droModel,
-      this.droValue,
-      this.droText,
-      this.cvisable,
-      this.validation,
-      this.isKey,
-      this.isRquired,
-      this.searchName,
-      this.insertDefult,
-      this.visableDefult,
-      this.width,
-      this.isGeneral,
-      this.categoryTitle,
-      this.categorySort,
-      this.categoryID,
-      this.isExcel,
-      this.pageId,
-      this.orderby,
-      this.comID,
-      this.masterInsertVisible});
+  ItemListSetupModel({
+    this.id,
+    this.listName,
+    this.columnName,
+    this.enColumnLabel,
+    this.arColumnLabel,
+    this.insertVisable,
+    this.insertType,
+    this.userID,
+    this.listID,
+    this.sort,
+    this.visible,
+    this.droModel,
+    this.droValue,
+    this.droText,
+    this.cvisable,
+    this.validation,
+    this.isKey,
+    this.isRquired,
+    this.searchName,
+    this.insertDefult,
+    this.visableDefult,
+    this.width,
+    this.isGeneral,
+    this.categoryTitle,
+    this.categorySort,
+    this.categoryID,
+    this.isExcel,
+    this.pageId,
+    this.orderby,
+    this.comID,
+    this.masterInsertVisible,
+    this.isMulti = false,
+  });
 
   ItemListSetupModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -96,6 +99,7 @@ class ItemListSetupModel {
     orderby = json['orderby'];
     comID = json['ComID'];
     masterInsertVisible = json['MasterInsertVisible'];
+    isMulti = json['IsMulti'];
   }
 
   Map<String, dynamic> toJson() {
@@ -131,6 +135,7 @@ class ItemListSetupModel {
     data['orderby'] = orderby;
     data['ComID'] = comID;
     data['MasterInsertVisible'] = masterInsertVisible;
+    data['IsMulti'] = isMulti;
     return data;
   }
 }

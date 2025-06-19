@@ -36,6 +36,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "btn_add": MessageLookupByLibrary.simpleMessage("إضافة"),
     "btn_delete": MessageLookupByLibrary.simpleMessage("حذف"),
     "btn_edit": MessageLookupByLibrary.simpleMessage("تعديل"),
+    "btn_save": MessageLookupByLibrary.simpleMessage("حفظ"),
     "btn_search": MessageLookupByLibrary.simpleMessage("بحث"),
     "btn_show": MessageLookupByLibrary.simpleMessage("عرض"),
     "cancel": MessageLookupByLibrary.simpleMessage("إلغاء"),
