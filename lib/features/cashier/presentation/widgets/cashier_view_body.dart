@@ -266,7 +266,16 @@ class _CashierViewBodyState extends State<CashierViewBody> {
     Map<String, dynamic> widgetData,
     TextInputType? keyboardType,
   ) {
-    final TextEditingController controller = TextEditingController(text: widgetData['value']);
+    if (widgetData['controller'] == null) {
+      widgetData['controller'] = TextEditingController();
+    }
+
+    final TextEditingController controller = widgetData['controller'];
+
+    // تأكد من مزامنة القيمة
+    if (controller.text != (widgetData['value']?.toString() ?? '')) {
+      controller.text = widgetData['value']?.toString() ?? '';
+    }
 
     return StatefulBuilder(
       builder: (context, tNSetState) {
@@ -281,20 +290,21 @@ class _CashierViewBodyState extends State<CashierViewBody> {
                     title,
                     style: AppStyles.textStyle14.copyWith(color: Colors.grey),
                   ),
-                  if (itemListSetupModel.isRquired! == true)
+                  if (itemListSetupModel.isRquired == true)
                     const Icon(
                       Icons.star,
                       color: Colors.red,
                       size: 10,
-                    )
+                    ),
                 ],
               ),
               CustomTextFormField(
                 hintText: '',
-                isValidator: itemListSetupModel.isRquired!,
+                isValidator: itemListSetupModel.isRquired ?? false,
                 keyboardType: keyboardType,
                 controller: controller,
                 onChanged: (value) {
+                  print("Value updated for $title: $value");
                   widgetData['value'] = value;
                 },
               ),
