@@ -27,6 +27,7 @@ class MyDrawer extends StatefulWidget {
 
 class _MyDrawerState extends State<MyDrawer> {
   String? lang;
+
   @override
   void didChangeDependencies() {
     lang = Localizations.localeOf(context).toString();
@@ -35,56 +36,36 @@ class _MyDrawerState extends State<MyDrawer> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<GetMenuCubit, GetMenuState>(
-      builder: (context, state) {
-        if (state is GetMenuSuccess) {
-          List<ListModule> listMenu = state.menu.list;
-
-          return Drawer(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  const CustomDrawerHeader(userName: 'Mohamed'),
-                  DrawerBody(
-                    list: listMenu,
-                  ),
-                  CustomDrawerItem(
-                    text: S.of(context).change_language,
-                    onTap: () {
-                      changeLanguage(context);
-                    },
-                  ),
-                  CustomDrawerItem(
-                    text: S.of(context).log_out,
-                    onTap: () {
-                      Pref.saveBoolToPref(
-                          key: AppStrings.isLoginKey, value: false);
-                      GoRouter.of(context)
-                          .pushReplacement(AppRouter.kLoginView);
-                    },
-                  ),
-                ],
-              ),
+    return Drawer(
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            const CustomDrawerHeader(userName: 'Mohamed'),
+            DrawerBody(),
+            CustomDrawerItem(
+              text: S.of(context).change_language,
+              onTap: () {
+                changeLanguage(context);
+              },
             ),
-          );
-        } else if (state is GetMenuFailure) {
-          return CustomErrorMassage(errorMassage: state.errorMassage);
-        } else {
-          return const CustomLoadingWidget();
-        }
-      },
+            CustomDrawerItem(
+              text: S.of(context).log_out,
+              onTap: () {
+                Pref.saveBoolToPref(key: AppStrings.isLoginKey, value: false);
+                GoRouter.of(context).pushReplacement(AppRouter.kLoginView);
+              },
+            ),
+          ],
+        ),
+      ),
     );
   }
 
   void changeLanguage(BuildContext context) {
     buildShowModalBottomSheet(
       context: context,
-      textButton1: lang == AppStrings.enLangKey
-          ? S.of(context).arabic
-          : S.of(context).english,
-      textButton2: lang == AppStrings.enLangKey
-          ? S.of(context).english
-          : S.of(context).arabic,
+      textButton1: lang == AppStrings.enLangKey ? S.of(context).arabic : S.of(context).english,
+      textButton2: lang == AppStrings.enLangKey ? S.of(context).english : S.of(context).arabic,
       onTapButton1: () {
         if (lang == AppStrings.enLangKey) {
           setLang(context: context, langCode: AppStrings.arLangKey);
