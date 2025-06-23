@@ -28,6 +28,7 @@ class CustomTableGeneral extends StatefulWidget {
     required this.allDropdownModelList,
     required this.pageData,
   });
+
   final Pages pageData;
   final List<dynamic> listData;
   final List<dynamic>? listSum;
@@ -47,6 +48,7 @@ class _CustomTableGeneralState extends State<CustomTableGeneral> {
   ScrollController? dataScrollController;
   ScrollController? sumScrollController;
   final DataGridController dataGridController = DataGridController();
+
   // int? indexColorRow;
   List<bool> selectedRows = [];
   List<Map<String, dynamic>> rowsData = [];
@@ -61,6 +63,7 @@ class _CustomTableGeneralState extends State<CustomTableGeneral> {
     lang = Localizations.localeOf(context).toString();
     super.didChangeDependencies();
   }
+
   @override
   void initState() {
     headerScrollController = controllerGroup.addAndGet();
@@ -157,8 +160,7 @@ class _CustomTableGeneralState extends State<CustomTableGeneral> {
                         padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: InkWell(
                           onTap: () {
-                            widget.onTapHeader(
-                                widget.listColumn[index].columnName!);
+                            widget.onTapHeader(widget.listColumn[index].columnName!);
                           },
                           onLongPress: () {
                             showDialog(
@@ -175,7 +177,9 @@ class _CustomTableGeneralState extends State<CustomTableGeneral> {
                           },
                           child: Center(
                             child: Text(
-                             lang==AppStrings.arLangKey?widget.listColumn[index].arColumnLabel!:widget.listColumn[index].enColumnLabel!,
+                              lang == AppStrings.arLangKey
+                                  ? widget.listColumn[index].arColumnLabel!
+                                  : widget.listColumn[index].enColumnLabel!,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: const TextStyle(color: Colors.white),
@@ -188,8 +192,7 @@ class _CustomTableGeneralState extends State<CustomTableGeneral> {
                   )
                 ],
                 onCellLongPress: (DataGridCellLongPressDetails details) {
-                  final String value = tableDataSource
-                      .effectiveRows[details.rowColumnIndex.rowIndex - 1]
+                  final String value = tableDataSource.effectiveRows[details.rowColumnIndex.rowIndex - 1]
                       .getCells()[details.rowColumnIndex.columnIndex - 1]
                       .value;
 
@@ -255,6 +258,7 @@ class TableDataSource extends DataGridSource {
   final Pages pageData;
   final List<AllDropdownModel> allDropdownModelList;
   final List<dynamic>? listSum;
+
   TableDataSource({
     required this.listColumn,
     required this.context,
@@ -265,11 +269,8 @@ class TableDataSource extends DataGridSource {
   }) {
     dataGridRows = data.map<DataGridRow>((e) {
       return DataGridRow(cells: [
-        if (pageData.master == true)
-          const DataGridCell(columnName: "icon", value: ""),
-        DataGridCell(
-            columnName: pageData.primary,
-            value: "${e[pageData.primary] ?? ""}"),
+        if (pageData.master == true) const DataGridCell(columnName: "icon", value: ""),
+        DataGridCell(columnName: pageData.primary, value: "${e[pageData.primary] ?? ""}"),
         ...List.generate(
           listColumn.length,
           (index) => DataGridCell(
@@ -277,7 +278,8 @@ class TableDataSource extends DataGridSource {
               value: getValue(
                   listColumn: listColumn,
                   key: listColumn[index].columnName!,
-                  value: "${e[listColumn[index].columnName!] ?? ""}")),
+                  value: "${e[listColumn[index].columnName!] ?? ""}",
+                  arName: listColumn[index].arColumnLabel!)),
           // columnName: listHeader[index], value: "${e[keys[index]] ?? ""}"),
         )
       ]);
@@ -293,9 +295,7 @@ class TableDataSource extends DataGridSource {
   DataGridRowAdapter buildRow(DataGridRow row) {
     int indexRow = dataGridRows.indexOf(row);
     return DataGridRowAdapter(
-        color: data[indexRow][pageData.columnColor] != null
-            ? hexToColor(data[indexRow][pageData.columnColor])
-            : null,
+        color: data[indexRow][pageData.columnColor] != null ? hexToColor(data[indexRow][pageData.columnColor]) : null,
         cells: row.getCells().map<Widget>((e) {
           ColumnList columnList;
           if (e.columnName.toString() == pageData.primary) {
@@ -304,8 +304,7 @@ class TableDataSource extends DataGridSource {
             if (e.columnName == "icon") {
               columnList = listColumn[0];
             } else {
-              columnList = listColumn
-                  .firstWhere((element) => element.columnName == e.columnName);
+              columnList = listColumn.firstWhere((element) => element.columnName == e.columnName);
             }
           }
           if (e.columnName == "icon") {
@@ -348,15 +347,11 @@ class TableDataSource extends DataGridSource {
 
   @override
   Widget? buildTableSummaryCellWidget(
-      GridTableSummaryRow summaryRow,
-      GridSummaryColumn? summaryColumn,
-      RowColumnIndex rowColumnIndex,
-      String summaryValue) {
+      GridTableSummaryRow summaryRow, GridSummaryColumn? summaryColumn, RowColumnIndex rowColumnIndex, String summaryValue) {
     double sum = 0;
     if (listSum!.isNotEmpty) {
       for (var i in listColumn) {
-        if ((i.arColumnLabel == summaryColumn!.columnName) ||
-            (i.enColumnLabel == summaryColumn.columnName)) {
+        if ((i.arColumnLabel == summaryColumn!.columnName) || (i.enColumnLabel == summaryColumn.columnName)) {
           if (listSum![0][i.columnName] != null) {
             sum = double.parse((listSum![0][i.columnName]).toString());
           }
@@ -372,11 +367,8 @@ class TableDataSource extends DataGridSource {
             builder: (context) => Dialog(
               child: InkWell(
                 child: Container(
-                  padding: const EdgeInsetsDirectional.symmetric(
-                      horizontal: 16, vertical: 32),
-                  child: Text(
-                      textAlign: TextAlign.center,
-                      NumberFormat('##0.00').format(sum)),
+                  padding: const EdgeInsetsDirectional.symmetric(horizontal: 16, vertical: 32),
+                  child: Text(textAlign: TextAlign.center, NumberFormat('##0.00').format(sum)),
                 ),
               ),
             ),
@@ -385,9 +377,7 @@ class TableDataSource extends DataGridSource {
       },
       child: Container(
           alignment: Alignment.center,
-          decoration: const BoxDecoration(
-              border: Border.symmetric(
-                  vertical: BorderSide(color: Colors.grey, width: .8))),
+          decoration: const BoxDecoration(border: Border.symmetric(vertical: BorderSide(color: Colors.grey, width: .8))),
           padding: const EdgeInsets.all(5),
           child: Text(
             sum == 0 ? "" : NumberFormat('##0.00').format(sum),
@@ -445,20 +435,13 @@ class TableDataSource extends DataGridSource {
     }
   }
 
-  getValue({required List<ColumnList> listColumn, key, required String value}) {
-    ColumnList columnList =
-        listColumn.firstWhere((element) => (element.columnName == key));
+  getValue({required List<ColumnList> listColumn, key, required String value, required String arName}) {
+    ColumnList columnList = listColumn.firstWhere((element) => (element.columnName == key && element.arColumnLabel == arName));
     if (columnList.insertType == "date") {
-      String date = value.isNotEmpty
-          ? DateFormat("yyyy-MM-dd", "en")
-              .format(DateTime.parse(value).toLocal())
-          : '';
+      String date = value.isNotEmpty ? DateFormat("yyyy-MM-dd", "en").format(DateTime.parse(value).toLocal()) : '';
       return date;
     } else if (columnList.insertType == "dateTime") {
-      String date = value.isNotEmpty
-          ? DateFormat('yyyy/MM/dd hh:mm a', "en")
-              .format(DateTime.parse(value).toLocal())
-          : '';
+      String date = value.isNotEmpty ? DateFormat('yyyy/MM/dd hh:mm a', "en").format(DateTime.parse(value).toLocal()) : '';
       return date;
     } else if (columnList.insertType == "dropdown") {
       String val = '';
@@ -472,8 +455,7 @@ class TableDataSource extends DataGridSource {
         }
 
         for (var item in listDrop!) {
-          if (item.columnName == columnList.columnName &&
-              item.nameAr == columnList.arColumnLabel) {
+          if (item.columnName == columnList.columnName && item.nameAr == columnList.arColumnLabel) {
             myListDrop = item.list;
           }
         }
