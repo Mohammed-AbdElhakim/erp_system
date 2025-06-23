@@ -5,9 +5,11 @@ import 'package:erp_system/core/utils/app_assets.dart';
 import 'package:erp_system/core/utils/app_strings.dart';
 import 'package:erp_system/core/widgets/custom_error_massage.dart';
 import 'package:erp_system/core/widgets/custom_loading_widget.dart';
+import 'package:erp_system/features/screenTable/presentation/views/screen_table.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'dart:io';
 import 'package:open_file/open_file.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -20,6 +22,7 @@ import '../../../../generated/l10n.dart';
 import '../../data/repositories/screen_repo_impl.dart';
 import '../manager/getFileExcel/get_file_excel_cubit.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
+import '../../data/models/dropdown_model/all_dropdown_model.dart';
 
 class FilePdf extends StatelessWidget {
   final Pages pageData;
@@ -40,10 +43,9 @@ class FilePdf extends StatelessWidget {
       child: BlocConsumer<GetFileExcelCubit, GetFileExcelState>(
         listener: (BuildContext context, GetFileExcelState state) async {
           if (state is GetFileExcelSuccess) {
-            String jsonString = jsonEncode(state.screenModel
-                .toJson()); // ضع هنا نص JSON المأخوذ من API أو ملف
+            String jsonString = jsonEncode(state.screenModel.toJson()); // ضع هنا نص JSON المأخوذ من API أو ملف
             String massage = await convertExcelToPdf(
-                context, jsonString, lang); // لاستخدام الأسماء العربية
+                context, jsonString, lang, ScreenTable.myAllDropdownModelList); // لاستخدام الأسماء العربية
             Navigator.pop(context);
             showSnackBar(
               context: context,
@@ -61,10 +63,7 @@ class FilePdf extends StatelessWidget {
               children: [
                 Text(
                   S.of(context).exporting_pdf_file,
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.blueLight),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.blueLight),
                 ),
                 const SizedBox(height: 8),
                 const CustomLoadingWidget()
@@ -423,7 +422,142 @@ class FilePdf extends StatelessWidget {
 //   }
 
   Future<String> convertExcelToPdf(
-      BuildContext context, String jsonString, String language) async {
+    BuildContext context,
+    String jsonString,
+    String language,
+    List<AllDropdownModel> allDropdownList,
+  ) async {
+    if (!await requestStoragePermission()) {
+      return S.of(context).permission_denied;
+    }
+
+    var jsonData = jsonDecode(jsonString);
+    List<dynamic> columnList = jsonData['columnList'];
+    List<dynamic> dataList = jsonData['dataList'];
+    List<String> columnKeys;
+    List<String> columnLabels;
+
+    // ✅ المفتاح = ColumnName + Label
+    Map<String, String> columnHeaders = {
+      for (var col in columnList)
+        if (col['visible'] == true)
+          '${col['ColumnName']}::${language == 'ar' ? col['arColumnLabel'] : col['enColumnLabel']}':
+              language == 'ar' ? col['arColumnLabel'] : col['enColumnLabel']
+    };
+
+    columnKeys = columnHeaders.keys.toList().reversed.toList(); // full keys like EmpID::اسم الموظف
+    columnLabels = columnHeaders.values.toList().reversed.toList();
+
+    // ✅ استخراج أنواع الأعمدة
+    final Map<String, String> columnTypes = {
+      for (var col in columnList)
+        for (var entry in columnKeys)
+          if (entry.startsWith('${col['ColumnName']}::')) entry: col['InsertType']
+    };
+
+    // ✅ إعداد dropdownMaps
+    final Map<String, Map<String, String>> dropdownMaps = {};
+    for (final AllDropdownModel model in allDropdownList) {
+      for (final ListDrop drop in model.list ?? []) {
+        final columnName = drop.columnName;
+        final nameAr = drop.nameAr;
+        if (columnName != null && nameAr != null) {
+          final mapKey = '$columnName::$nameAr';
+          dropdownMaps[mapKey] = {
+            for (final item in drop.list ?? []) item.id.toString(): item.text.toString(),
+          };
+        }
+      }
+    }
+
+    final PdfDocument pdfDoc = PdfDocument();
+    final PdfGrid pdfGrid = PdfGrid();
+    pdfGrid.columns.add(count: columnLabels.length);
+    pdfGrid.repeatHeader = true;
+
+    final ByteData fontData = await rootBundle.load(AppAssets.font);
+    final Uint8List fontBytes = fontData.buffer.asUint8List();
+    final PdfFont arabicFont = PdfTrueTypeFont(fontBytes, 10);
+
+    pdfGrid.style = PdfGridStyle(font: arabicFont);
+
+    // ✅ رأس الجدول
+    final PdfGridRow headerRow = pdfGrid.headers.add(1)[0];
+    for (int i = 0; i < columnLabels.length; i++) {
+      headerRow.cells[i].value = columnLabels[i];
+      headerRow.cells[i].style = PdfGridCellStyle(
+        backgroundBrush: PdfSolidBrush(PdfColor(91, 155, 213)),
+        textBrush: PdfBrushes.white,
+        font: arabicFont,
+      );
+      headerRow.cells[i].stringFormat = PdfStringFormat(
+        textDirection: PdfTextDirection.rightToLeft,
+        alignment: PdfTextAlignment.center,
+      );
+    }
+
+    // ✅ الصفوف
+    for (var item in dataList) {
+      final PdfGridRow row = pdfGrid.rows.add();
+      for (int i = 0; i < columnKeys.length; i++) {
+        final fullKey = columnKeys[i];
+        final parts = fullKey.split('::');
+        final key = parts[0];
+        final label = parts[1];
+        final type = columnTypes[fullKey];
+        final rawValue = item[key];
+
+        String displayValue;
+
+        if (type == 'date' && rawValue != null && rawValue is String) {
+          try {
+            final date = DateTime.parse(rawValue).toLocal();
+            displayValue = DateFormat("yyyy-MM-dd", "en").format(date);
+          } catch (_) {
+            displayValue = rawValue.toString();
+          }
+        } else if (type == 'number' && rawValue != null) {
+          displayValue = num.tryParse(rawValue.toString())?.toStringAsFixed(2) ?? rawValue.toString();
+        } else if (type == 'dropdown') {
+          final dropdownKey = '$key::$label';
+          displayValue = dropdownMaps[dropdownKey]?[rawValue.toString()] ?? rawValue.toString();
+        } else {
+          displayValue = rawValue?.toString() ?? '';
+        }
+
+        row.cells[i].value = displayValue;
+        row.cells[i].style = PdfGridCellStyle(font: arabicFont);
+        row.cells[i].stringFormat = PdfStringFormat(
+          textDirection: PdfTextDirection.rightToLeft,
+          alignment: PdfTextAlignment.center,
+        );
+      }
+    }
+
+    pdfGrid.draw(
+      page: pdfDoc.pages.add(),
+      format: PdfLayoutFormat(layoutType: PdfLayoutType.paginate),
+    );
+
+    final List<int> pdfBytes = await pdfDoc.save();
+    pdfDoc.dispose();
+
+    Directory? dir = await FileManager.getAppStorageDirectory();
+    String fileName = language == AppStrings.arLangKey ? pageData.nameAr : pageData.nameEn;
+    String path = "${dir.path}/$fileName.pdf";
+
+    final file = File(path);
+    if (await file.exists()) file.deleteSync();
+    file
+      ..createSync(recursive: true)
+      ..writeAsBytesSync(pdfBytes);
+
+    openFile(path);
+    return "${S.of(context).file_saved_in}\n$path";
+  }
+
+  //شغلى
+  /*Future<String> convertExcelToPdf(BuildContext context, String jsonString, String language) async {
     if (!await requestStoragePermission()) {
       return S.of(context).permission_denied;
     }
@@ -435,27 +569,23 @@ class FilePdf extends StatelessWidget {
     List<String> columnLabels;
     // final xls.Workbook workbook = xls.Workbook();
     // final xls.Worksheet sheet = workbook.worksheets[0];
-    if (columnList.length >= 10) {
+    if (columnList.length >= numberOfColumnInPdf) {
       Map<String, String> columnHeaders = {
-        for (var col in columnList.sublist(0, 10))
-          if (col['visible'] == true)
-            col['ColumnName']:
-                language == 'ar' ? col['arColumnLabel'] : col['enColumnLabel']
+        for (var col in columnList.sublist(0, numberOfColumnInPdf))
+          if (col['visible'] == true) col['ColumnName']: language == 'ar' ? col['arColumnLabel'] : col['enColumnLabel']
       };
       columnKeys = columnHeaders.keys.toList();
-      columnLabels =
-          columnKeys.map((key) => columnHeaders[key] ?? key).toList();
+      columnLabels = columnKeys.map((key) => columnHeaders[key] ?? key).toList();
     } else {
       Map<String, String> columnHeaders = {
         for (var col in columnList)
-          if (col['visible'] == true)
-            col['ColumnName']:
-                language == 'ar' ? col['arColumnLabel'] : col['enColumnLabel']
+          if (col['visible'] == true) col['ColumnName']: language == 'ar' ? col['arColumnLabel'] : col['enColumnLabel']
       };
       columnKeys = columnHeaders.keys.toList();
-      columnLabels =
-          columnKeys.map((key) => columnHeaders[key] ?? key).toList();
+      columnLabels = columnKeys.map((key) => columnHeaders[key] ?? key).toList();
     }
+    columnKeys = columnKeys.reversed.toList();
+    columnLabels = columnLabels.reversed.toList();
 
     // for (int i = 0; i < columnLabels.length; i++) {
     //   sheet.getRangeByIndex(1, i + 1).setText(columnLabels[i]);
@@ -471,6 +601,7 @@ class FilePdf extends StatelessWidget {
     // workbook.dispose();
 
     final PdfDocument pdfDoc = PdfDocument();
+
     final PdfGrid pdfGrid = PdfGrid();
     pdfGrid.columns.add(count: columnLabels.length);
 
@@ -483,8 +614,15 @@ class FilePdf extends StatelessWidget {
     pdfGrid.style = PdfGridStyle(font: arabicFont);
 
     // 🟢 إعداد الهيدر
+    pdfGrid.repeatHeader = true;
     final PdfGridRow headerRow = pdfGrid.headers.add(1)[0];
     for (int i = 0; i < columnLabels.length; i++) {
+      headerRow.cells[i].style = PdfGridCellStyle(
+        backgroundBrush: PdfSolidBrush(PdfColor(91, 155, 213)), // لون خلفية
+        textBrush: PdfBrushes.white, // لون النص
+        font: arabicFont,
+      );
+
       headerRow.cells[i].stringFormat = PdfStringFormat(
         textDirection: PdfTextDirection.rightToLeft,
         alignment: PdfTextAlignment.center,
@@ -516,8 +654,7 @@ class FilePdf extends StatelessWidget {
 
     // 🟢 حفظ الملف
     Directory? dir = await FileManager.getAppStorageDirectory();
-    String fileName =
-        language == AppStrings.arLangKey ? pageData.nameAr : pageData.nameEn;
+    String fileName = language == AppStrings.arLangKey ? pageData.nameAr : pageData.nameEn;
     String path = "${dir.path}/$fileName.pdf";
     if (await File(path).exists()) {
       File(path).delete();
@@ -532,7 +669,7 @@ class FilePdf extends StatelessWidget {
 
     openFile(path);
     return "${S.of(context).file_saved_in}\n$path";
-  }
+  }*/
 
   Future<bool> requestStoragePermission() async {
     var status = await Permission.storage.status;

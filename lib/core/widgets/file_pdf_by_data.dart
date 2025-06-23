@@ -19,6 +19,7 @@ import '../helper/SharedPreferences/pref.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 
 import '../utils/api_service.dart';
+import '../utils/constants.dart';
 
 class FilePdfByData extends StatelessWidget {
   final Pages pageData;
@@ -89,9 +90,9 @@ class FilePdfByData extends StatelessWidget {
     // final xls.Workbook workbook = xls.Workbook();
     // final xls.Worksheet sheet = workbook.worksheets[0];
 
-    if (columnList.length >= 10) {
+    if (columnList.length >= numberOfColumnInPdf) {
       Map<String, String> columnHeaders = {
-        for (var col in columnList.sublist(0, 10))
+        for (var col in columnList.sublist(0, numberOfColumnInPdf))
           col['ColumnName']: language == 'ar' ? col['arColumnLabel'] : col['enColumnLabel']
       };
       columnKeys = columnHeaders.keys.toList();
@@ -120,8 +121,16 @@ class FilePdfByData extends StatelessWidget {
     pdfGrid.style = PdfGridStyle(font: arabicFont);
 
     // 🟢 إعداد الهيدر
+    pdfGrid.repeatHeader = true;
+
     final PdfGridRow headerRow = pdfGrid.headers.add(1)[0];
     for (int i = 0; i < columnLabels.length; i++) {
+      headerRow.cells[i].style = PdfGridCellStyle(
+        backgroundBrush: PdfSolidBrush(PdfColor(91, 155, 213)), // لون خلفية
+        textBrush: PdfBrushes.white, // لون النص
+        font: arabicFont,
+      );
+
       headerRow.cells[i].stringFormat = PdfStringFormat(
         textDirection: PdfTextDirection.rightToLeft,
         alignment: PdfTextAlignment.center,

@@ -1,4 +1,3 @@
-
 import 'package:erp_system/core/utils/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,15 +29,14 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class CustomFloatingActionButton extends StatefulWidget {
   const CustomFloatingActionButton({super.key, required this.pageData});
+
   final Pages pageData;
 
   @override
-  State<CustomFloatingActionButton> createState() =>
-      _CustomFloatingActionButtonState();
+  State<CustomFloatingActionButton> createState() => _CustomFloatingActionButtonState();
 }
 
-class _CustomFloatingActionButtonState
-    extends State<CustomFloatingActionButton> {
+class _CustomFloatingActionButtonState extends State<CustomFloatingActionButton> {
   String? lang;
   ValueNotifier<bool> isDialOpen = ValueNotifier(false);
   bool shouldReopenDial = true;
@@ -86,7 +84,6 @@ class _CustomFloatingActionButtonState
               iconList.add(Icons.add);
             });
           }
-
         }
       },
       child: BlocListener<GetTableCubit, GetTableState>(
@@ -114,13 +111,11 @@ class _CustomFloatingActionButtonState
           iconTheme: IconThemeData(color: AppColors.white),
           buttonSize: const Size(58, 58),
           curve: Curves.easeIn,
-
           children: List.generate(
             iconList.length,
             (index) => SpeedDialChild(
                 elevation: 0,
                 backgroundColor: getColor(iconList[index]),
-
                 shape: const CircleBorder(),
                 child: Icon(
                   iconList[index],
@@ -169,10 +164,7 @@ class _CustomFloatingActionButtonState
           title: Center(
             child: Text(
               S.of(context).btn_search,
-              style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.blueLight),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.blueLight),
             ),
           ),
           content: BuildAlertSearch(
@@ -190,8 +182,7 @@ class _CustomFloatingActionButtonState
           limit: ScreenTable.dropdownValue,
           offset: 0,
           orderby: ScreenTable.orderBy,
-          statment:
-              ScreenTable.isSearch == true ? BuildAlertSearch.statement : '',
+          statment: ScreenTable.isSearch == true ? BuildAlertSearch.statement : '',
           selectcolumns: '',
           departmentName: widget.pageData.departmentName,
           isDepartment: widget.pageData.isDepartment,
@@ -242,8 +233,7 @@ class _CustomFloatingActionButtonState
                           departmentName: widget.pageData.departmentName,
                           isDepartment: widget.pageData.isDepartment,
                           authorizationID: widget.pageData.authorizationID,
-                          viewEmployeeColumn:
-                              widget.pageData.viewEmployeeColumn,
+                          viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
                           numberOfPage: 1,
                           dropdownValueOfLimit: 10);
 
@@ -271,9 +261,8 @@ class _CustomFloatingActionButtonState
                         text: S.of(context).btn_delete,
                         width: 80,
                         onTap: () {
-                          BlocProvider.of<DeleteCubit>(context).deleteItems(
-                              controllerName: widget.pageData.controllerName,
-                              listId: listId);
+                          BlocProvider.of<DeleteCubit>(context)
+                              .deleteItems(controllerName: widget.pageData.controllerName, listId: listId);
                         },
                       );
                     }
@@ -285,20 +274,14 @@ class _CustomFloatingActionButtonState
         );
       } else {
         CustomAlertDialog.alertWithButton(
-            context: context,
-            type: AlertType.error,
-            title: S.of(context).error,
-            desc: S.of(context).massage_choose_delete);
+            context: context, type: AlertType.error, title: S.of(context).error, desc: S.of(context).massage_choose_delete);
       }
     } else if (icon == Icons.edit_note) {
       List<dynamic> myRowData = ScreenTable.rowData;
       if (myRowData.isNotEmpty) {
         if (myRowData.length > 1) {
           CustomAlertDialog.alertWithButton(
-              context: context,
-              type: AlertType.error,
-              title: S.of(context).error,
-              desc: S.of(context).massage_no_edit);
+              context: context, type: AlertType.error, title: S.of(context).error, desc: S.of(context).massage_no_edit);
         } else if (myRowData.length == 1) {
           if (widget.pageData.editSrc == "") {
             showDialog(
@@ -308,10 +291,7 @@ class _CustomFloatingActionButtonState
                 title: Center(
                   child: Text(
                     S.of(context).btn_edit,
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.blueLight),
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.blueLight),
                   ),
                 ),
                 content: BuildAlertEdit(
@@ -352,10 +332,7 @@ class _CustomFloatingActionButtonState
         }
       } else {
         CustomAlertDialog.alertWithButton(
-            context: context,
-            type: AlertType.error,
-            title: S.of(context).error,
-            desc: S.of(context).massage_choose_edit);
+            context: context, type: AlertType.error, title: S.of(context).error, desc: S.of(context).massage_choose_edit);
       }
     } else if (icon == Icons.add) {
       if (widget.pageData.editSrc == "") {
@@ -366,10 +343,7 @@ class _CustomFloatingActionButtonState
             title: Center(
               child: Text(
                 S.of(context).btn_add,
-                style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.blueLight),
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.blueLight),
               ),
             ),
             content: BuildAlertAdd(
@@ -406,16 +380,16 @@ class _CustomFloatingActionButtonState
           },
         );
       }
-    }  else if (icon == Icons.print) {
+    } else if (icon == Icons.print) {
       showBottomSheet(context);
     }
   }
 
-  void showBottomSheet(BuildContext context)async{
+  void showBottomSheet(BuildContext context) async {
     shouldReopenDial = true;
     isDialOpen.value = false;
 
-    await  showModalBottomSheet(
+    await showModalBottomSheet(
       context: context,
       backgroundColor: Colors.blue.shade100,
       shape: const RoundedRectangleBorder(
@@ -427,16 +401,24 @@ class _CustomFloatingActionButtonState
           height: 100,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: List.generate(printIconList.length, (index) {
-              return
-                Padding(
+            children: List.generate(
+              printIconList.length,
+              (index) {
+                return Padding(
                   padding: const EdgeInsetsDirectional.symmetric(horizontal: 15),
                   child: InkWell(
                     child: CircleAvatar(
                       backgroundColor: Colors.black,
                       radius: 26,
-                      child: CircleAvatar(backgroundColor: getColor(printIconList[index]),
-                      radius: 25,child: Icon(printIconList[index],color: Colors.white,size: 25,),),
+                      child: CircleAvatar(
+                        backgroundColor: getColor(printIconList[index]),
+                        radius: 25,
+                        child: Icon(
+                          printIconList[index],
+                          color: Colors.white,
+                          size: 25,
+                        ),
+                      ),
                     ),
                     onTap: () {
                       shouldReopenDial = false;
@@ -445,22 +427,20 @@ class _CustomFloatingActionButtonState
                       tapIconsInPrint(printIconList[index]);
                     },
                   ),
-                )
-              ;
-            },),
+                );
+              },
+            ),
           ),
         );
-
       },
     );
     if (shouldReopenDial) {
       isDialOpen.value = true;
     }
   }
+
   void tapIconsInPrint(IconData icon) {
-
-   if (icon == FontAwesomeIcons.fileExcel) {
-
+    if (icon == FontAwesomeIcons.fileExcel) {
       showDialog(
         context: context,
         barrierDismissible: false,
@@ -472,7 +452,6 @@ class _CustomFloatingActionButtonState
         ),
       );
     } else if (icon == FontAwesomeIcons.filePdf) {
-
       showDialog(
         context: context,
         barrierDismissible: false,
@@ -484,41 +463,28 @@ class _CustomFloatingActionButtonState
         ),
       );
     } else if (icon == Icons.print) {
-
-     List<dynamic> myRowData = ScreenTable.rowData;
-     if (myRowData.isNotEmpty) {
-       if (myRowData.length > 1) {
-         CustomAlertDialog.alertWithButton(
-             context: context,
-             type: AlertType.error,
-             title: S.of(context).error,
-             desc: S.of(context).massage_no_print);
-       } else if (myRowData.length == 1) {
-
-         showDialog(
-           context: context,
-           barrierDismissible: false,
-           builder: (context) => AlertDialog(
-             content: PrintRow(
-               pageData: widget.pageData,
-               lang: lang!,
-               id:int.parse(ScreenTable.rowData[0].toString()),
-             ),
-           ),
-         );
-       }
-     } else {
-       CustomAlertDialog.alertWithButton(
-           context: context,
-           type: AlertType.error,
-           title: S.of(context).error,
-           desc: S.of(context).massage_choose_print);
-     }
-
+      List<dynamic> myRowData = ScreenTable.rowData;
+      if (myRowData.isNotEmpty) {
+        if (myRowData.length > 1) {
+          CustomAlertDialog.alertWithButton(
+              context: context, type: AlertType.error, title: S.of(context).error, desc: S.of(context).massage_no_print);
+        } else if (myRowData.length == 1) {
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (context) => AlertDialog(
+              content: PrintRow(
+                pageData: widget.pageData,
+                lang: lang!,
+                id: int.parse(ScreenTable.rowData[0].toString()),
+              ),
+            ),
+          );
+        }
+      } else {
+        CustomAlertDialog.alertWithButton(
+            context: context, type: AlertType.error, title: S.of(context).error, desc: S.of(context).massage_choose_print);
+      }
     }
   }
-
-
-
-
 }
