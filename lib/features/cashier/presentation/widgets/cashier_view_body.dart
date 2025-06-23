@@ -304,7 +304,6 @@ class _CashierViewBodyState extends State<CashierViewBody> {
                 keyboardType: keyboardType,
                 controller: controller,
                 onChanged: (value) {
-                  print("Value updated for $title: $value");
                   widgetData['value'] = value;
                 },
               ),
