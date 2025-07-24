@@ -83,8 +83,8 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          GetByIdCubit(getIt.get<ScreenRepoImpl>())..getById(id: id, controllerName: widget.pageData.controllerName),
+      create: (context) => GetByIdCubit(getIt.get<ScreenRepoImpl>())
+        ..getById(id: id, controllerName: widget.pageData.controllerName),
       child: BlocBuilder<GetByIdCubit, GetByIdState>(
         builder: (context, state) {
           if (state is GetByIdSuccess) {
@@ -116,14 +116,16 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                                           rowData: state.valueGetById)
                                       .isNotEmpty)
                                     Container(
-                                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 12, vertical: 8),
                                         decoration: BoxDecoration(
                                             // color: AppColors.grey.withOpacity(.4),
                                             color: AppColors.grey.withAlpha(102),
                                             borderRadius: BorderRadius.circular(15)),
                                         child: Text(
                                           categoryName,
-                                          style: AppStyles.textStyle18.copyWith(color: Colors.black),
+                                          style: AppStyles.textStyle18
+                                              .copyWith(color: Colors.black),
                                         )),
                                   ...getMyWidgetList(
                                       columnList: widget.columnList,
@@ -145,7 +147,9 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                                   isShow = !isShow;
                                 });
                               },
-                              child: Text(!isShow ? S.of(context).show_more : S.of(context).show_less),
+                              child: Text(!isShow
+                                  ? S.of(context).show_more
+                                  : S.of(context).show_less),
                             ),
                           ],
                         ),
@@ -186,7 +190,8 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                                     departmentName: widget.pageData.departmentName,
                                     isDepartment: widget.pageData.isDepartment,
                                     authorizationID: widget.pageData.authorizationID,
-                                    viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
+                                    viewEmployeeColumn:
+                                        widget.pageData.viewEmployeeColumn,
                                     numberOfPage: 1,
                                     dropdownValueOfLimit: 10);
                                 widget.columnList.clear();
@@ -210,8 +215,9 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                                     if (formKey.currentState!.validate()) {
                                       formKey.currentState!.save();
 
-                                      BlocProvider.of<AddEditCubit>(context)
-                                          .edit(controllerName: widget.pageData.controllerName, body: newRowData);
+                                      BlocProvider.of<AddEditCubit>(context).edit(
+                                          controllerName: widget.pageData.controllerName,
+                                          body: newRowData);
                                     }
                                   },
                                 );
@@ -244,14 +250,17 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
     // List<Widget> listWidgets = [];
     List<Widget> list = [];
     for (var item in columnList) {
-      String title = lang == AppStrings.arLangKey ? item.arColumnLabel! : item.enColumnLabel!;
+      String title =
+          lang == AppStrings.arLangKey ? item.arColumnLabel! : item.enColumnLabel!;
       //text
       if (item.insertType == "text" &&
           item.insertVisable == true &&
           item.categoryName == categoryName &&
           item.insertDefult == show) {
-        TextEditingController controller =
-            TextEditingController(text: rowData[item.columnName].toString() == "null" ? '' : rowData[item.columnName]);
+        TextEditingController controller = TextEditingController(
+            text: rowData[item.columnName].toString() == "null"
+                ? ''
+                : rowData[item.columnName]);
         list.add(Padding(
           padding: const EdgeInsets.symmetric(vertical: 5),
           child: Column(
@@ -304,8 +313,10 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
           item.insertVisable == true &&
           item.categoryName == categoryName &&
           item.insertDefult == show) {
-        TextEditingController controller =
-            TextEditingController(text: rowData[item.columnName].toString() == "null" ? '' : rowData[item.columnName].toString());
+        TextEditingController controller = TextEditingController(
+            text: rowData[item.columnName].toString() == "null"
+                ? ''
+                : rowData[item.columnName].toString());
 
         list.add(Padding(
           padding: const EdgeInsets.symmetric(vertical: 5),
@@ -797,7 +808,7 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
           }
         }
         for (var ii in listDrop!) {
-          if (ii.columnName == item.columnName) {
+          if (ii.columnName == item.columnName && ii.nameAr == item.arColumnLabel) {
             myListDrop = ii.list ?? [];
           }
         }
@@ -805,14 +816,16 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
         // جلب القيمة المختارة حاليا
         String? selectedDropdownValue;
         for (var i in myListDrop) {
-          if (i.id.toString() == rowData[item.searchName].toString() || i.id.toString() == rowData[item.columnName].toString()) {
+          if (i.id.toString() == rowData[item.searchName].toString() ||
+              i.id.toString() == rowData[item.columnName].toString()) {
             selectedDropdownValue = i.text ?? '';
           }
         }
 
         Pages? dropPage = getDropPage(item.pageId);
 
-        final dropdownItems = myListDrop.isEmpty ? [""] : myListDrop.map((e) => e.text ?? '').toList();
+        final dropdownItems =
+            myListDrop.isEmpty ? [""] : myListDrop.map((e) => e.text ?? '').toList();
 
         list.add(Padding(
           padding: const EdgeInsets.symmetric(vertical: 5),
@@ -871,7 +884,8 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                   Expanded(
                     child: CustomDropdown<String>.search(
                       hintText: '',
-                      closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                      closedHeaderPadding:
+                          const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                       decoration: CustomDropdownDecoration(
                         headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
                         closedFillColor: Colors.transparent,
@@ -891,7 +905,8 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
                       onChanged: (value) {
                         if (value != null && value.isNotEmpty) {
                           setState(() {
-                            ItemDrop selectedItem = myListDrop.firstWhere((element) => element.text == value);
+                            ItemDrop selectedItem =
+                                myListDrop.firstWhere((element) => element.text == value);
                             rowData[item.searchName!] = selectedItem.id;
                             newRowData = rowData;
                           });
@@ -997,7 +1012,8 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
 
   void getColumnListAndAdd(Pages page) async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).post(
         endPoint: "home/getGeneralTable",
@@ -1052,7 +1068,8 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
 
   Future<bool> getPermissions(int? pageId) async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPagePermissions?pageId=$pageId",
@@ -1070,7 +1087,8 @@ class _BuildAlertEditState extends State<BuildAlertEdit> {
 
   void getDropdownList(int pageId) async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       List<dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPageDropDown?pageId=$pageId",

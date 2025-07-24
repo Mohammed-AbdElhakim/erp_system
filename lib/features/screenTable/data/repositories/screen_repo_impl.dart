@@ -37,7 +37,8 @@ class ScreenRepoImpl implements ScreenRepo {
     required String viewEmployeeColumn,
   }) async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await apiService.post(
         endPoint: "home/getGeneralTable",
@@ -80,7 +81,8 @@ class ScreenRepoImpl implements ScreenRepo {
   @override
   Future<Either<Failure, PermissionModel>> getPagePermissions(String pageId) async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await apiService.get(
         endPoint: "home/GetPagePermissions?pageId=$pageId",
@@ -107,9 +109,11 @@ class ScreenRepoImpl implements ScreenRepo {
   }
 
   @override
-  Future<Either<Failure, Map<String, dynamic>>> getById(String controllerName, String id) async {
+  Future<Either<Failure, Map<String, dynamic>>> getById(
+      String controllerName, String id) async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await apiService.get(
         endPoint: "home/GetById?controllerName=$controllerName&Id=$id",
@@ -140,7 +144,8 @@ class ScreenRepoImpl implements ScreenRepo {
     required Map<String, dynamic> body,
   }) async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
 
       var data = await apiService.post(
@@ -172,7 +177,8 @@ class ScreenRepoImpl implements ScreenRepo {
     required Map<String, dynamic> body,
   }) async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
 
       var data = await apiService.put(
@@ -207,7 +213,8 @@ class ScreenRepoImpl implements ScreenRepo {
     required String droCompany,
   }) async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await apiService.get(
         endPoint:
@@ -240,10 +247,12 @@ class ScreenRepoImpl implements ScreenRepo {
     required List<String> listId,
   }) async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       await apiService.delete(
-        endPoint: "home/Delete?controllerName=$controllerName&deletedIds=${listId.join("&deletedIds=")}",
+        endPoint:
+            "home/Delete?controllerName=$controllerName&deletedIds=${listId.join("&deletedIds=")}",
         headers: {
           "Authorization": "Bearer $token",
           "CompanyKey": companyKey,
@@ -266,9 +275,11 @@ class ScreenRepoImpl implements ScreenRepo {
   }
 
   @override
-  Future<Either<Failure, List<AllDropdownModel>>> getAllDropdownList({required int pageID}) async {
+  Future<Either<Failure, List<AllDropdownModel>>> getAllDropdownList(
+      {required int pageID}) async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       List<dynamic> data = await apiService.get(
         endPoint: "home/GetPageDropDown?pageId=$pageID",
@@ -301,7 +312,8 @@ class ScreenRepoImpl implements ScreenRepo {
   @override
   Future<Either<Failure, TapModel>> getPageDetails({required int pageID}) async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await apiService.get(
         endPoint: "home/GetPageDetails?pageid=$pageID",
@@ -332,7 +344,8 @@ class ScreenRepoImpl implements ScreenRepo {
     required ListTaps tapData,
   }) async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       // var rrr = jsonEncode(tapData.toJson());
       Map<String, dynamic> data = await apiService.post(
@@ -365,7 +378,8 @@ class ScreenRepoImpl implements ScreenRepo {
     required String pageListName,
   }) async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       List<dynamic> data = await apiService.get(
         endPoint: "web/Structure/getListSetups/$pageListName",
@@ -396,9 +410,11 @@ class ScreenRepoImpl implements ScreenRepo {
 
 //------------------------------- المصاريف --------------------------
   @override
-  Future<Either<Failure, String>> addExpenses({required Map<String, dynamic> body, required String controllerName}) async {
+  Future<Either<Failure, String>> addExpenses(
+      {required Map<String, dynamic> body, required String controllerName}) async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       // var rrr = jsonEncode(body);
       var data = await apiService.post(
@@ -425,9 +441,11 @@ class ScreenRepoImpl implements ScreenRepo {
   }
 
   @override
-  Future<Either<Failure, String>> editExpenses({required Map<String, dynamic> body, required String controllerName}) async {
+  Future<Either<Failure, String>> editExpenses(
+      {required Map<String, dynamic> body, required String controllerName}) async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       // var rrr = jsonEncode(body);
       var data = await apiService.put(
@@ -454,9 +472,11 @@ class ScreenRepoImpl implements ScreenRepo {
   }
 
   @override
-  Future<Either<Failure, Map<String, dynamic>>> getExpensesMaster({required String id, required String controllerName}) async {
+  Future<Either<Failure, Map<String, dynamic>>> getExpensesMaster(
+      {required String id, required String controllerName}) async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await apiService.get(
         endPoint: "web/$controllerName/get/$id",
@@ -482,9 +502,11 @@ class ScreenRepoImpl implements ScreenRepo {
   }
 
   @override
-  Future<Either<Failure, ExpensesDetailsModel>> getExpensesDetails({required ListTaps tapModel}) async {
+  Future<Either<Failure, ExpensesDetailsModel>> getExpensesDetails(
+      {required ListTaps tapModel}) async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       // var rrr = jsonEncode(tapModel.toJson());
       Map<String, dynamic> data = await apiService.post(
@@ -516,7 +538,8 @@ class ScreenRepoImpl implements ScreenRepo {
     required String invoiceID,
   }) async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       // var rrr = jsonEncode(tapModel.toJson());
       Map<String, dynamic> data = await apiService.post(
@@ -548,9 +571,11 @@ class ScreenRepoImpl implements ScreenRepo {
   }
 
   @override
-  Future<Either<Failure, Uint8List>> getFilePdfPrint({required int id, required String pageId}) async {
+  Future<Either<Failure, Uint8List>> getFilePdfPrint(
+      {required int id, required String pageId}) async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
 
       final response = await apiService.postToPrint(

@@ -35,7 +35,8 @@ import '../build_alert_add_in_dropdown.dart';
 import 'purchases_table_add_edit_.dart';
 
 class EditPurchases extends StatefulWidget {
-  const EditPurchases({super.key, required this.pageData, required this.listKey, this.tapData});
+  const EditPurchases(
+      {super.key, required this.pageData, required this.listKey, this.tapData});
 
   final ListTaps? tapData;
   final Pages pageData;
@@ -164,7 +165,8 @@ class _EditPurchasesState extends State<EditPurchases> {
               child: BlocBuilder<GetExpensesDetailsCubit, GetExpensesDetailsState>(
                 builder: (context, state) {
                   if (state is GetExpensesDetailsSuccess) {
-                    List<Map<String, dynamic>> listDataInTable = state.expensesDetailsModel.dynamicList!;
+                    List<Map<String, dynamic>> listDataInTable =
+                        state.expensesDetailsModel.dynamicList!;
                     tableList = listDataInTable;
 
                     return BlocBuilder<GetListSetupsCubit, GetListSetupsState>(
@@ -183,7 +185,9 @@ class _EditPurchasesState extends State<EditPurchases> {
                                 item.isGeneral != true) {
                               listColumn.add(item);
                               listKey.add(item.columnName);
-                              listHeader.add(lang == AppStrings.enLangKey ? item.enColumnLabel! : item.arColumnLabel!);
+                              listHeader.add(lang == AppStrings.enLangKey
+                                  ? item.enColumnLabel!
+                                  : item.arColumnLabel!);
                             }
                           }
                           List<String> categoryList = category.toSet().toList();
@@ -202,25 +206,39 @@ class _EditPurchasesState extends State<EditPurchases> {
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
-                                            ...List.generate(categoryList.length, (index) {
+                                            ...List.generate(categoryList.length,
+                                                (index) {
                                               String categoryName = categoryList[index];
                                               List<Widget> widgetList = getMyWidgetList(
-                                                  listData: listSetup, categoryName: categoryName, dataMaster: dataMaster);
+                                                  listData: listSetup,
+                                                  categoryName: categoryName,
+                                                  dataMaster: dataMaster);
                                               return widgetList.isNotEmpty
                                                   ? Padding(
-                                                      padding: const EdgeInsets.only(bottom: 16),
+                                                      padding: const EdgeInsets.only(
+                                                          bottom: 16),
                                                       child: Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment.start,
                                                         children: [
                                                           Container(
-                                                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                                            padding: const EdgeInsets
+                                                                .symmetric(
+                                                                horizontal: 12,
+                                                                vertical: 8),
                                                             decoration: BoxDecoration(
                                                                 // color: AppColors.grey.withOpacity(.4),
-                                                                color: AppColors.grey.withAlpha(102),
-                                                                borderRadius: BorderRadius.circular(15)),
+                                                                color: AppColors.grey
+                                                                    .withAlpha(102),
+                                                                borderRadius:
+                                                                    BorderRadius.circular(
+                                                                        15)),
                                                             child: Text(
                                                               categoryName,
-                                                              style: AppStyles.textStyle18.copyWith(color: Colors.black),
+                                                              style: AppStyles.textStyle18
+                                                                  .copyWith(
+                                                                      color:
+                                                                          Colors.black),
                                                             ),
                                                           ),
                                                           ...widgetList,
@@ -232,7 +250,8 @@ class _EditPurchasesState extends State<EditPurchases> {
                                             StatefulBuilder(
                                               builder: (context, ssetState) {
                                                 return Padding(
-                                                  padding: const EdgeInsets.only(bottom: 16),
+                                                  padding:
+                                                      const EdgeInsets.only(bottom: 16),
                                                   child: PurchasesTableAddEdit(
                                                     oldTableList: listDataInTable,
                                                     tapData: widget.tapData,
@@ -240,7 +259,8 @@ class _EditPurchasesState extends State<EditPurchases> {
                                                     listKey: listKey,
                                                     listHeader: listHeader,
                                                     listColumn: listColumn,
-                                                    allDropdownModelList: ScreenTable.myAllDropdownModelList,
+                                                    allDropdownModelList: ScreenTable
+                                                        .myAllDropdownModelList,
                                                     onTapAction: (data) {
                                                       total = 0.0;
                                                       ssetState(() {
@@ -250,28 +270,47 @@ class _EditPurchasesState extends State<EditPurchases> {
                                                         for (var i in tableList) {
                                                           salessetState(() {
                                                             total = total +
-                                                                (double.parse(i['CostCurrancy']) *
-                                                                    double.parse(i['Quntity'] ?? "1"));
-                                                            valueAddedTaxController.text = valueFromRate(
-                                                              totalValue: totalAfterDiscount(
+                                                                (double.parse(i[
+                                                                        'CostCurrancy']) *
+                                                                    double.parse(
+                                                                        i['Quntity'] ??
+                                                                            "1"));
+                                                            valueAddedTaxController.text =
+                                                                valueFromRate(
+                                                              totalValue:
+                                                                  totalAfterDiscount(
                                                                 total: total.toString(),
-                                                                discount: discountController.text,
+                                                                discount:
+                                                                    discountController
+                                                                        .text,
                                                               ),
-                                                              valueRate: rateValueAddedTaxController.text,
+                                                              valueRate:
+                                                                  rateValueAddedTaxController
+                                                                      .text,
                                                             );
-                                                            taxController.text = valueFromRate(
-                                                              totalValue: totalAfterDiscount(
+                                                            taxController.text =
+                                                                valueFromRate(
+                                                              totalValue:
+                                                                  totalAfterDiscount(
                                                                 total: total.toString(),
-                                                                discount: discountController.text,
+                                                                discount:
+                                                                    discountController
+                                                                        .text,
                                                               ),
-                                                              valueRate: taxController.text,
+                                                              valueRate:
+                                                                  taxController.text,
                                                             );
-                                                            deadlineSupplierController.text = deadlineSupplier(
+                                                            deadlineSupplierController
+                                                                .text = deadlineSupplier(
                                                               total: total.toString(),
-                                                              valueAddedTax: valueAddedTaxController.text,
+                                                              valueAddedTax:
+                                                                  valueAddedTaxController
+                                                                      .text,
                                                               tax: taxController.text,
-                                                              discount: discountController.text,
-                                                              cashPaid: cashPaidController.text,
+                                                              discount:
+                                                                  discountController.text,
+                                                              cashPaid:
+                                                                  cashPaidController.text,
                                                             );
                                                           });
                                                         }
@@ -294,11 +333,18 @@ class _EditPurchasesState extends State<EditPurchases> {
                                                 (index) => Container(
                                                       decoration: BoxDecoration(
                                                           border: BorderDirectional(
-                                                        top: const BorderSide(color: Colors.grey),
-                                                        start: const BorderSide(color: Colors.grey),
-                                                        end: const BorderSide(color: Colors.grey),
-                                                        bottom: index == listHeaderPurchases.length - 1
-                                                            ? const BorderSide(color: Colors.grey)
+                                                        top: const BorderSide(
+                                                            color: Colors.grey),
+                                                        start: const BorderSide(
+                                                            color: Colors.grey),
+                                                        end: const BorderSide(
+                                                            color: Colors.grey),
+                                                        bottom: index ==
+                                                                listHeaderPurchases
+                                                                        .length -
+                                                                    1
+                                                            ? const BorderSide(
+                                                                color: Colors.grey)
                                                             : BorderSide.none,
                                                       )),
                                                       child: Row(
@@ -306,37 +352,66 @@ class _EditPurchasesState extends State<EditPurchases> {
                                                           Expanded(
                                                             child: Container(
                                                               height: 55,
-                                                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                                                              padding: const EdgeInsets
+                                                                  .symmetric(
+                                                                  horizontal: 8,
+                                                                  vertical: 5),
                                                               decoration: BoxDecoration(
-                                                                  border: const BorderDirectional(
-                                                                    end: BorderSide(color: Colors.grey, width: .5),
+                                                                  border:
+                                                                      const BorderDirectional(
+                                                                    end: BorderSide(
+                                                                        color:
+                                                                            Colors.grey,
+                                                                        width: .5),
                                                                   ),
-                                                                  color: listHeaderPurchases[index] == "الاجمالى" ||
-                                                                          listHeaderPurchases[index] == "الاجل للمورد"
+                                                                  color: listHeaderPurchases[
+                                                                                  index] ==
+                                                                              "الاجمالى" ||
+                                                                          listHeaderPurchases[
+                                                                                  index] ==
+                                                                              "الاجل للمورد"
                                                                       ? Colors.cyanAccent
                                                                       : null),
-                                                              alignment: AlignmentDirectional.centerStart,
-                                                              child: Text(listHeaderPurchases[index]),
+                                                              alignment:
+                                                                  AlignmentDirectional
+                                                                      .centerStart,
+                                                              child: Text(
+                                                                  listHeaderPurchases[
+                                                                      index]),
                                                             ),
                                                           ),
                                                           Expanded(
                                                             flex: 2,
                                                             child: Container(
                                                               height: 55,
-                                                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                                                              padding: const EdgeInsets
+                                                                  .symmetric(
+                                                                  horizontal: 8,
+                                                                  vertical: 5),
                                                               decoration: BoxDecoration(
-                                                                  border: const BorderDirectional(
-                                                                    start: BorderSide(color: Colors.grey, width: .7),
+                                                                  border:
+                                                                      const BorderDirectional(
+                                                                    start: BorderSide(
+                                                                        color:
+                                                                            Colors.grey,
+                                                                        width: .7),
                                                                   ),
-                                                                  color: listHeaderPurchases[index] == "الاجمالى" ||
-                                                                          listHeaderPurchases[index] == "الاجل للمورد"
+                                                                  color: listHeaderPurchases[
+                                                                                  index] ==
+                                                                              "الاجمالى" ||
+                                                                          listHeaderPurchases[
+                                                                                  index] ==
+                                                                              "الاجل للمورد"
                                                                       ? Colors.cyanAccent
                                                                       : null),
                                                               alignment: Alignment.center,
                                                               child: getWidgetPurchases(
-                                                                  title: listHeaderPurchases[index],
+                                                                  title:
+                                                                      listHeaderPurchases[
+                                                                          index],
                                                                   listSetup: listSetup,
-                                                                  oldDataMaster: dataMaster),
+                                                                  oldDataMaster:
+                                                                      dataMaster),
                                                             ),
                                                           ),
                                                         ],
@@ -360,7 +435,8 @@ class _EditPurchasesState extends State<EditPurchases> {
                                             noGradient: true,
                                             color: Colors.transparent,
                                             noShadow: true,
-                                            textStyle: AppStyles.textStyle16.copyWith(color: Colors.grey),
+                                            textStyle: AppStyles.textStyle16
+                                                .copyWith(color: Colors.grey),
                                             onTap: () {
                                               Navigator.pop(context);
                                             },
@@ -368,26 +444,33 @@ class _EditPurchasesState extends State<EditPurchases> {
                                           const SizedBox(
                                             width: 50,
                                           ),
-                                          BlocConsumer<AddEditExpensesCubit, AddEditExpensesState>(
+                                          BlocConsumer<AddEditExpensesCubit,
+                                              AddEditExpensesState>(
                                             listener: (context, state) {
                                               if (state is AddEditExpensesSuccess) {
-                                                BlocProvider.of<GetTableCubit>(context).getTable(
-                                                    pageId: widget.pageData.pageId,
-                                                    employee: false,
-                                                    isdesc: widget.pageData.isDesc,
-                                                    limit: 10,
-                                                    offset: 0,
-                                                    orderby: widget.pageData.orderBy,
-                                                    statment: '',
-                                                    selectcolumns: '',
-                                                    departmentName: widget.pageData.departmentName,
-                                                    isDepartment: widget.pageData.isDepartment,
-                                                    authorizationID: widget.pageData.authorizationID,
-                                                    viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
-                                                    numberOfPage: 1,
-                                                    dropdownValueOfLimit: 10);
+                                                BlocProvider.of<GetTableCubit>(context)
+                                                    .getTable(
+                                                        pageId: widget.pageData.pageId,
+                                                        employee: false,
+                                                        isdesc: widget.pageData.isDesc,
+                                                        limit: 10,
+                                                        offset: 0,
+                                                        orderby: widget.pageData.orderBy,
+                                                        statment: '',
+                                                        selectcolumns: '',
+                                                        departmentName: widget
+                                                            .pageData.departmentName,
+                                                        isDepartment:
+                                                            widget.pageData.isDepartment,
+                                                        authorizationID: widget
+                                                            .pageData.authorizationID,
+                                                        viewEmployeeColumn: widget
+                                                            .pageData.viewEmployeeColumn,
+                                                        numberOfPage: 1,
+                                                        dropdownValueOfLimit: 10);
                                                 Navigator.pop(context);
-                                              } else if (state is AddEditExpensesFailure) {
+                                              } else if (state
+                                                  is AddEditExpensesFailure) {
                                                 CustomAlertDialog.alertWithButton(
                                                     context: context,
                                                     type: AlertType.error,
@@ -403,7 +486,8 @@ class _EditPurchasesState extends State<EditPurchases> {
                                                   text: S.of(context).btn_edit,
                                                   width: 80,
                                                   onTap: () {
-                                                    if (formKey.currentState!.validate()) {
+                                                    if (formKey.currentState!
+                                                        .validate()) {
                                                       formKey.currentState!.save();
 
                                                       // singleObject.addAll({
@@ -449,10 +533,15 @@ class _EditPurchasesState extends State<EditPurchases> {
                                                       //   // "DiscountDetailTotal":double.parse(),
                                                       // });
 
-                                                      BlocProvider.of<AddEditExpensesCubit>(context).edit(
-                                                          singleObject: singleObject,
-                                                          tableList: tableList,
-                                                          controllerName: widget.tapData!.controllerName);
+                                                      BlocProvider.of<
+                                                                  AddEditExpensesCubit>(
+                                                              context)
+                                                          .edit(
+                                                              singleObject: singleObject,
+                                                              tableList: tableList,
+                                                              controllerName: widget
+                                                                  .tapData!
+                                                                  .controllerName);
                                                     }
                                                   },
                                                 );
@@ -500,12 +589,300 @@ class _EditPurchasesState extends State<EditPurchases> {
     List<Widget> list = [];
 
     for (var item in listData) {
-      String title = lang == AppStrings.arLangKey ? item.arColumnLabel! : item.enColumnLabel!;
-      bool condition = item.insertVisable == true && item.cvisable == false && item.visible == false && item.isGeneral == true;
+      String title =
+          lang == AppStrings.arLangKey ? item.arColumnLabel! : item.enColumnLabel!;
+      bool condition = item.insertVisable == true &&
+          item.cvisable == false &&
+          item.visible == false &&
+          item.isGeneral == true;
+
+      if (item.insertType == "text" && item.categoryTitle == categoryName && condition) {
+        TextEditingController controller = TextEditingController(
+          text: dataMaster[item.columnName]?.toString() == "null"
+              ? ''
+              : dataMaster[item.columnName]?.toString() ?? '',
+        );
+        list.add(
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(title,
+                        style: AppStyles.textStyle14.copyWith(color: Colors.grey)),
+                    if (item.isRquired == true)
+                      const Icon(Icons.star, color: Colors.red, size: 10),
+                  ],
+                ),
+                CustomTextFormField(
+                  hintText: '',
+                  controller: controller,
+                  isValidator: item.isRquired ?? false,
+                  keyboardType: TextInputType.text,
+                  onSaved: (newValue) {
+                    if (newValue!.isNotEmpty) {
+                      setState(() {
+                        dataMaster[item.columnName!] = controller.text;
+                        singleObject = dataMaster;
+                      });
+                    }
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      }
+
+      if (item.insertType == "number" &&
+          item.categoryTitle == categoryName &&
+          condition) {
+        TextEditingController controller = TextEditingController(
+          text: dataMaster[item.columnName]?.toString() == "null"
+              ? ''
+              : dataMaster[item.columnName]?.toString() ?? '',
+        );
+        list.add(
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(title,
+                        style: AppStyles.textStyle14.copyWith(color: Colors.grey)),
+                    if (item.isRquired == true)
+                      const Icon(Icons.star, color: Colors.red, size: 10),
+                  ],
+                ),
+                CustomTextFormField(
+                  hintText: '',
+                  controller: controller,
+                  isValidator: item.isRquired ?? false,
+                  keyboardType: TextInputType.number,
+                  onSaved: (newValue) {
+                    if (newValue!.isNotEmpty) {
+                      setState(() {
+                        dataMaster[item.columnName!] = controller.text;
+                        singleObject = dataMaster;
+                      });
+                    }
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      }
+
+      if (item.insertType == "date" && item.categoryTitle == categoryName && condition) {
+        list.add(
+          CustomDatePickerField(
+            title: title,
+            isRequired: item.isRquired ?? false,
+            initialDateString: dataMaster[item.columnName]?.toString(),
+            onDateSelected: (selectedDate) {
+              if (selectedDate != null) {
+                setState(() {
+                  dataMaster[item.columnName!] = selectedDate.toIso8601String();
+                  singleObject = dataMaster;
+                });
+              }
+            },
+            onClear: () {
+              setState(() {
+                dataMaster.remove(item.columnName);
+                singleObject = dataMaster;
+              });
+            },
+          ),
+        );
+      }
+
+      if (item.insertType == "dropdown" &&
+          item.categoryTitle == categoryName &&
+          condition) {
+        List<ListDrop>? listDrop = [];
+        List<ItemDrop>? myListDrop = [];
+
+        for (var ii in myAllDropdownModelList) {
+          if (widget.tapData == null) {
+            if (ii.listName == widget.pageData.listName) {
+              listDrop = ii.list;
+            }
+          } else {
+            if (ii.listName == widget.tapData!.listName) {
+              listDrop = ii.list;
+            }
+          }
+        }
+
+        for (var ii in listDrop!) {
+          if (ii.columnName == item.columnName && ii.nameAr == item.arColumnLabel) {
+            myListDrop = ii.list;
+          }
+        }
+
+        final dropdownItems = myListDrop!.map((e) => e.text ?? '').toList();
+
+        String? dropValue;
+        final dropId = dataMaster[item.searchName]?.toString() ??
+            dataMaster[item.columnName]?.toString();
+
+        final ItemDrop selectedItem = myListDrop.firstWhere(
+          (e) => e.id.toString() == dropId,
+          orElse: () => ItemDrop(),
+        );
+
+        dropValue = selectedItem.text;
+        if (dropValue != null && !dropdownItems.contains(dropValue)) {
+          dropValue = null;
+        }
+
+        Pages? dropPage = getDropPage(item.pageId);
+
+        list.add(
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(title,
+                        style: AppStyles.textStyle14.copyWith(color: Colors.grey)),
+                    if (item.isRquired == true)
+                      const Icon(Icons.star, color: Colors.red, size: 10),
+                    const SizedBox(width: 12),
+                    if (dropPage != null)
+                      InkWell(
+                        onTap: () async {
+                          bool canAdd = await getPermissions(item.pageId);
+                          if (canAdd == true) {
+                            getColumnListAndAdd(dropPage);
+                          } else {
+                            CustomAlertDialog.alertWithButton(
+                              context: context,
+                              type: AlertType.error,
+                              title: S.of(context).error,
+                              desc: S.of(context).massage_no_permission,
+                            );
+                          }
+                        },
+                        child: const Icon(Icons.add, color: Colors.blue, size: 24),
+                      ),
+                    const SizedBox(width: 5),
+                    InkWell(
+                      onTap: () async {
+                        getDropdownList(widget.pageData.pageId);
+                      },
+                      child: const Icon(Icons.refresh, color: Colors.green, size: 24),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: CustomDropdown<String>.search(
+                        hintText: '',
+                        initialItem: dropValue,
+                        closedHeaderPadding:
+                            const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                        decoration: CustomDropdownDecoration(
+                          headerStyle:
+                              AppStyles.textStyle16.copyWith(color: Colors.black),
+                          closedFillColor: Colors.transparent,
+                          closedBorder: Border.all(color: AppColors.blueDark),
+                        ),
+                        items: dropdownItems,
+                        onChanged: (value) {
+                          final ItemDrop selectedItem = myListDrop!.firstWhere(
+                            (element) => (element.text ?? '') == (value ?? ''),
+                            orElse: () => ItemDrop(),
+                          );
+
+                          setState(() {
+                            singleObject[item.searchName!.toString()] = selectedItem.id;
+                          });
+                        },
+                      ),
+                    ),
+                    if (dropValue != null && dropValue.isNotEmpty)
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            dataMaster.remove(item.searchName.toString());
+                            singleObject = dataMaster;
+                          });
+                        },
+                        child: const Padding(
+                          padding: EdgeInsetsDirectional.only(start: 8),
+                          child: Icon(Icons.close, color: Colors.red, size: 18),
+                        ),
+                      ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      }
+
+      if (item.insertType == "checkbox" &&
+          item.categoryTitle == categoryName &&
+          condition) {
+        bool checkboxValue = dataMaster[item.columnName] ?? false;
+        list.add(
+          StatefulBuilder(
+            builder: (context, csetState) {
+              return CheckboxListTile(
+                contentPadding: EdgeInsets.zero,
+                value: checkboxValue,
+                controlAffinity: ListTileControlAffinity.leading,
+                title: Text(
+                  title,
+                  style: AppStyles.textStyle14.copyWith(color: Colors.black),
+                ),
+                onChanged: (newValue) {
+                  csetState(() {
+                    checkboxValue = newValue ?? false;
+                    dataMaster[item.columnName!] = checkboxValue;
+                    singleObject = dataMaster;
+                  });
+                },
+              );
+            },
+          ),
+        );
+      }
+    }
+
+    return list;
+  }
+
+  /* List<Widget> getMyWidgetList({
+    required List<ItemListSetupModel> listData,
+    required String categoryName,
+    required Map<String, dynamic> dataMaster,
+  }) {
+    List<Widget> list = [];
+
+    for (var item in listData) {
+      String title =
+          lang == AppStrings.arLangKey ? item.arColumnLabel! : item.enColumnLabel!;
+      bool condition = item.insertVisable == true &&
+          item.cvisable == false &&
+          item.visible == false &&
+          item.isGeneral == true;
       //text
       if (item.insertType == "text" && item.categoryTitle == categoryName && condition) {
-        TextEditingController controller =
-            TextEditingController(text: dataMaster[item.columnName].toString() == "null" ? '' : dataMaster[item.columnName]);
+        TextEditingController controller = TextEditingController(
+            text: dataMaster[item.columnName].toString() == "null"
+                ? ''
+                : dataMaster[item.columnName]);
         list.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -534,8 +911,10 @@ class _EditPurchasesState extends State<EditPurchases> {
                   onSaved: (newValue) {
                     if (newValue!.isNotEmpty) {
                       setState(() {
-                        dataMaster
-                            .updateAll((key, value) => key == item.columnName!.toString() ? value = controller.text : value);
+                        dataMaster.updateAll((key, value) =>
+                            key == item.columnName!.toString()
+                                ? value = controller.text
+                                : value);
                         singleObject = dataMaster;
                       });
                     }
@@ -547,9 +926,13 @@ class _EditPurchasesState extends State<EditPurchases> {
         );
       }
       //number
-      if (item.insertType == "number" && item.categoryTitle == categoryName && condition) {
+      if (item.insertType == "number" &&
+          item.categoryTitle == categoryName &&
+          condition) {
         TextEditingController controller = TextEditingController(
-            text: dataMaster[item.columnName].toString() == "null" ? '' : dataMaster[item.columnName].toString());
+            text: dataMaster[item.columnName].toString() == "null"
+                ? ''
+                : dataMaster[item.columnName].toString());
         list.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -578,8 +961,10 @@ class _EditPurchasesState extends State<EditPurchases> {
                   onSaved: (newValue) {
                     if (newValue!.isNotEmpty) {
                       setState(() {
-                        dataMaster
-                            .updateAll((key, value) => key == item.columnName!.toString() ? value = controller.text : value);
+                        dataMaster.updateAll((key, value) =>
+                            key == item.columnName!.toString()
+                                ? value = controller.text
+                                : value);
                         singleObject = dataMaster;
                       });
                     }
@@ -620,7 +1005,7 @@ class _EditPurchasesState extends State<EditPurchases> {
             },
           ),
 
-          /*Padding(
+          */ /*Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -675,12 +1060,14 @@ class _EditPurchasesState extends State<EditPurchases> {
                 ),
               ],
             ),
-          ),*/
+          ),*/ /*
         );
       }
 
       //dropdown
-      if (item.insertType == "dropdown" && item.categoryTitle == categoryName && condition) {
+      if (item.insertType == "dropdown" &&
+          item.categoryTitle == categoryName &&
+          condition) {
         List<ListDrop>? listDrop = [];
         List<ItemDrop>? myListDrop = [];
 
@@ -697,20 +1084,30 @@ class _EditPurchasesState extends State<EditPurchases> {
         }
 
         for (var ii in listDrop!) {
-          if (ii.columnName == item.columnName) {
+          if (ii.columnName == item.columnName && ii.nameAr == item.arColumnLabel) {
             myListDrop = ii.list;
           }
         }
 
+        // String? dropValue;
+        // for (var i in myListDrop!) {
+        //   if (i.id.toString() == dataMaster[item.searchName].toString() ||
+        //       i.id.toString() == dataMaster[item.columnName].toString()) {
+        //     dropValue = i.text ?? '';
+        //   }
+        // }
         String? dropValue;
-        for (var i in myListDrop!) {
-          if (i.id.toString() == dataMaster[item.searchName].toString() ||
-              i.id.toString() == dataMaster[item.columnName].toString()) {
-            dropValue = i.text ?? '';
-          }
-        }
+        final dropId = dataMaster[item.searchName]?.toString() ??
+            dataMaster[item.columnName]?.toString();
+        final selectedItem = myListDrop!.firstWhere(
+          (e) => e.id.toString() == dropId,
+          orElse: () => ItemDrop(),
+        );
+        dropValue = selectedItem.text ?? '';
 
         Pages? dropPage = getDropPage(item.pageId);
+        final dropdownItems =
+            myListDrop.isEmpty ? [""] : myListDrop.map((e) => e.text ?? '').toList();
 
         list.add(
           Padding(
@@ -724,7 +1121,8 @@ class _EditPurchasesState extends State<EditPurchases> {
                       title,
                       style: AppStyles.textStyle14.copyWith(color: Colors.grey),
                     ),
-                    if (item.isRquired == true) const Icon(Icons.star, color: Colors.red, size: 10),
+                    if (item.isRquired == true)
+                      const Icon(Icons.star, color: Colors.red, size: 10),
                     const SizedBox(width: 12),
                     if (dropPage != null)
                       InkWell(
@@ -758,28 +1156,65 @@ class _EditPurchasesState extends State<EditPurchases> {
                       child: CustomDropdown<String>.search(
                         hintText: '',
                         initialItem: dropValue,
-                        closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                        closedHeaderPadding:
+                            const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                         decoration: CustomDropdownDecoration(
-                          headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
+                          headerStyle:
+                              AppStyles.textStyle16.copyWith(color: Colors.black),
                           closedFillColor: Colors.transparent,
                           closedBorder: Border.all(color: AppColors.blueDark),
                         ),
-                        items: myListDrop.isEmpty
-                            ? [""]
-                            : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
+                        items: dropdownItems,
                         onChanged: (value) {
-                          ItemDrop ii = myListDrop!.firstWhere((element) => element.text == value);
-                          setState(() {
-                            singleObject.addAll({item.searchName!.toString(): ii.id});
-                          });
+                          // البحث عن العنصر المطابق بأمان
+                          final ItemDrop? selectedItem = myListDrop!.firstWhere(
+                            (element) => (element.text ?? '') == (value ?? ''),
+                            orElse: () => ItemDrop(),
+                          );
+
+                          if (selectedItem != null) {
+                            setState(() {
+                              singleObject[item.searchName!.toString()] = selectedItem.id;
+                            });
+                          } else {
+                            // في حالة عدم وجود عنصر مطابق، ممكن تسجل أو تتجاهل
+                            debugPrint("❗️القيمة المختارة غير موجودة في القائمة");
+                          }
                         },
                       ),
                     ),
+
+                    // Expanded(
+                    //   child: CustomDropdown<String>.search(
+                    //     hintText: '',
+                    //     initialItem: dropValue,
+                    //     closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                    //     decoration: CustomDropdownDecoration(
+                    //       headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
+                    //       closedFillColor: Colors.transparent,
+                    //       closedBorder: Border.all(color: AppColors.blueDark),
+                    //     ),
+                    //     items: myListDrop.isEmpty
+                    //         ? [""]
+                    //         : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
+                    //     onChanged: (value) {
+                    //       ItemDrop ii = myListDrop!.firstWhere((element) => element.text == value);
+                    //       setState(() {
+                    //         singleObject.addAll({item.searchName!.toString(): ii.id});
+                    //       });
+                    //     },
+                    //   ),
+                    // ),
                     if (dropValue != null && dropValue.isNotEmpty)
                       InkWell(
                         onTap: () {
+                          // setState(() {
+                          //   dropValue = null;
+                          //   singleObject.remove(item.searchName.toString());
+                          // });
                           setState(() {
-                            singleObject.remove(item.searchName.toString());
+                            dataMaster.remove(item.searchName);
+                            singleObject = dataMaster;
                           });
                         },
                         child: const Padding(
@@ -795,7 +1230,7 @@ class _EditPurchasesState extends State<EditPurchases> {
         );
       }
 
-      /*if (item.insertType == "dropdown" && item.categoryTitle == categoryName && condition) {
+      */ /*if (item.insertType == "dropdown" && item.categoryTitle == categoryName && condition) {
         List<ListDrop>? listDrop = [];
         List<ItemDrop>? myListDrop = [];
 
@@ -909,9 +1344,11 @@ class _EditPurchasesState extends State<EditPurchases> {
             ),
           ),
         );
-      }*/
+      }*/ /*
       //checkbox
-      if (item.insertType == "checkbox" && item.categoryTitle == categoryName && condition) {
+      if (item.insertType == "checkbox" &&
+          item.categoryTitle == categoryName &&
+          condition) {
         bool checkboxValue = dataMaster[item.columnName] ?? false;
         list.add(
           StatefulBuilder(
@@ -929,7 +1366,10 @@ class _EditPurchasesState extends State<EditPurchases> {
                       checkboxValue = !checkboxValue;
                     });
                     csetState(() {
-                      dataMaster.updateAll((key, value) => key == item.columnName!.toString() ? value = checkboxValue : value);
+                      dataMaster.updateAll((key, value) =>
+                          key == item.columnName!.toString()
+                              ? value = checkboxValue
+                              : value);
                       singleObject = dataMaster;
                     });
                   });
@@ -939,7 +1379,7 @@ class _EditPurchasesState extends State<EditPurchases> {
       }
     }
     return list;
-  }
+  }*/
 
   getWidgetPurchases({
     required String title,
@@ -953,7 +1393,8 @@ class _EditPurchasesState extends State<EditPurchases> {
           style: const TextStyle(color: Colors.red, fontSize: 20),
         );
       case "الخزينة":
-        ItemListSetupModel item = listSetup.firstWhere((element) => element.columnName == "SafeAccounId");
+        ItemListSetupModel item =
+            listSetup.firstWhere((element) => element.columnName == "SafeAccounId");
         List<ListDrop>? listDrop = [];
         List<ItemDrop>? myListDrop = [];
 
@@ -980,17 +1421,23 @@ class _EditPurchasesState extends State<EditPurchases> {
               headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
               closedFillColor: Colors.transparent,
               closedBorder: Border.all(color: AppColors.blueDark)),
-          items: myListDrop!.isEmpty ? [""] : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
+          items: myListDrop!.isEmpty
+              ? [""]
+              : List.generate(
+                  myListDrop.length, (index) => myListDrop![index].text ?? ''),
           onChanged: (value) {},
         );
       case "ضريبة القيمة المضافة":
-        valueAddedTaxController.text = oldDataMaster['Tax'] == null ? "" : oldDataMaster['Tax'].toString();
+        valueAddedTaxController.text =
+            oldDataMaster['Tax'] == null ? "" : oldDataMaster['Tax'].toString();
         rateValueAddedTaxController.text = oldDataMaster['Tax'] == null
             ? ""
             : rate(
                 totalValue: totalAfterDiscount(
                     total: total.toString(),
-                    discount: oldDataMaster['DiscountCurrancy'] == null ? "0" : oldDataMaster['DiscountCurrancy'].toString()),
+                    discount: oldDataMaster['DiscountCurrancy'] == null
+                        ? "0"
+                        : oldDataMaster['DiscountCurrancy'].toString()),
                 value: oldDataMaster['Tax'].toString());
         return StatefulBuilder(
           builder: (context, wsetState) => Row(
@@ -1003,7 +1450,8 @@ class _EditPurchasesState extends State<EditPurchases> {
                   keyboardType: TextInputType.number,
                   onChanged: (newValue) {
                     valueAddedTaxController.text = valueFromRate(
-                        totalValue: totalAfterDiscount(total: total.toString(), discount: discountController.text),
+                        totalValue: totalAfterDiscount(
+                            total: total.toString(), discount: discountController.text),
                         valueRate: newValue);
                     deadlineSupplierController.text = deadlineSupplier(
                         total: total.toString(),
@@ -1011,7 +1459,9 @@ class _EditPurchasesState extends State<EditPurchases> {
                         tax: taxController.text,
                         discount: discountController.text,
                         cashPaid: cashPaidController.text);
-                    singleObject.updateAll((key, value) => key == "Tax" ? double.parse(valueAddedTaxController.text) : value);
+                    singleObject.updateAll((key, value) => key == "Tax"
+                        ? double.parse(valueAddedTaxController.text)
+                        : value);
                     wsetState(() {});
                   },
                 ),
@@ -1028,7 +1478,8 @@ class _EditPurchasesState extends State<EditPurchases> {
                   keyboardType: TextInputType.number,
                   onChanged: (newValue) {
                     rateValueAddedTaxController.text = rate(
-                        totalValue: totalAfterDiscount(total: total.toString(), discount: discountController.text),
+                        totalValue: totalAfterDiscount(
+                            total: total.toString(), discount: discountController.text),
                         value: newValue);
                     deadlineSupplierController.text = deadlineSupplier(
                         total: total.toString(),
@@ -1036,7 +1487,8 @@ class _EditPurchasesState extends State<EditPurchases> {
                         tax: taxController.text,
                         discount: discountController.text,
                         cashPaid: cashPaidController.text);
-                    singleObject.updateAll((key, value) => key == "Tax" ? double.parse(newValue) : value);
+                    singleObject.updateAll(
+                        (key, value) => key == "Tax" ? double.parse(newValue) : value);
                     wsetState(() {});
                   },
                 ),
@@ -1045,13 +1497,16 @@ class _EditPurchasesState extends State<EditPurchases> {
           ),
         );
       case "ضريبة خصم منبع":
-        taxController.text = oldDataMaster['AddTax'] == null ? "" : oldDataMaster['AddTax'].toString();
+        taxController.text =
+            oldDataMaster['AddTax'] == null ? "" : oldDataMaster['AddTax'].toString();
         rateTaxController.text = oldDataMaster['AddTax'] == null
             ? ""
             : rate(
                 totalValue: totalAfterDiscount(
                     total: total.toString(),
-                    discount: oldDataMaster['DiscountCurrancy'] == null ? "0" : oldDataMaster['DiscountCurrancy'].toString()),
+                    discount: oldDataMaster['DiscountCurrancy'] == null
+                        ? "0"
+                        : oldDataMaster['DiscountCurrancy'].toString()),
                 value: oldDataMaster['AddTax'].toString());
         return StatefulBuilder(
           builder: (context, wsetState) => Row(
@@ -1064,7 +1519,8 @@ class _EditPurchasesState extends State<EditPurchases> {
                   keyboardType: TextInputType.number,
                   onChanged: (newValue) {
                     taxController.text = valueFromRate(
-                        totalValue: totalAfterDiscount(total: total.toString(), discount: discountController.text),
+                        totalValue: totalAfterDiscount(
+                            total: total.toString(), discount: discountController.text),
                         valueRate: newValue);
                     deadlineSupplierController.text = deadlineSupplier(
                         total: total.toString(),
@@ -1072,7 +1528,8 @@ class _EditPurchasesState extends State<EditPurchases> {
                         tax: taxController.text,
                         discount: discountController.text,
                         cashPaid: cashPaidController.text);
-                    singleObject.updateAll((key, value) => key == "AddTax" ? double.parse(taxController.text) : value);
+                    singleObject.updateAll((key, value) =>
+                        key == "AddTax" ? double.parse(taxController.text) : value);
                     wsetState(() {});
                   },
                 ),
@@ -1089,7 +1546,8 @@ class _EditPurchasesState extends State<EditPurchases> {
                   keyboardType: TextInputType.number,
                   onChanged: (newValue) {
                     rateTaxController.text = rate(
-                        totalValue: totalAfterDiscount(total: total.toString(), discount: discountController.text),
+                        totalValue: totalAfterDiscount(
+                            total: total.toString(), discount: discountController.text),
                         value: newValue);
                     deadlineSupplierController.text = deadlineSupplier(
                         total: total.toString(),
@@ -1097,7 +1555,8 @@ class _EditPurchasesState extends State<EditPurchases> {
                         tax: newValue,
                         discount: discountController.text,
                         cashPaid: cashPaidController.text);
-                    singleObject.updateAll((key, value) => key == "AddTax" ? double.parse(newValue) : value);
+                    singleObject.updateAll(
+                        (key, value) => key == "AddTax" ? double.parse(newValue) : value);
                     wsetState(() {});
                   },
                 ),
@@ -1106,7 +1565,9 @@ class _EditPurchasesState extends State<EditPurchases> {
           ),
         );
       case "المبلغ المدفوع":
-        cashPaidController.text = oldDataMaster['POPaidCurrancy'] == null ? "" : oldDataMaster['POPaidCurrancy'].toString();
+        cashPaidController.text = oldDataMaster['POPaidCurrancy'] == null
+            ? ""
+            : oldDataMaster['POPaidCurrancy'].toString();
 
         return StatefulBuilder(
           builder: (context, wsetState) => CustomTextFormField(
@@ -1121,13 +1582,16 @@ class _EditPurchasesState extends State<EditPurchases> {
                   tax: taxController.text,
                   discount: discountController.text,
                   cashPaid: newValue);
-              singleObject.updateAll((key, value) => key == "POPaidCurrancy" ? double.parse(newValue) : value);
+              singleObject.updateAll((key, value) =>
+                  key == "POPaidCurrancy" ? double.parse(newValue) : value);
               wsetState(() {});
             },
           ),
         );
       case "الخصم":
-        discountController.text = oldDataMaster['DiscountCurrancy'] == null ? "" : oldDataMaster['DiscountCurrancy'].toString();
+        discountController.text = oldDataMaster['DiscountCurrancy'] == null
+            ? ""
+            : oldDataMaster['DiscountCurrancy'].toString();
 
         return StatefulBuilder(
           builder: (context, wsetState) => CustomTextFormField(
@@ -1137,24 +1601,29 @@ class _EditPurchasesState extends State<EditPurchases> {
             keyboardType: TextInputType.number,
             onChanged: (newValue) {
               valueAddedTaxController.text = valueFromRate(
-                  totalValue: totalAfterDiscount(total: total.toString(), discount: newValue),
+                  totalValue:
+                      totalAfterDiscount(total: total.toString(), discount: newValue),
                   valueRate: rateValueAddedTaxController.text);
               taxController.text = valueFromRate(
-                  totalValue: totalAfterDiscount(total: total.toString(), discount: newValue), valueRate: rateTaxController.text);
+                  totalValue:
+                      totalAfterDiscount(total: total.toString(), discount: newValue),
+                  valueRate: rateTaxController.text);
               deadlineSupplierController.text = deadlineSupplier(
                   total: total.toString(),
                   valueAddedTax: valueAddedTaxController.text,
                   tax: taxController.text,
                   discount: newValue,
                   cashPaid: cashPaidController.text);
-              singleObject.updateAll((key, value) => key == "DiscountCurrancy" ? double.parse(newValue) : value);
+              singleObject.updateAll((key, value) =>
+                  key == "DiscountCurrancy" ? double.parse(newValue) : value);
               wsetState(() {});
             },
           ),
         );
       case "الاجل للمورد":
-        deadlineSupplierController.text =
-            oldDataMaster['RemindCurrancy'] == null ? "0" : oldDataMaster['RemindCurrancy'].toString();
+        deadlineSupplierController.text = oldDataMaster['RemindCurrancy'] == null
+            ? "0"
+            : oldDataMaster['RemindCurrancy'].toString();
 
         return CustomTextFormField(
           controller: deadlineSupplierController,
@@ -1187,7 +1656,9 @@ class _EditPurchasesState extends State<EditPurchases> {
     required String totalValue,
     required String value,
   }) {
-    double result = double.parse(value == "" ? "0" : value) / double.parse(totalValue == "" ? "0" : totalValue) * 100;
+    double result = double.parse(value == "" ? "0" : value) /
+        double.parse(totalValue == "" ? "0" : totalValue) *
+        100;
     return result.toString();
   }
 
@@ -1195,7 +1666,9 @@ class _EditPurchasesState extends State<EditPurchases> {
     required String totalValue,
     required String valueRate,
   }) {
-    double result = double.parse(valueRate == "" ? "0" : valueRate) * double.parse(totalValue == "" ? "0" : totalValue) / 100;
+    double result = double.parse(valueRate == "" ? "0" : valueRate) *
+        double.parse(totalValue == "" ? "0" : totalValue) /
+        100;
     return result.toString();
   }
 
@@ -1203,13 +1676,15 @@ class _EditPurchasesState extends State<EditPurchases> {
     required String total,
     required String discount,
   }) {
-    double result = double.parse(total == "" ? "0" : total) - double.parse(discount == "" ? "0" : discount);
+    double result = double.parse(total == "" ? "0" : total) -
+        double.parse(discount == "" ? "0" : discount);
     return result.toString();
   }
 
   void getDataList() async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> dataProduct = await ApiService(Dio()).post(
         endPoint: "web/Structure/getDataGlobal",
@@ -1238,7 +1713,8 @@ class _EditPurchasesState extends State<EditPurchases> {
 
   void getColumnListAndAdd(Pages page) async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).post(
         endPoint: "home/getGeneralTable",
@@ -1293,7 +1769,8 @@ class _EditPurchasesState extends State<EditPurchases> {
 
   Future<bool> getPermissions(int? pageId) async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPagePermissions?pageId=$pageId",
@@ -1311,7 +1788,8 @@ class _EditPurchasesState extends State<EditPurchases> {
 
   void getDropdownList(int pageId) async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       List<dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPageDropDown?pageId=$pageId",

@@ -18,24 +18,25 @@ import '../../../../../../core/widgets/custom_error_massage.dart';
 import '../../../../../../core/widgets/custom_loading_widget.dart';
 import '../../../../../../core/widgets/custom_text_form_field.dart';
 import '../../../../../../generated/l10n.dart';
-import '../../../manager/getTable/get_table_cubit.dart';
-import '../../../../data/models/item_list_setup_model.dart';
-import '../../../../data/models/tap_model.dart';
 import '../../../../../home/presentation/widgets/home_view_body.dart';
 import '../../../../data/models/dropdown_model/all_dropdown_model.dart';
+import '../../../../data/models/item_list_setup_model.dart';
+import '../../../../data/models/permission_model.dart';
+import '../../../../data/models/screen_model.dart';
+import '../../../../data/models/tap_model.dart';
 import '../../../../data/repositories/screen_repo_impl.dart';
 import '../../../manager/addEditExpenses/add_edit_expenses_cubit.dart';
 import '../../../manager/getExpensesDetails/get_expenses_details_cubit.dart';
 import '../../../manager/getExpensesMaster/get_expenses_master_cubit.dart';
 import '../../../manager/getListSetups/get_list_setups_cubit.dart';
+import '../../../manager/getTable/get_table_cubit.dart';
 import '../../../views/screen_table.dart';
-import '../../../../data/models/permission_model.dart';
-import '../../../../data/models/screen_model.dart';
 import '../build_alert_add_in_dropdown.dart';
 import 'supply_order_table_add_edit_.dart';
 
 class EditSupplyOrder extends StatefulWidget {
-  const EditSupplyOrder({super.key, this.tapData, required this.pageData, required this.listKey});
+  const EditSupplyOrder(
+      {super.key, this.tapData, required this.pageData, required this.listKey});
 
   final ListTaps? tapData;
   final Pages pageData;
@@ -97,7 +98,7 @@ class _EditSupplyOrderState extends State<EditSupplyOrder> {
         builder: (context, state) {
           if (state is GetExpensesMasterSuccess) {
             Map<String, dynamic> dataMaster = state.data;
-            // singleObject = dataMaster;
+            singleObject = dataMaster;
             if (isFirst == true) {
               total = dataMaster['TotalOrder'] ?? 0.0;
               totalAfterTax = dataMaster['totalDetails'] ?? 0.0;
@@ -170,7 +171,8 @@ class _EditSupplyOrderState extends State<EditSupplyOrder> {
               child: BlocBuilder<GetExpensesDetailsCubit, GetExpensesDetailsState>(
                 builder: (context, state) {
                   if (state is GetExpensesDetailsSuccess) {
-                    List<Map<String, dynamic>> listDataInTable = state.expensesDetailsModel.dynamicList!;
+                    List<Map<String, dynamic>> listDataInTable =
+                        state.expensesDetailsModel.dynamicList!;
                     tableList = listDataInTable;
 
                     return BlocBuilder<GetListSetupsCubit, GetListSetupsState>(
@@ -189,7 +191,9 @@ class _EditSupplyOrderState extends State<EditSupplyOrder> {
                                 item.isGeneral != true) {
                               listColumn.add(item);
                               listKey.add(item.columnName);
-                              listHeader.add(lang == AppStrings.enLangKey ? item.enColumnLabel! : item.arColumnLabel!);
+                              listHeader.add(lang == AppStrings.enLangKey
+                                  ? item.enColumnLabel!
+                                  : item.arColumnLabel!);
                             }
                           }
                           List<String> categoryList = category.toSet().toList();
@@ -208,25 +212,39 @@ class _EditSupplyOrderState extends State<EditSupplyOrder> {
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
-                                            ...List.generate(categoryList.length, (index) {
+                                            ...List.generate(categoryList.length,
+                                                (index) {
                                               String categoryName = categoryList[index];
                                               List<Widget> widgetList = getMyWidgetList(
-                                                  listData: listSetup, categoryName: categoryName, dataMaster: dataMaster);
+                                                  listData: listSetup,
+                                                  categoryName: categoryName,
+                                                  dataMaster: dataMaster);
                                               return widgetList.isNotEmpty
                                                   ? Padding(
-                                                      padding: const EdgeInsets.only(bottom: 16),
+                                                      padding: const EdgeInsets.only(
+                                                          bottom: 16),
                                                       child: Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment.start,
                                                         children: [
                                                           Container(
-                                                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                                            padding: const EdgeInsets
+                                                                .symmetric(
+                                                                horizontal: 12,
+                                                                vertical: 8),
                                                             decoration: BoxDecoration(
                                                                 // color: AppColors.grey.withOpacity(.4),
-                                                                color: AppColors.grey.withAlpha(102),
-                                                                borderRadius: BorderRadius.circular(15)),
+                                                                color: AppColors.grey
+                                                                    .withAlpha(102),
+                                                                borderRadius:
+                                                                    BorderRadius.circular(
+                                                                        15)),
                                                             child: Text(
                                                               categoryName,
-                                                              style: AppStyles.textStyle18.copyWith(color: Colors.black),
+                                                              style: AppStyles.textStyle18
+                                                                  .copyWith(
+                                                                      color:
+                                                                          Colors.black),
                                                             ),
                                                           ),
                                                           ...widgetList,
@@ -238,7 +256,8 @@ class _EditSupplyOrderState extends State<EditSupplyOrder> {
                                             StatefulBuilder(
                                               builder: (context, ssetState) {
                                                 return Padding(
-                                                  padding: const EdgeInsets.only(bottom: 16),
+                                                  padding:
+                                                      const EdgeInsets.only(bottom: 16),
                                                   child: SupplyOrderTableAddEdit(
                                                     oldTableList: listDataInTable,
                                                     tapData: widget.tapData,
@@ -246,7 +265,8 @@ class _EditSupplyOrderState extends State<EditSupplyOrder> {
                                                     listKey: listKey,
                                                     listHeader: listHeader,
                                                     listColumn: listColumn,
-                                                    allDropdownModelList: ScreenTable.myAllDropdownModelList,
+                                                    allDropdownModelList: ScreenTable
+                                                        .myAllDropdownModelList,
                                                     onTapAction: (data) {
                                                       total = 0.0;
                                                       totalAfterTax = 0.0;
@@ -256,6 +276,50 @@ class _EditSupplyOrderState extends State<EditSupplyOrder> {
                                                       });
                                                       if (tableList.isNotEmpty) {
                                                         for (var i in tableList) {
+                                                          salessetState(() {
+                                                            double value =
+                                                                i['DetailValue'] is String
+                                                                    ? double.parse(
+                                                                        i['DetailValue'])
+                                                                    : i['DetailValue'] ??
+                                                                        0.0;
+                                                            double quantity = i[
+                                                                        'DetailQuantity'] ==
+                                                                    null
+                                                                ? 1.0
+                                                                : (i['DetailQuantity']
+                                                                        is String
+                                                                    ? double.tryParse(i[
+                                                                            'DetailQuantity']) ??
+                                                                        1.0
+                                                                    : i['DetailQuantity']);
+
+                                                            total = total +
+                                                                (value * quantity);
+
+                                                            totalAfterTax =
+                                                                calculateTotalAfterTax(
+                                                                    total: total,
+                                                                    taxPercent:
+                                                                        taxPercent);
+
+                                                            rest = calculateRemaining(
+                                                              totalAfterTax:
+                                                                  totalAfterTax,
+                                                              paidValue: double.tryParse(
+                                                                      paidController.text
+                                                                              .trim()
+                                                                              .isEmpty
+                                                                          ? "0"
+                                                                          : paidController
+                                                                              .text
+                                                                              .trim()) ??
+                                                                  0.0,
+                                                            );
+                                                          });
+                                                        }
+
+                                                        /*for (var i in tableList) {
                                                           salessetState(() {
                                                             total = total +
                                                                 (double.parse(i['DetailValue']) *
@@ -268,7 +332,7 @@ class _EditSupplyOrderState extends State<EditSupplyOrder> {
                                                                     ? "0"
                                                                     : paidController.text.trim()));
                                                           });
-                                                        }
+                                                        }*/
                                                       } else {
                                                         salessetState(() {
                                                           total = 0.0;
@@ -328,11 +392,18 @@ class _EditSupplyOrderState extends State<EditSupplyOrder> {
                                                 (index) => Container(
                                                       decoration: BoxDecoration(
                                                           border: BorderDirectional(
-                                                        top: const BorderSide(color: Colors.grey),
-                                                        start: const BorderSide(color: Colors.grey),
-                                                        end: const BorderSide(color: Colors.grey),
-                                                        bottom: index == listHeaderSupplyOrder.length - 1
-                                                            ? const BorderSide(color: Colors.grey)
+                                                        top: const BorderSide(
+                                                            color: Colors.grey),
+                                                        start: const BorderSide(
+                                                            color: Colors.grey),
+                                                        end: const BorderSide(
+                                                            color: Colors.grey),
+                                                        bottom: index ==
+                                                                listHeaderSupplyOrder
+                                                                        .length -
+                                                                    1
+                                                            ? const BorderSide(
+                                                                color: Colors.grey)
                                                             : BorderSide.none,
                                                       )),
                                                       child: Row(
@@ -340,39 +411,68 @@ class _EditSupplyOrderState extends State<EditSupplyOrder> {
                                                           Expanded(
                                                             child: Container(
                                                               height: 55,
-                                                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                                                              padding: const EdgeInsets
+                                                                  .symmetric(
+                                                                  horizontal: 8,
+                                                                  vertical: 5),
                                                               decoration: BoxDecoration(
-                                                                  border: const BorderDirectional(
-                                                                    end: BorderSide(color: Colors.grey, width: .5),
+                                                                  border:
+                                                                      const BorderDirectional(
+                                                                    end: BorderSide(
+                                                                        color:
+                                                                            Colors.grey,
+                                                                        width: .5),
                                                                   ),
                                                                   color: listHeaderSupplyOrder[index] == "الاجمالى" ||
-                                                                          listHeaderSupplyOrder[index] == "المتبقي" ||
-                                                                          listHeaderSupplyOrder[index] == "الاجمالي بعد الضريبة"
+                                                                          listHeaderSupplyOrder[
+                                                                                  index] ==
+                                                                              "المتبقي" ||
+                                                                          listHeaderSupplyOrder[
+                                                                                  index] ==
+                                                                              "الاجمالي بعد الضريبة"
                                                                       ? Colors.cyanAccent
                                                                       : null),
-                                                              alignment: AlignmentDirectional.centerStart,
-                                                              child: Text(listHeaderSupplyOrder[index]),
+                                                              alignment:
+                                                                  AlignmentDirectional
+                                                                      .centerStart,
+                                                              child: Text(
+                                                                  listHeaderSupplyOrder[
+                                                                      index]),
                                                             ),
                                                           ),
                                                           Expanded(
                                                             flex: 2,
                                                             child: Container(
                                                               height: 55,
-                                                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                                                              padding: const EdgeInsets
+                                                                  .symmetric(
+                                                                  horizontal: 8,
+                                                                  vertical: 5),
                                                               decoration: BoxDecoration(
-                                                                  border: const BorderDirectional(
-                                                                    start: BorderSide(color: Colors.grey, width: .7),
+                                                                  border:
+                                                                      const BorderDirectional(
+                                                                    start: BorderSide(
+                                                                        color:
+                                                                            Colors.grey,
+                                                                        width: .7),
                                                                   ),
                                                                   color: listHeaderSupplyOrder[index] == "الاجمالى" ||
-                                                                          listHeaderSupplyOrder[index] == "المتبقي" ||
-                                                                          listHeaderSupplyOrder[index] == "الاجمالي بعد الضريبة"
+                                                                          listHeaderSupplyOrder[
+                                                                                  index] ==
+                                                                              "المتبقي" ||
+                                                                          listHeaderSupplyOrder[
+                                                                                  index] ==
+                                                                              "الاجمالي بعد الضريبة"
                                                                       ? Colors.cyanAccent
                                                                       : null),
                                                               alignment: Alignment.center,
                                                               child: getWidgetPurchases(
-                                                                  title: listHeaderSupplyOrder[index],
+                                                                  title:
+                                                                      listHeaderSupplyOrder[
+                                                                          index],
                                                                   listSetup: listSetup,
-                                                                  oldDataMaster: dataMaster),
+                                                                  oldDataMaster:
+                                                                      dataMaster),
                                                             ),
                                                           ),
                                                         ],
@@ -396,7 +496,8 @@ class _EditSupplyOrderState extends State<EditSupplyOrder> {
                                             noGradient: true,
                                             color: Colors.transparent,
                                             noShadow: true,
-                                            textStyle: AppStyles.textStyle16.copyWith(color: Colors.grey),
+                                            textStyle: AppStyles.textStyle16
+                                                .copyWith(color: Colors.grey),
                                             onTap: () {
                                               Navigator.pop(context);
                                             },
@@ -404,26 +505,33 @@ class _EditSupplyOrderState extends State<EditSupplyOrder> {
                                           const SizedBox(
                                             width: 50,
                                           ),
-                                          BlocConsumer<AddEditExpensesCubit, AddEditExpensesState>(
+                                          BlocConsumer<AddEditExpensesCubit,
+                                              AddEditExpensesState>(
                                             listener: (context, state) {
                                               if (state is AddEditExpensesSuccess) {
-                                                BlocProvider.of<GetTableCubit>(context).getTable(
-                                                    pageId: widget.pageData.pageId,
-                                                    employee: false,
-                                                    isdesc: widget.pageData.isDesc,
-                                                    limit: 10,
-                                                    offset: 0,
-                                                    orderby: widget.pageData.orderBy,
-                                                    statment: '',
-                                                    selectcolumns: '',
-                                                    departmentName: widget.pageData.departmentName,
-                                                    isDepartment: widget.pageData.isDepartment,
-                                                    authorizationID: widget.pageData.authorizationID,
-                                                    viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
-                                                    numberOfPage: 1,
-                                                    dropdownValueOfLimit: 10);
+                                                BlocProvider.of<GetTableCubit>(context)
+                                                    .getTable(
+                                                        pageId: widget.pageData.pageId,
+                                                        employee: false,
+                                                        isdesc: widget.pageData.isDesc,
+                                                        limit: 10,
+                                                        offset: 0,
+                                                        orderby: widget.pageData.orderBy,
+                                                        statment: '',
+                                                        selectcolumns: '',
+                                                        departmentName: widget
+                                                            .pageData.departmentName,
+                                                        isDepartment:
+                                                            widget.pageData.isDepartment,
+                                                        authorizationID: widget
+                                                            .pageData.authorizationID,
+                                                        viewEmployeeColumn: widget
+                                                            .pageData.viewEmployeeColumn,
+                                                        numberOfPage: 1,
+                                                        dropdownValueOfLimit: 10);
                                                 Navigator.pop(context);
-                                              } else if (state is AddEditExpensesFailure) {
+                                              } else if (state
+                                                  is AddEditExpensesFailure) {
                                                 CustomAlertDialog.alertWithButton(
                                                     context: context,
                                                     type: AlertType.error,
@@ -439,7 +547,8 @@ class _EditSupplyOrderState extends State<EditSupplyOrder> {
                                                   text: S.of(context).btn_edit,
                                                   width: 80,
                                                   onTap: () {
-                                                    if (formKey.currentState!.validate()) {
+                                                    if (formKey.currentState!
+                                                        .validate()) {
                                                       formKey.currentState!.save();
 
                                                       // singleObject.addAll({
@@ -485,10 +594,15 @@ class _EditSupplyOrderState extends State<EditSupplyOrder> {
                                                       //   // "DiscountDetailTotal":double.parse(),
                                                       // });
 
-                                                      BlocProvider.of<AddEditExpensesCubit>(context).edit(
-                                                          singleObject: singleObject,
-                                                          tableList: tableList,
-                                                          controllerName: widget.tapData!.controllerName);
+                                                      BlocProvider.of<
+                                                                  AddEditExpensesCubit>(
+                                                              context)
+                                                          .edit(
+                                                              singleObject: singleObject,
+                                                              tableList: tableList,
+                                                              controllerName: widget
+                                                                  .tapData!
+                                                                  .controllerName);
                                                     }
                                                   },
                                                 );
@@ -536,12 +650,18 @@ class _EditSupplyOrderState extends State<EditSupplyOrder> {
     List<Widget> list = [];
 
     for (var item in listData) {
-      String title = lang == AppStrings.arLangKey ? item.arColumnLabel! : item.enColumnLabel!;
-      bool condition = item.insertVisable == true && item.cvisable == false && item.visible == false && item.isGeneral == true;
+      String title =
+          lang == AppStrings.arLangKey ? item.arColumnLabel! : item.enColumnLabel!;
+      bool condition = item.insertVisable == true &&
+          item.cvisable == false &&
+          item.visible == false &&
+          item.isGeneral == true;
       //text
       if (item.insertType == "text" && item.categoryTitle == categoryName && condition) {
-        TextEditingController controller =
-            TextEditingController(text: dataMaster[item.columnName].toString() == "null" ? '' : dataMaster[item.columnName]);
+        TextEditingController controller = TextEditingController(
+            text: dataMaster[item.columnName].toString() == "null"
+                ? ''
+                : dataMaster[item.columnName]);
         list.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -592,9 +712,13 @@ class _EditSupplyOrderState extends State<EditSupplyOrder> {
         );
       }
       //number
-      if (item.insertType == "number" && item.categoryTitle == categoryName && condition) {
+      if (item.insertType == "number" &&
+          item.categoryTitle == categoryName &&
+          condition) {
         TextEditingController controller = TextEditingController(
-            text: dataMaster[item.columnName].toString() == "null" ? '' : dataMaster[item.columnName].toString());
+            text: dataMaster[item.columnName].toString() == "null"
+                ? ''
+                : dataMaster[item.columnName].toString());
         list.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -734,7 +858,9 @@ class _EditSupplyOrderState extends State<EditSupplyOrder> {
       }
 
       //dropdown
-      if (item.insertType == "dropdown" && item.categoryTitle == categoryName && condition) {
+      if (item.insertType == "dropdown" &&
+          item.categoryTitle == categoryName &&
+          condition) {
         List<ListDrop>? listDrop = [];
         List<ItemDrop>? myListDrop = [];
 
@@ -778,7 +904,8 @@ class _EditSupplyOrderState extends State<EditSupplyOrder> {
                       title,
                       style: AppStyles.textStyle14.copyWith(color: Colors.grey),
                     ),
-                    if (item.isRquired == true) const Icon(Icons.star, color: Colors.red, size: 10),
+                    if (item.isRquired == true)
+                      const Icon(Icons.star, color: Colors.red, size: 10),
                     const SizedBox(width: 12),
                     if (dropPage != null)
                       InkWell(
@@ -812,17 +939,21 @@ class _EditSupplyOrderState extends State<EditSupplyOrder> {
                       child: CustomDropdown<String>.search(
                         hintText: '',
                         initialItem: dropValue,
-                        closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                        closedHeaderPadding:
+                            const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                         decoration: CustomDropdownDecoration(
-                          headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
+                          headerStyle:
+                              AppStyles.textStyle16.copyWith(color: Colors.black),
                           closedFillColor: Colors.transparent,
                           closedBorder: Border.all(color: AppColors.blueDark),
                         ),
                         items: myListDrop.isEmpty
                             ? [""]
-                            : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
+                            : List.generate(myListDrop.length,
+                                (index) => myListDrop![index].text ?? ''),
                         onChanged: (value) {
-                          ItemDrop ii = myListDrop!.firstWhere((element) => element.text == value);
+                          ItemDrop ii =
+                              myListDrop!.firstWhere((element) => element.text == value);
                           setState(() {
                             singleObject.addAll({item.searchName!.toString(): ii.id});
                           });
@@ -965,7 +1096,9 @@ class _EditSupplyOrderState extends State<EditSupplyOrder> {
         );
       }*/
       //checkbox
-      if (item.insertType == "checkbox" && item.categoryTitle == categoryName && condition) {
+      if (item.insertType == "checkbox" &&
+          item.categoryTitle == categoryName &&
+          condition) {
         bool checkboxValue = dataMaster[item.columnName] ?? false;
         list.add(
           StatefulBuilder(
@@ -983,7 +1116,10 @@ class _EditSupplyOrderState extends State<EditSupplyOrder> {
                       checkboxValue = !checkboxValue;
                     });
                     csetState(() {
-                      dataMaster.updateAll((key, value) => key == item.columnName!.toString() ? value = checkboxValue : value);
+                      dataMaster.updateAll((key, value) =>
+                          key == item.columnName!.toString()
+                              ? value = checkboxValue
+                              : value);
                       singleObject = dataMaster;
                     });
                   });
@@ -997,7 +1133,8 @@ class _EditSupplyOrderState extends State<EditSupplyOrder> {
 
   void getDataList() async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> dataProduct = await ApiService(Dio()).post(
         endPoint: "web/Structure/getDataGlobal",
@@ -1026,7 +1163,8 @@ class _EditSupplyOrderState extends State<EditSupplyOrder> {
 
   void getColumnListAndAdd(Pages page) async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).post(
         endPoint: "home/getGeneralTable",
@@ -1081,7 +1219,8 @@ class _EditSupplyOrderState extends State<EditSupplyOrder> {
 
   Future<bool> getPermissions(int? pageId) async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPagePermissions?pageId=$pageId",
@@ -1099,7 +1238,8 @@ class _EditSupplyOrderState extends State<EditSupplyOrder> {
 
   void getDropdownList(int pageId) async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       List<dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPageDropDown?pageId=$pageId",
@@ -1163,7 +1303,7 @@ class _EditSupplyOrderState extends State<EditSupplyOrder> {
     switch (title) {
       case "الاجمالى":
         return Text(
-          "$total",
+          total.toStringAsFixed(2),
           style: const TextStyle(color: Colors.red, fontSize: 20),
         );
 
@@ -1214,7 +1354,10 @@ class _EditSupplyOrderState extends State<EditSupplyOrder> {
               headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
               closedFillColor: Colors.transparent,
               closedBorder: Border.all(color: AppColors.blueDark)),
-          items: myListDrop.isEmpty ? [""] : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
+          items: myListDrop.isEmpty
+              ? [""]
+              : List.generate(
+                  myListDrop.length, (index) => myListDrop![index].text ?? ''),
           onChanged: (value) {
             purchaseTypeId = int.parse(myListDrop!
                 .firstWhere(
@@ -1226,7 +1369,8 @@ class _EditSupplyOrderState extends State<EditSupplyOrder> {
         );
       case "الضريبة":
         // int initialItemID = oldDataMaster['Tax'];
-        ItemListSetupModel item = listSetup.firstWhere((element) => element.columnName == "Tax");
+        ItemListSetupModel item =
+            listSetup.firstWhere((element) => element.columnName == "Tax");
         List<ListDrop>? listDrop = [];
         List<ItemDrop>? myListDrop = [];
 
@@ -1259,32 +1403,39 @@ class _EditSupplyOrderState extends State<EditSupplyOrder> {
               headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
               closedFillColor: Colors.transparent,
               closedBorder: Border.all(color: AppColors.blueDark)),
-          items: myListDrop!.isEmpty ? [""] : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
+          items: myListDrop!.isEmpty
+              ? [""]
+              : List.generate(
+                  myListDrop.length, (index) => myListDrop![index].text ?? ''),
           onChanged: (value) {
-            totalAfterTax = calculateTotalAfterTax(total: total, taxPercent: double.parse(value!));
+            totalAfterTax =
+                calculateTotalAfterTax(total: total, taxPercent: double.parse(value!));
             rest = calculateRemaining(
                 totalAfterTax: totalAfterTax,
-                paidValue: double.parse(paidController.text.isEmpty ? "0" : paidController.text.trim()));
+                paidValue: double.parse(
+                    paidController.text.isEmpty ? "0" : paidController.text.trim()));
             setState(() {});
           },
         );
       case "المتبقي":
         return Text(
-          "$rest",
+          rest.toStringAsFixed(2),
           style: const TextStyle(color: Colors.red, fontSize: 20),
         );
 
       case "الاجمالي بعد الضريبة":
         return Text(
-          "$totalAfterTax",
+          totalAfterTax.toStringAsFixed(2),
           style: const TextStyle(color: Colors.red, fontSize: 20),
         );
       case "الدفعة":
         if (isFirst == true) {
-          paidController.text = oldDataMaster['POPaid'] == null ? "" : oldDataMaster['POPaid'].toString();
+          paidController.text =
+              oldDataMaster['POPaid'] == null ? "" : oldDataMaster['POPaid'].toString();
           ratePaidController.text = calculatePaidPercent(
                   totalAfterTax: totalAfterTax,
-                  paid: double.parse(paidController.text.isEmpty ? "0" : paidController.text.trim()))
+                  paid: double.parse(
+                      paidController.text.isEmpty ? "0" : paidController.text.trim()))
               .toString();
         }
         return Row(
@@ -1296,10 +1447,13 @@ class _EditSupplyOrderState extends State<EditSupplyOrder> {
                 isValidator: false,
                 keyboardType: TextInputType.number,
                 onChanged: (newValue) {
-                  paidController.text =
-                      calculatePaid(totalAfterTax: totalAfterTax, paidPercent: newValue.isEmpty ? 0 : double.parse(newValue))
-                          .toString();
-                  rest = calculateRemaining(totalAfterTax: totalAfterTax, paidValue: double.parse(paidController.text));
+                  paidController.text = calculatePaid(
+                          totalAfterTax: totalAfterTax,
+                          paidPercent: newValue.isEmpty ? 0 : double.parse(newValue))
+                      .toString();
+                  rest = calculateRemaining(
+                      totalAfterTax: totalAfterTax,
+                      paidValue: double.parse(paidController.text));
                   setState(() {});
                 },
               ),
@@ -1315,11 +1469,13 @@ class _EditSupplyOrderState extends State<EditSupplyOrder> {
                 isValidator: false,
                 keyboardType: TextInputType.number,
                 onChanged: (newValue) {
-                  ratePaidController.text =
-                      calculatePaidPercent(totalAfterTax: totalAfterTax, paid: newValue.isEmpty ? 0 : double.parse(newValue))
-                          .toString();
-                  rest =
-                      calculateRemaining(totalAfterTax: totalAfterTax, paidValue: newValue.isEmpty ? 0 : double.parse(newValue));
+                  ratePaidController.text = calculatePaidPercent(
+                          totalAfterTax: totalAfterTax,
+                          paid: newValue.isEmpty ? 0 : double.parse(newValue))
+                      .toString();
+                  rest = calculateRemaining(
+                      totalAfterTax: totalAfterTax,
+                      paidValue: newValue.isEmpty ? 0 : double.parse(newValue));
                   setState(() {});
                 },
               ),

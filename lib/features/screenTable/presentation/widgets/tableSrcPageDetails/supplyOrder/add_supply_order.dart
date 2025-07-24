@@ -18,20 +18,21 @@ import '../../../../../../core/widgets/custom_loading_widget.dart';
 import '../../../../../../core/widgets/custom_text_form_field.dart';
 import '../../../../../../generated/l10n.dart';
 import '../../../../../home/presentation/widgets/home_view_body.dart';
-import '../../../../data/models/item_list_setup_model.dart';
-import '../../../../data/models/tap_model.dart';
-import '../../../manager/getTable/get_table_cubit.dart';
 import '../../../../data/models/dropdown_model/all_dropdown_model.dart';
-import '../../../manager/addEditExpenses/add_edit_expenses_cubit.dart';
-import '../../../manager/getListSetups/get_list_setups_cubit.dart';
-import '../../../views/screen_table.dart';
+import '../../../../data/models/item_list_setup_model.dart';
 import '../../../../data/models/permission_model.dart';
 import '../../../../data/models/screen_model.dart';
+import '../../../../data/models/tap_model.dart';
+import '../../../manager/addEditExpenses/add_edit_expenses_cubit.dart';
+import '../../../manager/getListSetups/get_list_setups_cubit.dart';
+import '../../../manager/getTable/get_table_cubit.dart';
+import '../../../views/screen_table.dart';
 import '../build_alert_add_in_dropdown.dart';
 import 'supply_order_table_add_edit_.dart';
 
 class AddSupplyOrder extends StatefulWidget {
-  const AddSupplyOrder({super.key, this.tapData, required this.pageData, required this.listKey});
+  const AddSupplyOrder(
+      {super.key, this.tapData, required this.pageData, required this.listKey});
 
   final ListTaps? tapData;
   final Pages pageData;
@@ -94,10 +95,15 @@ class _AddSupplyOrderState extends State<AddSupplyOrder> {
 
           for (var item in state.listSetupModel) {
             category.add(item.categoryTitle ?? '');
-            if (item.insertVisable == true && item.cvisable == true && item.visible == true && item.isGeneral != true) {
+            if (item.insertVisable == true &&
+                item.cvisable == true &&
+                item.visible == true &&
+                item.isGeneral != true) {
               listColumn.add(item);
               listKey.add(item.columnName);
-              listHeader.add(lang == AppStrings.enLangKey ? item.enColumnLabel! : item.arColumnLabel!);
+              listHeader.add(lang == AppStrings.enLangKey
+                  ? item.enColumnLabel!
+                  : item.arColumnLabel!);
             }
           }
           List<String> categoryList = category.toSet().toList();
@@ -129,14 +135,17 @@ class _AddSupplyOrderState extends State<AddSupplyOrder> {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Container(
-                                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                              padding: const EdgeInsets.symmetric(
+                                                  horizontal: 12, vertical: 8),
                                               decoration: BoxDecoration(
                                                   // color: AppColors.grey.withOpacity(.4),
                                                   color: AppColors.grey.withAlpha(102),
-                                                  borderRadius: BorderRadius.circular(15)),
+                                                  borderRadius:
+                                                      BorderRadius.circular(15)),
                                               child: Text(
                                                 categoryName,
-                                                style: AppStyles.textStyle18.copyWith(color: Colors.black),
+                                                style: AppStyles.textStyle18
+                                                    .copyWith(color: Colors.black),
                                               )),
                                           ...widgetList,
                                         ],
@@ -160,12 +169,17 @@ class _AddSupplyOrderState extends State<AddSupplyOrder> {
                                         for (var i in tableList) {
                                           salessetState(() {
                                             total = total +
-                                                (double.parse(i['DetailValue']) * double.parse(i['DetailQuantity'] ?? "1"));
-                                            totalAfterTax = calculateTotalAfterTax(total: total, taxPercent: taxPercent);
+                                                (double.parse(i['DetailValue']) *
+                                                    double.parse(
+                                                        i['DetailQuantity'] ?? "1"));
+                                            totalAfterTax = calculateTotalAfterTax(
+                                                total: total, taxPercent: taxPercent);
                                             rest = calculateRemaining(
                                                 totalAfterTax: totalAfterTax,
-                                                paidValue:
-                                                    double.parse(paidController.text.isEmpty ? "0" : paidController.text.trim()));
+                                                paidValue: double.parse(
+                                                    paidController.text.isEmpty
+                                                        ? "0"
+                                                        : paidController.text.trim()));
                                           });
                                         }
                                       } else {
@@ -182,7 +196,8 @@ class _AddSupplyOrderState extends State<AddSupplyOrder> {
                                     listKey: listKey,
                                     listHeader: listHeader,
                                     listColumn: listColumn,
-                                    allDropdownModelList: ScreenTable.myAllDropdownModelList,
+                                    allDropdownModelList:
+                                        ScreenTable.myAllDropdownModelList,
                                     typeView: "Add",
                                   ),
                                 );
@@ -212,16 +227,24 @@ class _AddSupplyOrderState extends State<AddSupplyOrder> {
                                           Expanded(
                                             child: Container(
                                               height: 55,
-                                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                                              padding: const EdgeInsets.symmetric(
+                                                  horizontal: 8, vertical: 5),
                                               decoration: BoxDecoration(
                                                   border: const BorderDirectional(
-                                                    end: BorderSide(color: Colors.grey, width: .5),
+                                                    end: BorderSide(
+                                                        color: Colors.grey, width: .5),
                                                   ),
-                                                  color: listHeaderSupplyOrder[index] == "الاجمالى" ||
-                                                          listHeaderSupplyOrder[index] == "المتبقي" ||
-                                                          listHeaderSupplyOrder[index] == "الاجمالي بعد الضريبة"
-                                                      ? Colors.cyanAccent
-                                                      : null),
+                                                  color:
+                                                      listHeaderSupplyOrder[index] ==
+                                                                  "الاجمالى" ||
+                                                              listHeaderSupplyOrder[
+                                                                      index] ==
+                                                                  "المتبقي" ||
+                                                              listHeaderSupplyOrder[
+                                                                      index] ==
+                                                                  "الاجمالي بعد الضريبة"
+                                                          ? Colors.cyanAccent
+                                                          : null),
                                               alignment: AlignmentDirectional.centerStart,
                                               child: Text(listHeaderSupplyOrder[index]),
                                             ),
@@ -230,19 +253,28 @@ class _AddSupplyOrderState extends State<AddSupplyOrder> {
                                             flex: 2,
                                             child: Container(
                                               height: 55,
-                                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                                              padding: const EdgeInsets.symmetric(
+                                                  horizontal: 8, vertical: 5),
                                               decoration: BoxDecoration(
                                                   border: const BorderDirectional(
-                                                    start: BorderSide(color: Colors.grey, width: .7),
+                                                    start: BorderSide(
+                                                        color: Colors.grey, width: .7),
                                                   ),
-                                                  color: listHeaderSupplyOrder[index] == "الاجمالى" ||
-                                                          listHeaderSupplyOrder[index] == "المتبقي" ||
-                                                          listHeaderSupplyOrder[index] == "الاجمالي بعد الضريبة"
-                                                      ? Colors.cyanAccent
-                                                      : null),
+                                                  color:
+                                                      listHeaderSupplyOrder[index] ==
+                                                                  "الاجمالى" ||
+                                                              listHeaderSupplyOrder[
+                                                                      index] ==
+                                                                  "المتبقي" ||
+                                                              listHeaderSupplyOrder[
+                                                                      index] ==
+                                                                  "الاجمالي بعد الضريبة"
+                                                          ? Colors.cyanAccent
+                                                          : null),
                                               alignment: Alignment.center,
-                                              child:
-                                                  getWidgetSupplyOrder(title: listHeaderSupplyOrder[index], listSetup: listSetup),
+                                              child: getWidgetSupplyOrder(
+                                                  title: listHeaderSupplyOrder[index],
+                                                  listSetup: listSetup),
                                             ),
                                           ),
                                         ],
@@ -289,7 +321,8 @@ class _AddSupplyOrderState extends State<AddSupplyOrder> {
                                     departmentName: widget.pageData.departmentName,
                                     isDepartment: widget.pageData.isDepartment,
                                     authorizationID: widget.pageData.authorizationID,
-                                    viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
+                                    viewEmployeeColumn:
+                                        widget.pageData.viewEmployeeColumn,
                                     numberOfPage: 1,
                                     dropdownValueOfLimit: 10);
                                 Navigator.pop(context);
@@ -317,8 +350,10 @@ class _AddSupplyOrderState extends State<AddSupplyOrder> {
                                         "purchaseTypeId": purchaseTypeId,
                                         "Tax": taxPercent,
                                         "Supplieremind": rest,
-                                        "POPaid":
-                                            double.parse(paidController.text.trim().isEmpty ? "0" : paidController.text.trim()),
+                                        "POPaid": double.parse(
+                                            paidController.text.trim().isEmpty
+                                                ? "0"
+                                                : paidController.text.trim()),
                                       });
 
                                       BlocProvider.of<AddEditExpensesCubit>(context).add(
@@ -356,8 +391,12 @@ class _AddSupplyOrderState extends State<AddSupplyOrder> {
     List<Widget> list = [];
 
     for (var item in listData) {
-      String title = lang == AppStrings.arLangKey ? item.arColumnLabel! : item.enColumnLabel!;
-      bool condition = item.insertVisable == true && item.cvisable == false && item.visible == false && item.isGeneral == true;
+      String title =
+          lang == AppStrings.arLangKey ? item.arColumnLabel! : item.enColumnLabel!;
+      bool condition = item.insertVisable == true &&
+          item.cvisable == false &&
+          item.visible == false &&
+          item.isGeneral == true;
 
       //text
       if (item.insertType == "text" && item.categoryTitle == categoryName && condition) {
@@ -399,7 +438,9 @@ class _AddSupplyOrderState extends State<AddSupplyOrder> {
         );
       }
       //number
-      if (item.insertType == "number" && item.categoryTitle == categoryName && condition) {
+      if (item.insertType == "number" &&
+          item.categoryTitle == categoryName &&
+          condition) {
         list.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -473,7 +514,8 @@ class _AddSupplyOrderState extends State<AddSupplyOrder> {
                         if (dateTime != null) {
                           dsetState(() {
                             date = DateFormat("yyyy-MM-dd", 'en').format(dateTime);
-                            singleObject[item.columnName!.toString()] = dateTime.toString();
+                            singleObject[item.columnName!.toString()] =
+                                dateTime.toString();
                           });
                         }
                       },
@@ -501,7 +543,8 @@ class _AddSupplyOrderState extends State<AddSupplyOrder> {
                                     singleObject[item.columnName!.toString()] = null;
                                   });
                                 },
-                                child: const Icon(Icons.close, color: Colors.blue, size: 18),
+                                child:
+                                    const Icon(Icons.close, color: Colors.blue, size: 18),
                               ),
                           ],
                         ),
@@ -577,7 +620,9 @@ class _AddSupplyOrderState extends State<AddSupplyOrder> {
       }*/
 
       //dropdown
-      if (item.insertType == "dropdown" && item.categoryTitle == categoryName && condition) {
+      if (item.insertType == "dropdown" &&
+          item.categoryTitle == categoryName &&
+          condition) {
         List<ListDrop>? listDrop = [];
         List<ItemDrop>? myListDrop = [];
 
@@ -602,7 +647,9 @@ class _AddSupplyOrderState extends State<AddSupplyOrder> {
         String? selectedValue = singleObject[item.searchName!.toString()] != null
             ? myListDrop!
                 .firstWhere(
-                  (e) => e.id.toString() == singleObject[item.searchName!.toString()].toString(),
+                  (e) =>
+                      e.id.toString() ==
+                      singleObject[item.searchName!.toString()].toString(),
                   orElse: () => ItemDrop(id: '', text: ''),
                 )
                 .text
@@ -658,20 +705,25 @@ class _AddSupplyOrderState extends State<AddSupplyOrder> {
                     Expanded(
                       child: CustomDropdown<String>.search(
                         hintText: '',
-                        closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                        closedHeaderPadding:
+                            const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                         decoration: CustomDropdownDecoration(
-                          headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
+                          headerStyle:
+                              AppStyles.textStyle16.copyWith(color: Colors.black),
                           closedFillColor: Colors.transparent,
                           closedBorder: Border.all(color: AppColors.blueDark),
                         ),
                         // initialItem: selectedValue,
-                        initialItem: myListDrop!.contains(selectedValue) ? selectedValue : null,
+                        initialItem:
+                            myListDrop!.contains(selectedValue) ? selectedValue : null,
                         items: myListDrop.isEmpty
                             ? [""]
-                            : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
+                            : List.generate(myListDrop.length,
+                                (index) => myListDrop![index].text ?? ''),
                         onChanged: (value) {
                           if (value != null && value.isNotEmpty) {
-                            ItemDrop ii = myListDrop!.firstWhere((element) => element.text == value);
+                            ItemDrop ii = myListDrop!
+                                .firstWhere((element) => element.text == value);
                             setState(() {
                               singleObject[item.searchName!.toString()] = ii.id;
                             });
@@ -801,7 +853,9 @@ class _AddSupplyOrderState extends State<AddSupplyOrder> {
         );
       }*/
       //checkbox
-      if (item.insertType == "checkbox" && item.categoryTitle == categoryName && condition) {
+      if (item.insertType == "checkbox" &&
+          item.categoryTitle == categoryName &&
+          condition) {
         bool checkboxValue = false;
         list.add(
           StatefulBuilder(
@@ -842,7 +896,8 @@ class _AddSupplyOrderState extends State<AddSupplyOrder> {
 
   void getDataList() async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> dataProduct = await ApiService(Dio()).post(
         endPoint: "web/Structure/getDataGlobal",
@@ -880,7 +935,8 @@ class _AddSupplyOrderState extends State<AddSupplyOrder> {
 
   Future<bool> getPermissions(int? pageId) async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPagePermissions?pageId=$pageId",
@@ -898,7 +954,8 @@ class _AddSupplyOrderState extends State<AddSupplyOrder> {
 
   void getColumnListAndAdd(Pages page) async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).post(
         endPoint: "home/getGeneralTable",
@@ -944,7 +1001,8 @@ class _AddSupplyOrderState extends State<AddSupplyOrder> {
 
   void getDropdownList(int pageId) async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       List<dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPageDropDown?pageId=$pageId",
@@ -974,11 +1032,183 @@ class _AddSupplyOrderState extends State<AddSupplyOrder> {
     switch (title) {
       case "الاجمالى":
         return Text(
+          total.toStringAsFixed(2),
+          style: const TextStyle(color: Colors.red, fontSize: 20),
+        );
+
+      case "طريقة الشراء":
+        ItemListSetupModel item = listSetup.firstWhere(
+          (element) => element.columnName == "purchaseTypeId",
+          orElse: () => ItemListSetupModel(),
+        );
+        List<ListDrop>? listDrop = [];
+        List<ItemDrop>? myListDrop = [];
+
+        for (var ii in myAllDropdownModelList) {
+          if (widget.tapData == null) {
+            if (ii.listName == widget.pageData.listName) {
+              listDrop = ii.list;
+            }
+          } else {
+            if (ii.listName == widget.tapData!.listName) {
+              listDrop = ii.list;
+            }
+          }
+        }
+
+        for (var ii in listDrop!) {
+          if (ii.columnName == item.columnName) {
+            myListDrop = ii.list;
+          }
+        }
+
+        return CustomDropdown<String>.search(
+          hintText: '',
+          closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+          decoration: CustomDropdownDecoration(
+            headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
+            closedFillColor: Colors.transparent,
+            closedBorder: Border.all(color: AppColors.blueDark),
+          ),
+          items: myListDrop!.isEmpty
+              ? [""]
+              : List.generate(
+                  myListDrop.length, (index) => myListDrop![index].text ?? ''),
+          onChanged: (value) {
+            purchaseTypeId = int.parse(
+                myListDrop!.firstWhere((element) => element.text == value!).id!);
+            setState(() {});
+          },
+        );
+
+      case "الضريبة":
+        ItemListSetupModel item = listSetup.firstWhere(
+          (element) => element.columnName == "Tax",
+          orElse: () => ItemListSetupModel(),
+        );
+        List<ListDrop>? listDrop = [];
+        List<ItemDrop>? myListDrop = [];
+
+        for (var ii in myAllDropdownModelList) {
+          if (widget.tapData == null) {
+            if (ii.listName == widget.pageData.listName) {
+              listDrop = ii.list;
+            }
+          } else {
+            if (ii.listName == widget.tapData!.listName) {
+              listDrop = ii.list;
+            }
+          }
+        }
+
+        if (item.columnName != null) {
+          for (var ii in listDrop!) {
+            if (ii.columnName == item.columnName) {
+              myListDrop = ii.list;
+            }
+          }
+        }
+
+        return CustomDropdown<String>.search(
+          hintText: '',
+          closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+          decoration: CustomDropdownDecoration(
+            headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
+            closedFillColor: Colors.transparent,
+            closedBorder: Border.all(color: AppColors.blueDark),
+          ),
+          items: myListDrop!.isEmpty
+              ? [""]
+              : List.generate(
+                  myListDrop.length, (index) => myListDrop![index].text ?? ''),
+          onChanged: (value) {
+            totalAfterTax =
+                calculateTotalAfterTax(total: total, taxPercent: double.parse(value!));
+            rest = calculateRemaining(
+              totalAfterTax: totalAfterTax,
+              paidValue: double.parse(
+                  paidController.text.isEmpty ? "0" : paidController.text.trim()),
+            );
+            setState(() {});
+          },
+        );
+
+      case "المتبقي":
+        return Text(
+          rest.toStringAsFixed(2),
+          style: const TextStyle(color: Colors.red, fontSize: 20),
+        );
+
+      case "الاجمالي بعد الضريبة":
+        return Text(
+          totalAfterTax.toStringAsFixed(2),
+          style: const TextStyle(color: Colors.red, fontSize: 20),
+        );
+
+      case "الدفعة":
+        return Row(
+          children: [
+            Expanded(
+              child: CustomTextFormField(
+                controller: ratePaidController,
+                hintText: '',
+                isValidator: false,
+                keyboardType: TextInputType.number,
+                onChanged: (newValue) {
+                  paidController.text = calculatePaid(
+                    totalAfterTax: totalAfterTax,
+                    paidPercent: newValue.isEmpty ? 0 : double.parse(newValue),
+                  ).toString();
+
+                  rest = calculateRemaining(
+                    totalAfterTax: totalAfterTax,
+                    paidValue: double.parse(paidController.text),
+                  );
+
+                  setState(() {});
+                },
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              flex: 2,
+              child: CustomTextFormField(
+                controller: paidController,
+                hintText: '',
+                isValidator: false,
+                keyboardType: TextInputType.number,
+                onChanged: (newValue) {
+                  ratePaidController.text = calculatePaidPercent(
+                    totalAfterTax: totalAfterTax,
+                    paid: newValue.isEmpty ? 0 : double.parse(newValue),
+                  ).toString();
+
+                  rest = calculateRemaining(
+                    totalAfterTax: totalAfterTax,
+                    paidValue: newValue.isEmpty ? 0 : double.parse(newValue),
+                  );
+
+                  setState(() {});
+                },
+              ),
+            ),
+          ],
+        );
+    }
+  }
+
+  /* getWidgetSupplyOrder({
+    required String title,
+    required List<ItemListSetupModel> listSetup,
+  }) {
+    switch (title) {
+      case "الاجمالى":
+        return Text(
           "$total",
           style: const TextStyle(color: Colors.red, fontSize: 20),
         );
       case "طريقة الشراء":
-        ItemListSetupModel item = listSetup.firstWhere((element) => element.columnName == "purchaseTypeId");
+        ItemListSetupModel item = listSetup.firstWhere((element) => element.columnName == "purchaseTypeId",orElse: () => ItemListSetupModel(),);
         List<ListDrop>? listDrop = [];
         List<ItemDrop>? myListDrop = [];
 
@@ -1104,7 +1334,7 @@ class _AddSupplyOrderState extends State<AddSupplyOrder> {
           ],
         );
     }
-  }
+  }*/
 
   double calculateTotalAfterTax({
     required double total,
