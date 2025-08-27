@@ -18,24 +18,25 @@ import '../../../../../../core/widgets/custom_error_massage.dart';
 import '../../../../../../core/widgets/custom_loading_widget.dart';
 import '../../../../../../core/widgets/custom_text_form_field.dart';
 import '../../../../../../generated/l10n.dart';
-import '../../../manager/getTable/get_table_cubit.dart';
-import '../../../../data/models/item_list_setup_model.dart';
-import '../../../../data/models/tap_model.dart';
 import '../../../../../home/presentation/widgets/home_view_body.dart';
 import '../../../../data/models/dropdown_model/all_dropdown_model.dart';
+import '../../../../data/models/item_list_setup_model.dart';
+import '../../../../data/models/permission_model.dart';
+import '../../../../data/models/screen_model.dart';
+import '../../../../data/models/tap_model.dart';
 import '../../../../data/repositories/screen_repo_impl.dart';
 import '../../../manager/addEditExpenses/add_edit_expenses_cubit.dart';
 import '../../../manager/getExpensesDetails/get_expenses_details_cubit.dart';
 import '../../../manager/getExpensesMaster/get_expenses_master_cubit.dart';
 import '../../../manager/getListSetups/get_list_setups_cubit.dart';
+import '../../../manager/getTable/get_table_cubit.dart';
 import '../../../views/screen_table.dart';
-import '../../../../data/models/permission_model.dart';
-import '../../../../data/models/screen_model.dart';
 import '../build_alert_add_in_dropdown.dart';
 import 'supplier_offer_table_add_edit_.dart';
 
 class EditSupplierOffer extends StatefulWidget {
-  const EditSupplierOffer({super.key, this.tapData, required this.pageData, required this.listKey});
+  const EditSupplierOffer(
+      {super.key, this.tapData, required this.pageData, required this.listKey});
 
   final ListTaps? tapData;
   final Pages pageData;
@@ -162,7 +163,8 @@ class _EditSupplierOfferState extends State<EditSupplierOffer> {
               child: BlocBuilder<GetExpensesDetailsCubit, GetExpensesDetailsState>(
                 builder: (context, state) {
                   if (state is GetExpensesDetailsSuccess) {
-                    List<Map<String, dynamic>> listDataInTable = state.expensesDetailsModel.dynamicList!;
+                    List<Map<String, dynamic>> listDataInTable =
+                        state.expensesDetailsModel.dynamicList!;
                     tableList = listDataInTable;
 
                     return BlocBuilder<GetListSetupsCubit, GetListSetupsState>(
@@ -181,7 +183,9 @@ class _EditSupplierOfferState extends State<EditSupplierOffer> {
                                 item.isGeneral != true) {
                               listColumn.add(item);
                               listKey.add(item.columnName);
-                              listHeader.add(lang == AppStrings.enLangKey ? item.enColumnLabel! : item.arColumnLabel!);
+                              listHeader.add(lang == AppStrings.enLangKey
+                                  ? item.enColumnLabel!
+                                  : item.arColumnLabel!);
                             }
                           }
                           List<String> categoryList = category.toSet().toList();
@@ -200,25 +204,39 @@ class _EditSupplierOfferState extends State<EditSupplierOffer> {
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
-                                            ...List.generate(categoryList.length, (index) {
+                                            ...List.generate(categoryList.length,
+                                                (index) {
                                               String categoryName = categoryList[index];
                                               List<Widget> widgetList = getMyWidgetList(
-                                                  listData: listSetup, categoryName: categoryName, dataMaster: dataMaster);
+                                                  listData: listSetup,
+                                                  categoryName: categoryName,
+                                                  dataMaster: dataMaster);
                                               return widgetList.isNotEmpty
                                                   ? Padding(
-                                                      padding: const EdgeInsets.only(bottom: 16),
+                                                      padding: const EdgeInsets.only(
+                                                          bottom: 16),
                                                       child: Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment.start,
                                                         children: [
                                                           Container(
-                                                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                                            padding: const EdgeInsets
+                                                                .symmetric(
+                                                                horizontal: 12,
+                                                                vertical: 8),
                                                             decoration: BoxDecoration(
                                                                 // color: AppColors.grey.withOpacity(.4),
-                                                                color: AppColors.grey.withAlpha(102),
-                                                                borderRadius: BorderRadius.circular(15)),
+                                                                color: AppColors.grey
+                                                                    .withAlpha(102),
+                                                                borderRadius:
+                                                                    BorderRadius.circular(
+                                                                        15)),
                                                             child: Text(
                                                               categoryName,
-                                                              style: AppStyles.textStyle18.copyWith(color: Colors.black),
+                                                              style: AppStyles.textStyle18
+                                                                  .copyWith(
+                                                                      color:
+                                                                          Colors.black),
                                                             ),
                                                           ),
                                                           ...widgetList,
@@ -230,7 +248,8 @@ class _EditSupplierOfferState extends State<EditSupplierOffer> {
                                             StatefulBuilder(
                                               builder: (context, ssetState) {
                                                 return Padding(
-                                                  padding: const EdgeInsets.only(bottom: 16),
+                                                  padding:
+                                                      const EdgeInsets.only(bottom: 16),
                                                   child: SupplierOfferTableAddEdit(
                                                     oldTableList: listDataInTable,
                                                     tapData: widget.tapData,
@@ -238,7 +257,8 @@ class _EditSupplierOfferState extends State<EditSupplierOffer> {
                                                     listKey: listKey,
                                                     listHeader: listHeader,
                                                     listColumn: listColumn,
-                                                    allDropdownModelList: ScreenTable.myAllDropdownModelList,
+                                                    allDropdownModelList: ScreenTable
+                                                        .myAllDropdownModelList,
                                                     onTapAction: (data) {
                                                       total = 0.0;
                                                       totalAfterTax = 0.0;
@@ -248,11 +268,23 @@ class _EditSupplierOfferState extends State<EditSupplierOffer> {
                                                       if (tableList.isNotEmpty) {
                                                         for (var i in tableList) {
                                                           salessetState(() {
+                                                            // total = total +
+                                                            //     (double.parse(
+                                                            //             i['Quantity']
+                                                            //                 .toString()) *
+                                                            //         double.parse(
+                                                            //             i['PricePerUnit']
+                                                            //                 .toString()));
                                                             total = total +
-                                                                (double.parse(i['Quantity'].toString()) *
-                                                                    double.parse(i['PricePerUnit'].toString()));
+                                                                (toDouble(i['Quantity']) *
+                                                                    toDouble(
+                                                                        i['PricePerUnit'] ??
+                                                                            1));
                                                             totalAfterTax =
-                                                                calculateTotalAfterTax(total: total, taxPercent: taxPercent);
+                                                                calculateTotalAfterTax(
+                                                                    total: total,
+                                                                    taxPercent:
+                                                                        taxPercent);
                                                           });
                                                         }
                                                       } else {
@@ -275,11 +307,18 @@ class _EditSupplierOfferState extends State<EditSupplierOffer> {
                                                 (index) => Container(
                                                       decoration: BoxDecoration(
                                                           border: BorderDirectional(
-                                                        top: const BorderSide(color: Colors.grey),
-                                                        start: const BorderSide(color: Colors.grey),
-                                                        end: const BorderSide(color: Colors.grey),
-                                                        bottom: index == listHeaderSupplierOffer.length - 1
-                                                            ? const BorderSide(color: Colors.grey)
+                                                        top: const BorderSide(
+                                                            color: Colors.grey),
+                                                        start: const BorderSide(
+                                                            color: Colors.grey),
+                                                        end: const BorderSide(
+                                                            color: Colors.grey),
+                                                        bottom: index ==
+                                                                listHeaderSupplierOffer
+                                                                        .length -
+                                                                    1
+                                                            ? const BorderSide(
+                                                                color: Colors.grey)
                                                             : BorderSide.none,
                                                       )),
                                                       child: Row(
@@ -287,37 +326,66 @@ class _EditSupplierOfferState extends State<EditSupplierOffer> {
                                                           Expanded(
                                                             child: Container(
                                                               height: 55,
-                                                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                                                              padding: const EdgeInsets
+                                                                  .symmetric(
+                                                                  horizontal: 8,
+                                                                  vertical: 5),
                                                               decoration: BoxDecoration(
-                                                                  border: const BorderDirectional(
-                                                                    end: BorderSide(color: Colors.grey, width: .5),
+                                                                  border:
+                                                                      const BorderDirectional(
+                                                                    end: BorderSide(
+                                                                        color:
+                                                                            Colors.grey,
+                                                                        width: .5),
                                                                   ),
-                                                                  color: listHeaderSupplierOffer[index] == "الاجمالى" ||
-                                                                          listHeaderSupplierOffer[index] == "الاجمالي بعد الضريبة"
+                                                                  color: listHeaderSupplierOffer[
+                                                                                  index] ==
+                                                                              "الاجمالى" ||
+                                                                          listHeaderSupplierOffer[
+                                                                                  index] ==
+                                                                              "الاجمالي بعد الضريبة"
                                                                       ? Colors.cyanAccent
                                                                       : null),
-                                                              alignment: AlignmentDirectional.centerStart,
-                                                              child: Text(listHeaderSupplierOffer[index]),
+                                                              alignment:
+                                                                  AlignmentDirectional
+                                                                      .centerStart,
+                                                              child: Text(
+                                                                  listHeaderSupplierOffer[
+                                                                      index]),
                                                             ),
                                                           ),
                                                           Expanded(
                                                             flex: 2,
                                                             child: Container(
                                                               height: 55,
-                                                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                                                              padding: const EdgeInsets
+                                                                  .symmetric(
+                                                                  horizontal: 8,
+                                                                  vertical: 5),
                                                               decoration: BoxDecoration(
-                                                                  border: const BorderDirectional(
-                                                                    start: BorderSide(color: Colors.grey, width: .7),
+                                                                  border:
+                                                                      const BorderDirectional(
+                                                                    start: BorderSide(
+                                                                        color:
+                                                                            Colors.grey,
+                                                                        width: .7),
                                                                   ),
-                                                                  color: listHeaderSupplierOffer[index] == "الاجمالى" ||
-                                                                          listHeaderSupplierOffer[index] == "الاجمالي بعد الضريبة"
+                                                                  color: listHeaderSupplierOffer[
+                                                                                  index] ==
+                                                                              "الاجمالى" ||
+                                                                          listHeaderSupplierOffer[
+                                                                                  index] ==
+                                                                              "الاجمالي بعد الضريبة"
                                                                       ? Colors.cyanAccent
                                                                       : null),
                                                               alignment: Alignment.center,
                                                               child: getWidgetPurchases(
-                                                                  title: listHeaderSupplierOffer[index],
+                                                                  title:
+                                                                      listHeaderSupplierOffer[
+                                                                          index],
                                                                   listSetup: listSetup,
-                                                                  oldDataMaster: dataMaster),
+                                                                  oldDataMaster:
+                                                                      dataMaster),
                                                             ),
                                                           ),
                                                         ],
@@ -341,7 +409,8 @@ class _EditSupplierOfferState extends State<EditSupplierOffer> {
                                             noGradient: true,
                                             color: Colors.transparent,
                                             noShadow: true,
-                                            textStyle: AppStyles.textStyle16.copyWith(color: Colors.grey),
+                                            textStyle: AppStyles.textStyle16
+                                                .copyWith(color: Colors.grey),
                                             onTap: () {
                                               Navigator.pop(context);
                                             },
@@ -349,26 +418,33 @@ class _EditSupplierOfferState extends State<EditSupplierOffer> {
                                           const SizedBox(
                                             width: 50,
                                           ),
-                                          BlocConsumer<AddEditExpensesCubit, AddEditExpensesState>(
+                                          BlocConsumer<AddEditExpensesCubit,
+                                              AddEditExpensesState>(
                                             listener: (context, state) {
                                               if (state is AddEditExpensesSuccess) {
-                                                BlocProvider.of<GetTableCubit>(context).getTable(
-                                                    pageId: widget.pageData.pageId,
-                                                    employee: false,
-                                                    isdesc: widget.pageData.isDesc,
-                                                    limit: 10,
-                                                    offset: 0,
-                                                    orderby: widget.pageData.orderBy,
-                                                    statment: '',
-                                                    selectcolumns: '',
-                                                    departmentName: widget.pageData.departmentName,
-                                                    isDepartment: widget.pageData.isDepartment,
-                                                    authorizationID: widget.pageData.authorizationID,
-                                                    viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
-                                                    numberOfPage: 1,
-                                                    dropdownValueOfLimit: 10);
+                                                BlocProvider.of<GetTableCubit>(context)
+                                                    .getTable(
+                                                        pageId: widget.pageData.pageId,
+                                                        employee: false,
+                                                        isdesc: widget.pageData.isDesc,
+                                                        limit: 10,
+                                                        offset: 0,
+                                                        orderby: widget.pageData.orderBy,
+                                                        statment: '',
+                                                        selectcolumns: '',
+                                                        departmentName: widget
+                                                            .pageData.departmentName,
+                                                        isDepartment:
+                                                            widget.pageData.isDepartment,
+                                                        authorizationID: widget
+                                                            .pageData.authorizationID,
+                                                        viewEmployeeColumn: widget
+                                                            .pageData.viewEmployeeColumn,
+                                                        numberOfPage: 1,
+                                                        dropdownValueOfLimit: 10);
                                                 Navigator.pop(context);
-                                              } else if (state is AddEditExpensesFailure) {
+                                              } else if (state
+                                                  is AddEditExpensesFailure) {
                                                 CustomAlertDialog.alertWithButton(
                                                     context: context,
                                                     type: AlertType.error,
@@ -384,13 +460,19 @@ class _EditSupplierOfferState extends State<EditSupplierOffer> {
                                                   text: S.of(context).btn_edit,
                                                   width: 80,
                                                   onTap: () {
-                                                    if (formKey.currentState!.validate()) {
+                                                    if (formKey.currentState!
+                                                        .validate()) {
                                                       formKey.currentState!.save();
 
-                                                      BlocProvider.of<AddEditExpensesCubit>(context).edit(
-                                                          singleObject: singleObject,
-                                                          tableList: tableList,
-                                                          controllerName: widget.tapData!.controllerName);
+                                                      BlocProvider.of<
+                                                                  AddEditExpensesCubit>(
+                                                              context)
+                                                          .edit(
+                                                              singleObject: singleObject,
+                                                              tableList: tableList,
+                                                              controllerName: widget
+                                                                  .tapData!
+                                                                  .controllerName);
                                                     }
                                                   },
                                                 );
@@ -438,12 +520,18 @@ class _EditSupplierOfferState extends State<EditSupplierOffer> {
     List<Widget> list = [];
 
     for (var item in listData) {
-      String title = lang == AppStrings.arLangKey ? item.arColumnLabel! : item.enColumnLabel!;
-      bool condition = item.insertVisable == true && item.cvisable == false && item.visible == false && item.isGeneral == true;
+      String title =
+          lang == AppStrings.arLangKey ? item.arColumnLabel! : item.enColumnLabel!;
+      bool condition = item.insertVisable == true &&
+          item.cvisable == false &&
+          item.visible == false &&
+          item.isGeneral == true;
       //text
       if (item.insertType == "text" && item.categoryTitle == categoryName && condition) {
-        TextEditingController controller =
-            TextEditingController(text: dataMaster[item.columnName].toString() == "null" ? '' : dataMaster[item.columnName]);
+        TextEditingController controller = TextEditingController(
+            text: dataMaster[item.columnName].toString() == "null"
+                ? ''
+                : dataMaster[item.columnName]);
         list.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -472,8 +560,10 @@ class _EditSupplierOfferState extends State<EditSupplierOffer> {
                   onSaved: (newValue) {
                     if (newValue!.isNotEmpty) {
                       setState(() {
-                        dataMaster
-                            .updateAll((key, value) => key == item.columnName!.toString() ? value = controller.text : value);
+                        dataMaster.updateAll((key, value) =>
+                            key == item.columnName!.toString()
+                                ? value = controller.text
+                                : value);
                         singleObject = dataMaster;
                       });
                     }
@@ -485,9 +575,13 @@ class _EditSupplierOfferState extends State<EditSupplierOffer> {
         );
       }
       //number
-      if (item.insertType == "number" && item.categoryTitle == categoryName && condition) {
+      if (item.insertType == "number" &&
+          item.categoryTitle == categoryName &&
+          condition) {
         TextEditingController controller = TextEditingController(
-            text: dataMaster[item.columnName].toString() == "null" ? '' : dataMaster[item.columnName].toString());
+            text: dataMaster[item.columnName].toString() == "null"
+                ? ''
+                : dataMaster[item.columnName].toString());
         list.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -516,8 +610,10 @@ class _EditSupplierOfferState extends State<EditSupplierOffer> {
                   onSaved: (newValue) {
                     if (newValue!.isNotEmpty) {
                       setState(() {
-                        dataMaster
-                            .updateAll((key, value) => key == item.columnName!.toString() ? value = controller.text : value);
+                        dataMaster.updateAll((key, value) =>
+                            key == item.columnName!.toString()
+                                ? value = controller.text
+                                : value);
                         singleObject = dataMaster;
                       });
                     }
@@ -618,7 +714,9 @@ class _EditSupplierOfferState extends State<EditSupplierOffer> {
       }
 
       //dropdown
-      if (item.insertType == "dropdown" && item.categoryTitle == categoryName && condition) {
+      if (item.insertType == "dropdown" &&
+          item.categoryTitle == categoryName &&
+          condition) {
         List<ListDrop>? listDrop = [];
         List<ItemDrop>? myListDrop = [];
 
@@ -662,7 +760,8 @@ class _EditSupplierOfferState extends State<EditSupplierOffer> {
                       title,
                       style: AppStyles.textStyle14.copyWith(color: Colors.grey),
                     ),
-                    if (item.isRquired == true) const Icon(Icons.star, color: Colors.red, size: 10),
+                    if (item.isRquired == true)
+                      const Icon(Icons.star, color: Colors.red, size: 10),
                     const SizedBox(width: 12),
                     if (dropPage != null)
                       InkWell(
@@ -696,17 +795,21 @@ class _EditSupplierOfferState extends State<EditSupplierOffer> {
                       child: CustomDropdown<String>.search(
                         hintText: '',
                         initialItem: dropValue,
-                        closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                        closedHeaderPadding:
+                            const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                         decoration: CustomDropdownDecoration(
-                          headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
+                          headerStyle:
+                              AppStyles.textStyle16.copyWith(color: Colors.black),
                           closedFillColor: Colors.transparent,
                           closedBorder: Border.all(color: AppColors.blueDark),
                         ),
                         items: myListDrop.isEmpty
                             ? [""]
-                            : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
+                            : List.generate(myListDrop.length,
+                                (index) => myListDrop![index].text ?? ''),
                         onChanged: (value) {
-                          ItemDrop ii = myListDrop!.firstWhere((element) => element.text == value);
+                          ItemDrop ii =
+                              myListDrop!.firstWhere((element) => element.text == value);
                           setState(() {
                             singleObject.addAll({item.searchName!.toString(): ii.id});
                           });
@@ -849,7 +952,9 @@ class _EditSupplierOfferState extends State<EditSupplierOffer> {
         );
       }*/
       //checkbox
-      if (item.insertType == "checkbox" && item.categoryTitle == categoryName && condition) {
+      if (item.insertType == "checkbox" &&
+          item.categoryTitle == categoryName &&
+          condition) {
         bool checkboxValue = dataMaster[item.columnName] ?? false;
         list.add(
           StatefulBuilder(
@@ -867,7 +972,10 @@ class _EditSupplierOfferState extends State<EditSupplierOffer> {
                       checkboxValue = !checkboxValue;
                     });
                     csetState(() {
-                      dataMaster.updateAll((key, value) => key == item.columnName!.toString() ? value = checkboxValue : value);
+                      dataMaster.updateAll((key, value) =>
+                          key == item.columnName!.toString()
+                              ? value = checkboxValue
+                              : value);
                       singleObject = dataMaster;
                     });
                   });
@@ -881,7 +989,8 @@ class _EditSupplierOfferState extends State<EditSupplierOffer> {
 
   void getDataList() async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> dataProduct = await ApiService(Dio()).post(
         endPoint: "web/Structure/getDataGlobal",
@@ -910,7 +1019,8 @@ class _EditSupplierOfferState extends State<EditSupplierOffer> {
 
   void getColumnListAndAdd(Pages page) async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).post(
         endPoint: "home/getGeneralTable",
@@ -965,7 +1075,8 @@ class _EditSupplierOfferState extends State<EditSupplierOffer> {
 
   Future<bool> getPermissions(int? pageId) async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPagePermissions?pageId=$pageId",
@@ -983,7 +1094,8 @@ class _EditSupplierOfferState extends State<EditSupplierOffer> {
 
   void getDropdownList(int pageId) async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       List<dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPageDropDown?pageId=$pageId",
@@ -1029,7 +1141,11 @@ class _EditSupplierOfferState extends State<EditSupplierOffer> {
 
       case "الضريبة":
         // int initialItemID = oldDataMaster['Tax'];
-        ItemListSetupModel item = listSetup.firstWhere((element) => element.columnName == "Tax");
+        // ItemListSetupModel item = listSetup.firstWhere((element) => element.columnName == "Tax");
+        ItemListSetupModel? item = listSetup.firstWhere(
+          (element) => element.columnName == "Tax",
+          orElse: () => ItemListSetupModel.empty(), // هنعمل constructor فاضي
+        );
         List<ListDrop>? listDrop = [];
         List<ItemDrop>? myListDrop = [];
 
@@ -1062,9 +1178,13 @@ class _EditSupplierOfferState extends State<EditSupplierOffer> {
               headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
               closedFillColor: Colors.transparent,
               closedBorder: Border.all(color: AppColors.blueDark)),
-          items: myListDrop!.isEmpty ? [""] : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
+          items: myListDrop!.isEmpty
+              ? [""]
+              : List.generate(
+                  myListDrop.length, (index) => myListDrop![index].text ?? ''),
           onChanged: (value) {
-            totalAfterTax = calculateTotalAfterTax(total: total, taxPercent: double.parse(value!));
+            totalAfterTax =
+                calculateTotalAfterTax(total: total, taxPercent: double.parse(value!));
 
             setState(() {});
           },
@@ -1076,5 +1196,13 @@ class _EditSupplierOfferState extends State<EditSupplierOffer> {
           style: const TextStyle(color: Colors.red, fontSize: 20),
         );
     }
+  }
+
+  double toDouble(dynamic value) {
+    if (value == null) return 0.0;
+    if (value is double) return value;
+    if (value is int) return value.toDouble();
+    if (value is String) return double.tryParse(value) ?? 0.0;
+    return 0.0;
   }
 }

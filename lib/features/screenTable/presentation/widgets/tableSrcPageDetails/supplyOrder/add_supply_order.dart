@@ -168,10 +168,20 @@ class _AddSupplyOrderState extends State<AddSupplyOrder> {
                                       if (tableList.isNotEmpty) {
                                         for (var i in tableList) {
                                           salessetState(() {
-                                            total = total +
-                                                (double.parse(i['DetailValue']) *
-                                                    double.parse(
-                                                        i['DetailQuantity'] ?? "1"));
+                                            // total = total +
+                                            //     (double.parse(i['DetailValue']) *
+                                            //         double.parse(
+                                            //             i['DetailQuantity'] ?? "1"));
+
+                                            double detailValue = double.tryParse(
+                                                    i['DetailValue'] ?? "0") ??
+                                                0;
+                                            double detailQuantity = double.tryParse(
+                                                    i['DetailQuantity'] ?? "1") ??
+                                                1;
+
+                                            total += detailValue * detailQuantity;
+
                                             totalAfterTax = calculateTotalAfterTax(
                                                 total: total, taxPercent: taxPercent);
                                             rest = calculateRemaining(

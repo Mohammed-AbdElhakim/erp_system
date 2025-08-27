@@ -35,7 +35,8 @@ import '../build_alert_add_in_dropdown.dart';
 import 'product_process_table_add_edit_.dart';
 
 class EditProductProcess extends StatefulWidget {
-  const EditProductProcess({super.key, required this.pageData, required this.listKey, this.tapData});
+  const EditProductProcess(
+      {super.key, required this.pageData, required this.listKey, this.tapData});
 
   final ListTaps? tapData;
   final Pages pageData;
@@ -155,8 +156,10 @@ class _EditProductProcessState extends State<EditProductProcess> {
               child: BlocBuilder<GetExpensesDetailsCubit, GetExpensesDetailsState>(
                 builder: (context, state) {
                   if (state is GetExpensesDetailsSuccess) {
-                    Map<String, dynamic> dataMaster = state.expensesDetailsModel.dynamicList![0];
-                    List<Map<String, dynamic>> listDataInTable = state.expensesDetailsModel.dynamicList!;
+                    Map<String, dynamic> dataMaster =
+                        state.expensesDetailsModel.dynamicList![0];
+                    List<Map<String, dynamic>> listDataInTable =
+                        state.expensesDetailsModel.dynamicList!;
 
                     return BlocBuilder<GetListSetupsCubit, GetListSetupsState>(
                       builder: (context, state) {
@@ -174,7 +177,9 @@ class _EditProductProcessState extends State<EditProductProcess> {
                                 item.isGeneral != true) {
                               listColumn.add(item);
                               listKey.add(item.columnName);
-                              listHeader.add(lang == AppStrings.enLangKey ? item.enColumnLabel! : item.arColumnLabel!);
+                              listHeader.add(lang == AppStrings.enLangKey
+                                  ? item.enColumnLabel!
+                                  : item.arColumnLabel!);
                             }
                           }
                           List<String> categoryList = category.toSet().toList();
@@ -195,22 +200,34 @@ class _EditProductProcessState extends State<EditProductProcess> {
                                           ...List.generate(categoryList.length, (index) {
                                             String categoryName = categoryList[index];
                                             List<Widget> widgetList = getMyWidgetList(
-                                                listData: listSetup, categoryName: categoryName, dataMaster: dataMaster);
+                                                listData: listSetup,
+                                                categoryName: categoryName,
+                                                dataMaster: dataMaster);
                                             return widgetList.isNotEmpty
                                                 ? Padding(
-                                                    padding: const EdgeInsets.only(bottom: 16),
+                                                    padding:
+                                                        const EdgeInsets.only(bottom: 16),
                                                     child: Column(
-                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment.start,
                                                       children: [
                                                         Container(
-                                                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                                          padding:
+                                                              const EdgeInsets.symmetric(
+                                                                  horizontal: 12,
+                                                                  vertical: 8),
                                                           decoration: BoxDecoration(
                                                               // color: AppColors.grey.withOpacity(.4),
-                                                              color: AppColors.grey.withAlpha(102),
-                                                              borderRadius: BorderRadius.circular(15)),
+                                                              color: AppColors.grey
+                                                                  .withAlpha(102),
+                                                              borderRadius:
+                                                                  BorderRadius.circular(
+                                                                      15)),
                                                           child: Text(
                                                             categoryName,
-                                                            style: AppStyles.textStyle18.copyWith(color: Colors.black),
+                                                            style: AppStyles.textStyle18
+                                                                .copyWith(
+                                                                    color: Colors.black),
                                                           ),
                                                         ),
                                                         ...widgetList,
@@ -219,22 +236,30 @@ class _EditProductProcessState extends State<EditProductProcess> {
                                                   )
                                                 : const SizedBox();
                                           }),
-                                          Padding(
-                                            padding: const EdgeInsets.only(bottom: 16),
-                                            child: ProductProcessTableAddEdit(
-                                              oldTableList: listDataInTable,
-                                              tapData: widget.tapData,
-                                              pageData: widget.pageData,
-                                              listKey: listKey,
-                                              listHeader: listHeader,
-                                              listColumn: listColumn,
-                                              allDropdownModelList: ScreenTable.myAllDropdownModelList,
-                                              onTapAction: (data) {
-                                                tableList = data;
-                                              },
-                                              typeView: "Edit",
-                                            ),
-                                          ),
+                                          StatefulBuilder(
+                                            builder: (context, ssetState) {
+                                              return Padding(
+                                                padding:
+                                                    const EdgeInsets.only(bottom: 16),
+                                                child: ProductProcessTableAddEdit(
+                                                  oldTableList: listDataInTable,
+                                                  tapData: widget.tapData,
+                                                  pageData: widget.pageData,
+                                                  listKey: listKey,
+                                                  listHeader: listHeader,
+                                                  listColumn: listColumn,
+                                                  allDropdownModelList:
+                                                      ScreenTable.myAllDropdownModelList,
+                                                  onTapAction: (data) {
+                                                    ssetState(() {
+                                                      tableList = data;
+                                                    });
+                                                  },
+                                                  typeView: "Edit",
+                                                ),
+                                              );
+                                            },
+                                          )
                                         ],
                                       ),
                                     ),
@@ -250,7 +275,8 @@ class _EditProductProcessState extends State<EditProductProcess> {
                                           noGradient: true,
                                           color: Colors.transparent,
                                           noShadow: true,
-                                          textStyle: AppStyles.textStyle16.copyWith(color: Colors.grey),
+                                          textStyle: AppStyles.textStyle16
+                                              .copyWith(color: Colors.grey),
                                           onTap: () {
                                             Navigator.pop(context);
                                           },
@@ -258,24 +284,30 @@ class _EditProductProcessState extends State<EditProductProcess> {
                                         const SizedBox(
                                           width: 50,
                                         ),
-                                        BlocConsumer<AddEditExpensesCubit, AddEditExpensesState>(
+                                        BlocConsumer<AddEditExpensesCubit,
+                                            AddEditExpensesState>(
                                           listener: (context, state) {
                                             if (state is AddEditExpensesSuccess) {
-                                              BlocProvider.of<GetTableCubit>(context).getTable(
-                                                  pageId: widget.pageData.pageId,
-                                                  employee: false,
-                                                  isdesc: widget.pageData.isDesc,
-                                                  limit: 10,
-                                                  offset: 0,
-                                                  orderby: widget.pageData.orderBy,
-                                                  statment: '',
-                                                  selectcolumns: '',
-                                                  departmentName: widget.pageData.departmentName,
-                                                  isDepartment: widget.pageData.isDepartment,
-                                                  authorizationID: widget.pageData.authorizationID,
-                                                  viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
-                                                  numberOfPage: 1,
-                                                  dropdownValueOfLimit: 10);
+                                              BlocProvider.of<GetTableCubit>(context)
+                                                  .getTable(
+                                                      pageId: widget.pageData.pageId,
+                                                      employee: false,
+                                                      isdesc: widget.pageData.isDesc,
+                                                      limit: 10,
+                                                      offset: 0,
+                                                      orderby: widget.pageData.orderBy,
+                                                      statment: '',
+                                                      selectcolumns: '',
+                                                      departmentName:
+                                                          widget.pageData.departmentName,
+                                                      isDepartment:
+                                                          widget.pageData.isDepartment,
+                                                      authorizationID:
+                                                          widget.pageData.authorizationID,
+                                                      viewEmployeeColumn: widget
+                                                          .pageData.viewEmployeeColumn,
+                                                      numberOfPage: 1,
+                                                      dropdownValueOfLimit: 10);
                                               Navigator.pop(context);
                                             } else if (state is AddEditExpensesFailure) {
                                               CustomAlertDialog.alertWithButton(
@@ -296,10 +328,15 @@ class _EditProductProcessState extends State<EditProductProcess> {
                                                   if (formKey.currentState!.validate()) {
                                                     formKey.currentState!.save();
 
-                                                    BlocProvider.of<AddEditExpensesCubit>(context).edit(
+                                                    BlocProvider.of<AddEditExpensesCubit>(
+                                                            context)
+                                                        .edit(
                                                       singleObject: singleObject,
-                                                      tableList: tableList.isEmpty ? listDataInTable : tableList,
-                                                      controllerName: widget.tapData!.controllerName,
+                                                      tableList: tableList.isEmpty
+                                                          ? listDataInTable
+                                                          : tableList,
+                                                      controllerName:
+                                                          widget.tapData!.controllerName,
                                                     );
                                                   }
                                                 },
@@ -347,12 +384,18 @@ class _EditProductProcessState extends State<EditProductProcess> {
     List<Widget> list = [];
 
     for (var item in listData) {
-      String title = lang == AppStrings.arLangKey ? item.arColumnLabel! : item.enColumnLabel!;
-      bool condition = item.insertVisable == true && item.cvisable == false && item.visible == false && item.isGeneral == true;
+      String title =
+          lang == AppStrings.arLangKey ? item.arColumnLabel! : item.enColumnLabel!;
+      bool condition = item.insertVisable == true &&
+          item.cvisable == false &&
+          item.visible == false &&
+          item.isGeneral == true;
       //text
       if (item.insertType == "text" && item.categoryTitle == categoryName && condition) {
-        TextEditingController controller =
-            TextEditingController(text: dataMaster[item.columnName].toString() == "null" ? '' : dataMaster[item.columnName]);
+        TextEditingController controller = TextEditingController(
+            text: dataMaster[item.columnName].toString() == "null"
+                ? ''
+                : dataMaster[item.columnName]);
         list.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -381,8 +424,10 @@ class _EditProductProcessState extends State<EditProductProcess> {
                   onSaved: (newValue) {
                     if (newValue!.isNotEmpty) {
                       setState(() {
-                        dataMaster
-                            .updateAll((key, value) => key == item.columnName!.toString() ? value = controller.text : value);
+                        dataMaster.updateAll((key, value) =>
+                            key == item.columnName!.toString()
+                                ? value = controller.text
+                                : value);
                         singleObject = dataMaster;
                       });
                     }
@@ -394,9 +439,13 @@ class _EditProductProcessState extends State<EditProductProcess> {
         );
       }
       //number
-      if (item.insertType == "number" && item.categoryTitle == categoryName && condition) {
+      if (item.insertType == "number" &&
+          item.categoryTitle == categoryName &&
+          condition) {
         TextEditingController controller = TextEditingController(
-            text: dataMaster[item.columnName].toString() == "null" ? '' : dataMaster[item.columnName].toString());
+            text: dataMaster[item.columnName].toString() == "null"
+                ? ''
+                : dataMaster[item.columnName].toString());
         list.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -425,8 +474,10 @@ class _EditProductProcessState extends State<EditProductProcess> {
                   onSaved: (newValue) {
                     if (newValue!.isNotEmpty) {
                       setState(() {
-                        dataMaster
-                            .updateAll((key, value) => key == item.columnName!.toString() ? value = controller.text : value);
+                        dataMaster.updateAll((key, value) =>
+                            key == item.columnName!.toString()
+                                ? value = controller.text
+                                : value);
                         singleObject = dataMaster;
                       });
                     }
@@ -533,7 +584,9 @@ class _EditProductProcessState extends State<EditProductProcess> {
       }
 
       //dropdown
-      if (item.insertType == "dropdown" && item.categoryTitle == categoryName && condition) {
+      if (item.insertType == "dropdown" &&
+          item.categoryTitle == categoryName &&
+          condition) {
         List<ListDrop>? listDrop = [];
         List<ItemDrop>? myListDrop = [];
 
@@ -577,7 +630,8 @@ class _EditProductProcessState extends State<EditProductProcess> {
                       title,
                       style: AppStyles.textStyle14.copyWith(color: Colors.grey),
                     ),
-                    if (item.isRquired == true) const Icon(Icons.star, color: Colors.red, size: 10),
+                    if (item.isRquired == true)
+                      const Icon(Icons.star, color: Colors.red, size: 10),
                     const SizedBox(width: 12),
                     if (dropPage != null)
                       InkWell(
@@ -611,17 +665,21 @@ class _EditProductProcessState extends State<EditProductProcess> {
                       child: CustomDropdown<String>.search(
                         hintText: '',
                         initialItem: dropValue,
-                        closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                        closedHeaderPadding:
+                            const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                         decoration: CustomDropdownDecoration(
-                          headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
+                          headerStyle:
+                              AppStyles.textStyle16.copyWith(color: Colors.black),
                           closedFillColor: Colors.transparent,
                           closedBorder: Border.all(color: AppColors.blueDark),
                         ),
                         items: myListDrop.isEmpty
                             ? [""]
-                            : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
+                            : List.generate(myListDrop.length,
+                                (index) => myListDrop![index].text ?? ''),
                         onChanged: (value) {
-                          ItemDrop ii = myListDrop!.firstWhere((element) => element.text == value);
+                          ItemDrop ii =
+                              myListDrop!.firstWhere((element) => element.text == value);
                           setState(() {
                             singleObject.addAll({item.searchName!.toString(): ii.id});
                           });
@@ -768,7 +826,9 @@ class _EditProductProcessState extends State<EditProductProcess> {
         );
       }*/
       //checkbox
-      if (item.insertType == "checkbox" && item.categoryTitle == categoryName && condition) {
+      if (item.insertType == "checkbox" &&
+          item.categoryTitle == categoryName &&
+          condition) {
         bool checkboxValue = dataMaster[item.columnName] ?? false;
         list.add(
           StatefulBuilder(
@@ -786,7 +846,10 @@ class _EditProductProcessState extends State<EditProductProcess> {
                       checkboxValue = !checkboxValue;
                     });
                     csetState(() {
-                      dataMaster.updateAll((key, value) => key == item.columnName!.toString() ? value = checkboxValue : value);
+                      dataMaster.updateAll((key, value) =>
+                          key == item.columnName!.toString()
+                              ? value = checkboxValue
+                              : value);
                       singleObject = dataMaster;
                     });
                   });
@@ -800,7 +863,8 @@ class _EditProductProcessState extends State<EditProductProcess> {
 
   void getColumnListAndAdd(Pages page) async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).post(
         endPoint: "home/getGeneralTable",
@@ -855,7 +919,8 @@ class _EditProductProcessState extends State<EditProductProcess> {
 
   Future<bool> getPermissions(int? pageId) async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPagePermissions?pageId=$pageId",
@@ -873,7 +938,8 @@ class _EditProductProcessState extends State<EditProductProcess> {
 
   void getDropdownList(int pageId) async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       List<dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPageDropDown?pageId=$pageId",

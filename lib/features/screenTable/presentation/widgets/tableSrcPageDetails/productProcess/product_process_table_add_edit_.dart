@@ -15,6 +15,7 @@ import '../../../views/screen_table.dart';
 import 'add_product_process.dart';
 import 'product_process_alert_dialog_add_widget.dart';
 import 'product_process_alert_dialog_edit_widget.dart';
+import 'widgets/product_process_custom_icon_button_purchase_orders.dart';
 
 typedef OnTapAction<T> = void Function(T data);
 
@@ -42,12 +43,10 @@ class ProductProcessTableAddEdit extends StatefulWidget {
   final String typeView;
 
   @override
-  State<ProductProcessTableAddEdit> createState() =>
-      _ProductProcessTableAddEditState();
+  State<ProductProcessTableAddEdit> createState() => _ProductProcessTableAddEditState();
 }
 
-class _ProductProcessTableAddEditState
-    extends State<ProductProcessTableAddEdit> {
+class _ProductProcessTableAddEditState extends State<ProductProcessTableAddEdit> {
   LinkedScrollControllerGroup controllerGroup = LinkedScrollControllerGroup();
   ScrollController? headerScrollController;
   ScrollController? dataScrollController;
@@ -89,8 +88,7 @@ class _ProductProcessTableAddEditState
                         listKey: widget.listKey,
                         listHeader: widget.listHeader,
                         listColumn: widget.listColumn,
-                        allDropdownModelList:
-                            ScreenTable.myAllDropdownModelList,
+                        allDropdownModelList: ScreenTable.myAllDropdownModelList,
                         pageData: widget.pageData,
                         onTapAdd: (data) {
                           if (widget.typeView == "Add") {
@@ -100,8 +98,7 @@ class _ProductProcessTableAddEditState
                             } else {
                               Map<String, dynamic> searchData =
                                   tableListInAddView.firstWhere(
-                                (element) =>
-                                    element['ProductID'] == data['ProductID'],
+                                (element) => element['ProductID'] == data['ProductID'],
                                 orElse: () => {},
                               );
                               if (searchData.isEmpty) {
@@ -109,8 +106,7 @@ class _ProductProcessTableAddEditState
                                 widget.onTapAction(tableListInAddView);
                               } else {
                                 searchData['PQuntity'] =
-                                    (int.parse(searchData['PQuntity']) + 1)
-                                        .toString();
+                                    (int.parse(searchData['PQuntity']) + 1).toString();
                                 // element['PriceCurrancy'] =
                                 //     (proPrice * int.parse(element['Qty'])).toString();
                                 widget.onTapAction(tableListInAddView);
@@ -123,8 +119,7 @@ class _ProductProcessTableAddEditState
                             } else {
                               Map<String, dynamic> searchData =
                                   tableListInEditView.firstWhere(
-                                (element) =>
-                                    element['ProductID'] == data['ProductID'],
+                                (element) => element['ProductID'] == data['ProductID'],
                                 orElse: () => {},
                               );
                               if (searchData.isEmpty) {
@@ -132,8 +127,7 @@ class _ProductProcessTableAddEditState
                                 widget.onTapAction(tableListInEditView);
                               } else {
                                 searchData['PQuntity'] =
-                                    (int.parse(searchData['PQuntity']) + 1)
-                                        .toString();
+                                    (int.parse(searchData['PQuntity']) + 1).toString();
                                 // element['PriceCurrancy'] =
                                 //     (proPrice * int.parse(element['Qty'])).toString();
                                 widget.onTapAction(tableListInEditView);
@@ -194,18 +188,15 @@ class _ProductProcessTableAddEditState
                         tableListInAddView.add(proData);
                         widget.onTapAction(tableListInAddView);
                       } else {
-                        Map<String, dynamic> data =
-                            tableListInAddView.firstWhere(
-                          (element) =>
-                              element['ProductID'] == proData['ProductID'],
+                        Map<String, dynamic> data = tableListInAddView.firstWhere(
+                          (element) => element['ProductID'] == proData['ProductID'],
                           orElse: () => {},
                         );
                         if (data.isEmpty) {
                           tableListInAddView.add(proData);
                           widget.onTapAction(tableListInAddView);
                         } else {
-                          data['PQuntity'] =
-                              (int.parse(data['PQuntity']) + 1).toString();
+                          data['PQuntity'] = (int.parse(data['PQuntity']) + 1).toString();
                           // element['PriceCurrancy'] =
                           //     (proPrice * int.parse(element['Qty'])).toString();
                           widget.onTapAction(tableListInAddView);
@@ -216,18 +207,15 @@ class _ProductProcessTableAddEditState
                         tableListInEditView.add(proData);
                         widget.onTapAction(tableListInEditView);
                       } else {
-                        Map<String, dynamic> data =
-                            tableListInEditView.firstWhere(
-                          (element) =>
-                              element['ProductID'] == proData['ProductID'],
+                        Map<String, dynamic> data = tableListInEditView.firstWhere(
+                          (element) => element['ProductID'] == proData['ProductID'],
                           orElse: () => {},
                         );
                         if (data.isEmpty) {
                           tableListInEditView.add(proData);
                           widget.onTapAction(tableListInEditView);
                         } else {
-                          data['PQuntity'] =
-                              (int.parse(data['PQuntity']) + 1).toString();
+                          data['PQuntity'] = (int.parse(data['PQuntity']) + 1).toString();
                           // element['PriceCurrancy'] =
                           //     (proPrice * int.parse(element['Qty'])).toString();
                           widget.onTapAction(tableListInEditView);
@@ -256,8 +244,7 @@ class _ProductProcessTableAddEditState
                           listKey: widget.listKey,
                           listHeader: widget.listHeader,
                           listColumn: widget.listColumn,
-                          allDropdownModelList:
-                              ScreenTable.myAllDropdownModelList,
+                          allDropdownModelList: ScreenTable.myAllDropdownModelList,
                           pageData: widget.pageData,
                           onTapAdd: (data) {
                             if (widget.typeView == "Add") {
@@ -315,6 +302,22 @@ class _ProductProcessTableAddEditState
               style: IconButton.styleFrom(
                 backgroundColor: AppColors.red,
               ),
+            ),
+            ProductProcessCustomIconButtonPurchaseOrders(
+              onTapAdd: (List<Map<String, dynamic>> data) {
+                if (widget.typeView == "Add") {
+                  for (var i in data) {
+                    tableListInAddView.add(i);
+                  }
+
+                  widget.onTapAction(tableListInAddView);
+                } else if (widget.typeView == "Edit") {
+                  for (var i in data) {
+                    tableListInEditView.add(i);
+                  }
+                  widget.onTapAction(tableListInEditView);
+                }
+              },
             ),
           ],
         ),
@@ -399,17 +402,15 @@ class _ProductProcessTableAddEditState
                             SizedBox(
                               width: 130,
                               child: InkWell(
-                                onTap: widget.listColumn[i].insertType! !=
-                                        "date"
+                                onTap: widget.listColumn[i].insertType! != "date"
                                     ? () {
                                         buildShowDialogText(
                                           context,
                                           text: widget.typeView == "Add"
-                                              ? tableListInAddView[index][widget
-                                                  .listColumn[i].columnName]
-                                              : tableListInEditView[index][
-                                                  widget.listColumn[i]
-                                                      .columnName],
+                                              ? tableListInAddView[index]
+                                                  [widget.listColumn[i].columnName]
+                                              : tableListInEditView[index]
+                                                  [widget.listColumn[i].columnName],
                                         );
                                       }
                                     : null,
@@ -417,14 +418,11 @@ class _ProductProcessTableAddEditState
                                   color: indexSelect == index
                                       ? AppColors.blueGreyDark
                                       : Colors.transparent,
-                                  width:
-                                      widget.listColumn[i].toString().length >
-                                              12
-                                          ? 100
-                                          : null,
+                                  width: widget.listColumn[i].toString().length > 12
+                                      ? 100
+                                      : null,
                                   alignment: Alignment.center,
-                                  child: buildMyWidget(
-                                      widget.listColumn[i], index),
+                                  child: buildMyWidget(widget.listColumn[i], index),
                                 ),
                               ),
                             ),
@@ -502,16 +500,14 @@ class _ProductProcessTableAddEditState
     switch (columnList.insertType) {
       case "date":
         String date = data.isNotEmpty
-            ? DateFormat("yyyy-MM-dd", "en")
-                .format(DateTime.parse(data).toLocal())
+            ? DateFormat("yyyy-MM-dd", "en").format(DateTime.parse(data).toLocal())
             : '';
         return Text(
           textAlign: TextAlign.center,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           date == "0001-12-31" || date == "0000-12-31" ? '' : date,
-          style: TextStyle(
-              color: indexSelect == indexRow ? Colors.white : Colors.black),
+          style: TextStyle(color: indexSelect == indexRow ? Colors.white : Colors.black),
         );
       case "checkbox":
         if (data == "true") {
@@ -563,8 +559,7 @@ class _ProductProcessTableAddEditState
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           val,
-          style: TextStyle(
-              color: indexSelect == indexRow ? Colors.white : Colors.black),
+          style: TextStyle(color: indexSelect == indexRow ? Colors.white : Colors.black),
         );
       default:
         return Text(
@@ -572,8 +567,7 @@ class _ProductProcessTableAddEditState
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           data,
-          style: TextStyle(
-              color: indexSelect == indexRow ? Colors.white : Colors.black),
+          style: TextStyle(color: indexSelect == indexRow ? Colors.white : Colors.black),
         );
     }
   }

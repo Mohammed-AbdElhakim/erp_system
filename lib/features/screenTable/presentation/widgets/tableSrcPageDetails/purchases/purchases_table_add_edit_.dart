@@ -16,6 +16,7 @@ import '../../../views/screen_table.dart';
 import 'edit_purchases.dart';
 import 'purchases_alert_dialog_add_widget.dart';
 import 'purchases_alert_dialog_edit_widget.dart';
+import 'widgets/custom_icon_button_purchase_orders.dart';
 
 typedef OnTapAction<T> = void Function(T data);
 
@@ -283,6 +284,22 @@ class _PurchasesTableAddEditState extends State<PurchasesTableAddEdit> {
               style: IconButton.styleFrom(
                 backgroundColor: AppColors.red,
               ),
+            ),
+            CustomIconButtonPurchaseOrders(
+              onTapAdd: (List<Map<String, dynamic>> data) {
+                if (widget.typeView == "Add") {
+                  for (var i in data) {
+                    tableListInAddView.add(i);
+                  }
+
+                  widget.onTapAction(tableListInAddView);
+                } else if (widget.typeView == "Edit") {
+                  for (var i in data) {
+                    tableListInEditView.add(i);
+                  }
+                  widget.onTapAction(tableListInEditView);
+                }
+              },
             ),
           ],
         ),

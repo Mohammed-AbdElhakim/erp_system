@@ -10,10 +10,12 @@ class CustomTextFormFieldSearch extends StatelessWidget {
       this.validatorMassage = 'Field is required',
       required this.hintText,
       this.onChanged,
-      this.onSaved});
+      this.onSaved,
+      this.fillColor});
   final TextEditingController? controller;
   final String? validatorMassage;
   final String hintText;
+  final Color? fillColor;
   final void Function(String)? onChanged;
   final void Function(String?)? onSaved;
 
@@ -37,11 +39,10 @@ class CustomTextFormFieldSearch extends StatelessWidget {
         onSaved: onSaved,
         decoration: InputDecoration(
           hintText: hintText,
-          fillColor: AppColors.blueGreyLight,
+          fillColor: fillColor ?? AppColors.blueGreyLight,
           filled: true,
           hintStyle: AppStyles.textStyle14.copyWith(color: AppColors.grey),
-          contentPadding:
-              const EdgeInsets.symmetric(vertical: 0, horizontal: 16),
+          contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16),
           border: borderRadius(),
           // enabledBorder: buildBorder(color: AppColors.blueDark),
           focusedBorder: buildBorder(color: AppColors.blueDark),

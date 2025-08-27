@@ -16,6 +16,7 @@ import 'add_supplier_offer.dart';
 import 'edit_supplier_offer.dart';
 import 'supplier_offer_alert_dialog_add_widget.dart';
 import 'supplier_offer_alert_dialog_edit_widget.dart';
+import 'widgets/supplier_offer_custom_icon_button_purchase_orders.dart';
 
 typedef OnTapAction<T> = void Function(T data);
 
@@ -239,7 +240,9 @@ class _SupplierOfferTableAddEditState extends State<SupplierOfferTableAddEdit> {
                           },
                           dataOld: widget.typeView == "Add"
                               ? (indexSelect >= 0 ? tableListInAddView[indexSelect] : {})
-                              : (indexSelect >= 0 ? tableListInEditView[indexSelect] : {}),
+                              : (indexSelect >= 0
+                                  ? tableListInEditView[indexSelect]
+                                  : {}),
                           // dataOld: widget.typeView == "Add" ? tableListInAddView[indexSelect] : tableListInEditView[indexSelect],
                         ),
                       );
@@ -281,6 +284,22 @@ class _SupplierOfferTableAddEditState extends State<SupplierOfferTableAddEdit> {
               style: IconButton.styleFrom(
                 backgroundColor: AppColors.red,
               ),
+            ),
+            SupplierOfferCustomIconButtonPurchaseOrders(
+              onTapAdd: (List<Map<String, dynamic>> data) {
+                if (widget.typeView == "Add") {
+                  for (var i in data) {
+                    tableListInAddView.add(i);
+                  }
+
+                  widget.onTapAction(tableListInAddView);
+                } else if (widget.typeView == "Edit") {
+                  for (var i in data) {
+                    tableListInEditView.add(i);
+                  }
+                  widget.onTapAction(tableListInEditView);
+                }
+              },
             ),
           ],
         ),
@@ -330,7 +349,9 @@ class _SupplierOfferTableAddEditState extends State<SupplierOfferTableAddEdit> {
                   )
                 ],
                 rows: List.generate(
-                  widget.typeView == "Add" ? tableListInAddView.length : tableListInEditView.length,
+                  widget.typeView == "Add"
+                      ? tableListInAddView.length
+                      : tableListInEditView.length,
                   (index) {
                     return DataRow(
                       cells: [
@@ -368,14 +389,20 @@ class _SupplierOfferTableAddEditState extends State<SupplierOfferTableAddEdit> {
                                         buildShowDialogText(
                                           context,
                                           text: widget.typeView == "Add"
-                                              ? tableListInAddView[index][widget.listColumn[i].columnName]
-                                              : tableListInEditView[index][widget.listColumn[i].columnName],
+                                              ? tableListInAddView[index]
+                                                  [widget.listColumn[i].columnName]
+                                              : tableListInEditView[index]
+                                                  [widget.listColumn[i].columnName],
                                         );
                                       }
                                     : null,
                                 child: Container(
-                                  color: indexSelect == index ? AppColors.blueGreyDark : Colors.transparent,
-                                  width: widget.listColumn[i].toString().length > 12 ? 100 : null,
+                                  color: indexSelect == index
+                                      ? AppColors.blueGreyDark
+                                      : Colors.transparent,
+                                  width: widget.listColumn[i].toString().length > 12
+                                      ? 100
+                                      : null,
                                   alignment: Alignment.center,
                                   child: buildMyWidget(widget.listColumn[i], index),
                                 ),
@@ -443,16 +470,22 @@ class _SupplierOfferTableAddEditState extends State<SupplierOfferTableAddEdit> {
 
   buildMyWidget(ItemListSetupModel columnList, int indexRow) {
     String data;
-    Map<String, dynamic> dataRow = widget.typeView == "Add" ? tableListInAddView[indexRow] : tableListInEditView[indexRow];
+    Map<String, dynamic> dataRow = widget.typeView == "Add"
+        ? tableListInAddView[indexRow]
+        : tableListInEditView[indexRow];
     if (dataRow.containsKey(columnList.columnName)) {
-      data = dataRow[columnList.columnName] == null ? "" : dataRow[columnList.columnName].toString();
+      data = dataRow[columnList.columnName] == null
+          ? ""
+          : dataRow[columnList.columnName].toString();
     } else {
       data = '';
     }
 
     switch (columnList.insertType) {
       case "date":
-        String date = data.isNotEmpty ? DateFormat("yyyy-MM-dd", "en").format(DateTime.parse(data).toLocal()) : '';
+        String date = data.isNotEmpty
+            ? DateFormat("yyyy-MM-dd", "en").format(DateTime.parse(data).toLocal())
+            : '';
         return Text(
           textAlign: TextAlign.center,
           maxLines: 1,
@@ -492,7 +525,8 @@ class _SupplierOfferTableAddEditState extends State<SupplierOfferTableAddEdit> {
           }
         }
         for (var ii in listDrop!) {
-          if (ii.columnName == columnList.columnName && ii.nameAr == columnList.arColumnLabel) {
+          if (ii.columnName == columnList.columnName &&
+              ii.nameAr == columnList.arColumnLabel) {
             myListDrop = ii.list;
           }
         }
