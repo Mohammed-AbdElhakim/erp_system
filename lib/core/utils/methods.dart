@@ -22,89 +22,74 @@ String getStringNumber({
       statement.contains("$search <>")) {
     if (type == "F") {
       s1 = statement.substring(
-          statement.indexOf("$search >=") + (search.length) + 4,
-          statement.length);
+          statement.indexOf("$search >=") + (search.length) + 4, statement.length);
       s2 = s1.substring(0, s1.indexOf(' '));
       return s2;
     } else if (type == "T") {
       s1 = statement.substring(
-          statement.indexOf("$search <=") + (search.length) + 4,
-          statement.length);
+          statement.indexOf("$search <=") + (search.length) + 4, statement.length);
       s2 = s1.substring(0, s1.indexOf(' '));
       return s2;
     } else if (type == "N") {
       s1 = statement.substring(
-          statement.indexOf("$search <>") + (search.length) + 4,
-          statement.length);
+          statement.indexOf("$search <>") + (search.length) + 4, statement.length);
       s2 = s1.substring(0, s1.indexOf(' '));
       return s2;
     }
-  } else if (statement.contains("$search >=") &&
-      statement.contains("$search <=")) {
+  } else if (statement.contains("$search >=") && statement.contains("$search <=")) {
     if (type == "F") {
       s1 = statement.substring(
-          statement.indexOf("$search >=") + (search.length) + 4,
-          statement.length);
+          statement.indexOf("$search >=") + (search.length) + 4, statement.length);
       s2 = s1.substring(0, s1.indexOf(' '));
       return s2;
     } else if (type == "T") {
       s1 = statement.substring(
-          statement.indexOf("$search <=") + (search.length) + 4,
-          statement.length);
+          statement.indexOf("$search <=") + (search.length) + 4, statement.length);
       s2 = s1.substring(0, s1.indexOf(' '));
       return s2;
     }
-  } else if (statement.contains("$search <=") &&
-      statement.contains("$search <>")) {
+  } else if (statement.contains("$search <=") && statement.contains("$search <>")) {
     if (type == "T") {
       s1 = statement.substring(
-          statement.indexOf("$search <=") + (search.length) + 4,
-          statement.length);
+          statement.indexOf("$search <=") + (search.length) + 4, statement.length);
       s2 = s1.substring(0, s1.indexOf(' '));
       return s2;
     } else if (type == "N") {
       s1 = statement.substring(
-          statement.indexOf("$search <>") + (search.length) + 4,
-          statement.length);
+          statement.indexOf("$search <>") + (search.length) + 4, statement.length);
       s2 = s1.substring(0, s1.indexOf(' '));
       return s2;
     }
-  } else if (statement.contains("$search >=") &&
-      statement.contains("$search <>")) {
+  } else if (statement.contains("$search >=") && statement.contains("$search <>")) {
     if (type == "F") {
       s1 = statement.substring(
-          statement.indexOf("$search >=") + (search.length) + 4,
-          statement.length);
+          statement.indexOf("$search >=") + (search.length) + 4, statement.length);
       s2 = s1.substring(0, s1.indexOf(' '));
       return s2;
     } else if (type == "N") {
       s1 = statement.substring(
-          statement.indexOf("$search <>") + (search.length) + 4,
-          statement.length);
+          statement.indexOf("$search <>") + (search.length) + 4, statement.length);
       s2 = s1.substring(0, s1.indexOf(' '));
       return s2;
     }
   } else if (statement.contains("$search >=")) {
     if (type == "F") {
       s1 = statement.substring(
-          statement.indexOf("$search >=") + (search.length) + 4,
-          statement.length);
+          statement.indexOf("$search >=") + (search.length) + 4, statement.length);
       s2 = s1.substring(0, s1.indexOf(' '));
       return s2;
     }
   } else if (statement.contains("$search <=")) {
     if (type == "T") {
       s1 = statement.substring(
-          statement.indexOf("$search <=") + (search.length) + 4,
-          statement.length);
+          statement.indexOf("$search <=") + (search.length) + 4, statement.length);
       s2 = s1.substring(0, s1.indexOf(' '));
       return s2;
     }
   } else if (statement.contains("$search <>")) {
     if (type == "N") {
       s1 = statement.substring(
-          statement.indexOf("$search <>") + (search.length) + 4,
-          statement.length);
+          statement.indexOf("$search <>") + (search.length) + 4, statement.length);
       s2 = s1.substring(0, s1.indexOf(' '));
       return s2;
     }
@@ -135,21 +120,17 @@ String getStringDate({
 }) {
   String s1 = '', s2 = '';
 
-  if (statement.contains("$search )>= Convert(date, '") &&
+  if (statement.contains("$search) >= Convert(date, '") &&
       statement.contains("$search) <= Convert(date, '")) {
     if (type == "F") {
       s1 = statement.substring(
-          statement.indexOf("$search )>= Convert(date, '") +
-              (search.length) +
-              20,
+          statement.indexOf("$search) >= Convert(date, '") + (search.length) + 20,
           statement.length);
       s2 = s1.substring(0, s1.indexOf("'"));
       return s2;
     } else if (type == "T") {
       s1 = statement.substring(
-          statement.indexOf("$search) <= Convert(date, '") +
-              (search.length) +
-              20,
+          statement.indexOf("$search) <= Convert(date, '") + (search.length) + 20,
           statement.length);
       s2 = s1.substring(0, s1.indexOf("'"));
       return s2;
@@ -157,9 +138,7 @@ String getStringDate({
   } else if (statement.contains("$search )>= Convert(date, '")) {
     if (type == "F") {
       s1 = statement.substring(
-          statement.indexOf("$search )>= Convert(date, '") +
-              (search.length) +
-              20,
+          statement.indexOf("$search) >= Convert(date, '") + (search.length) + 20,
           statement.length);
       s2 = s1.substring(0, s1.indexOf("'"));
       return s2;
@@ -167,9 +146,7 @@ String getStringDate({
   } else if (statement.contains("$search) <= Convert(date, '")) {
     if (type == "T") {
       s1 = statement.substring(
-          statement.indexOf("$search) <= Convert(date, '") +
-              (search.length) +
-              20,
+          statement.indexOf("$search) <= Convert(date, '") + (search.length) + 20,
           statement.length);
       s2 = s1.substring(0, s1.indexOf("'"));
       return s2;
@@ -187,15 +164,13 @@ String getStringDropdown({
 
   if (statement.contains("$search =")) {
     if (statement.contains("or $search =")) {
-      s1 =
-          statement.substring(statement.indexOf("$search ="), statement.length);
+      s1 = statement.substring(statement.indexOf("$search ="), statement.length);
       s2 = s1.substring(0, s1.indexOf(" )"));
 
       return s2;
     } else if (statement.contains("$search =")) {
       s1 = statement.substring(
-          statement.indexOf("$search =") + (search.length) + 3,
-          statement.length);
+          statement.indexOf("$search =") + (search.length) + 3, statement.length);
       s2 = s1.substring(0, s1.indexOf(" "));
       return s2;
     }
@@ -211,8 +186,7 @@ String getStringCheckbox({
   String s1 = '', s2 = '';
   if (statement.contains("$search =")) {
     s1 = statement.substring(
-        (statement.indexOf("$search =") + (search.length) + 3),
-        statement.length);
+        (statement.indexOf("$search =") + (search.length) + 3), statement.length);
 
     s2 = s1.substring(0, s1.indexOf(' '));
     if (s2 == "1") {
@@ -273,8 +247,8 @@ buildShowDialog(
           builder: (context) => Dialog(
             child: InkWell(
               child: Container(
-                padding: const EdgeInsetsDirectional.symmetric(
-                    horizontal: 16, vertical: 32),
+                padding:
+                    const EdgeInsetsDirectional.symmetric(horizontal: 16, vertical: 32),
                 child: Text(textAlign: TextAlign.center, text),
               ),
             ),
@@ -289,8 +263,8 @@ buildShowDialog(
         builder: (context) => Dialog(
           child: InkWell(
             child: Container(
-              padding: const EdgeInsetsDirectional.symmetric(
-                  horizontal: 16, vertical: 32),
+              padding:
+                  const EdgeInsetsDirectional.symmetric(horizontal: 16, vertical: 32),
               child: Text(textAlign: TextAlign.center, text),
             ),
           ),
@@ -310,8 +284,7 @@ buildShowDialogText(
       builder: (context) => Dialog(
         child: InkWell(
           child: Container(
-            padding: const EdgeInsetsDirectional.symmetric(
-                horizontal: 16, vertical: 32),
+            padding: const EdgeInsetsDirectional.symmetric(horizontal: 16, vertical: 32),
             child: Text(textAlign: TextAlign.center, text),
           ),
         ),
@@ -319,7 +292,6 @@ buildShowDialogText(
     );
   }
 }
-
 
 void showSnackBar({required BuildContext context, required String message}) {
   ScaffoldMessenger.of(context).showSnackBar(
