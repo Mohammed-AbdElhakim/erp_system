@@ -37,7 +37,8 @@ import '../build_alert_add_in_dropdown.dart';
 import 'custom_table_add_edit_.dart';
 
 class EditExcelViewBody extends StatefulWidget {
-  const EditExcelViewBody({super.key, required this.pageData, required this.listKey, this.tapData});
+  const EditExcelViewBody(
+      {super.key, required this.pageData, required this.listKey, this.tapData});
 
   final ListTaps? tapData;
   final Pages pageData;
@@ -93,9 +94,8 @@ class _EditExcelViewBodyState extends State<EditExcelViewBody> {
 
             log(dataMaster.toString());
             //تم إلغائها بديدى ايرور (بيضيف عنصر جديدمش بيعدل) فى صفحه طلب تحويل pageId=7085
-            // changeKeyByValue(dataMaster, (value) => value.toString() == id,
-            //     widget.tapData!.foreignKey);
-            singleObject = dataMaster;
+            singleObject = changeKeyByValue(dataMaster, (value) => value.toString() == id,
+                widget.tapData!.foreignKey);
             log(dataMaster.toString());
             return BlocProvider(
               create: (context) => GetExpensesDetailsCubit(getIt.get<ScreenRepoImpl>())
@@ -163,7 +163,8 @@ class _EditExcelViewBodyState extends State<EditExcelViewBody> {
               child: BlocBuilder<GetExpensesDetailsCubit, GetExpensesDetailsState>(
                 builder: (context, state) {
                   if (state is GetExpensesDetailsSuccess) {
-                    List<Map<String, dynamic>> listDataInTable = state.expensesDetailsModel.dynamicList!;
+                    List<Map<String, dynamic>> listDataInTable =
+                        state.expensesDetailsModel.dynamicList!;
 
                     tableList = state.expensesDetailsModel.dynamicList!;
 
@@ -185,7 +186,9 @@ class _EditExcelViewBodyState extends State<EditExcelViewBody> {
                                 ) {
                               listColumn.add(item);
                               listKey.add(item.columnName);
-                              listHeader.add(lang == AppStrings.enLangKey ? item.enColumnLabel! : item.arColumnLabel!);
+                              listHeader.add(lang == AppStrings.enLangKey
+                                  ? item.enColumnLabel!
+                                  : item.arColumnLabel!);
                             }
                           }
                           List<String> categoryList = category.toSet().toList();
@@ -206,22 +209,34 @@ class _EditExcelViewBodyState extends State<EditExcelViewBody> {
                                           ...List.generate(categoryList.length, (index) {
                                             String categoryName = categoryList[index];
                                             List<Widget> widgetList = getMyWidgetList(
-                                                listData: listSetup, categoryName: categoryName, dataMaster: dataMaster);
+                                                listData: listSetup,
+                                                categoryName: categoryName,
+                                                dataMaster: dataMaster);
                                             return widgetList.isNotEmpty
                                                 ? Padding(
-                                                    padding: const EdgeInsets.only(bottom: 16),
+                                                    padding:
+                                                        const EdgeInsets.only(bottom: 16),
                                                     child: Column(
-                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment.start,
                                                       children: [
                                                         Container(
-                                                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                                          padding:
+                                                              const EdgeInsets.symmetric(
+                                                                  horizontal: 12,
+                                                                  vertical: 8),
                                                           decoration: BoxDecoration(
                                                               // color: AppColors.grey.withOpacity(.4),
-                                                              color: AppColors.grey.withAlpha(102),
-                                                              borderRadius: BorderRadius.circular(15)),
+                                                              color: AppColors.grey
+                                                                  .withAlpha(102),
+                                                              borderRadius:
+                                                                  BorderRadius.circular(
+                                                                      15)),
                                                           child: Text(
                                                             categoryName,
-                                                            style: AppStyles.textStyle18.copyWith(color: Colors.black),
+                                                            style: AppStyles.textStyle18
+                                                                .copyWith(
+                                                                    color: Colors.black),
                                                           ),
                                                         ),
                                                         ...widgetList,
@@ -239,7 +254,8 @@ class _EditExcelViewBodyState extends State<EditExcelViewBody> {
                                               listKey: listKey,
                                               listHeader: listHeader,
                                               listColumn: listColumn,
-                                              allDropdownModelList: ScreenTable.myAllDropdownModelList,
+                                              allDropdownModelList:
+                                                  ScreenTable.myAllDropdownModelList,
                                               onTapAction: (data) {
                                                 tableList = data;
                                               },
@@ -261,7 +277,8 @@ class _EditExcelViewBodyState extends State<EditExcelViewBody> {
                                           noGradient: true,
                                           color: Colors.transparent,
                                           noShadow: true,
-                                          textStyle: AppStyles.textStyle16.copyWith(color: Colors.grey),
+                                          textStyle: AppStyles.textStyle16
+                                              .copyWith(color: Colors.grey),
                                           onTap: () {
                                             Navigator.pop(context);
                                           },
@@ -269,24 +286,30 @@ class _EditExcelViewBodyState extends State<EditExcelViewBody> {
                                         const SizedBox(
                                           width: 50,
                                         ),
-                                        BlocConsumer<AddEditExpensesCubit, AddEditExpensesState>(
+                                        BlocConsumer<AddEditExpensesCubit,
+                                            AddEditExpensesState>(
                                           listener: (context, state) {
                                             if (state is AddEditExpensesSuccess) {
-                                              BlocProvider.of<GetTableCubit>(context).getTable(
-                                                  pageId: widget.pageData.pageId,
-                                                  employee: false,
-                                                  isdesc: widget.pageData.isDesc,
-                                                  limit: 10,
-                                                  offset: 0,
-                                                  orderby: widget.pageData.orderBy,
-                                                  statment: '',
-                                                  selectcolumns: '',
-                                                  departmentName: widget.pageData.departmentName,
-                                                  isDepartment: widget.pageData.isDepartment,
-                                                  authorizationID: widget.pageData.authorizationID,
-                                                  viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
-                                                  numberOfPage: 1,
-                                                  dropdownValueOfLimit: 10);
+                                              BlocProvider.of<GetTableCubit>(context)
+                                                  .getTable(
+                                                      pageId: widget.pageData.pageId,
+                                                      employee: false,
+                                                      isdesc: widget.pageData.isDesc,
+                                                      limit: 10,
+                                                      offset: 0,
+                                                      orderby: widget.pageData.orderBy,
+                                                      statment: '',
+                                                      selectcolumns: '',
+                                                      departmentName:
+                                                          widget.pageData.departmentName,
+                                                      isDepartment:
+                                                          widget.pageData.isDepartment,
+                                                      authorizationID:
+                                                          widget.pageData.authorizationID,
+                                                      viewEmployeeColumn: widget
+                                                          .pageData.viewEmployeeColumn,
+                                                      numberOfPage: 1,
+                                                      dropdownValueOfLimit: 10);
                                               Navigator.pop(context);
                                             } else if (state is AddEditExpensesFailure) {
                                               CustomAlertDialog.alertWithButton(
@@ -307,10 +330,13 @@ class _EditExcelViewBodyState extends State<EditExcelViewBody> {
                                                   if (formKey.currentState!.validate()) {
                                                     formKey.currentState!.save();
 
-                                                    BlocProvider.of<AddEditExpensesCubit>(context).edit(
+                                                    BlocProvider.of<AddEditExpensesCubit>(
+                                                            context)
+                                                        .edit(
                                                       singleObject: singleObject,
                                                       tableList: tableList,
-                                                      controllerName: widget.tapData!.controllerName,
+                                                      controllerName:
+                                                          widget.tapData!.controllerName,
                                                     );
                                                   }
                                                 },
@@ -358,16 +384,20 @@ class _EditExcelViewBodyState extends State<EditExcelViewBody> {
     List<Widget> list = [];
 
     for (var item in listData) {
-      String title = lang == AppStrings.arLangKey ? item.arColumnLabel! : item.enColumnLabel!;
+      String title =
+          lang == AppStrings.arLangKey ? item.arColumnLabel! : item.enColumnLabel!;
       //فوق
       //بشمهندس محمد
       // bool condition = item.insertVisable == true && item.cvisable == false && item.visible == false && item.isGeneral == true;
-      bool condition = item.insertVisable == true && item.cvisable == false && item.isGeneral == true;
+      bool condition =
+          item.insertVisable == true && item.cvisable == false && item.isGeneral == true;
 
       //text
       if (item.insertType == "text" && item.categoryTitle == categoryName && condition) {
-        TextEditingController controller =
-            TextEditingController(text: dataMaster[item.columnName].toString() == "null" ? '' : dataMaster[item.columnName]);
+        TextEditingController controller = TextEditingController(
+            text: dataMaster[item.columnName].toString() == "null"
+                ? ''
+                : dataMaster[item.columnName]);
         list.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -412,9 +442,13 @@ class _EditExcelViewBodyState extends State<EditExcelViewBody> {
         );
       }
       //number
-      if (item.insertType == "number" && item.categoryTitle == categoryName && condition) {
+      if (item.insertType == "number" &&
+          item.categoryTitle == categoryName &&
+          condition) {
         TextEditingController controller = TextEditingController(
-            text: dataMaster[item.columnName].toString() == "null" ? '' : dataMaster[item.columnName].toString());
+            text: dataMaster[item.columnName].toString() == "null"
+                ? ''
+                : dataMaster[item.columnName].toString());
         list.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -671,7 +705,9 @@ class _EditExcelViewBodyState extends State<EditExcelViewBody> {
           ),
         );
       }*/
-      if (item.insertType == "dropdown" && item.categoryTitle == categoryName && condition) {
+      if (item.insertType == "dropdown" &&
+          item.categoryTitle == categoryName &&
+          condition) {
         List<ListDrop>? listDrop = [];
         List<ItemDrop>? myListDrop = [];
 
@@ -715,7 +751,8 @@ class _EditExcelViewBodyState extends State<EditExcelViewBody> {
                       title,
                       style: AppStyles.textStyle14.copyWith(color: Colors.grey),
                     ),
-                    if (item.isRquired == true) const Icon(Icons.star, color: Colors.red, size: 10),
+                    if (item.isRquired == true)
+                      const Icon(Icons.star, color: Colors.red, size: 10),
                     const SizedBox(width: 12),
                     if (dropPage != null)
                       InkWell(
@@ -749,17 +786,21 @@ class _EditExcelViewBodyState extends State<EditExcelViewBody> {
                       child: CustomDropdown<String>.search(
                         hintText: '',
                         initialItem: dropValue,
-                        closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                        closedHeaderPadding:
+                            const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                         decoration: CustomDropdownDecoration(
-                          headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
+                          headerStyle:
+                              AppStyles.textStyle16.copyWith(color: Colors.black),
                           closedFillColor: Colors.transparent,
                           closedBorder: Border.all(color: AppColors.blueDark),
                         ),
                         items: myListDrop.isEmpty
                             ? [""]
-                            : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
+                            : List.generate(myListDrop.length,
+                                (index) => myListDrop![index].text ?? ''),
                         onChanged: (value) {
-                          ItemDrop ii = myListDrop!.firstWhere((element) => element.text == value);
+                          ItemDrop ii =
+                              myListDrop!.firstWhere((element) => element.text == value);
                           setState(() {
                             singleObject[item.searchName!.toString()] = ii.id;
                           });
@@ -787,7 +828,9 @@ class _EditExcelViewBodyState extends State<EditExcelViewBody> {
       }
 
       //checkbox
-      if (item.insertType == "checkbox" && item.categoryTitle == categoryName && condition) {
+      if (item.insertType == "checkbox" &&
+          item.categoryTitle == categoryName &&
+          condition) {
         bool checkboxValue = dataMaster[item.columnName] ?? false;
         list.add(
           StatefulBuilder(
@@ -823,7 +866,8 @@ class _EditExcelViewBodyState extends State<EditExcelViewBody> {
 
   void getColumnListAndAdd(Pages page) async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).post(
         endPoint: "home/getGeneralTable",
@@ -878,7 +922,8 @@ class _EditExcelViewBodyState extends State<EditExcelViewBody> {
 
   Future<bool> getPermissions(int? pageId) async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPagePermissions?pageId=$pageId",
@@ -896,7 +941,8 @@ class _EditExcelViewBodyState extends State<EditExcelViewBody> {
 
   void getDropdownList(int pageId) async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       List<dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPageDropDown?pageId=$pageId",
@@ -919,15 +965,19 @@ class _EditExcelViewBodyState extends State<EditExcelViewBody> {
     }
   }
 
-  void changeKeyByValue<K, V>(Map<K, V> map, bool Function(V) condition, K newKey) {
-    var entry = map.entries.firstWhere(
-      (e) => condition(e.value), // البحث بناءً على الشرط
-      // orElse: () => const MapEntry(null, null),
-    );
+  Map<K, V> changeKeyByValue<K, V>(
+    Map<K, V> map,
+    bool Function(V) condition,
+    K newKey,
+  ) {
+    final entry = map.entries.firstWhere((e) => condition(e.value));
 
-    if (entry.key != null) {
-      map[newKey] = entry.value; // إضافة المفتاح الجديد
-      map.remove(entry.key); // حذف المفتاح القديم
-    }
+    final oldKey = entry.key;
+    final value = entry.value;
+
+    // map.remove(oldKey);
+    map[newKey] = value;
+
+    return map;
   }
 }
