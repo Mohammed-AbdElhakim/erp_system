@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -61,8 +63,6 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
 
   @override
   Widget build(BuildContext context) {
-    print("***********************************************");
-    print(statment);
     return SizedBox(
       height: MediaQuery.of(context).size.height * .75,
       child: Form(
@@ -743,12 +743,7 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
                             }
                             st += " ) ";
                           }
-                          print("-------------------------");
-                          // print("dropValue==>  $dropValue");
-                          // print("oldValue==>  $oldValue");
-                          print("statement==>  $statment");
-                          print("st==> $st");
-                          // print("stFinial=1=> $stFinial");
+
                           stFinial = st;
                           // print("stFinial=2=> $stFinial");
                           // حذف القديم من الاستعلام
@@ -1063,7 +1058,7 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
         ),
       );
     } catch (e) {
-      print(e);
+      log(e.toString());
     }
   }
 
@@ -1091,7 +1086,7 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
       PermissionModel permissionModel = PermissionModel.fromJson(data);
       return permissionModel.showNew;
     } catch (e) {
-      print(e);
+      log(e.toString());
       return false;
     }
   }
@@ -1118,7 +1113,7 @@ class _BuildAlertSearchState extends State<BuildAlertSearch> {
         myAllDropdownModelList = dataList;
       });
     } catch (e) {
-      print(e);
+      log(e.toString());
     }
   }
 }
