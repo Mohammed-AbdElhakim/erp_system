@@ -118,39 +118,15 @@ String getStringDate({
   required String search,
   required String type,
 }) {
-  String s1 = '', s2 = '';
+  final fromRegex = RegExp("$search\\) >= Convert\\(date, '([^']*)'");
+  final toRegex = RegExp("$search\\) <= Convert\\(date, '([^']*)'");
 
-  if (statement.contains("$search) >= Convert(date, '") &&
-      statement.contains("$search) <= Convert(date, '")) {
-    if (type == "F") {
-      s1 = statement.substring(
-          statement.indexOf("$search) >= Convert(date, '") + (search.length) + 20,
-          statement.length);
-      s2 = s1.substring(0, s1.indexOf("'"));
-      return s2;
-    } else if (type == "T") {
-      s1 = statement.substring(
-          statement.indexOf("$search) <= Convert(date, '") + (search.length) + 20,
-          statement.length);
-      s2 = s1.substring(0, s1.indexOf("'"));
-      return s2;
-    }
-  } else if (statement.contains("$search )>= Convert(date, '")) {
-    if (type == "F") {
-      s1 = statement.substring(
-          statement.indexOf("$search) >= Convert(date, '") + (search.length) + 20,
-          statement.length);
-      s2 = s1.substring(0, s1.indexOf("'"));
-      return s2;
-    }
-  } else if (statement.contains("$search) <= Convert(date, '")) {
-    if (type == "T") {
-      s1 = statement.substring(
-          statement.indexOf("$search) <= Convert(date, '") + (search.length) + 20,
-          statement.length);
-      s2 = s1.substring(0, s1.indexOf("'"));
-      return s2;
-    }
+  if (type == "F") {
+    final match = fromRegex.firstMatch(statement);
+    return match?.group(1) ?? "";
+  } else if (type == "T") {
+    final match = toRegex.firstMatch(statement);
+    return match?.group(1) ?? "";
   }
 
   return "";
