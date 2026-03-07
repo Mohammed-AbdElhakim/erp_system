@@ -972,8 +972,9 @@ class _EditExcelViewBodyState extends State<EditExcelViewBody> {
   ) {
     final entry = map.entries.firstWhere((e) => condition(e.value));
 
-    // final oldKey = entry.key;
+    final oldKey = entry.key;
     final value = entry.value;
+    if (oldKey == newKey) return map; // مفيش تغيير
 
     // map.remove(oldKey);
     map[newKey] = value;
