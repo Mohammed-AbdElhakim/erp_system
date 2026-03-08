@@ -97,8 +97,8 @@ class _EditPurchasesState extends State<EditPurchases> {
       child: BlocBuilder<GetExpensesMasterCubit, GetExpensesMasterState>(
         builder: (context, state) {
           if (state is GetExpensesMasterSuccess) {
-            Map<String, dynamic> dataMaster = state.data;
-            total = dataMaster['TotalCurrancy'] ?? 0.0;
+            // Map<String, dynamic> dataMaster = state.data;
+            // total = dataMaster['TotalCurrancy'] ?? 0.0;
             return BlocProvider(
               create: (context) => GetExpensesDetailsCubit(getIt.get<ScreenRepoImpl>())
                 ..getExpensesDetails(
@@ -168,7 +168,11 @@ class _EditPurchasesState extends State<EditPurchases> {
                     List<Map<String, dynamic>> listDataInTable =
                         state.expensesDetailsModel.dynamicList!;
                     tableList = listDataInTable;
-
+                    total = listDataInTable.fold(
+                      0.0,
+                      (sum, item) => sum + ((item["Total"] ?? 0) as num).toDouble(),
+                    );
+                    singleObject = listDataInTable[0];
                     return BlocBuilder<GetListSetupsCubit, GetListSetupsState>(
                       builder: (context, state) {
                         if (state is GetListSetupsSuccess) {
@@ -212,7 +216,7 @@ class _EditPurchasesState extends State<EditPurchases> {
                                               List<Widget> widgetList = getMyWidgetList(
                                                   listData: listSetup,
                                                   categoryName: categoryName,
-                                                  dataMaster: dataMaster);
+                                                  dataMaster: singleObject);
                                               return widgetList.isNotEmpty
                                                   ? Padding(
                                                       padding: const EdgeInsets.only(
@@ -418,7 +422,7 @@ class _EditPurchasesState extends State<EditPurchases> {
                                                                           index],
                                                                   listSetup: listSetup,
                                                                   oldDataMaster:
-                                                                      dataMaster),
+                                                                      singleObject),
                                                             ),
                                                           ),
                                                         ],

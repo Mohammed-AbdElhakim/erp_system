@@ -19,11 +19,11 @@ import '../../../../../../core/widgets/custom_loading_widget.dart';
 import '../../../../../../core/widgets/custom_text_form_field.dart';
 import '../../../../../../generated/l10n.dart';
 import '../../../../../home/presentation/widgets/home_view_body.dart';
+import '../../../../data/models/dropdown_model/all_dropdown_model.dart';
 import '../../../../data/models/item_list_setup_model.dart';
-import '../../../../data/models/tap_model.dart';
 import '../../../../data/models/permission_model.dart';
 import '../../../../data/models/screen_model.dart';
-import '../../../../data/models/dropdown_model/all_dropdown_model.dart';
+import '../../../../data/models/tap_model.dart';
 import '../../../../data/repositories/screen_repo_impl.dart';
 import '../../../manager/addEditExpenses/add_edit_expenses_cubit.dart';
 import '../../../manager/getExpensesDetails/get_expenses_details_cubit.dart';
@@ -35,7 +35,8 @@ import '../build_alert_add_in_dropdown.dart';
 import 'custom_table_add_edit_.dart';
 
 class EditMachineWork extends StatefulWidget {
-  const EditMachineWork({super.key, this.tapData, required this.pageData, required this.listKey});
+  const EditMachineWork(
+      {super.key, this.tapData, required this.pageData, required this.listKey});
 
   final ListTaps? tapData;
   final Pages pageData;
@@ -80,12 +81,12 @@ class _EditMachineWorkState extends State<EditMachineWork> {
       child: BlocBuilder<GetExpensesMasterCubit, GetExpensesMasterState>(
         builder: (context, state) {
           if (state is GetExpensesMasterSuccess) {
-            Map<String, dynamic> dataMaster = state.data;
-
-            // log(dataMaster.toString());
-
-            singleObject = dataMaster;
-            // log(dataMaster.toString());
+            // Map<String, dynamic> dataMaster = state.data;
+            //
+            // // log(dataMaster.toString());
+            //
+            // singleObject = dataMaster;
+            // // log(dataMaster.toString());
             return BlocProvider(
               create: (context) => GetExpensesDetailsCubit(getIt.get<ScreenRepoImpl>())
                 ..getExpensesDetails(
@@ -152,10 +153,11 @@ class _EditMachineWorkState extends State<EditMachineWork> {
               child: BlocBuilder<GetExpensesDetailsCubit, GetExpensesDetailsState>(
                 builder: (context, state) {
                   if (state is GetExpensesDetailsSuccess) {
-                    List<Map<String, dynamic>> listDataInTable = state.expensesDetailsModel.dynamicList!;
+                    List<Map<String, dynamic>> listDataInTable =
+                        state.expensesDetailsModel.dynamicList!;
 
-                    tableList = state.expensesDetailsModel.dynamicList!;
-
+                    tableList = listDataInTable;
+                    singleObject = listDataInTable[0];
                     return BlocBuilder<GetListSetupsCubit, GetListSetupsState>(
                       builder: (context, state) {
                         if (state is GetListSetupsSuccess) {
@@ -173,7 +175,9 @@ class _EditMachineWorkState extends State<EditMachineWork> {
                                 ) {
                               listColumn.add(item);
                               listKey.add(item.columnName);
-                              listHeader.add(lang == AppStrings.enLangKey ? item.enColumnLabel! : item.arColumnLabel!);
+                              listHeader.add(lang == AppStrings.enLangKey
+                                  ? item.enColumnLabel!
+                                  : item.arColumnLabel!);
                             }
                           }
                           List<String> categoryList = category.toSet().toList();
@@ -194,22 +198,34 @@ class _EditMachineWorkState extends State<EditMachineWork> {
                                           ...List.generate(categoryList.length, (index) {
                                             String categoryName = categoryList[index];
                                             List<Widget> widgetList = getMyWidgetList(
-                                                listData: listSetup, categoryName: categoryName, dataMaster: dataMaster);
+                                                listData: listSetup,
+                                                categoryName: categoryName,
+                                                dataMaster: singleObject);
                                             return widgetList.isNotEmpty
                                                 ? Padding(
-                                                    padding: const EdgeInsets.only(bottom: 16),
+                                                    padding:
+                                                        const EdgeInsets.only(bottom: 16),
                                                     child: Column(
-                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment.start,
                                                       children: [
                                                         Container(
-                                                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                                          padding:
+                                                              const EdgeInsets.symmetric(
+                                                                  horizontal: 12,
+                                                                  vertical: 8),
                                                           decoration: BoxDecoration(
                                                               // color: AppColors.grey.withOpacity(.4),
-                                                              color: AppColors.grey.withAlpha(102),
-                                                              borderRadius: BorderRadius.circular(15)),
+                                                              color: AppColors.grey
+                                                                  .withAlpha(102),
+                                                              borderRadius:
+                                                                  BorderRadius.circular(
+                                                                      15)),
                                                           child: Text(
                                                             categoryName,
-                                                            style: AppStyles.textStyle18.copyWith(color: Colors.black),
+                                                            style: AppStyles.textStyle18
+                                                                .copyWith(
+                                                                    color: Colors.black),
                                                           ),
                                                         ),
                                                         ...widgetList,
@@ -227,7 +243,8 @@ class _EditMachineWorkState extends State<EditMachineWork> {
                                               listKey: listKey,
                                               listHeader: listHeader,
                                               listColumn: listColumn,
-                                              allDropdownModelList: ScreenTable.myAllDropdownModelList,
+                                              allDropdownModelList:
+                                                  ScreenTable.myAllDropdownModelList,
                                               onTapAction: (data) {
                                                 tableList = data;
                                               },
@@ -249,7 +266,8 @@ class _EditMachineWorkState extends State<EditMachineWork> {
                                           noGradient: true,
                                           color: Colors.transparent,
                                           noShadow: true,
-                                          textStyle: AppStyles.textStyle16.copyWith(color: Colors.grey),
+                                          textStyle: AppStyles.textStyle16
+                                              .copyWith(color: Colors.grey),
                                           onTap: () {
                                             Navigator.pop(context);
                                           },
@@ -257,24 +275,30 @@ class _EditMachineWorkState extends State<EditMachineWork> {
                                         const SizedBox(
                                           width: 50,
                                         ),
-                                        BlocConsumer<AddEditExpensesCubit, AddEditExpensesState>(
+                                        BlocConsumer<AddEditExpensesCubit,
+                                            AddEditExpensesState>(
                                           listener: (context, state) {
                                             if (state is AddEditExpensesSuccess) {
-                                              BlocProvider.of<GetTableCubit>(context).getTable(
-                                                  pageId: widget.pageData.pageId,
-                                                  employee: false,
-                                                  isdesc: widget.pageData.isDesc,
-                                                  limit: 10,
-                                                  offset: 0,
-                                                  orderby: widget.pageData.orderBy,
-                                                  statment: '',
-                                                  selectcolumns: '',
-                                                  departmentName: widget.pageData.departmentName,
-                                                  isDepartment: widget.pageData.isDepartment,
-                                                  authorizationID: widget.pageData.authorizationID,
-                                                  viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
-                                                  numberOfPage: 1,
-                                                  dropdownValueOfLimit: 10);
+                                              BlocProvider.of<GetTableCubit>(context)
+                                                  .getTable(
+                                                      pageId: widget.pageData.pageId,
+                                                      employee: false,
+                                                      isdesc: widget.pageData.isDesc,
+                                                      limit: 10,
+                                                      offset: 0,
+                                                      orderby: widget.pageData.orderBy,
+                                                      statment: '',
+                                                      selectcolumns: '',
+                                                      departmentName:
+                                                          widget.pageData.departmentName,
+                                                      isDepartment:
+                                                          widget.pageData.isDepartment,
+                                                      authorizationID:
+                                                          widget.pageData.authorizationID,
+                                                      viewEmployeeColumn: widget
+                                                          .pageData.viewEmployeeColumn,
+                                                      numberOfPage: 1,
+                                                      dropdownValueOfLimit: 10);
                                               Navigator.pop(context);
                                             } else if (state is AddEditExpensesFailure) {
                                               CustomAlertDialog.alertWithButton(
@@ -295,10 +319,13 @@ class _EditMachineWorkState extends State<EditMachineWork> {
                                                   if (formKey.currentState!.validate()) {
                                                     formKey.currentState!.save();
 
-                                                    BlocProvider.of<AddEditExpensesCubit>(context).edit(
+                                                    BlocProvider.of<AddEditExpensesCubit>(
+                                                            context)
+                                                        .edit(
                                                       singleObject: singleObject,
                                                       tableList: tableList,
-                                                      controllerName: widget.tapData!.controllerName,
+                                                      controllerName:
+                                                          widget.tapData!.controllerName,
                                                     );
                                                   }
                                                 },
@@ -346,12 +373,18 @@ class _EditMachineWorkState extends State<EditMachineWork> {
     List<Widget> list = [];
 
     for (var item in listData) {
-      String title = lang == AppStrings.arLangKey ? item.arColumnLabel! : item.enColumnLabel!;
-      bool condition = item.insertVisable == true && item.cvisable == false && item.visible == false && item.isGeneral == true;
+      String title =
+          lang == AppStrings.arLangKey ? item.arColumnLabel! : item.enColumnLabel!;
+      bool condition = item.insertVisable == true &&
+          item.cvisable == false &&
+          item.visible == false &&
+          item.isGeneral == true;
       //text
       if (item.insertType == "text" && item.categoryTitle == categoryName && condition) {
-        TextEditingController controller =
-            TextEditingController(text: dataMaster[item.columnName].toString() == "null" ? '' : dataMaster[item.columnName]);
+        TextEditingController controller = TextEditingController(
+            text: dataMaster[item.columnName].toString() == "null"
+                ? ''
+                : dataMaster[item.columnName]);
         list.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -396,9 +429,13 @@ class _EditMachineWorkState extends State<EditMachineWork> {
         );
       }
       //number
-      if (item.insertType == "number" && item.categoryTitle == categoryName && condition) {
+      if (item.insertType == "number" &&
+          item.categoryTitle == categoryName &&
+          condition) {
         TextEditingController controller = TextEditingController(
-            text: dataMaster[item.columnName].toString() == "null" ? '' : dataMaster[item.columnName].toString());
+            text: dataMaster[item.columnName].toString() == "null"
+                ? ''
+                : dataMaster[item.columnName].toString());
         list.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -536,7 +573,9 @@ class _EditMachineWorkState extends State<EditMachineWork> {
       }
 
       //dropdown
-      if (item.insertType == "dropdown" && item.categoryTitle == categoryName && condition) {
+      if (item.insertType == "dropdown" &&
+          item.categoryTitle == categoryName &&
+          condition) {
         List<ListDrop>? listDrop = [];
         List<ItemDrop>? myListDrop = [];
 
@@ -580,7 +619,8 @@ class _EditMachineWorkState extends State<EditMachineWork> {
                       title,
                       style: AppStyles.textStyle14.copyWith(color: Colors.grey),
                     ),
-                    if (item.isRquired == true) const Icon(Icons.star, color: Colors.red, size: 10),
+                    if (item.isRquired == true)
+                      const Icon(Icons.star, color: Colors.red, size: 10),
                     const SizedBox(width: 12),
                     if (dropPage != null)
                       InkWell(
@@ -614,17 +654,21 @@ class _EditMachineWorkState extends State<EditMachineWork> {
                       child: CustomDropdown<String>.search(
                         hintText: '',
                         initialItem: dropValue,
-                        closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                        closedHeaderPadding:
+                            const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                         decoration: CustomDropdownDecoration(
-                          headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
+                          headerStyle:
+                              AppStyles.textStyle16.copyWith(color: Colors.black),
                           closedFillColor: Colors.transparent,
                           closedBorder: Border.all(color: AppColors.blueDark),
                         ),
                         items: myListDrop.isEmpty
                             ? [""]
-                            : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
+                            : List.generate(myListDrop.length,
+                                (index) => myListDrop![index].text ?? ''),
                         onChanged: (value) {
-                          ItemDrop ii = myListDrop!.firstWhere((element) => element.text == value);
+                          ItemDrop ii =
+                              myListDrop!.firstWhere((element) => element.text == value);
                           setState(() {
                             singleObject.addAll({item.searchName!.toString(): ii.id});
                           });
@@ -771,7 +815,9 @@ class _EditMachineWorkState extends State<EditMachineWork> {
         );
       }*/
       //checkbox
-      if (item.insertType == "checkbox" && item.categoryTitle == categoryName && condition) {
+      if (item.insertType == "checkbox" &&
+          item.categoryTitle == categoryName &&
+          condition) {
         bool checkboxValue = dataMaster[item.columnName] ?? false;
         list.add(
           StatefulBuilder(
@@ -807,7 +853,8 @@ class _EditMachineWorkState extends State<EditMachineWork> {
 
   void getColumnListAndAdd(Pages page) async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).post(
         endPoint: "home/getGeneralTable",
@@ -862,7 +909,8 @@ class _EditMachineWorkState extends State<EditMachineWork> {
 
   Future<bool> getPermissions(int? pageId) async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPagePermissions?pageId=$pageId",
@@ -880,7 +928,8 @@ class _EditMachineWorkState extends State<EditMachineWork> {
 
   void getDropdownList(int pageId) async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       List<dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPageDropDown?pageId=$pageId",
@@ -917,7 +966,8 @@ class _EditMachineWorkState extends State<EditMachineWork> {
 
   void getDataList() async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> machineProcess = await ApiService(Dio()).post(
         endPoint: "web/Structure/getDataGlobal",

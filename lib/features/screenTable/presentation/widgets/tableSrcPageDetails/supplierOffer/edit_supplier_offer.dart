@@ -90,13 +90,13 @@ class _EditSupplierOfferState extends State<EditSupplierOffer> {
       child: BlocBuilder<GetExpensesMasterCubit, GetExpensesMasterState>(
         builder: (context, state) {
           if (state is GetExpensesMasterSuccess) {
-            Map<String, dynamic> dataMaster = state.data;
-            if (isFirst == true) {
-              singleObject = dataMaster;
-              total = dataMaster['TotalBeforTax'] ?? 0.0;
-              totalAfterTax = dataMaster['TotalAfterTax'] ?? 0.0;
-              isFirst = false;
-            }
+            // Map<String, dynamic> dataMaster = state.data;
+            // if (isFirst == true) {
+            //   singleObject = dataMaster;
+            //   total = dataMaster['TotalBeforTax'] ?? 0.0;
+            //   totalAfterTax = dataMaster['TotalAfterTax'] ?? 0.0;
+            //   isFirst = false;
+            // }
             return BlocProvider(
               create: (context) => GetExpensesDetailsCubit(getIt.get<ScreenRepoImpl>())
                 ..getExpensesDetails(
@@ -166,6 +166,12 @@ class _EditSupplierOfferState extends State<EditSupplierOffer> {
                     List<Map<String, dynamic>> listDataInTable =
                         state.expensesDetailsModel.dynamicList!;
                     tableList = listDataInTable;
+                    if (isFirst == true) {
+                      singleObject = listDataInTable[0];
+                      total = listDataInTable[0]['TotalBeforTax'] ?? 0.0;
+                      totalAfterTax = listDataInTable[0]['TotalAfterTax'] ?? 0.0;
+                      isFirst = false;
+                    }
 
                     return BlocBuilder<GetListSetupsCubit, GetListSetupsState>(
                       builder: (context, state) {
@@ -210,7 +216,7 @@ class _EditSupplierOfferState extends State<EditSupplierOffer> {
                                               List<Widget> widgetList = getMyWidgetList(
                                                   listData: listSetup,
                                                   categoryName: categoryName,
-                                                  dataMaster: dataMaster);
+                                                  dataMaster: singleObject);
                                               return widgetList.isNotEmpty
                                                   ? Padding(
                                                       padding: const EdgeInsets.only(
@@ -385,7 +391,7 @@ class _EditSupplierOfferState extends State<EditSupplierOffer> {
                                                                           index],
                                                                   listSetup: listSetup,
                                                                   oldDataMaster:
-                                                                      dataMaster),
+                                                                      singleObject),
                                                             ),
                                                           ),
                                                         ],

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:dio/dio.dart';
 import 'package:erp_system/core/widgets/custom_error_massage.dart';
@@ -90,13 +88,19 @@ class _EditExcelViewBodyState extends State<EditExcelViewBody> {
       child: BlocBuilder<GetExpensesMasterCubit, GetExpensesMasterState>(
         builder: (context, state) {
           if (state is GetExpensesMasterSuccess) {
-            Map<String, dynamic> dataMaster = state.data;
+            // Map<String, dynamic> dataMaster = state.data;
 
-            log(dataMaster.toString());
-            //تم إلغائها بديدى ايرور (بيضيف عنصر جديدمش بيعدل) فى صفحه طلب تحويل pageId=7085
-            singleObject = changeKeyByValue(dataMaster, (value) => value.toString() == id,
-                widget.tapData!.foreignKey);
-            log(dataMaster.toString());
+            // log(dataMaster.toString());
+            // print("//////////////////////////");
+            // print(singleObject);
+            // // تم إلغائها بديدى ايرور (بيضيف عنصر جديدمش بيعدل) فى صفحه طلب تحويل pageId=7085
+            // singleObject = changeKeyByValue(dataMaster, (value) => value.toString() == id,
+            //     widget.tapData!.foreignKey);
+            // print("=====================");
+            // print(singleObject);
+            // // singleObject = dataMaster;
+            // log(dataMaster.toString());
+            // log(singleObject.toString());
             return BlocProvider(
               create: (context) => GetExpensesDetailsCubit(getIt.get<ScreenRepoImpl>())
                 ..getExpensesDetails(
@@ -166,7 +170,8 @@ class _EditExcelViewBodyState extends State<EditExcelViewBody> {
                     List<Map<String, dynamic>> listDataInTable =
                         state.expensesDetailsModel.dynamicList!;
 
-                    tableList = state.expensesDetailsModel.dynamicList!;
+                    tableList = listDataInTable;
+                    singleObject = listDataInTable[0];
 
                     return BlocBuilder<GetListSetupsCubit, GetListSetupsState>(
                       builder: (context, state) {
@@ -211,7 +216,7 @@ class _EditExcelViewBodyState extends State<EditExcelViewBody> {
                                             List<Widget> widgetList = getMyWidgetList(
                                                 listData: listSetup,
                                                 categoryName: categoryName,
-                                                dataMaster: dataMaster);
+                                                dataMaster: singleObject);
                                             return widgetList.isNotEmpty
                                                 ? Padding(
                                                     padding:
@@ -981,4 +986,16 @@ class _EditExcelViewBodyState extends State<EditExcelViewBody> {
 
     return map;
   }
+
+/*  void changeKeyByValue<K, V>(Map<K, V> map, bool Function(V) condition, K newKey) {
+    var entry = map.entries.firstWhere(
+      (e) => condition(e.value), // البحث بناءً على الشرط
+      // orElse: () => const MapEntry(null, null),
+    );
+
+    if (entry.key != null) {
+      map[newKey] = entry.value; // إضافة المفتاح الجديد
+      map.remove(entry.key); // حذف المفتاح القديم
+    }
+  }*/
 }

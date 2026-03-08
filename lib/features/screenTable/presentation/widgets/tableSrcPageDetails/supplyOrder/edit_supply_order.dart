@@ -97,14 +97,14 @@ class _EditSupplyOrderState extends State<EditSupplyOrder> {
       child: BlocBuilder<GetExpensesMasterCubit, GetExpensesMasterState>(
         builder: (context, state) {
           if (state is GetExpensesMasterSuccess) {
-            Map<String, dynamic> dataMaster = state.data;
-            singleObject = dataMaster;
-            if (isFirst == true) {
-              total = dataMaster['TotalOrder'] ?? 0.0;
-              totalAfterTax = dataMaster['totalDetails'] ?? 0.0;
-              rest = dataMaster['remind'] ?? 0.0;
-              isFirst = false;
-            }
+            // Map<String, dynamic> dataMaster = state.data;
+            // singleObject = dataMaster;
+            // if (isFirst == true) {
+            //   total = dataMaster['TotalOrder'] ?? 0.0;
+            //   totalAfterTax = dataMaster['totalDetails'] ?? 0.0;
+            //   rest = dataMaster['remind'] ?? 0.0;
+            //   isFirst = false;
+            // }
             return BlocProvider(
               create: (context) => GetExpensesDetailsCubit(getIt.get<ScreenRepoImpl>())
                 ..getExpensesDetails(
@@ -175,6 +175,14 @@ class _EditSupplyOrderState extends State<EditSupplyOrder> {
                         state.expensesDetailsModel.dynamicList!;
                     tableList = listDataInTable;
 
+                    Map<String, dynamic> dataMaster = listDataInTable[0];
+                    singleObject = dataMaster;
+                    if (isFirst == true) {
+                      total = dataMaster['TotalPrice'] ?? 0.0;
+                      totalAfterTax = dataMaster['totalDetails'] ?? 0.0;
+                      rest = dataMaster['remind'] ?? 0.0;
+                      isFirst = false;
+                    }
                     return BlocBuilder<GetListSetupsCubit, GetListSetupsState>(
                       builder: (context, state) {
                         if (state is GetListSetupsSuccess) {

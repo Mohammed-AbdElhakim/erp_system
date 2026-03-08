@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:dio/dio.dart';
 import 'package:erp_system/core/widgets/custom_error_massage.dart';
@@ -41,7 +39,8 @@ import '../widgets/custom_table.dart';
 import 'custom_table_add_edit_.dart';
 
 class EditShipmentOrder extends StatefulWidget {
-  const EditShipmentOrder({super.key, required this.pageData, required this.listKey, this.tapData});
+  const EditShipmentOrder(
+      {super.key, required this.pageData, required this.listKey, this.tapData});
 
   final ListTaps? tapData;
   final Pages pageData;
@@ -205,9 +204,12 @@ class _EditShipmentOrderState extends State<EditShipmentOrder> {
                                   final searchTerm = newValue.toLowerCase();
 
                                   filteredDataList = originalDataList.where((bill) {
-                                    final name = bill.customerAccountName?.toLowerCase() ?? '';
-                                    final invoiceNumber = bill.autoNumber?.toString() ?? '';
-                                    final address = bill.customerAccountAddress?.toLowerCase() ?? '';
+                                    final name =
+                                        bill.customerAccountName?.toLowerCase() ?? '';
+                                    final invoiceNumber =
+                                        bill.autoNumber?.toString() ?? '';
+                                    final address =
+                                        bill.customerAccountAddress?.toLowerCase() ?? '';
 
                                     return name.contains(searchTerm) ||
                                         invoiceNumber.contains(searchTerm) ||
@@ -223,7 +225,8 @@ class _EditShipmentOrderState extends State<EditShipmentOrder> {
                                 listSelect.clear();
                                 for (var i in rowData) {
                                   int id = i['ContractID'];
-                                  BillsDataModel billsDataModel = filteredDataList.firstWhere(
+                                  BillsDataModel billsDataModel =
+                                      filteredDataList.firstWhere(
                                     (element) => element.contractID == id,
                                   );
                                   listSelect.add(billsDataModel.toJson());
@@ -265,26 +268,30 @@ class _EditShipmentOrderState extends State<EditShipmentOrder> {
                         if (state is GetExpensesMasterSuccess) {
                           Map<String, dynamic> dataMaster = state.data;
 
-                          log(dataMaster.toString());
+                          // log(dataMaster.toString());
                           //تم إلغائها بديدى ايرور (بيضيف عنصر جديدمش بيعدل) فى صفحه طلب تحويل pageId=7085
                           // changeKeyByValue(dataMaster, (value) => value.toString() == id,
                           //     widget.tapData!.foreignKey);
                           singleObject = dataMaster;
-                          log(dataMaster.toString());
-                          return BlocBuilder<GetExpensesDetailsCubit, GetExpensesDetailsState>(
+                          // log(dataMaster.toString());
+                          return BlocBuilder<GetExpensesDetailsCubit,
+                              GetExpensesDetailsState>(
                             builder: (context, state) {
                               if (state is GetExpensesDetailsSuccess) {
-                                List<Map<String, dynamic>> listDataInTable = state.expensesDetailsModel.dynamicList!;
+                                List<Map<String, dynamic>> listDataInTable =
+                                    state.expensesDetailsModel.dynamicList!;
                                 if (isFirst == true) {
                                   listSelectRun.addAll(listDataInTable);
                                   isFirst = false;
                                 }
-                                tableList = state.expensesDetailsModel.dynamicList!;
-
-                                return BlocBuilder<GetListSetupsCubit, GetListSetupsState>(
+                                tableList = listDataInTable;
+                                // singleObject = listDataInTable[0];
+                                return BlocBuilder<GetListSetupsCubit,
+                                    GetListSetupsState>(
                                   builder: (context, state) {
                                     if (state is GetListSetupsSuccess) {
-                                      List<ItemListSetupModel> listSetup = state.listSetupModel;
+                                      List<ItemListSetupModel> listSetup =
+                                          state.listSetupModel;
                                       List<ItemListSetupModel> listColumn = [];
                                       List<dynamic> listKey = [];
                                       List<String> category = [];
@@ -298,11 +305,13 @@ class _EditShipmentOrderState extends State<EditShipmentOrder> {
                                             ) {
                                           listColumn.add(item);
                                           listKey.add(item.columnName);
-                                          listHeader
-                                              .add(lang == AppStrings.enLangKey ? item.enColumnLabel! : item.arColumnLabel!);
+                                          listHeader.add(lang == AppStrings.enLangKey
+                                              ? item.enColumnLabel!
+                                              : item.arColumnLabel!);
                                         }
                                       }
-                                      List<String> categoryList = category.toSet().toList();
+                                      List<String> categoryList =
+                                          category.toSet().toList();
                                       return Padding(
                                         padding: const EdgeInsets.all(12.0),
                                         child: Form(
@@ -312,34 +321,58 @@ class _EditShipmentOrderState extends State<EditShipmentOrder> {
                                             clipBehavior: Clip.none,
                                             children: [
                                               Padding(
-                                                padding: const EdgeInsets.only(bottom: 60),
+                                                padding:
+                                                    const EdgeInsets.only(bottom: 60),
                                                 child: SingleChildScrollView(
                                                   child: Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.start,
                                                     children: [
-                                                      ...List.generate(categoryList.length, (index) {
-                                                        String categoryName = categoryList[index];
-                                                        List<Widget> widgetList = getMyWidgetList(
-                                                            listData: listSetup,
-                                                            categoryName: categoryName,
-                                                            dataMaster: dataMaster);
+                                                      ...List.generate(
+                                                          categoryList.length, (index) {
+                                                        String categoryName =
+                                                            categoryList[index];
+                                                        List<Widget> widgetList =
+                                                            getMyWidgetList(
+                                                                listData: listSetup,
+                                                                categoryName:
+                                                                    categoryName,
+                                                                dataMaster: dataMaster);
                                                         return widgetList.isNotEmpty
                                                             ? Padding(
-                                                                padding: const EdgeInsets.only(bottom: 16),
+                                                                padding:
+                                                                    const EdgeInsets.only(
+                                                                        bottom: 16),
                                                                 child: Column(
-                                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
                                                                   children: [
                                                                     Container(
                                                                       padding:
-                                                                          const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                                                                      decoration: BoxDecoration(
-                                                                          // color: AppColors.grey.withOpacity(.4),
-                                                                          color: AppColors.grey.withAlpha(102),
-                                                                          borderRadius: BorderRadius.circular(15)),
+                                                                          const EdgeInsets
+                                                                              .symmetric(
+                                                                              horizontal:
+                                                                                  12,
+                                                                              vertical:
+                                                                                  8),
+                                                                      decoration:
+                                                                          BoxDecoration(
+                                                                              // color: AppColors.grey.withOpacity(.4),
+                                                                              color: AppColors
+                                                                                  .grey
+                                                                                  .withAlpha(
+                                                                                      102),
+                                                                              borderRadius:
+                                                                                  BorderRadius.circular(
+                                                                                      15)),
                                                                       child: Text(
                                                                         categoryName,
-                                                                        style:
-                                                                            AppStyles.textStyle18.copyWith(color: Colors.black),
+                                                                        style: AppStyles
+                                                                            .textStyle18
+                                                                            .copyWith(
+                                                                                color: Colors
+                                                                                    .black),
                                                                       ),
                                                                     ),
                                                                     ...widgetList,
@@ -349,7 +382,8 @@ class _EditShipmentOrderState extends State<EditShipmentOrder> {
                                                             : const SizedBox();
                                                       }),
                                                       Padding(
-                                                        padding: const EdgeInsets.only(bottom: 16),
+                                                        padding: const EdgeInsets.only(
+                                                            bottom: 16),
                                                         child: CustomTableAddEdit(
                                                           onTapAdd: () {
                                                             formKey.currentState!.save();
@@ -363,7 +397,9 @@ class _EditShipmentOrderState extends State<EditShipmentOrder> {
                                                           listKey: listKey,
                                                           listHeader: listHeader,
                                                           listColumn: listColumn,
-                                                          allDropdownModelList: ScreenTable.myAllDropdownModelList,
+                                                          allDropdownModelList:
+                                                              ScreenTable
+                                                                  .myAllDropdownModelList,
                                                           onTapAction: (data) {
                                                             tableList = data;
                                                           },
@@ -377,7 +413,8 @@ class _EditShipmentOrderState extends State<EditShipmentOrder> {
                                               Positioned(
                                                 bottom: 0,
                                                 child: Row(
-                                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.spaceAround,
                                                   children: [
                                                     CustomButton(
                                                       text: S.of(context).cancel,
@@ -385,7 +422,8 @@ class _EditShipmentOrderState extends State<EditShipmentOrder> {
                                                       noGradient: true,
                                                       color: Colors.transparent,
                                                       noShadow: true,
-                                                      textStyle: AppStyles.textStyle16.copyWith(color: Colors.grey),
+                                                      textStyle: AppStyles.textStyle16
+                                                          .copyWith(color: Colors.grey),
                                                       onTap: () {
                                                         Navigator.pop(context);
                                                       },
@@ -393,48 +431,79 @@ class _EditShipmentOrderState extends State<EditShipmentOrder> {
                                                     const SizedBox(
                                                       width: 50,
                                                     ),
-                                                    BlocConsumer<AddEditExpensesCubit, AddEditExpensesState>(
+                                                    BlocConsumer<AddEditExpensesCubit,
+                                                        AddEditExpensesState>(
                                                       listener: (context, state) {
-                                                        if (state is AddEditExpensesSuccess) {
-                                                          BlocProvider.of<GetTableCubit>(context).getTable(
-                                                              pageId: widget.pageData.pageId,
-                                                              employee: false,
-                                                              isdesc: widget.pageData.isDesc,
-                                                              limit: 10,
-                                                              offset: 0,
-                                                              orderby: widget.pageData.orderBy,
-                                                              statment: '',
-                                                              selectcolumns: '',
-                                                              departmentName: widget.pageData.departmentName,
-                                                              isDepartment: widget.pageData.isDepartment,
-                                                              authorizationID: widget.pageData.authorizationID,
-                                                              viewEmployeeColumn: widget.pageData.viewEmployeeColumn,
-                                                              numberOfPage: 1,
-                                                              dropdownValueOfLimit: 10);
+                                                        if (state
+                                                            is AddEditExpensesSuccess) {
+                                                          BlocProvider.of<
+                                                                  GetTableCubit>(context)
+                                                              .getTable(
+                                                                  pageId: widget
+                                                                      .pageData.pageId,
+                                                                  employee: false,
+                                                                  isdesc:
+                                                                      widget
+                                                                          .pageData.isDesc,
+                                                                  limit: 10,
+                                                                  offset: 0,
+                                                                  orderby:
+                                                                      widget.pageData
+                                                                          .orderBy,
+                                                                  statment: '',
+                                                                  selectcolumns: '',
+                                                                  departmentName:
+                                                                      widget.pageData
+                                                                          .departmentName,
+                                                                  isDepartment:
+                                                                      widget.pageData
+                                                                          .isDepartment,
+                                                                  authorizationID:
+                                                                      widget.pageData
+                                                                          .authorizationID,
+                                                                  viewEmployeeColumn: widget
+                                                                      .pageData
+                                                                      .viewEmployeeColumn,
+                                                                  numberOfPage: 1,
+                                                                  dropdownValueOfLimit:
+                                                                      10);
                                                           Navigator.pop(context);
-                                                        } else if (state is AddEditExpensesFailure) {
-                                                          CustomAlertDialog.alertWithButton(
-                                                              context: context,
-                                                              type: AlertType.error,
-                                                              title: S.of(context).error,
-                                                              desc: state.errorMassage);
+                                                        } else if (state
+                                                            is AddEditExpensesFailure) {
+                                                          CustomAlertDialog
+                                                              .alertWithButton(
+                                                                  context: context,
+                                                                  type: AlertType.error,
+                                                                  title:
+                                                                      S.of(context).error,
+                                                                  desc:
+                                                                      state.errorMassage);
                                                         }
                                                       },
                                                       builder: (context, state) {
-                                                        if (state is AddEditExpensesLoading) {
+                                                        if (state
+                                                            is AddEditExpensesLoading) {
                                                           return const CustomLoadingWidget();
                                                         } else {
                                                           return CustomButton(
                                                             text: S.of(context).btn_edit,
                                                             width: 80,
                                                             onTap: () {
-                                                              if (formKey.currentState!.validate()) {
-                                                                formKey.currentState!.save();
+                                                              if (formKey.currentState!
+                                                                  .validate()) {
+                                                                formKey.currentState!
+                                                                    .save();
 
-                                                                BlocProvider.of<AddEditExpensesCubit>(context).edit(
-                                                                  singleObject: singleObject,
+                                                                BlocProvider.of<
+                                                                            AddEditExpensesCubit>(
+                                                                        context)
+                                                                    .edit(
+                                                                  singleObject:
+                                                                      singleObject,
                                                                   tableList: tableList,
-                                                                  controllerName: widget.tapData!.controllerName,
+                                                                  controllerName: widget
+                                                                      .tapData!
+                                                                      .controllerName,
                                                                 );
                                                               }
                                                             },
@@ -450,14 +519,16 @@ class _EditShipmentOrderState extends State<EditShipmentOrder> {
                                         ),
                                       );
                                     } else if (state is GetListSetupsFailure) {
-                                      return CustomErrorMassage(errorMassage: state.errorMassage);
+                                      return CustomErrorMassage(
+                                          errorMassage: state.errorMassage);
                                     } else {
                                       return const CustomLoadingWidget();
                                     }
                                   },
                                 );
                               } else if (state is GetExpensesDetailsFailure) {
-                                return CustomErrorMassage(errorMassage: state.errorMassage);
+                                return CustomErrorMassage(
+                                    errorMassage: state.errorMassage);
                               } else {
                                 return const CustomLoadingWidget();
                               }
@@ -493,12 +564,18 @@ class _EditShipmentOrderState extends State<EditShipmentOrder> {
     List<Widget> list = [];
 
     for (var item in listData) {
-      String title = lang == AppStrings.arLangKey ? item.arColumnLabel! : item.enColumnLabel!;
-      bool condition = item.insertVisable == true && item.cvisable == false && item.visible == false && item.isGeneral == true;
+      String title =
+          lang == AppStrings.arLangKey ? item.arColumnLabel! : item.enColumnLabel!;
+      bool condition = item.insertVisable == true &&
+          item.cvisable == false &&
+          item.visible == false &&
+          item.isGeneral == true;
       //text
       if (item.insertType == "text" && item.categoryTitle == categoryName && condition) {
-        TextEditingController controller =
-            TextEditingController(text: dataMaster[item.columnName].toString() == "null" ? '' : dataMaster[item.columnName]);
+        TextEditingController controller = TextEditingController(
+            text: dataMaster[item.columnName].toString() == "null"
+                ? ''
+                : dataMaster[item.columnName]);
         list.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -543,9 +620,13 @@ class _EditShipmentOrderState extends State<EditShipmentOrder> {
         );
       }
       //number
-      if (item.insertType == "number" && item.categoryTitle == categoryName && condition) {
+      if (item.insertType == "number" &&
+          item.categoryTitle == categoryName &&
+          condition) {
         TextEditingController controller = TextEditingController(
-            text: dataMaster[item.columnName].toString() == "null" ? '' : dataMaster[item.columnName].toString());
+            text: dataMaster[item.columnName].toString() == "null"
+                ? ''
+                : dataMaster[item.columnName].toString());
         list.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
@@ -683,7 +764,9 @@ class _EditShipmentOrderState extends State<EditShipmentOrder> {
       }
 
       //dropdown
-      if (item.insertType == "dropdown" && item.categoryTitle == categoryName && condition) {
+      if (item.insertType == "dropdown" &&
+          item.categoryTitle == categoryName &&
+          condition) {
         List<ListDrop>? listDrop = [];
         List<ItemDrop>? myListDrop = [];
 
@@ -727,7 +810,8 @@ class _EditShipmentOrderState extends State<EditShipmentOrder> {
                       title,
                       style: AppStyles.textStyle14.copyWith(color: Colors.grey),
                     ),
-                    if (item.isRquired == true) const Icon(Icons.star, color: Colors.red, size: 10),
+                    if (item.isRquired == true)
+                      const Icon(Icons.star, color: Colors.red, size: 10),
                     const SizedBox(width: 12),
                     if (dropPage != null)
                       InkWell(
@@ -761,17 +845,21 @@ class _EditShipmentOrderState extends State<EditShipmentOrder> {
                       child: CustomDropdown<String>.search(
                         hintText: '',
                         initialItem: dropValue,
-                        closedHeaderPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                        closedHeaderPadding:
+                            const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
                         decoration: CustomDropdownDecoration(
-                          headerStyle: AppStyles.textStyle16.copyWith(color: Colors.black),
+                          headerStyle:
+                              AppStyles.textStyle16.copyWith(color: Colors.black),
                           closedFillColor: Colors.transparent,
                           closedBorder: Border.all(color: AppColors.blueDark),
                         ),
                         items: myListDrop.isEmpty
                             ? [""]
-                            : List.generate(myListDrop.length, (index) => myListDrop![index].text ?? ''),
+                            : List.generate(myListDrop.length,
+                                (index) => myListDrop![index].text ?? ''),
                         onChanged: (value) {
-                          ItemDrop ii = myListDrop!.firstWhere((element) => element.text == value);
+                          ItemDrop ii =
+                              myListDrop!.firstWhere((element) => element.text == value);
                           setState(() {
                             singleObject.addAll({item.searchName!.toString(): ii.id});
                           });
@@ -918,7 +1006,9 @@ class _EditShipmentOrderState extends State<EditShipmentOrder> {
         );
       }*/
       //checkbox
-      if (item.insertType == "checkbox" && item.categoryTitle == categoryName && condition) {
+      if (item.insertType == "checkbox" &&
+          item.categoryTitle == categoryName &&
+          condition) {
         bool checkboxValue = dataMaster[item.columnName] ?? false;
         list.add(
           StatefulBuilder(
@@ -954,7 +1044,8 @@ class _EditShipmentOrderState extends State<EditShipmentOrder> {
 
   void getColumnListAndAdd(Pages page) async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).post(
         endPoint: "home/getGeneralTable",
@@ -1009,7 +1100,8 @@ class _EditShipmentOrderState extends State<EditShipmentOrder> {
 
   Future<bool> getPermissions(int? pageId) async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       Map<String, dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPagePermissions?pageId=$pageId",
@@ -1027,7 +1119,8 @@ class _EditShipmentOrderState extends State<EditShipmentOrder> {
 
   void getDropdownList(int pageId) async {
     try {
-      String companyKey = await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
+      String companyKey =
+          await Pref.getStringFromPref(key: AppStrings.companyIdentifierKey) ?? "";
       String token = await Pref.getStringFromPref(key: AppStrings.tokenKey) ?? "";
       List<dynamic> data = await ApiService(Dio()).get(
         endPoint: "home/GetPageDropDown?pageId=$pageId",
