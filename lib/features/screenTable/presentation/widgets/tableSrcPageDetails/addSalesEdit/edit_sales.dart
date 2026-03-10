@@ -199,10 +199,11 @@ class _EditSalesState extends State<EditSales> {
                     List<Map<String, dynamic>> listDataInTable =
                         state.expensesDetailsModel.dynamicList!;
                     tableList = listDataInTable;
-                    total = listDataInTable.fold(
-                      0.0,
-                      (sum, item) => sum + ((item["Total"] ?? 0) as num).toDouble(),
-                    );
+                    total = listDataInTable[0]["TotalCurrancy"];
+                    // total = listDataInTable.fold(
+                    //   0.0,
+                    //   (sum, item) => sum + ((item["TotalOrder"] ?? 0) as num).toDouble(),
+                    // );
                     Map<String, dynamic> dataMaster = tableList[0];
 
                     return BlocBuilder<GetListSetupsCubit, GetListSetupsState>(
@@ -619,48 +620,39 @@ class _EditSalesState extends State<EditSales> {
                                                         .validate()) {
                                                       formKey.currentState!.save();
 
-                                                      // singleObject.addAll({
-                                                      //   "TotalCurrancy": total,
-                                                      //   "DiscountCurrancy":
-                                                      //       double.parse(
-                                                      //           discountController
-                                                      //               .text
-                                                      //               .trim()),
-                                                      //   "TaxCurrancy": double.parse(
-                                                      //       discountTaxController
-                                                      //           .text
-                                                      //           .trim()),
-                                                      //   "AddTaxCurrancy":
-                                                      //       double.parse(
-                                                      //           taxController.text
-                                                      //               .trim()),
-                                                      //   "TotalOrderBeforCurrancy":
-                                                      //       totalAfterTaxController
-                                                      //               .text
-                                                      //               .isNotEmpty
-                                                      //           ? double.parse(
-                                                      //               totalAfterTaxController
-                                                      //                   .text
-                                                      //                   .trim())
-                                                      //           : 0.0,
-                                                      //   "POPaid": double.parse(
-                                                      //       cashCollectedController
-                                                      //           .text
-                                                      //           .trim()),
-                                                      //   "shippingPrice": double.parse(
-                                                      //       shippingPriceController
-                                                      //           .text
-                                                      //           .trim()),
-                                                      //   "remind": double.parse(
-                                                      //       deadlineClientController
-                                                      //           .text
-                                                      //           .trim()),
-                                                      //   // "SafeAccount":double.parse(),
-                                                      //   // "SuplayOrderPoPaid":double.parse(),
-                                                      //   // "Voucher":double.parse(),
-                                                      //   // "TaxDetailTotal":double.parse(),
-                                                      //   // "DiscountDetailTotal":double.parse(),
-                                                      // });
+                                                      singleObject.addAll({
+                                                        "TotalCurrancy": total,
+                                                        "DiscountCurrancy": double.parse(
+                                                            discountController.text
+                                                                .trim()),
+                                                        "TaxCurrancy": double.parse(
+                                                            discountTaxController.text
+                                                                .trim()),
+                                                        "AddTaxCurrancy": double.parse(
+                                                            taxController.text.trim()),
+                                                        "TotalOrderBeforCurrancy":
+                                                            totalAfterTaxController
+                                                                    .text.isNotEmpty
+                                                                ? double.parse(
+                                                                    totalAfterTaxController
+                                                                        .text
+                                                                        .trim())
+                                                                : 0.0,
+                                                        "POPaid": double.parse(
+                                                            cashCollectedController.text
+                                                                .trim()),
+                                                        "shippingPrice": double.parse(
+                                                            shippingPriceController.text
+                                                                .trim()),
+                                                        "remind": double.parse(
+                                                            deadlineClientController.text
+                                                                .trim()),
+                                                        // "SafeAccount":double.parse(),
+                                                        // "SuplayOrderPoPaid":double.parse(),
+                                                        // "Voucher":double.parse(),
+                                                        // "TaxDetailTotal":double.parse(),
+                                                        // "DiscountDetailTotal":double.parse(),
+                                                      });
 
                                                       BlocProvider.of<
                                                                   AddEditExpensesCubit>(
