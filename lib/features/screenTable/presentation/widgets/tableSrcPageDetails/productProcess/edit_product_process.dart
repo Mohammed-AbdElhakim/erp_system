@@ -395,7 +395,7 @@ class _EditProductProcessState extends State<EditProductProcess> {
         TextEditingController controller = TextEditingController(
             text: dataMaster[item.columnName].toString() == "null"
                 ? ''
-                : dataMaster[item.columnName]);
+                : dataMaster[item.columnName].toString());
         list.add(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
